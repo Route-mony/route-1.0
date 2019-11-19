@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">RouteApp</string>
+    <string name="signup_title">Tell us about yourself</string>
+    <string name="main_font_style">Roboto</string>
+    <string name="lbl_first_name">First name</string>
+    <string name="lbl_middle_name">Middle name</string>
+    <string name="lbl_last_name">Last name</string>
+    <string name="lbl_email">Email</string>
+    <string name="lbl_phone">Phone number</string>
+    <string name="lbl_id_number">ID/PP number</string>
+    <string name="first_name">John</string>
+    <string name="middle_name">Doe</string>
+    <string name="last_name">Doe</string>
+    <string name="email">johndoe@gmail.com</string>
+    <string name="phone">+254712469224</string>
+    <string name="id_number">35889934</string>
+    <string name="btn_next">Next</string>
 </resources>
