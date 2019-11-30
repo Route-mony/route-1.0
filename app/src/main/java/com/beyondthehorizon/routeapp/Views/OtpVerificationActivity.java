@@ -1,10 +1,12 @@
-package com.beyondthehorizon.routeapp;
+package com.beyondthehorizon.routeapp.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SplashActivity extends AppCompatActivity {
+import com.beyondthehorizon.routeapp.R;
+
+public class OtpVerificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
