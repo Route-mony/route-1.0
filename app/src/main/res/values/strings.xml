@@ -15,4 +15,13 @@
     <string name="phone">+254712469224</string>
     <string name="id_number">35889934</string>
     <string name="btn_next">Next</string>
+    <string name="verification_title">Verify your number</string>
+    <string name="verification_alert">We have sent you an SMS with a code.</string>
+    <string name="instruction_to_verify">To complete your phone number verification, please enter the 5-digit activation code.</string>
+    <string name="retry_otp">resend code? 43</string>
+    <string name="btn_one">5</string>
+    <string name="btn_two">8</string>
+    <string name="btn_three">1</string>
+    <string name="btn_four">4</string>
+    <string name="btn_five">1</string>
 </resources>
