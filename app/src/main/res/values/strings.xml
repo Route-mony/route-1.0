@@ -24,4 +24,5 @@
     <string name="btn_three">1</string>
     <string name="btn_four">4</string>
     <string name="btn_five">1</string>
+    <string name="verified">Verified</string>
 </resources>
