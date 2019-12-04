@@ -19,13 +19,21 @@ public class ServicesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_services);
 
         ArrayList<Movies> movies = new ArrayList<Movies>();
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
-        movies.add(new Movies("ORIA", "AWESOME"));
+        movies.add(new Movies("Route That Payment. Easy1. ",
+                "Lorem Ipsum is simply dummy text of" +
+                        " the printing and typesetting industry."));
+        movies.add(new Movies("Route That Payment. Easy2. ",
+                "Lorem Ipsum is simply dummy text of" +
+                        " the printing and typesetting industry."));
+        movies.add(new Movies("Route That Payment. Easy3. ",
+                "Lorem Ipsum is simply dummy text of" +
+                        " the printing and typesetting industry."));
+        movies.add(new Movies("Route That Payment. Easy4. ",
+                "Lorem Ipsum is simply dummy text of" +
+                        " the printing and typesetting industry."));
+        movies.add(new Movies("Route That Payment. Easy5. ",
+                "Lorem Ipsum is simply dummy text of" +
+                        " the printing and typesetting industry."));
 
         CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
         cardSliderViewPager.setAdapter(new SliderAdapter(movies));

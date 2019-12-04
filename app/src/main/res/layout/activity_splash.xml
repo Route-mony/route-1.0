@@ -21,9 +21,11 @@
 
         <ImageView
             android:id="@+id/globe"
-            android:layout_width="match_parent"
-            android:layout_height="351dp"
+            android:layout_width="310dp"
+            android:layout_height="300dp"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
             android:src="@drawable/ss" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

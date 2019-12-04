@@ -9,32 +9,75 @@
     android:orientation="vertical"
     tools:context=".Views.ServicesActivity">
 
-
-    <com.github.islamkhsh.CardSliderViewPager
-        android:id="@+id/viewPager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="24dp"
-        app:auto_slide_time="5"
-        app:cardSlider_cardCornerRadius="5dp"
-        app:cardSlider_indicator="@id/indicator"
-        app:cardSlider_otherPagesWidth="24dp"
-        app:cardSlider_pageMargin="12dp"
-        app:cardSlider_smallAlphaFactor="0.5"
-        app:cardSlider_smallScaleFactor="0.9" />
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <com.github.islamkhsh.CardSliderIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/viewPager"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        app:indicatorsToShow="5" />
+        <com.github.islamkhsh.CardSliderViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="330dp"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            app:auto_slide_time="5"
+            app:cardSlider_cardCornerRadius="10dp"
+            app:cardSlider_indicator="@id/indicator"
+            app:cardSlider_otherPagesWidth="24dp"
+            app:cardSlider_pageMargin="12dp"
+            app:cardSlider_smallAlphaFactor="0.5"
+            app:cardSlider_smallScaleFactor="0.9" />
 
-    <ImageView
-        android:id="@+id/globe"
+        <com.github.islamkhsh.CardSliderIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="0.1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/signUp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="55dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="SignUp"
+                android:textAllCaps="false"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/userLogin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="55dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="351dp"
-        android:src="@drawable/ss" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/globe"
+            android:layout_width="310dp"
+            android:layout_height="300dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ss" />
+    </RelativeLayout>
 </FrameLayout>
