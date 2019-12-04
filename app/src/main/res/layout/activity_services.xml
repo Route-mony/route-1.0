@@ -22,6 +22,7 @@
             android:layout_height="0dp"
             android:layout_weight="9"
             app:auto_slide_time="5"
+            app:cardSlider_cardBackgroundColor="#909EB1FC"
             app:cardSlider_cardCornerRadius="10dp"
             app:cardSlider_indicator="@id/indicator"
             app:cardSlider_otherPagesWidth="24dp"
@@ -74,7 +75,7 @@
         <ImageView
             android:id="@+id/globe"
             android:layout_width="310dp"
-            android:layout_height="300dp"
+            android:layout_height="270dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:scaleType="fitXY"

@@ -18,11 +18,10 @@
             android:src="@drawable/group618"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-
         <ImageView
             android:id="@+id/globe"
-            android:layout_width="310dp"
-            android:layout_height="300dp"
+            android:layout_width="300dp"
+            android:layout_height="260dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:scaleType="fitXY"
