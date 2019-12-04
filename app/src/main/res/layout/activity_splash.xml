@@ -4,12 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".SplashActivity">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Splash Activity"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/group618"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
+        <ImageView
+            android:id="@+id/globe"
+            android:layout_width="match_parent"
+            android:layout_height="351dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ss" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

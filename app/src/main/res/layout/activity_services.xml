@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Views.ServicesActivity">
+
+
+    <com.github.islamkhsh.CardSliderViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:auto_slide_time="5"
+        app:cardSlider_cardCornerRadius="5dp"
+        app:cardSlider_indicator="@id/indicator"
+        app:cardSlider_otherPagesWidth="24dp"
+        app:cardSlider_pageMargin="12dp"
+        app:cardSlider_smallAlphaFactor="0.5"
+        app:cardSlider_smallScaleFactor="0.9" />
+
+    <com.github.islamkhsh.CardSliderIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewPager"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        app:indicatorsToShow="5" />
+
+    <ImageView
+        android:id="@+id/globe"
+        android:layout_width="match_parent"
+        android:layout_height="351dp"
+        android:src="@drawable/ss" />
+</FrameLayout>
