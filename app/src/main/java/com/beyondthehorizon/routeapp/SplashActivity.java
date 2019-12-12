@@ -19,9 +19,9 @@ public class SplashActivity extends AppCompatActivity {
 //            @Override
 //            public void run() {
 //                // Do something after 5s = 5000ms
-//                startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
+               /// startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
 //                finish();
-//            }
+//
 //        }, 1000);
     }
 
