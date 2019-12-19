@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#F0EFEF"
     android:fillViewport="true">
 
     <LinearLayout
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,11 +122,94 @@
             android:layout_height="wrap_content"
             android:background="@drawable/gradient_drawable"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_fav1"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/service_buttons"
+                        android:elevation="3dp" />
+
+                    <TextView
+                        android:id="@+id/txt_fav1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@string/font_family_medium"
+                        android:text="Request"
+                        android:textColor="@color/colorAccent"
+                        android:textAlignment="center"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_fav2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/service_buttons"
+                        android:elevation="3dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_fav2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@string/font_family_medium"
+                        android:text="Paybill"
+                        android:textColor="@color/colorAccent"
+                        android:textAlignment="center"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_fav3"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/service_buttons"
+                        android:elevation="3dp" />
+
+                    <TextView
+                        android:id="@+id/txt_fav3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@string/font_family_medium"
+                        android:text="Send"
+                        android:textColor="@color/colorAccent"
+                        android:textAlignment="center"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/card_main">
 
                 <LinearLayout
@@ -154,7 +237,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group779" />
+                                android:src="@drawable/ic_group779" />
 
                             <TextView
                                 android:id="@+id/txt_request"
@@ -180,7 +263,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group491" />
+                                android:src="@drawable/ic_group491" />
 
                             <TextView
                                 android:id="@+id/txt_request2"
@@ -206,7 +289,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group492" />
+                                android:src="@drawable/ic_group492" />
 
                             <TextView
                                 android:id="@+id/txt_request34"
@@ -241,7 +324,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group776" />
+                                android:src="@drawable/ic_group776" />
 
                             <TextView
                                 android:id="@+id/txt_request32"
@@ -267,7 +350,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group777" />
+                                android:src="@drawable/ic_group777" />
 
                             <TextView
                                 android:id="@+id/txt_request24"
@@ -293,7 +376,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group778" />
+                                android:src="@drawable/ic_group778" />
 
                             <TextView
                                 android:id="@+id/txt_request3"
@@ -327,7 +410,7 @@
                                 android:layout_height="70dp"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:src="@drawable/group782" />
+                                android:src="@drawable/ic_group782" />
 
                             <TextView
                                 android:id="@+id/txt_request35"
@@ -367,7 +450,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
         <include layout="@layout/nav_bar_layout" />
     </LinearLayout>
 

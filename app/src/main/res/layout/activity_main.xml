@@ -136,7 +136,100 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/gradient_drawable"></androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@drawable/gradient_drawable">
+                <ImageButton
+                    android:id="@+id/btn_fav1"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="35dp"
+                    android:background="@drawable/service_buttons"
+                    android:elevation="3dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_group779"
+                    app:layout_constraintEnd_toStartOf="@id/btn_fav2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_fav1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Request"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@id/txt_fav1"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_fav1" />
+
+                <ImageButton
+                    android:id="@+id/btn_fav2"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="35dp"
+                    android:background="@drawable/service_buttons"
+                    android:elevation="3dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_group491"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_fav1"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_fav3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/btn_fav1"
+                    app:layout_constraintTop_toTopOf="@+id/btn_fav1" />
+
+                <TextView
+                    android:id="@+id/txt_fav2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Paybill"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_fav3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/txt_fav1"
+                    app:layout_constraintTop_toBottomOf="@id/btn_fav2" />
+
+                <ImageButton
+                    android:id="@+id/btn_fav3"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="35dp"
+                    android:background="@drawable/service_buttons"
+                    android:elevation="3dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_group492"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_fav2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/btn_fav2"
+                    app:layout_constraintTop_toTopOf="@+id/btn_fav2" />
+
+                <TextView
+                    android:id="@+id/txt_fav3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="7dp"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Send"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/txt_fav2"
+                    app:layout_constraintTop_toBottomOf="@id/btn_fav3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -162,7 +255,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group779"
+                    android:src="@drawable/ic_group779"
                     app:layout_constraintEnd_toStartOf="@id/btn_paybill"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -192,8 +285,8 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group491"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_request"
+                    android:src="@drawable/ic_group491"
+                    app:layout_constraintBottom_toTopOf="@+id/txt_paybill"
                     app:layout_constraintEnd_toStartOf="@+id/btn_send"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -223,7 +316,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group492"
+                    android:src="@drawable/ic_group492"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_paybill"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -254,7 +347,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group776"
+                    android:src="@drawable/ic_group776"
                     app:layout_constraintEnd_toStartOf="@id/btn_airtime"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -284,7 +377,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group777"
+                    android:src="@drawable/ic_group777"
                     app:layout_constraintEnd_toStartOf="@+id/btn_split_bill"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -315,7 +408,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group778"
+                    android:src="@drawable/ic_group778"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -345,7 +438,7 @@
                     android:background="@drawable/service_buttons"
                     android:elevation="3dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/group782"
+                    android:src="@drawable/ic_group782"
                     app:layout_constraintEnd_toEndOf="@id/btn_send_to_many"
                     app:layout_constraintStart_toStartOf="@id/btn_send_to_many"
                     app:layout_constraintTop_toBottomOf="@+id/txt_send_to_many" />
