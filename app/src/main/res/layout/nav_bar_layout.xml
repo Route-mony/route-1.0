@@ -1,112 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            >
-                <ImageButton
-                    android:id="@+id/btn_home"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_group762"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_transactions"
-                    app:layout_constraintTop_toTopOf="parent" />
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginEnd="3dp"
+    android:background="#FFFFFF"
+    android:padding="6dp">
 
-                <TextView
-                    android:id="@+id/txt_home"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Home"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/txt_transactions"
-                    app:layout_constraintTop_toBottomOf="@id/btn_home"/>
+    <ImageButton
+        android:id="@+id/btn_home"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_group762"
+        app:layout_constraintEnd_toStartOf="@id/btn_transactions"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/btn_transactions"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_group660"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@id/btn_home"
-                    app:layout_constraintEnd_toStartOf="@id/btn_pool"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txt_home"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/txt_transactions"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_home" />
 
-                <TextView
-                    android:id="@+id/txt_transactions"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Transactions"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@id/txt_home"
-                    app:layout_constraintEnd_toStartOf="@id/txt_pool"
-                    app:layout_constraintTop_toBottomOf="@id/btn_transactions"/>
+    <ImageButton
+        android:id="@+id/btn_transactions"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_group660"
+        app:layout_constraintEnd_toStartOf="@id/btn_pool"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/btn_home"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/btn_pool"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_group705"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf = "@id/btn_transactions"
-                    app:layout_constraintEnd_toStartOf="@id/btn_settings"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txt_transactions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Transactions"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/txt_pool"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/txt_home"
+        app:layout_constraintTop_toBottomOf="@id/btn_transactions" />
 
-                <TextView
-                    android:id="@+id/txt_pool"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Pool"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf = "@id/txt_transactions"
-                    app:layout_constraintEnd_toStartOf="@id/txt_settings"
-                    app:layout_constraintTop_toBottomOf="@id/btn_pool"/>
+    <ImageButton
+        android:id="@+id/btn_pool"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_group705"
+        app:layout_constraintEnd_toStartOf="@id/btn_settings"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/btn_transactions"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/btn_settings"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_group663"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@id/btn_pool"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txt_pool"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pool"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/txt_settings"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/txt_transactions"
+        app:layout_constraintTop_toBottomOf="@id/btn_pool" />
 
-                <TextView
-                    android:id="@+id/txt_settings"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Settings"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf = "@id/txt_pool"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_pool"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/btn_settings"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_group663"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/btn_pool"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_settings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/txt_pool"
+        app:layout_constraintTop_toBottomOf="@id/btn_pool" />
+</androidx.constraintlayout.widget.ConstraintLayout>
