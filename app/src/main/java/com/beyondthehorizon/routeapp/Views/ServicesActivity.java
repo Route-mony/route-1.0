@@ -2,7 +2,9 @@ package com.beyondthehorizon.routeapp.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.beyondthehorizon.routeapp.Adapters.SliderAdapter;
 import com.beyondthehorizon.routeapp.Models.Movies;
@@ -37,5 +39,13 @@ public class ServicesActivity extends AppCompatActivity {
 
         CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
         cardSliderViewPager.setAdapter(new SliderAdapter(movies));
+    }
+
+    public void signUP(View view) {
+        startActivity(new Intent(ServicesActivity.this, SignUpActivity.class));
+    }
+
+    public void homePage(View view) {
+        startActivity(new Intent(ServicesActivity.this, MainActivity.class));
     }
 }
