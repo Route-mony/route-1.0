@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "823144541938",
+    "firebase_url": "https://route-app-2a28f.firebaseio.com",
+    "project_id": "route-app-2a28f",
+    "storage_bucket": "route-app-2a28f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823144541938:android:f97e77455cd7d412e86a6b",
+        "android_client_info": {
+          "package_name": "com.beyondthehorizon.routeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823144541938-9qtm4r84r5fnpsbu1juhm1uaoe4eulla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.routeapp",
+            "certificate_hash": "33f56cb4482d99c21145e1524355b5a26393d6ee"
+          }
+        },
+        {
+          "client_id": "823144541938-9e7enkvacoh5mqn789rl59dut2coemfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3wj-cT7OQTlHdpoqUwrzCrQlB-JOvhaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823144541938-9e7enkvacoh5mqn789rl59dut2coemfv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

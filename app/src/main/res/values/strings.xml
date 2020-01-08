@@ -3,11 +3,13 @@
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
     <string name="lbl_first_name">First name</string>
-    <string name="lbl_middle_name">Middle name</string>
+    <string name="lbl_middle_name">SURNAME name</string>
+    <string name="lbl_user_name">username</string>
     <string name="lbl_last_name">Last name</string>
     <string name="lbl_email">Email</string>
     <string name="lbl_phone">Phone number</string>
     <string name="lbl_id_number">ID/PP number</string>
+    <string name="lbl_password">Password</string>
     <string name="first_name">John</string>
     <string name="middle_name">Doe</string>
     <string name="last_name">Doe</string>
@@ -17,8 +19,8 @@
     <string name="btn_next">Next</string>
     <string name="verification_title">Verify your number</string>
     <string name="verification_alert">We have sent you an SMS with a code.</string>
-    <string name="instruction_to_verify">To complete your phone number verification, please enter the 5-digit activation code.</string>
-    <string name="retry_otp">resend code? 43</string>
+    <string name="instruction_to_verify">To complete your phone number verification, please enter the 6-digit activation code.</string>
+    <string name="retry_otp">resend code? </string>
     <string name="btn_one">5</string>
     <string name="btn_two">8</string>
     <string name="btn_three">1</string>
@@ -29,6 +31,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="pass">Password</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

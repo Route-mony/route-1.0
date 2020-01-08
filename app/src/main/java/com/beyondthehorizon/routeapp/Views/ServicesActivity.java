@@ -9,6 +9,8 @@ import android.view.View;
 import com.beyondthehorizon.routeapp.Adapters.SliderAdapter;
 import com.beyondthehorizon.routeapp.Models.Movies;
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.Views.auth.SignUpActivity;
+import com.beyondthehorizon.routeapp.Views.auth.UserNamesActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class ServicesActivity extends AppCompatActivity {
     }
 
     public void signUP(View view) {
-        startActivity(new Intent(ServicesActivity.this, SignUpActivity.class));
+        startActivity(new Intent(ServicesActivity.this, UserNamesActivity.class));
     }
 
     public void homePage(View view) {
