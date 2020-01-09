@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.auth.UserNamesActivity"></activity>
+        <activity
+            android:name=".Views.auth.SetTransactionPinActivity"
+            android:theme="@style/Theme.Transparent" />
+        <activity android:name=".Views.auth.LoginActivity" />
+        <activity android:name=".Views.auth.UserNamesActivity" />
         <activity
             android:name=".Views.auth.PasswordActivity"
             android:parentActivityName=".Views.auth.PhoneActivity" />
@@ -18,7 +22,6 @@
         <activity android:name=".Views.ServicesActivity" />
         <activity android:name=".Views.SignupVerifiedActivity" />
         <activity android:name=".Views.OtpVerificationActivity" />
-        <activity android:name=".Views.auth.SignUpActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

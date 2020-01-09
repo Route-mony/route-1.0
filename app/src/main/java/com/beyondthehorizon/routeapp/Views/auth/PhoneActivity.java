@@ -15,6 +15,7 @@ import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.Views.OtpVerificationActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
@@ -27,6 +28,7 @@ public class PhoneActivity extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     EditText phone;
+    CountryCodePicker ccp;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -42,7 +44,10 @@ public class PhoneActivity extends AppCompatActivity {
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
 
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
         phone = findViewById(R.id.phone);
+        ccp.registerPhoneNumberTextView(phone);
+
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +59,8 @@ public class PhoneActivity extends AppCompatActivity {
     }
 
     public void nextPage(View view) {
-        final String phoneNumber = phone.getText().toString().trim();
-        if (phoneNumber.length() < 10) {
+        String phoneNumber = phone.getText().toString().trim();
+        if (phoneNumber.length() < 9) {
             phone.setError("Add a valid phone number");
             return;
         }
@@ -67,14 +72,15 @@ public class PhoneActivity extends AppCompatActivity {
             if (regPhone.contains(newPhone)) {
                 startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
             } else {
-                new AlertDialog.Builder(PhoneActivity.this)
-                        .setTitle("New Phone Number")
-                        .setMessage("Are you sure you want to use this " + phoneNumber + " phone number rather than " + currentUser.getPhoneNumber() + " ?")
+                new AlertDialog.Builder(PhoneActivity.this, R.style.MyDialogTheme)
+                        .setTitle("Change Phone Number")
+                        .setMessage("Change registered phone number from " + currentUser.getPhoneNumber() +
+                                " to " + ccp.getFullNumberWithPlus() + " ?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
-                                editor.putString(MyPhoneNumber, phoneNumber);
+                                editor.putString(MyPhoneNumber, ccp.getFullNumberWithPlus());
                                 editor.apply();
                             }
                         })
@@ -93,8 +99,7 @@ public class PhoneActivity extends AppCompatActivity {
             }
         } else {
             startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
-
-            editor.putString(MyPhoneNumber, phoneNumber);
+            editor.putString(MyPhoneNumber, ccp.getFullNumberWithPlus());
             editor.apply();
         }
     }

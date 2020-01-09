@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/R11"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".Views.auth.EmailIDActivity">
+    tools:context=".Views.auth.LoginActivity">
 
     <LinearLayout
         android:id="@+id/L11"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:onClick="prevPage"
             android:padding="5dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_arrow_back" />
@@ -34,65 +36,79 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@string/main_font_style"
-            android:text="And your phone number?"
+            android:text="Log in"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
             android:textStyle="bold" />
 
+
         <TextView
-            android:id="@+id/lbl_phone"
+            android:id="@+id/lbl_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/lbl_phone"
+            android:text="@string/lbl_email"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/email" />
+            app:layout_constraintTop_toBottomOf="@id/user_name" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="0dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#33FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/lbl_email" />
 
-            <com.rilixtech.widget.countrycodepicker.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                app:ccp_textColor="#fff" />
+        <TextView
+            android:id="@+id/lbl_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/lbl_password"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/user_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lbl_password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
 
             <EditText
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
+                android:id="@+id/password"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="50dp"
-                android:layout_weight="9"
-                android:hint="@string/phone"
-                android:inputType="phone"
+                android:inputType="textPassword"
                 android:paddingLeft="0dp"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="#33FFFFFF"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_phone" />
-        </LinearLayout>
+                app:passwordToggleEnabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="nextPage"
+            android:padding="8dp"
+            android:src="@drawable/group621" />
+
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="60dp"
-        android:background="@color/colorPrimaryDark"
-        android:onClick="nextPage"
-        android:padding="8dp"
-        android:src="@drawable/group621" />
 
     <ImageView
         android:id="@+id/globe"

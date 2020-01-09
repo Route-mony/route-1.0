@@ -56,6 +56,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    //code picker
+    implementation 'com.github.joielechong:countrycodepicker:2.4.1'
+
     //FIRE BASE
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.google.firebase:firebase-database:16.0.4'

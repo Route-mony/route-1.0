@@ -18,6 +18,8 @@ import com.beyondthehorizon.routeapp.Views.OtpVerificationActivity;
 import com.beyondthehorizon.routeapp.Views.SignupVerifiedActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
@@ -37,12 +39,15 @@ import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class PasswordActivity extends AppCompatActivity {
 
+    private static final String TAG = "PasswordActivity";
     private ImageView back;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private EditText password;
     private ProgressDialog progressDialog;
     private RelativeLayout R11;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,10 @@ public class PasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_password);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         R11 = findViewById(R.id.R11);
         password = findViewById(R.id.password);
@@ -80,7 +89,7 @@ public class PasswordActivity extends AppCompatActivity {
         String surName = pref.getString(SurName, "");
         String username = pref.getString(UserName, "");
         String idNumber = pref.getString(ID_NUMBER, "");
-        String phoneNumber = pref.getString(MyPhoneNumber, "");
+        String phoneNumber = currentUser.getPhoneNumber();
         String emailAdd = pref.getString(USER_EMAIL, "");
 
         progressDialog = new ProgressDialog(PasswordActivity.this);
@@ -92,23 +101,33 @@ public class PasswordActivity extends AppCompatActivity {
                 firstName, lastName,
                 surName, username,
                 Password, idNumber,
-                "+25472389434343", emailAdd)
+                phoneNumber, emailAdd)
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         progressDialog.dismiss();
-                        Log.d("TAG", "onCompleted: " + result);
+                        Log.d(TAG, "onCompleted: " + result);
 
                         if (result.get("status").toString().contains("failed")) {
+                            String theError = "";
+                            if (result.get("errors").toString().contains("Email")) {
+                                theError += "Email already exist.";
+                            } else if (result.get("errors").toString().contains("username")) {
+                                theError += "\nUsername already exist.";
+                            } else if (result.get("errors").toString().contains("id_number")) {
+                                theError += "\nId number already exist.";
+                            } else if (result.get("errors").toString().contains("phone_number")) {
+                                theError += "\nPhone number already exist.";
+                            }
                             Snackbar snackbar = Snackbar
-                                    .make(R11, result.get("errors").toString(), Snackbar.LENGTH_LONG);
+                                    .make(R11, theError, Snackbar.LENGTH_LONG);
                             snackbar.show();
                         } else if (result == null) {
                             Snackbar snackbar = Snackbar
                                     .make(R11, "Error ", Snackbar.LENGTH_LONG);
                             snackbar.show();
                         } else {
-                            editor.putString(LOGGED_IN, "true");
+
                             editor.apply();
 
                             Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);

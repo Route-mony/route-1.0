@@ -3,7 +3,7 @@
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
     <string name="lbl_first_name">First name</string>
-    <string name="lbl_middle_name">SURNAME name</string>
+    <string name="lbl_middle_name">middle name</string>
     <string name="lbl_user_name">username</string>
     <string name="lbl_last_name">Last name</string>
     <string name="lbl_email">Email</string>
