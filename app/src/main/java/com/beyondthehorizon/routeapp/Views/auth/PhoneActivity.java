@@ -3,35 +3,44 @@ package com.beyondthehorizon.routeapp.Views.auth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.Views.OtpVerificationActivity;
+import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
+import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class PhoneActivity extends AppCompatActivity {
 
-    ImageView back;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    EditText phone;
-    CountryCodePicker ccp;
-
+    private static final String TAG = "PhoneActivity";
+    private ImageView back;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private EditText phone;
+    private CountryCodePicker ccp;
+    private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private TextView exitsTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,7 @@ public class PhoneActivity extends AppCompatActivity {
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         phone = findViewById(R.id.phone);
         ccp.registerPhoneNumberTextView(phone);
+        exitsTxt = findViewById(R.id.exitsTxt);
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +65,10 @@ public class PhoneActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        if (!(pref.getString(MyPhoneNumber, "nop").compareTo("nop") == 0)) {
+            phone.setText(pref.getString(MyPhoneNumber, "").substring(pref.getString(MyPhoneNumber, "").length() - 9));
+        }
 
     }
 
@@ -65,43 +79,51 @@ public class PhoneActivity extends AppCompatActivity {
             return;
         }
 
-        if (currentUser != null) {
-            String regPhone = currentUser.getPhoneNumber().substring(currentUser.getPhoneNumber().length() - 9);
-            String newPhone = phoneNumber.substring(phoneNumber.length() - 9);
+        progressDialog = new ProgressDialog(PhoneActivity.this);
+        progressDialog.setMessage("verifying please wait...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
 
-            if (regPhone.contains(newPhone)) {
-                startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
-            } else {
-                new AlertDialog.Builder(PhoneActivity.this, R.style.MyDialogTheme)
-                        .setTitle("Change Phone Number")
-                        .setMessage("Change registered phone number from " + currentUser.getPhoneNumber() +
-                                " to " + ccp.getFullNumberWithPlus() + " ?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
-                                startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
-                                editor.putString(MyPhoneNumber, ccp.getFullNumberWithPlus());
+        Constants.verifyUserEntry(PhoneActivity.this,
+                "phone_number", ccp.getNumber())
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Log.d(TAG, "onCompleted: " + result);
+                        if (result != null) {
+                            progressDialog.dismiss();
+                            if (result.get("status").toString().contains("failed")) {
+                                exitsTxt.setVisibility(View.VISIBLE);
+                                String theError = "";
+                                if (result.get("errors").toString().contains("phone_number")) {
+                                    theError += "This phone number is already registered with another account. Use a different phone number !";
+                                }
+                                exitsTxt.setText(theError);
+                            } else {
+                                progressDialog.dismiss();
+                                exitsTxt.setVisibility(View.GONE);
+                                editor.putString(MyPhoneNumber, ccp.getNumber());
                                 editor.apply();
-                            }
-                        })
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
+                                if (currentUser != null) {
+                                    String ccphone = ccp.getNumber().substring(ccp.getNumber().length() - 9);
+                                    String firephone = currentUser.getPhoneNumber().substring(currentUser.getPhoneNumber().length() - 9);
+                                    if (ccphone.compareTo(firephone) == 0) {
+                                        startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
+                                    } else {
+                                        startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
+                                    }
+                                } else {
+                                    startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
+                                }
 
-                                editor.putString(MyPhoneNumber, currentUser.getPhoneNumber());
-                                editor.apply();
                             }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        } else {
-            startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
-            editor.putString(MyPhoneNumber, ccp.getFullNumberWithPlus());
-            editor.apply();
-        }
+                        } else {
+                            progressDialog.dismiss();
+                            exitsTxt.setVisibility(View.VISIBLE);
+                            exitsTxt.setText("Unable to verify phone number");
+                        }
+                    }
+                });
     }
 
     @Override

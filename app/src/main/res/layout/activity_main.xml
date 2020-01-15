@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical">
@@ -58,6 +58,18 @@
                     android:text="What would you like to do today?"
                     android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/verify_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/email_valid_background"
+                    android:padding="3dp"
+                    android:text="Verify your email ! "
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <RelativeLayout
@@ -126,10 +138,10 @@
                 <Button
                     android:id="@+id/add_money_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38dp"
                     android:background="@drawable/route_button"
-                    android:padding="5dp"
-                    android:text="+ ADD MONEY"
+                    android:padding="3dp"
+                    android:text=" + ADD MONEY "
                     android:textColor="@color/colorAccent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -163,17 +175,6 @@
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/verify_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/email_valid_background"
-                        android:padding="3dp"
-                        android:text="Verify your email"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -281,7 +282,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="32dp"
                             android:layout_marginTop="20dp"
-                            android:text="Services" />
+                            android:text="Services"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -459,6 +462,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp">
@@ -494,7 +498,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:layout_width="0dp"

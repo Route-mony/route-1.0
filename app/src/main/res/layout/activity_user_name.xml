@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/R11"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
@@ -12,7 +11,7 @@
     <LinearLayout
         android:id="@+id/L11"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
@@ -33,76 +32,50 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="50dp"
             android:fontFamily="@string/main_font_style"
-            android:text="Set your password"
+            android:text="And your username?"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/lbl_id_number"
+            android:id="@+id/lbl_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/pass"
+            android:text="@string/lbl_user_name"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/phone" />
+            app:layout_constraintTop_toBottomOf="@id/middle_name" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lbl_password2"
+        <EditText
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/lbl_password"
-            app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/colorAccent"
-                android:inputType="textPassword"
-                android:paddingLeft="0dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="#33FFFFFF"
-                android:textSize="14sp"
-                app:passwordToggleEnabled="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:backgroundTint="@color/colorAccent"
+            android:hint="@string/middle_name"
+            android:inputType="textCapSentences"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#33FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/lbl_user_name" />
 
         <TextView
-            android:id="@+id/lbl_confirm_number"
+            android:id="@+id/exitsTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@string/cpass"
-            android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/phone" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/lbl_password"
-            app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/c_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/colorAccent"
-                android:inputType="textPassword"
-                android:paddingLeft="0dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="#33FFFFFF"
-                android:textSize="14sp"
-                app:passwordToggleEnabled="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="50dp"
+            android:text="here"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/holo_red_light"
+            android:textStyle="italic"
+            android:visibility="gone" />
     </LinearLayout>
 
     <ImageButton

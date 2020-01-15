@@ -49,11 +49,15 @@ public class SetTransactionPinActivity extends AppCompatActivity {
         String pin = pin1.getText().toString().trim();
         String confirmPin = confirmPass.getText().toString().trim();
         String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
-        if (pin.isEmpty()) {
-            pin1.setError("Enter Pin");
+        if (pin.isEmpty() || pin.length() < 4) {
+            pin1.setError("Enter a valid Pin");
             return;
         }
-        if (!(pin.contains(confirmPin))) {
+        if (confirmPin.isEmpty()) {
+            confirmPass.setError("Enter a valid Pin");
+            return;
+        }
+        if (!(pin.compareTo(confirmPin)==0)) {
             Toast.makeText(SetTransactionPinActivity.this, "Pin do not match", Toast.LENGTH_LONG).show();
             return;
         }

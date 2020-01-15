@@ -52,7 +52,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private RelativeLayout parent_1;
-
+    private TextView error_fire_base;
     private SharedPreferences.Editor editor;
 
 
@@ -69,6 +69,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
         editTextCode = findViewById(R.id.editTextCode);
         parent_1 = findViewById(R.id.parent_1);
         otp_code = findViewById(R.id.otp_code);
+        error_fire_base = findViewById(R.id.error_fire_base);
         otp_code.setClickable(false);
 
         //if the automatic sms detection did not work, user can also enter the code manually
@@ -134,8 +135,9 @@ public class OtpVerificationActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-
-                Toast.makeText(OtpVerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OtpVerificationActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                error_fire_base.setText(e.getMessage());
+                otp_code.setVisibility(View.GONE);
 
             }
 

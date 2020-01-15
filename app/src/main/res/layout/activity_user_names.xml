@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="50dp"
+                android:backgroundTint="@color/colorAccent"
                 android:hint="@string/first_name"
                 android:inputType="textCapSentences"
                 android:textColor="@color/colorAccent"
@@ -66,30 +67,6 @@
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/lbl_first_name" />
 
-            <TextView
-                android:id="@+id/lbl_last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/lbl_last_name"
-                android:textAllCaps="true"
-                android:textColor="@color/colorAccent"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/first_name" />
-
-            <EditText
-                android:id="@+id/last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="50dp"
-                android:hint="@string/last_name"
-                android:inputType="textCapSentences"
-                android:paddingStart="0dp"
-                android:textColor="@color/colorAccent"
-                android:textColorHint="#33FFFFFF"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_last_name" />
 
             <TextView
                 android:id="@+id/lbl_middle_name"
@@ -108,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="50dp"
+                android:backgroundTint="@color/colorAccent"
                 android:hint="@string/middle_name"
                 android:inputType="textCapSentences"
                 android:paddingLeft="0dp"
@@ -115,31 +93,31 @@
                 android:textColorHint="#33FFFFFF"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/lbl_middle_name" />
-
             <TextView
-                android:id="@+id/lbl_user_name"
+                android:id="@+id/lbl_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/lbl_user_name"
+                android:text="@string/lbl_last_name"
                 android:textAllCaps="true"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/middle_name" />
+                app:layout_constraintTop_toBottomOf="@id/first_name" />
 
             <EditText
-                android:id="@+id/user_name"
+                android:id="@+id/last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="50dp"
-                android:hint="@string/middle_name"
+                android:backgroundTint="@color/colorAccent"
+                android:hint="@string/last_name"
                 android:inputType="textCapSentences"
-                android:paddingLeft="0dp"
+                android:paddingStart="0dp"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="#33FFFFFF"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/lbl_user_name" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_last_name" />
         </LinearLayout>
 
     </LinearLayout>
@@ -152,10 +130,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="60dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/next_button_circle"
         android:onClick="nextPage"
         android:padding="8dp"
-        android:src="@drawable/group621" />
+        app:srcCompat="@drawable/ic_chevron_right" />
 
     <ImageView
         android:id="@+id/globe"

@@ -9,7 +9,7 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-    private static String BASE_URL = "http://167.172.214.193/api/v1/";
+    public static String BASE_URL = "http://167.172.214.193/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
 
@@ -81,6 +81,17 @@ public class Constants {
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> verifyUserEntry(Context context, String entryType, String entryContent) {
+        String SERVER_URL = BASE_URL + "users/signup/validation";
+        JsonObject json = new JsonObject();
+        json.addProperty(entryType, entryContent);
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.Views.MainActivity;
@@ -35,6 +36,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.SurName;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_PASSWORD;
+import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class PasswordActivity extends AppCompatActivity {
@@ -43,7 +45,7 @@ public class PasswordActivity extends AppCompatActivity {
     private ImageView back;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private EditText password;
+    private EditText password, c_password;
     private ProgressDialog progressDialog;
     private RelativeLayout R11;
     private FirebaseAuth mAuth;
@@ -62,6 +64,7 @@ public class PasswordActivity extends AppCompatActivity {
 
         R11 = findViewById(R.id.R11);
         password = findViewById(R.id.password);
+        c_password = findViewById(R.id.c_password);
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +76,17 @@ public class PasswordActivity extends AppCompatActivity {
 
     public void nextPage(View view) {
         String Password = password.getText().toString().trim();
+        String CPassword = c_password.getText().toString().trim();
         if (Password.length() < 8) {
             password.setError("Password cannot be less than 8 characters");
+            return;
+        }
+        if (CPassword.length() < 8) {
+            c_password.setError("Password cannot be less than 8 characters");
+            return;
+        }
+        if (!(Password.compareTo(CPassword) == 0)) {
+            Toast.makeText(PasswordActivity.this, "Pin do not match", Toast.LENGTH_LONG).show();
             return;
         }
         if (!(isValidPassword(Password))) {
@@ -105,34 +117,45 @@ public class PasswordActivity extends AppCompatActivity {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        progressDialog.dismiss();
                         Log.d(TAG, "onCompleted: " + result);
+                        if (result != null) {
+                            if (result.get("status").toString().contains("failed")) {
+                                progressDialog.dismiss();
+                                String theError = "";
+                                if (result.get("errors").toString().contains("Email")) {
+                                    theError += "Email already exist.";
+                                } else if (result.get("errors").toString().contains("username")) {
+                                    theError += "\nUsername already exist.";
+                                } else if (result.get("errors").toString().contains("id_number")) {
+                                    theError += "\nId number already exist.";
+                                } else if (result.get("errors").toString().contains("phone_number")) {
+                                    theError += "\nPhone number already exist.";
+                                }
+                                Snackbar snackbar = Snackbar
+                                        .make(R11, theError, Snackbar.LENGTH_LONG);
+                                snackbar.show();
+                            } else {
+                                editor.clear();
+                                editor.apply();
 
-                        if (result.get("status").toString().contains("failed")) {
-                            String theError = "";
-                            if (result.get("errors").toString().contains("Email")) {
-                                theError += "Email already exist.";
-                            } else if (result.get("errors").toString().contains("username")) {
-                                theError += "\nUsername already exist.";
-                            } else if (result.get("errors").toString().contains("id_number")) {
-                                theError += "\nId number already exist.";
-                            } else if (result.get("errors").toString().contains("phone_number")) {
-                                theError += "\nPhone number already exist.";
+                                progressDialog.dismiss();
+//                                String email = result.get("data").getAsJsonObject().get("user").getAsJsonObject().get("email").toString();
+//                                String token = result.get("data").getAsJsonObject().get("user").getAsJsonObject().get("token").toString();
+//
+//                                editor.putString(LOGGED_IN, "true");
+//                                editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
+//                                editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
+//                                editor.apply();
+
+                                Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
                             }
-                            Snackbar snackbar = Snackbar
-                                    .make(R11, theError, Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        } else if (result == null) {
-                            Snackbar snackbar = Snackbar
-                                    .make(R11, "Error ", Snackbar.LENGTH_LONG);
-                            snackbar.show();
                         } else {
-
-                            editor.apply();
-
-                            Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            progressDialog.dismiss();
+                            Snackbar snackbar = Snackbar
+                                    .make(R11, "Unable to verify phone number", Snackbar.LENGTH_LONG);
+                            snackbar.show();
                         }
                     }
                 });

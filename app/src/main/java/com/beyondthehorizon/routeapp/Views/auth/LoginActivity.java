@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.Views.MainActivity;
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private ProgressDialog progressDialog;
     private RelativeLayout R11;
+    private TextView forgotPassword;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        forgotPassword = findViewById(R.id.forgotPassword);
         R11 = findViewById(R.id.R11);
     }
 
@@ -75,27 +79,26 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Log.d("TAG", "onCompleted: " + result);
 
-                        if (result.get("status").toString().contains("failed")) {
-                            Snackbar snackbar = Snackbar
-                                    .make(R11, "A user with this email and password was not found.", Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        } else if (result == null) {
-                            Snackbar snackbar = Snackbar
-                                    .make(R11, "Error ", Snackbar.LENGTH_LONG);
-                            snackbar.show();
+                        if (result != null) {
+                            if (result.get("status").toString().contains("failed")) {
+                                Toast.makeText(LoginActivity.this, "A user with this email and password was not found.", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                String email = result.get("data").getAsJsonObject().get("email").toString();
+                                String token = result.get("data").getAsJsonObject().get("token").toString();
+
+                                editor.putString(LOGGED_IN, "true");
+                                editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
+                                editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
+                                editor.apply();
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
                         } else {
+                            Toast.makeText(LoginActivity.this, "Unable to login. Try again later", Toast.LENGTH_SHORT).show();
 
-                            String email = result.get("data").getAsJsonObject().get("email").toString();
-                            String token = result.get("data").getAsJsonObject().get("token").toString();
-
-                            editor.putString(LOGGED_IN, "true");
-                            editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
-                            editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
-                            editor.apply();
-
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
                         }
                     }
                 });
