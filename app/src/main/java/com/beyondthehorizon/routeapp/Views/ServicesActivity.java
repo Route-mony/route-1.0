@@ -9,6 +9,8 @@ import android.view.View;
 import com.beyondthehorizon.routeapp.Adapters.SliderAdapter;
 import com.beyondthehorizon.routeapp.Models.Movies;
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.Views.auth.LoginActivity;
+import com.beyondthehorizon.routeapp.Views.auth.UserNamesActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class ServicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services);
 
-        ArrayList<Movies> movies = new ArrayList<Movies>();
+        ArrayList<Movies> movies = new ArrayList<>();
         movies.add(new Movies("Route That Payment. Easy1. ",
                 "Lorem Ipsum is simply dummy text of" +
                         " the printing and typesetting industry."));
@@ -42,10 +44,10 @@ public class ServicesActivity extends AppCompatActivity {
     }
 
     public void signUP(View view) {
-        startActivity(new Intent(ServicesActivity.this, SignUpActivity.class));
+        startActivity(new Intent(ServicesActivity.this, UserNamesActivity.class));
     }
 
-    public void homePage(View view) {
-        startActivity(new Intent(ServicesActivity.this, MainActivity.class));
+    public void loginPage(View view) {
+        startActivity(new Intent(ServicesActivity.this, LoginActivity.class));
     }
 }

@@ -23,7 +23,7 @@
             android:layout_weight="9"
             app:auto_slide_time="5"
             app:cardSlider_cardBackgroundColor="#909EB1FC"
-            app:cardSlider_cardCornerRadius="10dp"
+            app:cardSlider_cardCornerRadius="20dp"
             app:cardSlider_indicator="@id/indicator"
             app:cardSlider_pageMargin="31dp"
             app:cardSlider_smallAlphaFactor="0.5"
@@ -61,9 +61,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="55dp"
                 android:layout_weight="1"
-                android:onClick="homePage"
                 android:background="@null"
-                android:text="Login(Home)"
+                android:onClick="loginPage"
+                android:text="Login"
                 android:textAllCaps="false"
                 android:textColor="#fff" />
         </LinearLayout>

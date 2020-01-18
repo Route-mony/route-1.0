@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RL3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90000000"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/image"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="40dp"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:src="@drawable/group618" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
+        android:padding="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Set Pin in order to use Route Services"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#fff"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Enter your pin"
+            android:textColorHint="#33FFFFFF"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/pin1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
+                android:inputType="numberPassword"
+                android:textColor="@android:color/white"
+                android:maxLength="4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm pin"
+            android:textColorHint="#33FFFFFF"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/confirmPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:inputType="numberPassword"
+                android:maxLength="4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimary"
+            android:onClick="submitPin"
+            android:text=" Ok "
+            android:textColor="#fff" />
+    </LinearLayout>
+</LinearLayout>
