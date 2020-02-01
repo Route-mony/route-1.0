@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views;
+package com.beyondthehorizon.routeapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 

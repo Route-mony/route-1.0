@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views.auth;
+package com.beyondthehorizon.routeapp.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +14,6 @@ import static com.beyondthehorizon.routeapp.utils.Constants.FirstName;
 import static com.beyondthehorizon.routeapp.utils.Constants.LastName;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.SurName;
-import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class UserNamesActivity extends AppCompatActivity {
 

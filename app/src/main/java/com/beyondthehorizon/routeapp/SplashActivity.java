@@ -7,8 +7,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.beyondthehorizon.routeapp.Views.MainActivity;
-import com.beyondthehorizon.routeapp.Views.ServicesActivity;
+import com.beyondthehorizon.routeapp.views.MainActivity;
+import com.beyondthehorizon.routeapp.views.ServicesActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +30,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_funds);
         setContentView(R.layout.activity_splash);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();

@@ -1,9 +1,9 @@
-package com.beyondthehorizon.routeapp.Adapters
+package com.beyondthehorizon.routeapp.adapters
 
+import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.beyondthehorizon.routeapp.Models.Contacts
-import kotlinx.android.synthetic.main.activity_main.view.*
+import com.beyondthehorizon.routeapp.models.Contact
 import kotlinx.android.synthetic.main.row_contact.view.*
 
 class ContactsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -11,8 +11,9 @@ class ContactsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     /**
      * Set view with values available
      */
-    fun setValues (value: Contacts) {
-        itemView.user_name.text = value.name
+    fun setValues (context: Context, value: Contact) {
+        itemView.username.text = value.name
         itemView.contact.text = value.contact
+        //Picasso.with(context).load(value.avatar).into(itemView.avatar)
     }
 }

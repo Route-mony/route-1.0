@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views;
+package com.beyondthehorizon.routeapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.beyondthehorizon.routeapp.Adapters.SliderAdapter;
-import com.beyondthehorizon.routeapp.Models.Movies;
+import com.beyondthehorizon.routeapp.adapters.SliderAdapter;
+import com.beyondthehorizon.routeapp.models.Movies;
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.Views.auth.LoginActivity;
-import com.beyondthehorizon.routeapp.Views.auth.UserNamesActivity;
+import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
+import com.beyondthehorizon.routeapp.views.auth.UserNamesActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;

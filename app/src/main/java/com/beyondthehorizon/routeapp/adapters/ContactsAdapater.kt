@@ -1,13 +1,13 @@
-package com.beyondthehorizon.routeapp.Adapters
+package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.beyondthehorizon.routeapp.Models.Contacts
+import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.R
 
-class ContactsAdapater( var context: Context, var contacts: MutableList<Contacts>): RecyclerView.Adapter<ContactsHolder>(){
+class ContactsAdapater( var context: Context, var contacts: MutableList<Contact>): RecyclerView.Adapter<ContactsHolder>(){
 
     override fun getItemCount(): Int{
         return contacts.size
@@ -18,7 +18,7 @@ class ContactsAdapater( var context: Context, var contacts: MutableList<Contacts
     }
 
     override fun onBindViewHolder(holder: ContactsHolder, position: Int) {
-        holder.setValues(contacts.get(holder.adapterPosition))
+        holder.setValues(context, contacts.get(holder.adapterPosition))
     }
 }
 

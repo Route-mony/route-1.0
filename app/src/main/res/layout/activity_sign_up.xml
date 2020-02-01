@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
-    tools:context=".Views.auth.SignUpActivity">
+    tools:context=".views.auth.SignUpActivity">
 
     <TextView
         android:id="@+id/title"

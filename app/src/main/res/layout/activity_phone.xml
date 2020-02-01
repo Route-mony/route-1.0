@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".Views.auth.EmailIDActivity">
+    tools:context=".views.auth.EmailIDActivity">
 
     <LinearLayout
         android:id="@+id/L11"

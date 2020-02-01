@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views.auth;
+package com.beyondthehorizon.routeapp.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,24 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.Views.MainActivity;
-import com.beyondthehorizon.routeapp.Views.SignupVerifiedActivity;
+import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
-import static com.beyondthehorizon.routeapp.utils.Constants.FirstName;
-import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.routeapp.utils.Constants.LastName;
-import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.routeapp.utils.Constants.SurName;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
-import static com.beyondthehorizon.routeapp.utils.Constants.USER_PASSWORD;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
-import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class LoginActivity extends AppCompatActivity {
 

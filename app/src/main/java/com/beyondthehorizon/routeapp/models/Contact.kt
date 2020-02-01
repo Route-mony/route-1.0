@@ -1,6 +1,6 @@
-package com.beyondthehorizon.routeapp.Models
+package com.beyondthehorizon.routeapp.models
 
-data class Contacts (
+data class Contact (
     var id: Int,
     var name: String = "",
     var contact: String = "",

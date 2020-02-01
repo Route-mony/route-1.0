@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views.auth;
+package com.beyondthehorizon.routeapp.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,13 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BASE_URL;
-import static com.beyondthehorizon.routeapp.utils.Constants.FirstName;
 import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
-import static com.beyondthehorizon.routeapp.utils.Constants.LastName;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.routeapp.utils.Constants.SurName;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
-import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class EmailIDActivity extends AppCompatActivity {
 

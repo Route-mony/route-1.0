@@ -1,12 +1,11 @@
-package com.beyondthehorizon.routeapp.Adapters;
+package com.beyondthehorizon.routeapp.adapters;
 
 import android.view.View;
 import android.widget.TextView;
 
-import com.beyondthehorizon.routeapp.Models.Movies;
+import com.beyondthehorizon.routeapp.models.Movies;
 import com.beyondthehorizon.routeapp.R;
 import com.github.islamkhsh.CardSliderAdapter;
-import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
 
