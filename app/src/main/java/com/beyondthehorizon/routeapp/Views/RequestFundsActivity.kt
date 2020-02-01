@@ -16,15 +16,6 @@ class RequestFundsActivity: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_request_funds)
-
-        contactsRecyclerView = findViewById(R.id.contact_recycler_view)
-        map = mutableMapOf()
-
-        loadContacts()
-
-        val contactList = map!!.values.toMutableList()
-        contactsAdapater = ContactsAdapater(this, contactList)
     }
 
     fun loadContacts(){

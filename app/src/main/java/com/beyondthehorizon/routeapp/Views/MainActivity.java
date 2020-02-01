@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profile_pic;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
+    private ImageButton btn_request_fund;
     private RelativeLayout RL1;
 
     @Override
@@ -52,6 +54,16 @@ public class MainActivity extends AppCompatActivity {
         verify_email = findViewById(R.id.verify_email);
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
+        btn_request_fund = findViewById(R.id.btn_request);
+        final Intent intent = new Intent(this, RequestFundsActivity.class);
+
+        btn_request_fund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
+
 
         isLoggedIn();
 
