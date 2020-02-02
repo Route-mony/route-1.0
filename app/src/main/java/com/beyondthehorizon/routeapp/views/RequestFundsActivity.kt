@@ -20,7 +20,11 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import java.io.ObjectInput
+import java.util.concurrent.Future
 
 class RequestFundsActivity: AppCompatActivity(){
     private var contacts: MutableList<Contact> = mutableListOf()
@@ -42,17 +46,20 @@ class RequestFundsActivity: AppCompatActivity(){
 
         prefs = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        //loadPhoneContacts()
-
         loadRouteContacts()
-        contacts = contactMap.values.toMutableList()
 
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(this, contacts)
-        recyclerView.adapter = contactsAdapater
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String): Boolean {
+                contactsAdapater.contacts.filter{it.contact.contains(newText) || it.name.contains(newText)}
+                contactsAdapater.notifyDataSetChanged()
+                return true
+            }
 
-//        binding.contactSearchView.setOnQueryTextListener()
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+        })
     }
 
     fun loadPhoneContacts(){
@@ -60,26 +67,46 @@ class RequestFundsActivity: AppCompatActivity(){
         while(phones!!.moveToNext()){
             val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            contactMap.put(phoneNumber, (Contact(dummyId, name, phoneNumber)))
+
+            if(contactMap.containsKey(phoneNumber)){
+                contactMap.get(phoneNumber)!!.name = name
+            }
+            else {
+                contactMap.put(phoneNumber, Contact(dummyId, name, phoneNumber))
+            }
             dummyId++
         }
     }
 
-    fun loadRouteContacts(){
+    fun loadRouteContacts() {
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-        Constants.getUserProfile(this, token)
+        Constants.loadUserContacts(this, token)
                 .setCallback { e, result ->
-                    if (result != null) {
-                        Log.d("ContactResponse", result.asJsonObject.toString())
-                        var phone = result.get("data").asJsonObject.get("phone_number").asString
-                        var name =  result.get("data").asJsonObject.get("first_name").asString
-                        contactMap.put(phone, Contact(dummyId, name, phone))
-                        dummyId++
-                    } else {
-                        Log.d("ContactResponse", "No contacts found")
-                        }
-                    }
+                    mapContactsToList(result.getAsJsonArray("rows"))
+                }
+    }
+
+    fun mapContactsToList(result: JsonArray){
+        if (result != null) {
+            for (item: JsonElement in result) {
+                var phone  = item.asJsonObject.get("phone_number").asString
+                var name = item.asJsonObject.get("first_name").asString + " " + item.asJsonObject.get("last_name").asString
+                var avatar = R.drawable.group416
+                contactMap.put(phone, Contact(dummyId, name, phone, avatar))
+                dummyId++
+            }
+        } else {
+            Log.d("ContactResponse", "No contacts registered on route")
         }
+
+        loadPhoneContacts()
+
+        contacts = contactMap.values.toMutableList()
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+        contactsAdapater = ContactsAdapater(this, contacts)
+        recyclerView.adapter = contactsAdapater
+    }
 
     fun prevPage() {
         super.onBackPressed()

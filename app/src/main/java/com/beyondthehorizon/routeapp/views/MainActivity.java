@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void getProfile() {
         String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
 

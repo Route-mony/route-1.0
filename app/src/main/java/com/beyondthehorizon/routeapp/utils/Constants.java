@@ -97,13 +97,11 @@ public class Constants {
     }
 
     public static ResponseFuture<JsonObject> loadUserContacts(Context context, String token){
-        String SERVER_URL = BASE_URL + "/users/retrieve";
-        JsonObject json = new JsonObject();
+        String SERVER_URL = BASE_URL + "users/retrieve";
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
-                .setJsonObjectBody(json)
                 .asJsonObject();
     }
 }
