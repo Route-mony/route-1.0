@@ -18,7 +18,7 @@ class ContactsAdapater( var context: Context, var contacts: MutableList<Contact>
     }
 
     override fun onBindViewHolder(holder: ContactsHolder, position: Int) {
-        holder.setValues(context, contacts.get(holder.adapterPosition))
+        holder.setValues(contacts.get(holder.adapterPosition))
     }
 }
 

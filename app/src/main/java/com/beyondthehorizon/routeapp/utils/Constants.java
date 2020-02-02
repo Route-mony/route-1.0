@@ -95,4 +95,15 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    public static ResponseFuture<JsonObject> loadUserContacts(Context context, String token){
+        String SERVER_URL = BASE_URL + "/users/retrieve";
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }
