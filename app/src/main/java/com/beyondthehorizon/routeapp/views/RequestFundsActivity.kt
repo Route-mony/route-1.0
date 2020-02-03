@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.views
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +36,8 @@ class RequestFundsActivity: AppCompatActivity(){
     private lateinit var contactsAdapater: ContactsAdapater
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-    var dummyId = 0
+    private var dummyId = 0
+    private var REQUEST_READ_CONTACTS = 79;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +49,61 @@ class RequestFundsActivity: AppCompatActivity(){
 
         prefs = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        loadRouteContacts()
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                == PackageManager.PERMISSION_GRANTED) {
+            loadRouteContacts()
+        } else {
+            requestPermission();
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String): Boolean {
-                contactsAdapater.contacts.filter{it.contact.contains(newText) || it.name.contains(newText)}
-                contactsAdapater.notifyDataSetChanged()
-                return true
+                var pattern = newText.toLowerCase().toRegex()
+                var filteredContacts = contacts.filter{pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase())}
+                var adapter = ContactsAdapater(applicationContext, filteredContacts.toMutableList())
+                recyclerView.layoutManager = linearLayoutManager
+                recyclerView.setHasFixedSize(true)
+                contactsAdapater = ContactsAdapater(applicationContext, filteredContacts.toMutableList())
+                recyclerView.adapter = adapter
+                return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
-
         })
     }
 
-    fun loadPhoneContacts(){
+    private fun requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+            // show UI part if you want here to show some rationale !!!
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
+                    REQUEST_READ_CONTACTS);
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
+                    REQUEST_READ_CONTACTS);
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_READ_CONTACTS -> {
+
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    loadRouteContacts()
+                }
+            }
+        }
+    }
+
+    private fun loadPhoneContacts(){
         val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
         while(phones!!.moveToNext()){
             val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
@@ -78,7 +119,7 @@ class RequestFundsActivity: AppCompatActivity(){
         }
     }
 
-    fun loadRouteContacts() {
+    private fun loadRouteContacts() {
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
         Constants.loadUserContacts(this, token)
                 .setCallback { e, result ->
@@ -86,7 +127,7 @@ class RequestFundsActivity: AppCompatActivity(){
                 }
     }
 
-    fun mapContactsToList(result: JsonArray){
+    private fun mapContactsToList(result: JsonArray){
         if (result != null) {
             for (item: JsonElement in result) {
                 var phone  = item.asJsonObject.get("phone_number").asString
