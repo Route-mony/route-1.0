@@ -2,7 +2,9 @@ package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.R
@@ -14,7 +16,8 @@ class ContactsAdapater( var context: Context, var contacts: MutableList<Contact>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsHolder {
-        return ContactsHolder(LayoutInflater.from(context).inflate(R.layout.row_contact, parent, false))
+        val view = LayoutInflater.from(context).inflate(R.layout.row_contact, parent, false)
+        return ContactsHolder(context, view)
     }
 
     override fun onBindViewHolder(holder: ContactsHolder, position: Int) {

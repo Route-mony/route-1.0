@@ -26,6 +26,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import java.io.ObjectInput
+import java.lang.Exception
 import java.util.concurrent.Future
 
 class RequestFundsActivity: AppCompatActivity(){
@@ -49,11 +50,16 @@ class RequestFundsActivity: AppCompatActivity(){
 
         prefs = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED) {
-            loadRouteContacts()
-        } else {
-            requestPermission();
+        try{
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                loadRouteContacts()
+            } else {
+                requestPermission();
+            }
+        }
+        catch (e: Exception){
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -104,27 +110,36 @@ class RequestFundsActivity: AppCompatActivity(){
     }
 
     private fun loadPhoneContacts(){
-        val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-        while(phones!!.moveToNext()){
-            val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+        try {
+            val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            while (phones!!.moveToNext()) {
+                val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-            if(contactMap.containsKey(phoneNumber)){
-                contactMap.get(phoneNumber)!!.name = name
+                if (contactMap.containsKey(phoneNumber)) {
+                    contactMap.get(phoneNumber)!!.name = name
+                } else {
+                    contactMap.put(phoneNumber, Contact(dummyId, name, phoneNumber))
+                }
+                dummyId++
             }
-            else {
-                contactMap.put(phoneNumber, Contact(dummyId, name, phoneNumber))
-            }
-            dummyId++
+        }
+        catch (e: Exception){
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
     }
 
     private fun loadRouteContacts() {
-        val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-        Constants.loadUserContacts(this, token)
-                .setCallback { e, result ->
-                    mapContactsToList(result.getAsJsonArray("rows"))
-                }
+        try {
+            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+            Constants.loadUserContacts(this, token)
+                    .setCallback { e, result ->
+                        mapContactsToList(result.getAsJsonArray("rows"))
+                    }
+        }
+        catch (e: Exception){
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun mapContactsToList(result: JsonArray){
