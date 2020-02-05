@@ -57,6 +57,10 @@ class RequestFundsActivity: AppCompatActivity(){
             } else {
                 requestPermission();
             }
+
+            binding.arrowBack.setOnClickListener{
+                onBackPressed()
+            }
         }
         catch (e: Exception){
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()

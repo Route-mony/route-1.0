@@ -1,68 +1,74 @@
 package com.beyondthehorizon.routeapp.views
 
+import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
-import kotlinx.android.synthetic.main.activity_fund_amount.*
-import java.lang.Exception
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 
 class FundAmountActivity : AppCompatActivity() {
 
-    var username = ""
+    private var username = ""
+    private var amount = ""
+    private lateinit var format: NumberFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var binding: ActivityFundAmountBinding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
         var editor: SharedPreferences.Editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         var prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
+        var intent = Intent(this, ConfirmFundRequestActivity::class.java)
+        format = DecimalFormat("#,###")
         try {
             username = prefs.getString("Username", "").toString()
             binding.requestUserName.text = username
 
             binding.btnOne.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnOne.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnOne.text}")
             }
 
             binding.btnTwo.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnTwo.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnTwo.text}")
             }
 
             binding.btnThree.setOnClickListener {
-                binding.txtAmount.text= "${binding.txtAmount.text}${binding.btnThree.text}"
+                binding.txtAmount.text= formatAmount("${amount}${binding.btnThree.text}")
             }
 
             binding.btnFour.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnFour.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnFour.text}")
             }
 
             binding.btnFive.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnFive.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnFive.text}")
             }
 
             binding.btnSix.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnSix.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnSix.text}")
             }
 
             binding.btnZero.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnZero.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnZero.text}")
             }
 
             binding.btnZeroZero.setOnClickListener {
-                binding.txtAmount.text = "${binding.txtAmount.text}${binding.btnZeroZero.text}"
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnZeroZero.text}")
             }
 
             binding.btnClear.setOnClickListener{
-                if(binding.txtAmount.text.length <= 1){
+                if(amount.length <= 1){
                     binding.txtAmount.text = ""
                 }
                 else {
-                    binding.txtAmount.text = binding.txtAmount.text .toString().removeRange(binding.txtAmount.text.lastIndex - 1, binding.txtAmount.text .lastIndex)
+                    binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
                 }
             }
 
@@ -70,18 +76,28 @@ class FundAmountActivity : AppCompatActivity() {
                 if(binding.txtAmount.text.isNullOrEmpty()){
                     Toast.makeText(this, "Please enter amount to request", Toast.LENGTH_LONG).show()
                 }
-                else if(binding.txtAmount.text.toString().toInt() <= 0){
+                else if(amount.toInt() <= 0){
                     Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_LONG).show()
                 }
                 else{
-                    editor.putString("Amount", binding.txtAmount.text.toString())
-                    Toast.makeText(this, "Great job", Toast.LENGTH_LONG).show()
+                    editor.putString("Amount", amount)
+                    editor.apply()
+                    startActivity(intent)
                 }
+            }
+
+            binding.arrowBack.setOnClickListener{
+                onBackPressed()
             }
         }
         catch (ex:Exception){
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun formatAmount(amt: String): String{
+        amount = amt
+        return format.format(amt.toInt())
     }
 }
