@@ -11,7 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.FundAmountActivity"></activity>
+        <activity android:name=".payments.EnterPinActivity"
+            android:theme="@style/Theme.Transparent" />
+        <activity android:name=".payments.PayBillActivity" />
+        <activity android:name=".payments.BuyGoodsActivity" />
+        <activity
+            android:name=".payments.PaymentActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".views.FundAmountActivity" />
         <activity android:name=".views.RequestFundsActivity" />
         <activity android:name=".views.auth.UserNameActivity" />
         <activity

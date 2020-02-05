@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.payments.PaymentActivity;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profile_pic;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
-    private ImageButton btn_request_fund;
+    private ImageButton btn_request_fund, payments_requests;
     private RelativeLayout RL1;
     private Intent intent;
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
         btn_request_fund = findViewById(R.id.btn_request);
+        payments_requests = findViewById(R.id.payments_requests);
 
         intent = new Intent(this, RequestFundsActivity.class);
 
@@ -61,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
+            }
+        });
+        payments_requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PaymentActivity.class));
             }
         });
 

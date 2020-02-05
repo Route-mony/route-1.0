@@ -327,7 +327,7 @@
                             android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request2"
+                                android:id="@+id/payments_requests"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
