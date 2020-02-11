@@ -26,6 +26,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
         Picasso.get().load(value.avatar).into(itemView.profile_image)
 
         itemView.setOnClickListener{
+            prefs.putString("Id", value.id)
             prefs.putString("Username", value.name)
             prefs.putString("Phone", value.contact)
             prefs.apply()

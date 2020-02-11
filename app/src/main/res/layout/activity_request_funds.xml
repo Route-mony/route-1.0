@@ -13,108 +13,114 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
         tools:context=".views.RequestFundsActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/top_nav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/contacts_view">
-
-            <ImageView
-                android:id="@+id/arrow_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:onClick="prevPage"
-                app:srcCompat="@drawable/ic_arrow_back"
-                app:layout_constraintTop_toTopOf="@id/logo"
-                app:layout_constraintBottom_toBottomOf="@id/logo"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/ic_logo"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/contacts_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/card_main"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/top_nav"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+            android:background="@color/colorPrimaryDark">
 
-            <Button
-                android:id="@+id/btn_phone_numbers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone Number"
-                android:textSize="18dp"
-                android:textAllCaps="false"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/button_border"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_favorite_numbers"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <Button
-                android:id="@+id/btn_favorite_numbers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="18dp"
-                android:textAllCaps="false"
-                android:background="@android:color/transparent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_phone_numbers"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Favorites"/>
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/contact_search_view"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/top_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:queryHint="Enter a name or phone number"
-                app:iconifiedByDefault="false"
-                android:background="@drawable/divider"
-                app:queryBackground="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@id/btn_phone_numbers"
-                />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/contacts_view">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/contact_recycler_view"
+                <ImageView
+                    android:id="@+id/arrow_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:onClick="prevPage"
+                    app:srcCompat="@drawable/ic_arrow_back"
+                    app:layout_constraintTop_toTopOf="@id/logo"
+                    app:layout_constraintBottom_toBottomOf="@id/logo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_marginTop="20dp"
+                    app:srcCompat="@drawable/ic_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contacts_view"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_width="match_parent"
-                android:scrollbarSize="4dp"
-                app:layout_constraintTop_toBottomOf="@id/contact_search_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="20dp"
+                android:background="@drawable/card_main"
+                app:layout_constraintTop_toBottomOf="@id/top_nav"
+                app:layout_constraintBottom_toBottomOf="parent">
 
+                <Button
+                    android:id="@+id/btn_phone_numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:textSize="18dp"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_border"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_favorite_numbers"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/btn_favorite_numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="18dp"
+                    android:textAllCaps="false"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_phone_numbers"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Favorites"/>
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/contact_search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:queryHint="Enter a name or phone number"
+                    app:iconifiedByDefault="false"
+                    android:background="@drawable/divider"
+                    app:queryBackground="@android:color/transparent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_phone_numbers"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/contact_recycler_view"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:scrollbarSize="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/contact_search_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
             app:layout_constraintBottom_toBottomOf="parent">
             <include layout="@layout/nav_bar_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

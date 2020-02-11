@@ -110,11 +110,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 user_name.setText(username);
 
-                                String email_verified = result.get("data").getAsJsonObject().get("is_email_active").toString();
+                                boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
                                 String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 
-                                if (email_verified.contains("False")) {
+                                if (!email_verified) {
                                     verify_email.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    verify_email.setVisibility(View.GONE);
                                 }
                                 if (is_pin_set.contains("False")) {
                                     setPin();

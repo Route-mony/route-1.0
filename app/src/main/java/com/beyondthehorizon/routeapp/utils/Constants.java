@@ -104,4 +104,20 @@ public class Constants {
                 .setHeader("Authorization", token)
                 .asJsonObject();
     }
+
+    public static ResponseFuture<JsonObject> requestFund(Context context, String recipient, String amount, String reason, String token){
+        String SERVER_URL = BASE_URL + "requests/";
+
+        JsonObject json = new JsonObject();
+        json.addProperty("recipient", recipient);
+        json.addProperty("amount", amount);
+        json.addProperty("reason", reason);
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }

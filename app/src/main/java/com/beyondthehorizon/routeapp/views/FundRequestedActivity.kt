@@ -15,34 +15,22 @@ import java.lang.Exception
 import java.text.DecimalFormat
 
 class FundRequestedActivity : AppCompatActivity() {
-    private lateinit var format:DecimalFormat
     private lateinit var binding: ActivityFundRequestedBinding
     private lateinit var prefs: SharedPreferences
-    private lateinit var amount: String
-    private lateinit var username: String
-    private lateinit var contact: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_requested)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        format = DecimalFormat("#,###")
-        intent = Intent(this, RequestFundsActivity::class.java)
 
         try {
-            amount = format.format(prefs.getString("Amount", "0").toString().toInt())
-            username = prefs.getString("Username", "").toString()
-            contact = prefs.getString("Phone", "").toString()
-
-            binding.txtRequestConfirm.text = "You requested KES ${amount} from ${username}."
-            binding.txtRequestInform.text = "We'll let ${username.substring(0, username.indexOf(' '))} know right away that you requested a payment. You can see the details i your activity in case you need them later"
-
+            binding.txtRequestInform.text = intent.getStringExtra("Message")
             binding.btnDone.setOnClickListener{
-                startActivity(intent)
+                startActivity(Intent(this, ServicesActivity::class.java))
             }
 
             binding.btnNewRequest.setOnClickListener{
-                startActivity(intent)
+                startActivity(Intent(this, RequestFundsActivity::class.java))
             }
 
             binding.arrowBack.setOnClickListener{
