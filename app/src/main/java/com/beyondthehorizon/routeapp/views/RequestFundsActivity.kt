@@ -119,12 +119,8 @@ class RequestFundsActivity: AppCompatActivity(){
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-                if (contactMap.containsKey(phoneNumber)) {
-                    contactMap.get(phoneNumber)!!.name = name
-                } else {
-                    contactMap.put(phoneNumber, Contact(dummyId, name, phoneNumber))
-                }
+                var cleanedPhoneNumber = phoneNumber.replace("-","").replace(" ","").replaceBefore("7","0")
+                contactMap.put(cleanedPhoneNumber, Contact(dummyId, name, phoneNumber))
                 dummyId++
             }
         }
@@ -136,8 +132,7 @@ class RequestFundsActivity: AppCompatActivity(){
     private fun loadRouteContacts() {
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            Constants.loadUserContacts(this, token)
-                    .setCallback { e, result ->
+            Constants.loadUserContacts(this, token).setCallback { e, result ->
                         mapContactsToList(result.getAsJsonArray("rows"))
                     }
         }
@@ -147,19 +142,21 @@ class RequestFundsActivity: AppCompatActivity(){
     }
 
     private fun mapContactsToList(result: JsonArray){
+        loadPhoneContacts()
+
         if (result != null) {
             for (item: JsonElement in result) {
-                var phone  = item.asJsonObject.get("phone_number").asString
-                var name = item.asJsonObject.get("first_name").asString + " " + item.asJsonObject.get("last_name").asString
-                var avatar = R.drawable.group416
-                contactMap.put(phone, Contact(dummyId, name, phone, avatar))
-                dummyId++
+                var phone  = item.asJsonObject.get("phone_number").asString.replace("-","").replace(" ","").replaceBefore("7","0")
+                if(contactMap.keys.contains(phone)) {
+                    var avatar = R.drawable.group416
+                    contactMap.getValue(phone).avatar = avatar;
+                }
             }
         } else {
             Log.d("ContactResponse", "No contacts registered on route")
         }
 
-        loadPhoneContacts()
+
 
         contacts = contactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager

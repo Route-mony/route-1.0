@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.icu.util.CurrencyAmount
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils.isEmpty
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityConfirmFundRequestBinding
@@ -33,7 +34,15 @@ class ConfirmFundRequestActivity : AppCompatActivity() {
         binding.txtUsername.text = username
 
         binding.btnRequest.setOnClickListener{
-            startActivity(Intent(this, FundRequestedActivity::class.java))
+            var reason = binding.txtReason.text
+            if(isEmpty(reason)){
+                binding.txtReason.error = "Please enter your reason"
+            }
+            else{
+                var intent = Intent(this, FundRequestedActivity::class.java)
+                intent.putExtra("Reason", reason)
+                startActivity(intent)
+            }
         }
 
         binding.arrowBack.setOnClickListener{
