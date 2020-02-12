@@ -14,7 +14,8 @@
         <activity android:name=".views.FundRequestedActivity"></activity>
         <activity android:name=".views.ConfirmFundRequestActivity" />
         <activity android:name=".views.FundAmountActivity" />
-        <activity android:name=".views.RequestFundsActivity" />
+        <activity android:name=".views.RequestFundsActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".views.auth.UserNameActivity" />
         <activity
             android:name=".views.auth.SetTransactionPinActivity"
