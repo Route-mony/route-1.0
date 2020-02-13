@@ -1,10 +1,8 @@
-package com.beyondthehorizon.routeapp.Views.auth;
+package com.beyondthehorizon.routeapp.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.Views.OtpVerificationActivity;
+import com.beyondthehorizon.routeapp.views.OtpVerificationActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,11 +21,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
-import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
-import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class PhoneActivity extends AppCompatActivity {
 

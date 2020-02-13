@@ -1,21 +1,19 @@
 package com.beyondthehorizon.routeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.beyondthehorizon.routeapp.Views.MainActivity;
-import com.beyondthehorizon.routeapp.Views.ServicesActivity;
-import com.beyondthehorizon.routeapp.Views.auth.UserNamesActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.beyondthehorizon.routeapp.views.MainActivity;
+import com.beyondthehorizon.routeapp.views.ServicesActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

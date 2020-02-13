@@ -7,7 +7,7 @@
     android:background="@color/colorPrimaryDark"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Views.ServicesActivity">
+    tools:context=".views.ServicesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

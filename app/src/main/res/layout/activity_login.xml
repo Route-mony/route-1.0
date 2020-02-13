@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".Views.auth.LoginActivity">
+    tools:context=".views.auth.LoginActivity">
 
     <LinearLayout
         android:id="@+id/L11"

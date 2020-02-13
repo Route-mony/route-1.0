@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views;
+package com.beyondthehorizon.routeapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,23 +9,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.Views.auth.LoginActivity;
-import com.beyondthehorizon.routeapp.Views.auth.SetTransactionPinActivity;
+import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
+import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
-import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profile_pic;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
+    private ImageButton btn_request_fund;
     private RelativeLayout RL1;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
         verify_email = findViewById(R.id.verify_email);
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
+        btn_request_fund = findViewById(R.id.btn_request);
+
+        intent = new Intent(this, RequestFundsActivity.class);
+
+        btn_request_fund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
+
 
         isLoggedIn();
 
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             getProfile();
         }
     }
+
 
     private void getProfile() {
         String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
@@ -97,11 +110,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 user_name.setText(username);
 
-                                String email_verified = result.get("data").getAsJsonObject().get("is_email_active").toString();
+                                boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
                                 String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 
-                                if (email_verified.contains("False")) {
+                                if (!email_verified) {
                                     verify_email.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    verify_email.setVisibility(View.GONE);
                                 }
                                 if (is_pin_set.contains("False")) {
                                     setPin();

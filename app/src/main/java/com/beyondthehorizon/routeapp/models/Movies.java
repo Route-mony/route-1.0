@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Models;
+package com.beyondthehorizon.routeapp.models;
 
 public class Movies {
     String name;

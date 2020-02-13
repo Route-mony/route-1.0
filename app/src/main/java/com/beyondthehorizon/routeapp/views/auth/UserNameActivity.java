@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views.auth;
+package com.beyondthehorizon.routeapp.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.utils.Constants;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 

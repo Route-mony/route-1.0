@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.Views;
+package com.beyondthehorizon.routeapp.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,10 +13,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.Views.auth.PasswordActivity;
+import com.beyondthehorizon.routeapp.views.auth.PasswordActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
