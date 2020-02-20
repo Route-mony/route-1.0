@@ -2,17 +2,24 @@ package com.beyondthehorizon.routeapp.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
@@ -24,6 +31,13 @@ import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
+import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
+import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_BANK;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
@@ -34,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
-    private ImageButton btn_request_fund;
+    private ImageButton btn_request_fund, btn_request34;
     private RelativeLayout RL1;
     private Intent intent;
 
@@ -45,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         editor = pref.edit();
         setContentView(R.layout.activity_main);
 
+        btn_request34 = findViewById(R.id.btn_request34);
         user_name = findViewById(R.id.user_name);
         query_text = findViewById(R.id.query_text);
         balance_title = findViewById(R.id.balance_title);
@@ -61,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         btn_request_fund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -73,8 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        isLoggedIn();
+        btn_request34.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSendMoneyDialog();
+            }
+        });
 
+        isLoggedIn();
 
 
     }
@@ -125,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (!email_verified) {
                                     verify_email.setVisibility(View.VISIBLE);
-                                }
-                                else {
+                                } else {
                                     verify_email.setVisibility(View.GONE);
                                 }
                                 if (is_pin_set.contains("False")) {
@@ -167,5 +189,146 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isLoggedIn();
+    }
+
+
+    private void showSendMoneyDialog() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_send_money_alert_dialog_layout, viewGroup, false);
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        LinearLayout toRoute = dialogView.findViewById(R.id.toRoute);
+        LinearLayout toMobileMoney = dialogView.findViewById(R.id.toMobileMoney);
+        LinearLayout toBank = dialogView.findViewById(R.id.toBank);
+
+        //SEND MONEY TO ROUTE
+        toRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
+                editor.apply();
+                startActivity(intent);
+            }
+        });
+        //SEND MONEY TO MOBILE MONEY
+        toMobileMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.apply();
+                showSendMobileMoneyDialog();
+                alertDialog.dismiss();
+            }
+        });
+        //SEND MONEY TO BANK
+        toBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
+                editor.apply();
+                alertDialog.dismiss();
+                showSendMoneyToBankDialog();
+            }
+        });
+    }
+
+    private void showSendMobileMoneyDialog() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.send_mobile_money_dialog_layout, viewGroup, false);
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        final EditText mobileNumber = dialogView.findViewById(R.id.mobileNumber);
+        Button mobileButton = dialogView.findViewById(R.id.mobileButton);
+        ImageView imgSearch = dialogView.findViewById(R.id.imgSearch);
+
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.apply();
+                startActivity(intent);
+            }
+        });
+
+        //SEND MONEY TO MOBILE MONEY
+        mobileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mobileNumber.getText().toString().isEmpty() || mobileNumber.getText().toString().length() < 10) {
+                    Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.apply();
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void showSendMoneyToBankDialog() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.send_money_to_bank_dialog_layout, viewGroup, false);
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        final EditText accountNumber = dialogView.findViewById(R.id.accountNumber);
+        Button mobileButton = dialogView.findViewById(R.id.mobileButton);
+        final Spinner chooseBank = dialogView.findViewById(R.id.chooseBank);
+
+        //SEND MONEY TO BANK
+        mobileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (accountNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_LONG).show();
+                    accountNumber.setError("Enter a valid phone number");
+                    accountNumber.requestFocus();
+                    return;
+                }
+                if (chooseBank.getSelectedItemPosition() == 0) {
+                    Toast.makeText(MainActivity.this, "Choose a bank", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.apply();
+                startActivity(intent);
+            }
+        });
     }
 }

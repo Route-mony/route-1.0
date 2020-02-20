@@ -23,7 +23,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
     /**
      * Set view with values available
      */
-    fun setValues (value: Contact) {
+    fun setValues(value: Contact) {
         itemView.username.text = value.name
         itemView.contact.text = value.contact
         Picasso.get().load(value.avatar).into(itemView.profile_image)
@@ -33,6 +33,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
                 prefs.putString("Id", value.id)
                 prefs.putString("Username", value.name)
                 prefs.putString("Phone", value.contact)
+                prefs.putString("accountNumber", value.accountNumber)
                 prefs.apply()
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

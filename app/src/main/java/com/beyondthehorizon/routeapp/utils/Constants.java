@@ -28,6 +28,14 @@ public class Constants {
     public static final String USER_PASSWORD = "USER_PASSWORD";
 
     public static final String USER_TOKEN = "USER_TOKEN";
+    public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE";
+    public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY";
+    public static final String REQUEST_MONEY = "REQUEST_MONEY";
+    public static final String SEND_MONEY = "SEND_MONEY";
+    public static final String SEND_MONEY_TO_ROUTE = "SEND_MONEY_TO_ROUTE";
+    public static final String SEND_MONEY_TO_MOBILE_MONEY = "SEND_MONEY_TO_MOBILE_MONEY";
+    public static final String SEND_MONEY_TO_BANK = "SEND_MONEY_TO_BANK";
+
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -96,7 +104,7 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> loadUserContacts(Context context, String token){
+    public static ResponseFuture<JsonObject> loadUserContacts(Context context, String token) {
         String SERVER_URL = BASE_URL + "users/retrieve";
         return Ion.with(context)
                 .load(SERVER_URL)
@@ -105,7 +113,7 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> requestFund(Context context, String recipient, String amount, String reason, String token){
+    public static ResponseFuture<JsonObject> requestFund(Context context, String recipient, String amount, String reason, String token) {
         String SERVER_URL = BASE_URL + "requests/";
 
         JsonObject json = new JsonObject();
@@ -121,8 +129,8 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token){
-        String SERVER_URL = BASE_URL + "requests/?request_option="+option;
+    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
+        String SERVER_URL = BASE_URL + "requests/?request_option=" + option;
 
         return Ion.with(context)
                 .load(SERVER_URL)
@@ -131,8 +139,8 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> approveFundRequests(Context context, String request_id, String pin, String narration, String provider, String token){
-        String SERVER_URL = BASE_URL + "wallets/transactions/"+request_id;
+    public static ResponseFuture<JsonObject> approveFundRequests(Context context, String request_id, String pin, String narration, String provider, String token) {
+        String SERVER_URL = BASE_URL + "wallets/transactions/" + request_id;
 
         JsonObject json = new JsonObject();
         json.addProperty("pin", pin);
@@ -147,8 +155,8 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> rejectFundRequests(Context context, String request_id, String canceled_by, String status, String cancellation_reason, String token){
-        String SERVER_URL = BASE_URL + "requests/cancel/"+request_id;
+    public static ResponseFuture<JsonObject> rejectFundRequests(Context context, String request_id, String canceled_by, String status, String cancellation_reason, String token) {
+        String SERVER_URL = BASE_URL + "requests/cancel/" + request_id;
 
         JsonObject json = new JsonObject();
         json.addProperty("canceled_by", canceled_by);
@@ -163,11 +171,30 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> verifyPin(Context context, String pin, String token){
+    public static ResponseFuture<JsonObject> verifyPin(Context context, String pin, String token) {
         String SERVER_URL = BASE_URL + "users/pin/verify";
 
         JsonObject json = new JsonObject();
         json.addProperty("pin", pin);
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> sendMoney(Context context, String beneficiary_account,
+                                                       String amount, String pin, String token,
+                                                       String provider) {
+        String SERVER_URL = BASE_URL + "wallets/transactions";
+
+        JsonObject json = new JsonObject();
+        json.addProperty("beneficiary_account", beneficiary_account);
+        json.addProperty("amount", amount);
+        json.addProperty("pin", pin);
+        json.addProperty("provider", provider);
 
         return Ion.with(context)
                 .load(SERVER_URL)
