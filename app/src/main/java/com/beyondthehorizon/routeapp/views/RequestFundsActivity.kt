@@ -31,7 +31,7 @@ import java.io.ObjectInput
 import java.lang.Exception
 import java.util.concurrent.Future
 
-class RequestFundsActivity: AppCompatActivity(){
+class RequestFundsActivity : AppCompatActivity() {
     private var contacts: MutableList<Contact> = mutableListOf()
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
     private lateinit var prefs: SharedPreferences
@@ -55,7 +55,7 @@ class RequestFundsActivity: AppCompatActivity(){
 
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        try{
+        try {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED) {
                 loadRouteContacts()
@@ -63,27 +63,25 @@ class RequestFundsActivity: AppCompatActivity(){
                 requestPermission();
             }
 
-            binding.arrowBack.setOnClickListener{
+            binding.arrowBack.setOnClickListener {
                 onBackPressed()
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 var pattern = newText.toLowerCase().toRegex()
-                try{
-                    var filteredContacts = contacts.filter{pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase())}
-                    var adapter = ContactsAdapater(context, filteredContacts.toMutableList())
+                try {
+                    var filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }
+                    var adapter = ContactsAdapater(this@RequestFundsActivity, filteredContacts.toMutableList())
                     recyclerView.layoutManager = linearLayoutManager
                     recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(context, filteredContacts.toMutableList())
+                    contactsAdapater = ContactsAdapater(this@RequestFundsActivity, filteredContacts.toMutableList())
                     recyclerView.adapter = adapter
-                }
-                catch (ex:Exception){
-                    Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
+                } catch (ex: Exception) {
+                    Toast.makeText(this@RequestFundsActivity, ex.message, Toast.LENGTH_LONG).show()
                 }
                 return false
             }
@@ -123,18 +121,17 @@ class RequestFundsActivity: AppCompatActivity(){
         }
     }
 
-    private fun loadPhoneContacts(){
+    private fun loadPhoneContacts() {
         try {
             val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                var cleanedPhoneNumber = phoneNumber.replace("-","").replace(" ","").replaceBefore("7","0")
+                var cleanedPhoneNumber = phoneNumber.replace("-", "").replace(" ", "").replaceBefore("7", "0")
                 var id = phoneNumber.hashCode().toString()
                 contactMap.put(cleanedPhoneNumber, Contact(id, name, phoneNumber))
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
     }
@@ -142,26 +139,30 @@ class RequestFundsActivity: AppCompatActivity(){
     private fun loadRouteContacts() {
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            Constants.loadUserContacts(this, token).setCallback { e, result ->
-                        mapContactsToList(result.getAsJsonArray("rows"))
-                    }
-        }
-        catch (e: Exception){
+            Constants.loadUserContacts(this@RequestFundsActivity, token).setCallback { e, result ->
+                mapContactsToList(result.getAsJsonArray("rows"))
+            }
+        } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun mapContactsToList(result: JsonArray){
+    private fun mapContactsToList(result: JsonArray) {
         loadPhoneContacts()
 
         if (result != null) {
             for (item: JsonElement in result) {
-                var phone  = item.asJsonObject.get("phone_number").asString.replace("-","").replace(" ","").replaceBefore("7","0")
-                if(contactMap.keys.contains(phone)) {
+                var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
+                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
+
+//                Log.e("RequestFundsActivity", item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString())
+
+                if (contactMap.keys.contains(phone)) {
                     var id = item.asJsonObject.get("id").asString
                     var avatar = R.drawable.group416
                     contactMap.getValue(phone).id = id
                     contactMap.getValue(phone).avatar = avatar
+                    contactMap.getValue(phone).accountNumber = accountNumber
                 }
             }
         } else {
@@ -171,7 +172,7 @@ class RequestFundsActivity: AppCompatActivity(){
         contacts = contactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(this, contacts)
+        contactsAdapater = ContactsAdapater(this@RequestFundsActivity, contacts)
         recyclerView.adapter = contactsAdapater
     }
 
