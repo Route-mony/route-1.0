@@ -11,11 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.FundRequestedActivity"></activity>
+        <activity android:name=".views.ApproveRequestActivity" />
+        <activity android:name=".views.NotificationActivity"/>
+        <activity android:name=".views.FundRequestedActivity" />
         <activity android:name=".views.ConfirmFundRequestActivity" />
         <activity android:name=".views.FundAmountActivity" />
-        <activity android:name=".views.RequestFundsActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".views.RequestFundsActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".views.auth.UserNameActivity" />
         <activity
             android:name=".views.auth.SetTransactionPinActivity"
@@ -30,7 +33,7 @@
         <activity android:name=".views.ServicesActivity" />
         <activity android:name=".views.SignupVerifiedActivity" />
         <activity android:name=".views.OtpVerificationActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

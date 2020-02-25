@@ -8,6 +8,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.views.MainActivity;
+import com.beyondthehorizon.routeapp.views.NotificationActivity;
 import com.beyondthehorizon.routeapp.views.ServicesActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;

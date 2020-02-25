@@ -87,7 +87,7 @@ class FundAmountActivity : AppCompatActivity() {
             }
 
             binding.arrowBack.setOnClickListener{
-                onBackPressed()
+                startActivity(Intent(this, RequestFundsActivity::class.java))
             }
         }
         catch (ex:Exception){
