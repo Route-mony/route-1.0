@@ -29,7 +29,6 @@ class ApproveRequestActivity : AppCompatActivity() {
         pref = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         oldIntent = getIntent()
 
-
         var intent = Intent(this, NotificationActivity::class.java)
         var id = oldIntent.getStringExtra("Id")
         var username = oldIntent.getStringExtra("Username")

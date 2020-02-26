@@ -160,6 +160,7 @@ class RequestFundsActivity: AppCompatActivity(){
                     var id = item.asJsonObject.get("id").asString
                     var avatar = R.drawable.group416
                     contactMap.getValue(phone).id = id
+                    contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
                     contactMap.getValue(phone).avatar = avatar
                 }
             }
