@@ -101,8 +101,13 @@ class ApproveRequestActivity : AppCompatActivity() {
                 val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
                 Constants.rejectFundRequests(this, id,"","","" , token).setCallback { e, result ->
                     if (result != null) {
-                        Toast.makeText(this, "Request rejected successfully", Toast.LENGTH_LONG).show()
-                        startActivity(intent)
+                        if (result.asJsonObject.get("status").asString == "success") {
+                            Toast.makeText(this, "Request rejected successfully", Toast.LENGTH_LONG).show()
+                            startActivity(intent)
+                        }
+                        else{
+                            Toast.makeText(this, "You can only reject a pending request!", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(this, "An error has occurred, please try again later", Toast.LENGTH_LONG).show()
                     }
