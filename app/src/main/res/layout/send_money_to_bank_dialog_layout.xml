@@ -9,7 +9,6 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -35,26 +34,27 @@
                 android:id="@+id/rlSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
 
                 <LinearLayout
                     android:id="@+id/v2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="40dp"
+                        android:layout_width="@dimen/lb_50_sp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/group570" />
+                        android:src="@drawable/group524" />
 
                     <EditText
                         android:id="@+id/accountNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="+254 712 345 678"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:hint="90665645353444"
                         android:inputType="phone"
                         android:maxLength="15"
                         android:textColor="#000"
@@ -66,12 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/v2"
-                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="@dimen/lb_50_sp"
+                        android:layout_width="@dimen/lb_50_sp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:src="@drawable/group790" />
 
@@ -79,15 +78,9 @@
                         android:id="@+id/chooseBank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
-
-                <!--                <View-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="1dp"-->
-                <!--                    android:layout_below="@+id/v1"-->
-                <!--                    android:background="@color/colorPrimaryDark" />-->
 
             </RelativeLayout>
 
@@ -97,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/round_route_button"

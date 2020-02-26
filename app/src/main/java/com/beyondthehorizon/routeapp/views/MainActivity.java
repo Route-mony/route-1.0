@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,10 +27,19 @@ import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.routeapp.utils.Constants.MOBILE_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
@@ -93,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         btn_request34.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSendMoneyDialog();
+                showSendMoneyToRouteDialog();
             }
         });
 
@@ -142,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                                 String username = "Hey " + name.substring(1, name.length() - 1) + " !";
 
                                 user_name.setText(username);
-
+                                getServiceProviders();
                                 boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
                                 String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 
@@ -191,8 +201,31 @@ public class MainActivity extends AppCompatActivity {
         isLoggedIn();
     }
 
+    private void getServiceProviders() {
 
-    private void showSendMoneyDialog() {
+        String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+
+        Constants.getServiceProviders(MainActivity.this, token)
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+
+                        Log.e(TAG, "onCompleted: 45 " + result.get("status").toString());
+
+                        if (result.get("status").toString().compareTo("\"success\"") == 0) {
+                            editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
+                            editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
+                            editor.apply();
+
+//                            transactionType":9002,"providerName":"KCB BANK","category":"BANK","providerID":901
+
+                            Log.e(TAG, "onCompleted: 46 " + result.toString());
+                        }
+                    }
+                });
+    }
+
+    private void showSendMoneyToRouteDialog() {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
@@ -285,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.putString("Phone", mobileNumber.getText().toString());
                 editor.apply();
                 startActivity(intent);
             }
@@ -308,14 +342,35 @@ public class MainActivity extends AppCompatActivity {
         final EditText accountNumber = dialogView.findViewById(R.id.accountNumber);
         Button mobileButton = dialogView.findViewById(R.id.mobileButton);
         final Spinner chooseBank = dialogView.findViewById(R.id.chooseBank);
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Select bank");
+
+        try {
+            JSONArray jsonArray = new JSONArray(pref.getString(BANK_PROVIDERS, ""));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                list.add(jsonObject.getString("providerName"));
+            }
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainActivity.this,
+                    android.R.layout.simple_spinner_item, list);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            chooseBank.setAdapter(dataAdapter);
+
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            Toast.makeText(MainActivity.this,
+                    "Error Loading and try again", Toast.LENGTH_LONG).show();
+            list.add("Error adding roles");
+        }
+
 
         //SEND MONEY TO BANK
         mobileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (accountNumber.getText().toString().isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_LONG).show();
-                    accountNumber.setError("Enter a valid phone number");
+                    Toast.makeText(MainActivity.this, "Enter a account number", Toast.LENGTH_LONG).show();
+                    accountNumber.setError("Enter a valid account number");
                     accountNumber.requestFocus();
                     return;
                 }
@@ -325,7 +380,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
+                editor.putString("bankAcNumber", accountNumber.getText().toString().trim());
+                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
                 editor.apply();
                 startActivity(intent);
             }

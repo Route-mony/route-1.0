@@ -20,6 +20,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
+import kotlinx.android.synthetic.main.send_money_to_bank_dialog_layout.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -30,7 +31,6 @@ class FundAmountActivity : AppCompatActivity() {
     private var amount = ""
     private lateinit var format: NumberFormat
     lateinit var pref: SharedPreferences
-    private val progressBar = CustomProgressBar()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,7 +142,8 @@ class FundAmountActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         val token = "Bearer " + prefs.getString(USER_TOKEN, "")
-        val account = prefs.getString("accountNumber", "").toString()
+        var account = ""
+        var provider = ""
 
         dialogView.dialogButtonPin.setOnClickListener {
 
@@ -151,17 +152,36 @@ class FundAmountActivity : AppCompatActivity() {
                 Toast.makeText(this@FundAmountActivity, "Enter pin", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
+            //                        alertDialog.dismiss()
+            when {
+                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
+                    account = prefs.getString("Phone", "").toString()
+                    provider = "MPESAWALLET"
+                }
+                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
+                    account = prefs.getString("bankAcNumber", "").toString()
+                    provider = prefs.getString("chosenBank", "").toString()
+//                    provider = "WALLET"
+                }
+                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0 -> {
+                    account = prefs.getString("walletAccountNumber", "").toString()
+                    provider = "ROUTEWALLET"
+                }
+            }
+
+            Log.e("FundAmountActivity", "$account P $provider")
             if (account.isEmpty()) {
                 Toast.makeText(this@FundAmountActivity, "User not registered or haven't verified their email", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
+            val progressBar = CustomProgressBar()
             progressBar.show(this, "Please Wait...")
-            sendMoney(this@FundAmountActivity, account, amount, pin, token, "WALLET")
+            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider)
                     .setCallback { e, result ->
                         Log.e("FundAmountActivity", result.toString())
                         progressBar.dialog.dismiss()
-//                        alertDialog.dismiss()
                         if (result.has("errors")) {
                             Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray[0].toString(), Toast.LENGTH_LONG).show()
                         } else {

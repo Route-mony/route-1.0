@@ -28,18 +28,18 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
         itemView.contact.text = value.contact
         Picasso.get().load(value.avatar).into(itemView.profile_image)
 
-        itemView.setOnClickListener{
+        itemView.setOnClickListener {
             try {
                 prefs.putString("Id", value.id)
                 prefs.putString("Username", value.name)
                 prefs.putString("Phone", value.contact)
                 prefs.putString("accountNumber", value.accountNumber)
+                prefs.putString("walletAccountNumber", value.accountNumber)
                 prefs.apply()
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
-            }
-            catch (ex: Exception){
+            } catch (ex: Exception) {
                 Log.d("TAG", ex.message)
             }
         }

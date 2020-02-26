@@ -36,6 +36,9 @@ public class Constants {
     public static final String SEND_MONEY_TO_MOBILE_MONEY = "SEND_MONEY_TO_MOBILE_MONEY";
     public static final String SEND_MONEY_TO_BANK = "SEND_MONEY_TO_BANK";
 
+    public static final String MOBILE_PROVIDERS = "MOBILE_PROVIDERS";
+    public static final String BANK_PROVIDERS = "BANK_PROVIDERS";
+
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -189,7 +192,6 @@ public class Constants {
                                                        String amount, String pin, String token,
                                                        String provider) {
         String SERVER_URL = BASE_URL + "wallets/transactions";
-
         JsonObject json = new JsonObject();
         json.addProperty("beneficiary_account", beneficiary_account);
         json.addProperty("amount", amount);
@@ -201,6 +203,17 @@ public class Constants {
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET SERVICE PROVIDERS
+    public static ResponseFuture<JsonObject> getServiceProviders(Context context,String token) {
+        String SERVER_URL = BASE_URL + "wallets/providers";
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
                 .asJsonObject();
     }
 }

@@ -12,7 +12,7 @@ import com.beyondthehorizon.routeapp.databinding.ActivityConfirmFundRequestBindi
 import com.beyondthehorizon.routeapp.databinding.ActivityFundRequestedBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import java.lang.Exception
-import java.text.DecimalFormat
+
 
 class FundRequestedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFundRequestedBinding
@@ -25,19 +25,23 @@ class FundRequestedActivity : AppCompatActivity() {
 
         try {
             binding.txtRequestInform.text = intent.getStringExtra("Message")
-            binding.btnDone.setOnClickListener{
-                startActivity(Intent(applicationContext, MainActivity::class.java))
+
+            binding.btnDone.setOnClickListener {
+                val intent = Intent(Intent(this, MainActivity::class.java))
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
 
-            binding.btnNewRequest.setOnClickListener{
-                startActivity(Intent(applicationContext, RequestFundsActivity::class.java))
+            binding.btnNewRequest.setOnClickListener {
+                val intent = Intent(Intent(this, RequestFundsActivity::class.java))
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
 
-            binding.arrowBack.setOnClickListener{
+            binding.arrowBack.setOnClickListener {
                 onBackPressed()
             }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
         }
     }
