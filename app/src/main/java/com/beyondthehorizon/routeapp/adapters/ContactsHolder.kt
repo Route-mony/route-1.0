@@ -29,7 +29,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
             prefs.putString("Id", value.id)
             prefs.putString("Username", value.name)
             prefs.putString("Phone", value.contact)
-            prefs.putString("accountNumber", value.accountNumber)
+            prefs.putString("walletAccountNumber", value.accountNumber)
             prefs.apply()
             context.startActivity(intent)
         }

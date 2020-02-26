@@ -24,7 +24,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:text="Send payment to"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -35,7 +34,7 @@
                 android:id="@+id/toRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -63,7 +62,6 @@
                 android:id="@+id/toMobileMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -91,7 +89,6 @@
                 android:id="@+id/toBank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
