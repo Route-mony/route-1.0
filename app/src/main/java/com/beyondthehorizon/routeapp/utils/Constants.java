@@ -150,7 +150,7 @@ public class Constants {
         json.addProperty("cancellation_reason", cancellation_reason);
 
         return Ion.with(context)
-                .load(SERVER_URL)
+                .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
