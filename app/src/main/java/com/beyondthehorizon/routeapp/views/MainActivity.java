@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
-    private ImageButton btn_request_fund, btn_request34;
+    private ImageButton btn_request_fund, btn_request34, btn_request2;
     private RelativeLayout RL1;
     private Intent intent;
 
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         editor = pref.edit();
         setContentView(R.layout.activity_main);
 
+        btn_request2 = findViewById(R.id.btn_request2);
         btn_request34 = findViewById(R.id.btn_request34);
         user_name = findViewById(R.id.user_name);
         query_text = findViewById(R.id.query_text);
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showSendMoneyToRouteDialog();
+            }
+        });
+        btn_request2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewMpesaPaymentOption();
             }
         });
 
@@ -225,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    //SEND MONEY TO ROUTE
     private void showSendMoneyToRouteDialog() {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -278,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //BANK MONEY TO MOBILE
     private void showSendMobileMoneyDialog() {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -325,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //SEND MONEY TO BANK
     private void showSendMoneyToBankDialog() {
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -387,5 +397,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    //M-PESA PAYMENT OPTION
+    private void viewMpesaPaymentOption() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.mpesa_payment_options, viewGroup, false);
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        LinearLayout buyGoods = dialogView.findViewById(R.id.buyGoods);
+        LinearLayout payBill = dialogView.findViewById(R.id.payBill);
+
+        buyGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        payBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 }

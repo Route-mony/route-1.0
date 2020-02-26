@@ -16,6 +16,8 @@
         <activity android:name=".views.RequestConfirmedActivity" />
         <activity android:name=".views.ApproveRequestActivity" />
         <activity android:name=".views.NotificationActivity" />
+        <activity android:name=".paybillpayments.PayBillActivity"></activity>
+        <activity android:name=".paybillpayments.BuyGoodsActivity" />
         <activity android:name=".views.FundRequestedActivity" />
         <activity android:name=".views.ConfirmFundRequestActivity" />
         <activity android:name=".views.FundAmountActivity" />
