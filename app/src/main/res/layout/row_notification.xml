@@ -7,7 +7,7 @@
         <data>
                 <variable
                     name = "contact"
-                    type = "com.beyondthehorizon.routeapp.adapters.ContactsHolder"/>
+                    type = "com.beyondthehorizon.routeapp.adapters.NotificationsHolder"/>
         </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,14 +32,24 @@
                     android:id="@+id/message"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginLeft="8dp"
                     android:textSize="12sp"
                     android:textColor="@color/colorPrimaryLight"
                     android:text="You account has been verified successfully"
                     app:layout_constraintTop_toTopOf="@id/notification_type_icon"
                     app:layout_constraintBottom_toBottomOf="@id/notification_type_icon"
-                    app:layout_constraintStart_toEndOf="@id/notification_type_icon"/>
+                    app:layout_constraintStart_toEndOf="@id/notification_type_icon"
+                    app:layout_constraintEnd_toStartOf="@id/status_icon"/>
 
-
+                <ImageView
+                    android:id="@+id/status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_pending"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/notification_type_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/notification_type_icon"
+                    android:layout_marginHorizontal="10dp"
+                    />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -78,6 +78,12 @@ class NotificationActivity : AppCompatActivity() {
      */
 
     private fun getRequests(result: JsonObject){
+        var statusMapper = mapOf(
+                "OK" to R.drawable.ic_approved,
+                "PENDING" to R.drawable.ic_pending,
+                "CANCELLED" to R.drawable.ic_rejected
+        )
+
         try {
             var requests = result.get("data").asJsonObject.get("rows").asJsonArray
             for (item: JsonElement in requests) {
@@ -88,7 +94,9 @@ class NotificationActivity : AppCompatActivity() {
                 var imageUrl = R.drawable.group416
                 var reason = item.asJsonObject.get("reason").asString
                 var amount = item.asJsonObject.get("amount").asString
-                notifications.add(Notification(id, username, phone, imageUrl, reason, amount))
+                var status = item.asJsonObject.get("status").asString.toUpperCase()
+                var statusIcon = statusMapper[status]
+                notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!))
             }
 
             notificationsAdapter = NotificationsAdapter(this, notifications)

@@ -21,11 +21,18 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
     var intent = Intent(context, ApproveRequestActivity::class.java)
     var prefs: SharedPreferences.Editor = context.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
     var context = context
+
     /**
      * Set view with values available
      */
     fun setValues(value: Notification) {
-        itemView.message.text = value.message
+        val maxLen = 50
+        var message = value.message
+        if (value.message.length > maxLen) {
+            message = message.subSequence(0, maxLen).toString() + "..."
+        }
+        itemView.message.text = message
+        Picasso.get().load(value.statusIcon).into(itemView.status_icon)
         Picasso.get().load(value.avatar).into(itemView.notification_type_icon)
 
         itemView.setOnClickListener {
@@ -35,6 +42,8 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 intent.putExtra("Phone", value.phone)
                 intent.putExtra("Reason", value.reason)
                 intent.putExtra("Amount", value.amount)
+                intent.putExtra("Status", value.status)
+                intent.putExtra("StatusIcon", value.statusIcon)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
             }

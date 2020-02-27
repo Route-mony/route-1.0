@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.views
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.beyondthehorizon.routeapp.databinding.ActivityApproveRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
 import java.lang.Exception
 
@@ -35,12 +37,24 @@ class ApproveRequestActivity : AppCompatActivity() {
         var phone = oldIntent.getStringExtra("Phone")
         var reason = oldIntent.getStringExtra("Reason")
         var amount = oldIntent.getStringExtra("Amount")
+        var status = oldIntent.getStringExtra("Status")
+        var statusIcon = oldIntent.getIntExtra("StatusIcon", R.drawable.ic_pending)
+        var color = mapOf(
+                R.drawable.ic_approved to "#0DAA35",
+                R.drawable.ic_rejected to "##AA4204",
+                R.drawable.ic_pending to "#AAA20B"
+        )
 
         try {
             binding.txtUsername.text = username
             binding.txtUserContact.text = phone
             binding.txtReason.text = reason
             binding.txtAmount.text = amount
+            binding.status.text = status
+            Picasso.get().load(statusIcon).into(binding.statusIcon)
+
+            binding.status.setTextColor(Color.parseColor(color[statusIcon]))
+
         } catch (ex: Exception) {
             Log.d("TAG", ex.message)
         }
@@ -74,14 +88,14 @@ class ApproveRequestActivity : AppCompatActivity() {
                                     Constants.approveFundRequests(this, id, token).setCallback { e, result ->
                                         if (result != null) {
                                             if (result.asJsonObject.get("status").asString == "success") {
-                                                Toast.makeText(this, "Request approved successfully", Toast.LENGTH_LONG).show()
+                                                intent.putExtra("Message", "Your approval for $username request of Ksh. $amount for $reason is being processed. You will be notified after the processing is done.")
                                                 startActivity(intent)
                                             }
                                             else{
-                                                Toast.makeText(this, "You can only approve a pending request!", Toast.LENGTH_LONG).show()
+                                                Snackbar.make(binding.notificationsView, "You can only approve a pending request!", Snackbar.LENGTH_LONG).show()
                                             }
                                         } else {
-                                            Toast.makeText(this, "Unable to process your request, please try again later", Toast.LENGTH_LONG).show()
+                                            Snackbar.make(binding.notificationsView, "Unable to process your request, please try again later", Snackbar.LENGTH_LONG).show()
                                         }
                                     }
                                 } else {
@@ -102,14 +116,14 @@ class ApproveRequestActivity : AppCompatActivity() {
                 Constants.rejectFundRequests(this, id,"","","" , token).setCallback { e, result ->
                     if (result != null) {
                         if (result.asJsonObject.get("status").asString == "success") {
-                            Toast.makeText(this, "Request rejected successfully", Toast.LENGTH_LONG).show()
+                            intent.putExtra("Message", "You have rejected $username request of Ksh. $amount for $reason")
                             startActivity(intent)
                         }
                         else{
-                            Toast.makeText(this, "You can only reject a pending request!", Toast.LENGTH_LONG).show()
+                            Snackbar.make(binding.notificationsView, "You can only reject a pending request!", Snackbar.LENGTH_LONG).show()
                         }
                     } else {
-                        Toast.makeText(this, "An error has occurred, please try again later", Toast.LENGTH_LONG).show()
+                        Snackbar.make(binding.notificationsView, "An error has occurred, please try again later", Snackbar.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {

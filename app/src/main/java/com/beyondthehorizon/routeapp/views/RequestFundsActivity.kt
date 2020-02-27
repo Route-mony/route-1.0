@@ -142,8 +142,10 @@ class RequestFundsActivity: AppCompatActivity(){
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
             Constants.loadUserContacts(this, token).setCallback { e, result ->
-                        mapContactsToList(result.getAsJsonArray("rows"))
-                    }
+                if(result != null) {
+                    mapContactsToList(result.getAsJsonArray("rows"))
+                }
+            }
         }
         catch (e: Exception){
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
