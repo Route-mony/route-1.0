@@ -14,13 +14,14 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_contact.view.*
 import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.ApproveRequestActivity
+import com.beyondthehorizon.routeapp.views.RequestReminderActivity
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 
 class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var intent = Intent(context, ApproveRequestActivity::class.java)
-    var prefs: SharedPreferences.Editor = context.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
-    var context = context
+    private var prefs: SharedPreferences.Editor = context.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
+    private var context = context
+    private lateinit var intent:Intent
 
     /**
      * Set view with values available
@@ -37,14 +38,25 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
 
         itemView.setOnClickListener {
             try {
+                var status = value.status
+                when(status){
+                    "ok" -> status = "Approved"
+                    "pending" -> status ="Pending"
+                    "cancelled" -> status = "Rejected"
+                }
+
+                when(value.type){
+                    "sent" -> intent = Intent(context, RequestReminderActivity::class.java)
+                    "received" -> intent = Intent(context, ApproveRequestActivity::class.java)
+                }
+
                 intent.putExtra("Id", value.id)
                 intent.putExtra("Username", value.username)
                 intent.putExtra("Phone", value.phone)
                 intent.putExtra("Reason", value.reason)
                 intent.putExtra("Amount", value.amount)
-                intent.putExtra("Status", value.status)
+                intent.putExtra("Status", status)
                 intent.putExtra("StatusIcon", value.statusIcon)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
             }
             catch (ex: Exception){

@@ -93,7 +93,6 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_marginHorizontal="50dp"
                 android:background="@drawable/round_route_button"
                 android:paddingHorizontal="40dp"
-                android:paddingVertical="20dp"
                 android:text="Done"
                 android:textAllCaps="false"
                 android:textColor="@color/colorAccent"

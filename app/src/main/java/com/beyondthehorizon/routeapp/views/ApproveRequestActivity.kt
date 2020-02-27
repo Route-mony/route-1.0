@@ -40,9 +40,9 @@ class ApproveRequestActivity : AppCompatActivity() {
         var status = oldIntent.getStringExtra("Status")
         var statusIcon = oldIntent.getIntExtra("StatusIcon", R.drawable.ic_pending)
         var color = mapOf(
-                R.drawable.ic_approved to "#0DAA35",
-                R.drawable.ic_rejected to "##AA4204",
-                R.drawable.ic_pending to "#AAA20B"
+                R.drawable.ic_approved to "#16AA05",
+                R.drawable.ic_rejected to "#AA4204",
+                R.drawable.ic_pending to "#FF9800"
         )
 
         try {
@@ -132,7 +132,7 @@ class ApproveRequestActivity : AppCompatActivity() {
         }
 
         binding.arrowBack.setOnClickListener {
-            startActivity(Intent(this, NotificationActivity::class.java))
+            startActivity(Intent(applicationContext, NotificationActivity::class.java))
         }
     }
 }

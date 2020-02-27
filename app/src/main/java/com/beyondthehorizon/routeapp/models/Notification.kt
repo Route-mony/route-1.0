@@ -11,5 +11,6 @@ data class Notification (
     var amount: String,
     var status: String,
     var statusIcon: Int = R.drawable.ic_pending,
+    var type: String,
     var message: String = username.split(" ")[0] + " has requested you Ksh. ${amount} for ${reason}"
 )

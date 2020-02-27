@@ -27,6 +27,7 @@ class NotificationActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var context: Context
+    private lateinit var filteredNotifications: MutableList<Notification>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,40 +37,33 @@ class NotificationActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         context = applicationContext
 
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-        notificationsAdapter = NotificationsAdapter(this, notifications)
-        recyclerView.adapter = notificationsAdapter
-
-        binding.btnRequestsNotifications.setOnClickListener{
-            binding.btnRequestsNotifications.setBackgroundResource(R.drawable.button_border)
-            binding.btnAllNotifications.setBackgroundResource(0)
+        binding.btnReceivedNotifications.setOnClickListener {
+            binding.btnReceivedNotifications.setBackgroundResource(R.drawable.button_border)
+            binding.btnSentNotifications.setBackgroundResource(0)
 
             try {
-                val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-                Constants.getFundRequests(this, "received", token).setCallback { e, result ->
-                    if(result != null) {
-                        getRequests(result)
-                    }
-                    else{
-                        Toast.makeText(this, "You have no requests history", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-            catch (e: Exception){
+                filterRequests("received")
+            } catch (e: Exception) {
                 Log.d("TAG", e.message)
             }
         }
 
-        binding.btnAllNotifications.setOnClickListener{
-            binding.btnAllNotifications.setBackgroundResource(R.drawable.button_border)
-            binding.btnRequestsNotifications.setBackgroundResource(0)
-            notificationsAdapter = NotificationsAdapter(this, notifications)
-            recyclerView.adapter = notificationsAdapter
+        binding.btnSentNotifications.setOnClickListener {
+            binding.btnSentNotifications.setBackgroundResource(R.drawable.button_border)
+            binding.btnReceivedNotifications.setBackgroundResource(0)
+
+            try {
+                filterRequests("sent")
+            } catch (e: Exception) {
+                Log.d("TAG", e.message)
+            }
         }
 
-        binding.arrowBack.setOnClickListener{
+        binding.arrowBack.setOnClickListener {
             onBackPressed()
+        }
+        if(loadSentRequests() && loadReceivedRequests()) {
+            filterRequests("sent")
         }
     }
 
@@ -77,33 +71,69 @@ class NotificationActivity : AppCompatActivity() {
      * Get requests
      */
 
-    private fun getRequests(result: JsonObject){
+    private fun getRequests(result: JsonObject, type: String) {
         var statusMapper = mapOf(
-                "OK" to R.drawable.ic_approved,
-                "PENDING" to R.drawable.ic_pending,
-                "CANCELLED" to R.drawable.ic_rejected
+                "ok" to R.drawable.ic_approved,
+                "pending" to R.drawable.ic_pending,
+                "cancelled" to R.drawable.ic_rejected
         )
-
+        var userType = ""
+        when(type){
+            "received" -> userType = "requester"
+            "sent" -> userType = "recipient"
+        }
         try {
             var requests = result.get("data").asJsonObject.get("rows").asJsonArray
             for (item: JsonElement in requests) {
                 var id = item.asJsonObject.get("id").asString
-                var username = item.asJsonObject.get("requester").asJsonObject.get("first_name").asString + " " +
-                        item.asJsonObject.get("requester").asJsonObject.get("last_name").asString
-                var phone =  item.asJsonObject.get("requester").asJsonObject.get("phone_number").asString
+                var username = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString + " " +
+                        item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
+                var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
                 var imageUrl = R.drawable.group416
                 var reason = item.asJsonObject.get("reason").asString
                 var amount = item.asJsonObject.get("amount").asString
-                var status = item.asJsonObject.get("status").asString.toUpperCase()
+                var status = item.asJsonObject.get("status").asString.toLowerCase()
                 var statusIcon = statusMapper[status]
-                notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!))
+                notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!, type))
             }
-
-            notificationsAdapter = NotificationsAdapter(this, notifications)
-            recyclerView.adapter = notificationsAdapter
-        }
-        catch (ex: Exception){
+        } catch (ex: Exception) {
             Log.d("TAG", ex.message)
         }
+    }
+
+    private fun loadSentRequests():Boolean {
+        try {
+            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+            Constants.getFundRequests(this, "sent", token).setCallback { e, result ->
+                if (result != null) {
+                    getRequests(result, "sent")
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("TAG", e.message)
+        }
+        return true
+    }
+
+    private fun loadReceivedRequests():Boolean {
+        try {
+            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+            Constants.getFundRequests(this, "received", token).setCallback { e, result ->
+                if (result != null) {
+                    getRequests(result, "received")
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("TAG", e.message)
+        }
+        return  true
+    }
+
+    private fun filterRequests(keyword: String){
+        recyclerView.layoutManager = linearLayoutManager
+        filteredNotifications = notifications.filter { it.type == keyword }.toMutableList()
+        recyclerView.setHasFixedSize(true)
+        notificationsAdapter = NotificationsAdapter(this, filteredNotifications)
+        recyclerView.adapter = notificationsAdapter
     }
 }
