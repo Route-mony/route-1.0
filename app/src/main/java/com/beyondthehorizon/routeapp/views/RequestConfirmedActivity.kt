@@ -3,6 +3,7 @@ package com.beyondthehorizon.routeapp.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
@@ -23,11 +24,11 @@ class RequestConfirmedActivity : AppCompatActivity() {
                 startActivity(Intent(this, NotificationActivity::class.java))
             }
             binding.arrowBack.setOnClickListener{
-                onBackPressed()
+                startActivity(Intent(this, NotificationActivity::class.java))
             }
         }
         catch (e: Exception){
-            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            Log.d("TAG", e.message)
         }
     }
 }

@@ -26,13 +26,13 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
      * Set view with values available
      */
     fun setValues(value: Notification) {
-        val maxLen = 50
+        val maxLen = 46
         var message = value.message
         if (value.message.length > maxLen) {
             message = message.subSequence(0, maxLen).toString() + "..."
         }
         itemView.message.text = message
-        Picasso.get().load(value.statusIcon).into(itemView.status_icon)
+        itemView.status_icon.setImageResource(value.statusIcon)
         Picasso.get().load(value.avatar).into(itemView.notification_type_icon)
 
         itemView.setOnClickListener {

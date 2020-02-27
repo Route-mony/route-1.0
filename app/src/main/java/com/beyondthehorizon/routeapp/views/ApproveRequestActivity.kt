@@ -31,7 +31,7 @@ class ApproveRequestActivity : AppCompatActivity() {
         pref = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         oldIntent = getIntent()
 
-        var intent = Intent(this, NotificationActivity::class.java)
+        var intent = Intent(this, RequestConfirmedActivity::class.java)
         var id = oldIntent.getStringExtra("Id")
         var username = oldIntent.getStringExtra("Username")
         var phone = oldIntent.getStringExtra("Phone")
@@ -51,7 +51,7 @@ class ApproveRequestActivity : AppCompatActivity() {
             binding.txtReason.text = reason
             binding.txtAmount.text = amount
             binding.status.text = status
-            Picasso.get().load(statusIcon).into(binding.statusIcon)
+            binding.statusIcon.setImageResource(statusIcon)
 
             binding.status.setTextColor(Color.parseColor(color[statusIcon]))
 
