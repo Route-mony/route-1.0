@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,9 +14,7 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityApproveRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER
-import com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
 import kotlinx.android.synthetic.main.row_notification.view.*
 import java.lang.Exception
@@ -26,7 +23,6 @@ class ApproveRequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityApproveRequestBinding
     private lateinit var confirmationPin: String
     private lateinit var cancellation_reason: String
-    private lateinit var cancellation_status: String
     private lateinit var pref: SharedPreferences
     private lateinit var oldIntent: Intent
 
@@ -38,7 +34,7 @@ class ApproveRequestActivity : AppCompatActivity() {
 
         var intent = Intent(this, RequestConfirmedActivity::class.java)
         var id = oldIntent.getStringExtra("Id")
-        var current_user_id = pref.getString(ID_NUMBER, "")
+        var currentUserId = pref.getString(ID_NUMBER, "")
         var username = oldIntent.getStringExtra("Username")
         var phone = oldIntent.getStringExtra("Phone")
         var reason = oldIntent.getStringExtra("Reason")
@@ -46,7 +42,7 @@ class ApproveRequestActivity : AppCompatActivity() {
         var status = oldIntent.getStringExtra("Status")
         var statusIcon = oldIntent.getIntExtra("StatusIcon", R.drawable.ic_pending)
         var provider = "ROUTEWALLET"
-        var cancellation_status = "CANCELLED"
+        var cancellationStatus = "CANCELLED"
         var color = mapOf(
                 R.drawable.ic_approved to "#16AA05",
                 R.drawable.ic_rejected to "#AA4204",
@@ -138,7 +134,7 @@ class ApproveRequestActivity : AppCompatActivity() {
                 mDialogView.dialogButtonOK.setOnClickListener {
 
                     //get reason for rejecting fund request
-                    reason = mDialogView.message.text.toString().trim()
+                    cancellation_reason = mDialogView.message.text.toString().trim()
 
                     if (mDialogView.message.text.isEmpty()) {
                         mDialogView.message.error = "Enter reason"
@@ -149,7 +145,7 @@ class ApproveRequestActivity : AppCompatActivity() {
                         progressDialog.setMessage("please wait...")
                         progressDialog.setCanceledOnTouchOutside(false)
                         progressDialog.show()
-                        Constants.rejectFundRequests(this, id, current_user_id, cancellation_status, cancellation_reason, token).setCallback { e, result ->
+                        Constants.rejectFundRequests(this, id, currentUserId, cancellationStatus, cancellation_reason, token).setCallback { e, result ->
                             progressDialog.dismiss()
                             if (result != null) {
                                 if (result.asJsonObject.get("status").asString == "success") {
