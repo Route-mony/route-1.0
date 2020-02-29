@@ -6,7 +6,7 @@
 
         <data>
                 <variable
-                    name = "contact"
+                    name = "notification"
                     type = "com.beyondthehorizon.routeapp.adapters.NotificationsHolder"/>
         </data>
 
@@ -42,13 +42,12 @@
 
                 <ImageView
                     android:id="@+id/status_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_pending"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/notification_type_icon"
                     app:layout_constraintBottom_toBottomOf="@id/notification_type_icon"
-                    android:layout_marginHorizontal="10dp"
                     />
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

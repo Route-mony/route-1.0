@@ -55,5 +55,9 @@ class RequestReminderActivity : AppCompatActivity() {
             intent.putExtra("Message", "We have successfully sent a reminder to $username for the request of Ksh. $amount for $reason.")
             startActivity(intent)
         }
+
+        binding.arrowBack.setOnClickListener{
+            onBackPressed()
+        }
     }
 }

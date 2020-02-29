@@ -131,13 +131,19 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> approveFundRequests(Context context, String request_id, String token){
-        String SERVER_URL = BASE_URL + "requests/approve/"+request_id;
+    public static ResponseFuture<JsonObject> approveFundRequests(Context context, String request_id, String pin, String narration, String provider, String token){
+        String SERVER_URL = BASE_URL + "wallets/transactions/"+request_id;
+
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", pin);
+        json.addProperty("narration", narration);
+        json.addProperty("provider", provider);
 
         return Ion.with(context)
-                .load(SERVER_URL)
+                .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
                 .asJsonObject();
     }
 
