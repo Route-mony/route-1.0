@@ -1,5 +1,6 @@
 package com.beyondthehorizon.routeapp.views;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,10 +26,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
+import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
@@ -51,7 +60,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -60,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
     private Button add_money_button;
     private ImageButton btn_request_fund, btn_request34, btn_request2;
     private RelativeLayout RL1;
-    private Intent intent;
+    private Intent intent; // Animation
+    private Animation moveUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         RL1 = findViewById(R.id.RL1);
         btn_request_fund = findViewById(R.id.btn_request);
         btn_notifications = findViewById(R.id.notifications);
+        moveUp = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.move_up);
 
         intent = new Intent(this, RequestFundsActivity.class);
 
@@ -104,13 +116,16 @@ public class MainActivity extends AppCompatActivity {
         btn_request34.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSendMoneyToRouteDialog();
+                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
+                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
             }
         });
         btn_request2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewMpesaPaymentOption();
+//                viewMpesaPaymentOption();
+                MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
+                mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
             }
         });
 
@@ -145,21 +160,27 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         progressDialog.dismiss();
-                        Log.d(TAG, "getUserProfile: " + result);
+                        Log.e(TAG, "getUserProfile: " + result);
                         if (result != null) {
 
                             if (result.get("status").toString().contains("failed")) {
                                 Snackbar snackbar = Snackbar
                                         .make(RL1, "A user with this email and password was not found.", Snackbar.LENGTH_LONG);
                                 snackbar.show();
-
+                                editor.clear();
+                                editor.apply();
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
 
                                 String name = result.get("data").getAsJsonObject().get("username").toString();
+                                String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
                                 String username = "Hey " + name.substring(1, name.length() - 1) + " !";
 
                                 user_name.setText(username);
+                                balance_value.setText("KES " + wallet_balance);
+
                                 getServiceProviders();
+                                sendRegistrationToServer();
                                 boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
                                 String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 
@@ -196,6 +217,30 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void sendRegistrationToServer() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String firebase_token = task.getResult().getToken();
+                        String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+
+                        Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
+                                .setCallback(new FutureCallback<JsonObject>() {
+                                    @Override
+                                    public void onCompleted(Exception e, JsonObject result) {
+
+                                    }
+                                });
+                    }
+                });
+    }
+
     private void setPin() {
         if (pref.getString(TRANSACTIONS_PIN, "").isEmpty()) {
             startActivity(new Intent(this, SetTransactionPinActivity.class));
@@ -217,8 +262,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
 
-                        Log.e(TAG, "onCompleted: 45 " + result.get("status").toString());
-
                         if (result.get("status").toString().compareTo("\"success\"") == 0) {
                             editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
                             editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
@@ -232,204 +275,84 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    //SEND MONEY TO ROUTE
-    private void showSendMoneyToRouteDialog() {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = findViewById(android.R.id.content);
+    @Override
+    public void onButtonClicked(String text) {
 
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_send_money_alert_dialog_layout, viewGroup, false);
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-        //finally creating the alert dialog and displaying it
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        LinearLayout toRoute = dialogView.findViewById(R.id.toRoute);
-        LinearLayout toMobileMoney = dialogView.findViewById(R.id.toMobileMoney);
-        LinearLayout toBank = dialogView.findViewById(R.id.toBank);
-
-        //SEND MONEY TO ROUTE
-        toRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
-                editor.apply();
-                startActivity(intent);
-            }
-        });
-        //SEND MONEY TO MOBILE MONEY
-        toMobileMoney.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.apply();
-                showSendMobileMoneyDialog();
-                alertDialog.dismiss();
-            }
-        });
-        //SEND MONEY TO BANK
-        toBank.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
-                editor.apply();
-                alertDialog.dismiss();
-                showSendMoneyToBankDialog();
-            }
-        });
     }
 
-    //BANK MONEY TO MOBILE
-    private void showSendMobileMoneyDialog() {
+    @Override
+    public void mpesaBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
+        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
         //before inflating the custom alert dialog layout, we will get the current activity viewgroup
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.send_mobile_money_dialog_layout, viewGroup, false);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
+
+        final EditText enterPin = dialogView.findViewById(R.id.enterPin);
+        Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
         //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
+
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogAnimation;
         alertDialog.show();
 
-        final EditText mobileNumber = dialogView.findViewById(R.id.mobileNumber);
-        Button mobileButton = dialogView.findViewById(R.id.mobileButton);
-        ImageView imgSearch = dialogView.findViewById(R.id.imgSearch);
-
-        imgSearch.setOnClickListener(new View.OnClickListener() {
+        dialogButtonPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.apply();
-                startActivity(intent);
-            }
-        });
-
-        //SEND MONEY TO MOBILE MONEY
-        mobileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mobileNumber.getText().toString().isEmpty() || mobileNumber.getText().toString().length() < 10) {
-                    Toast.makeText(MainActivity.this, "Enter a valid phone number", Toast.LENGTH_LONG).show();
+                if (enterPin.getText().toString().trim().isEmpty()) {
+                    enterPin.setError("Enter Pin");
                     return;
                 }
-                Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.putString("Phone", mobileNumber.getText().toString());
-                editor.apply();
-                startActivity(intent);
-            }
-        });
-    }
+                progressDialog.show();
 
-    //SEND MONEY TO BANK
-    private void showSendMoneyToBankDialog() {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = findViewById(android.R.id.content);
+                if (ben_ref.trim().isEmpty()) {
+                    Constants.sendMoney(MainActivity.this,
+                            ben_account, amount, enterPin.getText().toString().trim(), token,
+                            "MPESA TILL").setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            Log.e(TAG, "onCompleted: " + result);
 
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.send_money_to_bank_dialog_layout, viewGroup, false);
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+                            progressDialog.dismiss();
+                            if (result.has("errors")) {
+                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+                            } else {
+                                String message = result.get("data").getAsJsonObject().get("message").toString();
+                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                intent.putExtra("Message", message);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                } else {
+                    Constants.sendMoneyBeneficiary(MainActivity.this,
+                            ben_account, amount, enterPin.getText().toString().trim(), token,
+                            "MPESA TILL", ben_ref.trim()).setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            Log.e(TAG, "onCompleted: " + result);
 
-        final EditText accountNumber = dialogView.findViewById(R.id.accountNumber);
-        Button mobileButton = dialogView.findViewById(R.id.mobileButton);
-        final Spinner chooseBank = dialogView.findViewById(R.id.chooseBank);
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select bank");
-
-        try {
-            JSONArray jsonArray = new JSONArray(pref.getString(BANK_PROVIDERS, ""));
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                list.add(jsonObject.getString("providerName"));
-            }
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainActivity.this,
-                    android.R.layout.simple_spinner_item, list);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            chooseBank.setAdapter(dataAdapter);
-
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-            Toast.makeText(MainActivity.this,
-                    "Error Loading and try again", Toast.LENGTH_LONG).show();
-            list.add("Error adding roles");
-        }
-
-
-        //SEND MONEY TO BANK
-        mobileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (accountNumber.getText().toString().isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Enter a account number", Toast.LENGTH_LONG).show();
-                    accountNumber.setError("Enter a valid account number");
-                    accountNumber.requestFocus();
-                    return;
+                            progressDialog.dismiss();
+                            if (result.has("errors")) {
+                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+                            } else {
+                                String message = result.get("data").getAsJsonObject().get("message").toString();
+                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                intent.putExtra("Message", message);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 }
-                if (chooseBank.getSelectedItemPosition() == 0) {
-                    Toast.makeText(MainActivity.this, "Choose a bank", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                Intent intent = new Intent(MainActivity.this, FundAmountActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
-                editor.putString("bankAcNumber", accountNumber.getText().toString().trim());
-                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
-                editor.apply();
-                startActivity(intent);
             }
         });
-    }
-
-    //M-PESA PAYMENT OPTION
-    private void viewMpesaPaymentOption() {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = findViewById(android.R.id.content);
-
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.mpesa_payment_options, viewGroup, false);
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        LinearLayout buyGoods = dialogView.findViewById(R.id.buyGoods);
-        LinearLayout payBill = dialogView.findViewById(R.id.payBill);
-
-        buyGoods.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        payBill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 }

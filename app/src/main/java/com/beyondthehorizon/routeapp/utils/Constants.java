@@ -206,14 +206,47 @@ public class Constants {
                 .asJsonObject();
     }
 
+    public static ResponseFuture<JsonObject> sendMoneyBeneficiary(Context context, String beneficiary_account,
+                                                                  String amount, String pin, String token,
+                                                                  String provider, String beneficiary_reference) {
+        String SERVER_URL = BASE_URL + "wallets/transactions";
+        JsonObject json = new JsonObject();
+        json.addProperty("beneficiary_account", beneficiary_account);
+        json.addProperty("amount", amount);
+        json.addProperty("pin", pin);
+        json.addProperty("provider", provider);
+        json.addProperty("beneficiary_reference", beneficiary_reference);
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
     //GET SERVICE PROVIDERS
-    public static ResponseFuture<JsonObject> getServiceProviders(Context context,String token) {
+    public static ResponseFuture<JsonObject> getServiceProviders(Context context, String token) {
         String SERVER_URL = BASE_URL + "wallets/providers";
 
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
+    //UPDATE FIREBASE TOKEN
+    public static ResponseFuture<JsonObject> updateFirebaseToken(Context context, String token,
+                                                                 String registration_token) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("registration_token", registration_token);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
                 .asJsonObject();
     }
 }
