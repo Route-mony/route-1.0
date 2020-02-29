@@ -34,13 +34,12 @@
 
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
-    <string name="pay_bill">Pay bill</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="banks">
-        <item>Select bank</item>
-        <item>bank1</item>
-        <item>bank2</item>
-    </string-array>
+    <string name="pay_bill">Pay Bill</string>
+    <string name="enter_till_number">Enter Till Number</string>
+    <string name="amount">Amount</string>
+    <string name="buy_goods">Buy Goods</string>
+    <string name="enter_business_number">Enter Business Number</string>
+    <string name="enter_account_number">Enter Account Number</string>
+
 </resources>
