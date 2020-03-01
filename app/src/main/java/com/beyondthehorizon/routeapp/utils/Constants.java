@@ -120,4 +120,60 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token){
+        String SERVER_URL = BASE_URL + "requests/?request_option="+option;
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> approveFundRequests(Context context, String request_id, String pin, String narration, String provider, String token){
+        String SERVER_URL = BASE_URL + "wallets/transactions/"+request_id;
+
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", pin);
+        json.addProperty("narration", narration);
+        json.addProperty("provider", provider);
+
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> rejectFundRequests(Context context, String request_id, String canceled_by, String status, String cancellation_reason, String token){
+        String SERVER_URL = BASE_URL + "requests/cancel/"+request_id;
+
+        JsonObject json = new JsonObject();
+        json.addProperty("canceled_by", canceled_by);
+        json.addProperty("status", status);
+        json.addProperty("cancellation_reason", cancellation_reason);
+
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> verifyPin(Context context, String pin, String token){
+        String SERVER_URL = BASE_URL + "users/pin/verify";
+
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", pin);
+
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }

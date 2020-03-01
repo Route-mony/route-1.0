@@ -32,8 +32,8 @@ import java.lang.Exception
 import java.util.concurrent.Future
 
 class RequestFundsActivity: AppCompatActivity(){
-    private var contacts: MutableList<Contact> = mutableListOf()
-    private var contactMap: MutableMap<String, Contact> = mutableMapOf()
+    private lateinit var contacts: MutableList<Contact>
+    private lateinit var contactMap: MutableMap<String, Contact>
     private lateinit var prefs: SharedPreferences
     private lateinit var searchView: SearchView
     private lateinit var binding: ActivityRequestFundsBinding
@@ -51,6 +51,9 @@ class RequestFundsActivity: AppCompatActivity(){
         recyclerView = binding.contactRecyclerView
         linearLayoutManager = LinearLayoutManager(this)
         searchView = binding.contactSearchView
+        contacts = mutableListOf()
+        contactMap  = mutableMapOf()
+        contactsAdapater = ContactsAdapater(this, contacts)
         context = applicationContext
 
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
@@ -75,12 +78,8 @@ class RequestFundsActivity: AppCompatActivity(){
             override fun onQueryTextChange(newText: String): Boolean {
                 var pattern = newText.toLowerCase().toRegex()
                 try{
-                    var filteredContacts = contacts.filter{pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase())}
-                    var adapter = ContactsAdapater(context, filteredContacts.toMutableList())
-                    recyclerView.layoutManager = linearLayoutManager
-                    recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(context, filteredContacts.toMutableList())
-                    recyclerView.adapter = adapter
+                    var filteredContacts = contacts.filter{pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase())}.toMutableList()
+                    recyclerView.adapter = ContactsAdapater(applicationContext, filteredContacts)
                 }
                 catch (ex:Exception){
                     Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
@@ -143,8 +142,10 @@ class RequestFundsActivity: AppCompatActivity(){
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
             Constants.loadUserContacts(this, token).setCallback { e, result ->
-                        mapContactsToList(result.getAsJsonArray("rows"))
-                    }
+                if(result != null) {
+                    mapContactsToList(result.getAsJsonArray("rows"))
+                }
+            }
         }
         catch (e: Exception){
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
@@ -161,6 +162,7 @@ class RequestFundsActivity: AppCompatActivity(){
                     var id = item.asJsonObject.get("id").asString
                     var avatar = R.drawable.group416
                     contactMap.getValue(phone).id = id
+                    contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
                     contactMap.getValue(phone).avatar = avatar
                 }
             }

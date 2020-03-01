@@ -11,11 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.FundRequestedActivity"></activity>
+        <activity android:name=".views.RejectRequestActivity"></activity>
+        <activity android:name=".views.RequestReminderActivity" />
+        <activity android:name=".views.RequestConfirmedActivity" />
+        <activity android:name=".views.ApproveRequestActivity" />
+        <activity android:name=".views.NotificationActivity" />
+        <activity android:name=".views.FundRequestedActivity" />
         <activity android:name=".views.ConfirmFundRequestActivity" />
         <activity android:name=".views.FundAmountActivity" />
-        <activity android:name=".views.RequestFundsActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".views.RequestFundsActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".views.auth.UserNameActivity" />
         <activity
             android:name=".views.auth.SetTransactionPinActivity"

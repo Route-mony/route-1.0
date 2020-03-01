@@ -26,11 +26,11 @@ class FundRequestedActivity : AppCompatActivity() {
         try {
             binding.txtRequestInform.text = intent.getStringExtra("Message")
             binding.btnDone.setOnClickListener{
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(applicationContext, MainActivity::class.java))
             }
 
             binding.btnNewRequest.setOnClickListener{
-                startActivity(Intent(this, RequestFundsActivity::class.java))
+                startActivity(Intent(applicationContext, RequestFundsActivity::class.java))
             }
 
             binding.arrowBack.setOnClickListener{

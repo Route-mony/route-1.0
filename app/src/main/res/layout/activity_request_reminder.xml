@@ -6,14 +6,14 @@
     <data>
 
         <variable
-            name="contacts"
-            type="com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity" />
+            name="request"
+            type="com.beyondthehorizon.routeapp.views.RequestReminderActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.ConfirmFundRequestActivity">
+        tools:context=".views.RequestReminderActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:id="@+id/top_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/contacts_view"
+                app:layout_constraintBottom_toTopOf="@id/notifications_view"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -34,7 +34,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:onClick="prevPage"
                     app:layout_constraintBottom_toBottomOf="@id/logo"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/logo"
@@ -53,7 +52,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/contacts_view"
+                android:id="@+id/notifications_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
@@ -66,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="30dp"
-                    android:text="Request"
+                    android:text="Send a Reminder"
                     android:textColor="@color/colorButton"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -80,14 +79,14 @@
                     android:layout_marginHorizontal="20dp"
                     android:background="@drawable/round_route_button_white"
                     android:paddingVertical="50dp"
-                    app:layout_constraintBottom_toTopOf="@id/btn_request"
+                    app:layout_constraintBottom_toTopOf="@id/btn_remind"
                     app:layout_constraintTop_toBottomOf="@id/request_title">
 
                     <TextView
-                        android:id="@+id/txt_from"
+                        android:id="@+id/txt_to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="From"
+                        android:text="To"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toTopOf="@id/btn_route"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -102,24 +101,26 @@
                         android:layout_marginRight="30dp"
                         android:background="@drawable/service_buttons"
                         android:src="@drawable/group416"
-                        app:layout_constraintEnd_toStartOf="@id/txt_from"
-                        app:layout_constraintTop_toBottomOf="@id/txt_from" />
+                        app:layout_constraintEnd_toStartOf="@id/txt_to"
+                        app:layout_constraintTop_toBottomOf="@id/txt_to" />
 
                     <TextView
                         android:id="@+id/txt_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Promaster Guru"
                         android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="@id/txt_from"
+                        app:layout_constraintStart_toStartOf="@id/txt_to"
                         app:layout_constraintTop_toTopOf="@id/btn_route" />
 
                     <TextView
                         android:id="@+id/txt_user_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="0700456439"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@id/btn_route"
-                        app:layout_constraintStart_toStartOf="@id/txt_from"
+                        app:layout_constraintStart_toStartOf="@id/txt_to"
                         app:layout_constraintTop_toBottomOf="@id/txt_username" />
 
                     <TextView
@@ -142,14 +143,39 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/txt_reason"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Enter reason to request"
+                        android:text="Payment of land"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_reason_title" />
+
+
+                    <ImageView
+                        android:id="@+id/status_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/status"
+                        app:layout_constraintTop_toBottomOf="@id/txt_reason"
+                        app:srcCompat="@drawable/ic_pending" />
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pending"
+                        android:textColor="#FF9800"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@id/status_icon"
+                        app:layout_constraintEnd_toEndOf="@id/txt_reason_title"
+                        app:layout_constraintStart_toStartOf="@id/txt_reason_title"
+                        app:layout_constraintTop_toTopOf="@id/status_icon" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -181,6 +207,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:text="30,000"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -191,18 +218,19 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/btn_request"
+                    android:id="@+id/btn_remind"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="50dp"
                     android:layout_marginVertical="20dp"
+                    android:layout_marginHorizontal="50dp"
                     android:background="@drawable/round_route_button"
-                    android:text="Request"
+                    android:paddingHorizontal="40dp"
+                    android:text="Send"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_reject"
                     app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

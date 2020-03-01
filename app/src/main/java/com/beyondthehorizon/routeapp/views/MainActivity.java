@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private ImageView profile_pic;
+    private ImageView profile_pic, btn_notifications;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
     private ImageButton btn_request_fund;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
         btn_request_fund = findViewById(R.id.btn_request);
+        btn_notifications = findViewById(R.id.notifications);
 
         intent = new Intent(this, RequestFundsActivity.class);
 
@@ -64,8 +65,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         isLoggedIn();
+
+
 
     }
 
@@ -122,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
                                 if (is_pin_set.contains("False")) {
                                     setPin();
                                 }
-//                            editor.putString(LOGGED_IN, "true");
-//                            editor.putString(USER_EMAIL, result.get("data").getAsJsonObject().get("email").toString());
-//                            editor.putString(USER_TOKEN, result.get("data").getAsJsonObject().get("token").toString());
-//                            editor.apply();
 
                             }
                         } else {
