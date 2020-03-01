@@ -35,11 +35,38 @@
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
 
-    <string name="pay_bill">Pay Bill</string>
+    <string name="pay_bill">Pay Bill : </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
-    <string name="buy_goods">Buy Goods</string>
-    <string name="enter_business_number">Enter Business Number</string>
-    <string name="enter_account_number">Enter Account Number</string>
+    <string name="buy_goods">Buy Goods : </string>
+    <string name="enter_business_number">Enter Business Number : </string>
+    <string name="enter_account_number">Enter Account Number : </string>
+    <string name="enter_mobile_number">Enter Mobile Number : </string>
+    <string name="enter_bank_account">Enter Bank Account :</string>
 
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_0">0</string>
+    <string name="a_b_c"><!--A B C--></string>
+    <string name="d_e_f"><!--D E F--></string>
+    <string name="g_h_i"><!--G H I--></string>
+    <string name="j_k_l"><!--J K L--></string>
+    <string name="m_n_o"><!--M N O--></string>
+    <string name="p_q_r_s"><!--P Q R S--></string>
+    <string name="t_u_v"><!--T U V--></string>
+    <string name="w_x_y_z"><!--W X Y Z--></string>
+    <string name="ok">OK</string>
+    <string name="del">del</string>
+
+    <string name="fill_in">Please fill in all fields</string>
+    <string name="pin_request">Please Set Your Security PIN</string>
+    <string name="pin_request_verify">Confirm Your Security PIN</string>
+    <string name="pin_request_invalid">PIN Don\'t Match\nPlease Set Your Security PIN Again</string>
 </resources>

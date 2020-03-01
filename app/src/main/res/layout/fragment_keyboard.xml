@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!--keyboard message-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Enter Your Security PIN"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <!--screen input design-->
+                <LinearLayout
+                    android:id="@+id/pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/keyboard_screen_top"
+                    android:layout_marginBottom="@dimen/keyboard_screen_bottom"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/pin_1"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/empty_dot"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/pin_2"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/empty_dot"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/pin_3"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/empty_dot"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/pin_4"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/empty_dot"
+                            android:orientation="horizontal" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--keyboard btn design-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/one"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="1"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/two"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="2"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/three"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="3"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/four"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="4"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/five"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="5"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/six"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="6"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/seven"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="7"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/eight"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="8"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/nine"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="9"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/del"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="@string/del" />
+
+                        <Button
+                            android:id="@+id/zero"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="0"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/ok"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/number_spacing"
+                            android:background="@drawable/service_buttons"
+                            android:onClick="inputKeyed"
+                            android:text="@string/ok" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

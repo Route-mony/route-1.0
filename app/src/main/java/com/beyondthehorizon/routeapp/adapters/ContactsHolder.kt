@@ -37,7 +37,6 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
                 prefs.putString("walletAccountNumber", value.accountNumber)
                 prefs.apply()
 
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
             } catch (ex: Exception) {
                 Log.d("TAG", ex.message)

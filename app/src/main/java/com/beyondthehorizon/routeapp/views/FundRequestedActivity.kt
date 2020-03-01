@@ -30,12 +30,14 @@ class FundRequestedActivity : AppCompatActivity() {
                 val intent = Intent(Intent(this, MainActivity::class.java))
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+                this@FundRequestedActivity.finish()
             }
 
             binding.btnNewRequest.setOnClickListener {
                 val intent = Intent(Intent(this, RequestFundsActivity::class.java))
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+                this@FundRequestedActivity.finish()
             }
 
             binding.arrowBack.setOnClickListener {

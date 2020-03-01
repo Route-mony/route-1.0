@@ -29,6 +29,7 @@ import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
+import com.beyondthehorizon.routeapp.views.auth.SetSecurityInfo;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,15 +37,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
@@ -52,11 +46,6 @@ import static com.beyondthehorizon.routeapp.utils.Constants.MOBILE_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_BANK;
-import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
-import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
@@ -263,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     public void onCompleted(Exception e, JsonObject result) {
 
                         if (result.get("status").toString().compareTo("\"success\"") == 0) {
+                            Log.e(TAG, "onCompleted: " + result);
                             editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
                             editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
                             editor.apply();
@@ -297,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         builder.setView(dialogView);
 
         //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogAnimation;
         alertDialog.show();
 
@@ -313,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 if (ben_ref.trim().isEmpty()) {
                     Constants.sendMoney(MainActivity.this,
                             ben_account, amount, enterPin.getText().toString().trim(), token,
-                            "MPESA TILL").setCallback(new FutureCallback<JsonObject>() {
+                            "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
 
@@ -325,25 +315,27 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
                                 intent.putExtra("Message", message);
                                 startActivity(intent);
+                                alertDialog.dismiss();
                             }
                         }
                     });
                 } else {
                     Constants.sendMoneyBeneficiary(MainActivity.this,
                             ben_account, amount, enterPin.getText().toString().trim(), token,
-                            "MPESA TILL", ben_ref.trim()).setCallback(new FutureCallback<JsonObject>() {
+                            "MPESA PAYBILL", ben_ref.trim(), "Payment").setCallback(new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
                             Log.e(TAG, "onCompleted: " + result);
 
                             progressDialog.dismiss();
                             if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
                             } else {
                                 String message = result.get("data").getAsJsonObject().get("message").toString();
                                 Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
                                 intent.putExtra("Message", message);
                                 startActivity(intent);
+                                alertDialog.dismiss();
                             }
                         }
                     });

@@ -152,17 +152,14 @@ class FundAmountActivity : AppCompatActivity() {
                 Toast.makeText(this@FundAmountActivity, "Enter pin", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-
-            //                        alertDialog.dismiss()
             when {
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
                     account = prefs.getString("Phone", "").toString()
-                    provider = "MPESAWALLET"
+                    provider = "MPESA WALLET"
                 }
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
                     account = prefs.getString("bankAcNumber", "").toString()
                     provider = prefs.getString("chosenBank", "").toString()
-//                    provider = "WALLET"
                 }
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0 -> {
                     account = prefs.getString("walletAccountNumber", "").toString()
@@ -178,17 +175,18 @@ class FundAmountActivity : AppCompatActivity() {
 
             val progressBar = CustomProgressBar()
             progressBar.show(this, "Please Wait...")
-            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider)
+            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider,"Payment")
                     .setCallback { e, result ->
                         Log.e("FundAmountActivity", result.toString())
                         progressBar.dialog.dismiss()
                         if (result.has("errors")) {
-                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray[0].toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.toString(), Toast.LENGTH_LONG).show()
                         } else {
                             val message = result.get("data").asJsonObject.get("message").asString
                             val intent = Intent(this, FundRequestedActivity::class.java)
                             intent.putExtra("Message", message)
                             startActivity(intent)
+                            alertDialog.dismiss()
                             finish()
                         }
                     }

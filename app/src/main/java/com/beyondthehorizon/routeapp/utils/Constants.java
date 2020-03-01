@@ -190,12 +190,13 @@ public class Constants {
 
     public static ResponseFuture<JsonObject> sendMoney(Context context, String beneficiary_account,
                                                        String amount, String pin, String token,
-                                                       String provider) {
+                                                       String provider,String narration) {
         String SERVER_URL = BASE_URL + "wallets/transactions";
         JsonObject json = new JsonObject();
         json.addProperty("beneficiary_account", beneficiary_account);
         json.addProperty("amount", amount);
         json.addProperty("pin", pin);
+        json.addProperty("narration", narration);
         json.addProperty("provider", provider);
 
         return Ion.with(context)
@@ -208,12 +209,14 @@ public class Constants {
 
     public static ResponseFuture<JsonObject> sendMoneyBeneficiary(Context context, String beneficiary_account,
                                                                   String amount, String pin, String token,
-                                                                  String provider, String beneficiary_reference) {
+                                                                  String provider, String beneficiary_reference,
+                                                                  String narration) {
         String SERVER_URL = BASE_URL + "wallets/transactions";
         JsonObject json = new JsonObject();
         json.addProperty("beneficiary_account", beneficiary_account);
         json.addProperty("amount", amount);
         json.addProperty("pin", pin);
+        json.addProperty("narration", narration);
         json.addProperty("provider", provider);
         json.addProperty("beneficiary_reference", beneficiary_reference);
 
