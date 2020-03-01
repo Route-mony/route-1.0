@@ -319,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             "MPESA TILL").setCallback(new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
-                            Log.e(TAG, "onCompleted: " + result);
 
                             progressDialog.dismiss();
                             if (result.has("errors")) {
