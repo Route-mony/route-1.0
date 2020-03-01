@@ -267,9 +267,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
                             editor.apply();
 
-//                            transactionType":9002,"providerName":"KCB BANK","category":"BANK","providerID":901
-
-                            Log.e(TAG, "onCompleted: 46 " + result.toString());
                         }
                     }
                 });
