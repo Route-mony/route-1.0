@@ -6,4 +6,11 @@
     <dimen name="lb_30_sp">30dp</dimen>
     <dimen name="lb_40_sp">40dp</dimen>
     <dimen name="lb_50_sp">50dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="number_spacing">10dp</dimen>
+    <dimen name="keyboard_margin">10dp</dimen>
+    <dimen name="key_btn_size">60dp</dimen>
+    <dimen name="keyboard_screen_top">20dp</dimen>
+    <dimen name="keyboard_screen_bottom">10dp</dimen>
+    <dimen name="keyboard_btn_radius">30dp</dimen>
 </resources>

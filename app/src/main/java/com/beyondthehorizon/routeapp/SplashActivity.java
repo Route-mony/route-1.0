@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.beyondthehorizon.routeapp.views.NotificationActivity;
 import com.beyondthehorizon.routeapp.views.ServicesActivity;
+import com.beyondthehorizon.routeapp.views.auth.SetSecurityInfo;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 } else {
 //                    checkPhoneAuth();
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, SetSecurityInfo.class));
                     finish();
                 }
             }
