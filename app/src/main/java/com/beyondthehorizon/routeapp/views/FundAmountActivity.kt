@@ -38,7 +38,7 @@ class FundAmountActivity : AppCompatActivity() {
         var editor: SharedPreferences.Editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         var prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         var intent = Intent(this, ConfirmFundRequestActivity::class.java)
-
+        var transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
         pref = getSharedPreferences(REG_APP_PREFERENCES, 0)
 
         format = DecimalFormat("#,###")
@@ -86,9 +86,16 @@ class FundAmountActivity : AppCompatActivity() {
                 }
             }
 
-            if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")!!.compareTo(SEND_MONEY) == 0) {
+            if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                 binding.btnRequest.text = "SEND"
                 binding.requestTitle.text = "Send Money To"
+            } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
+                binding.btnRequest.text = "PAY"
+                binding.requestTitle.text = "Enter Amount to Pay"
+            }
+            else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
+                binding.btnRequest.text = "PAY"
+                binding.requestTitle.text = "Enter Amount to Pay"
             }
 
             binding.btnRequest.setOnClickListener {
@@ -99,17 +106,27 @@ class FundAmountActivity : AppCompatActivity() {
                 }
 
                 /**HERE NOW*/
-                else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")!!.compareTo(REQUEST_MONEY) == 0) {
+                else if (transactionType!!.compareTo(REQUEST_MONEY) == 0) {
 
                     editor.putString("Amount", amount)
                     editor.apply()
                     startActivity(intent)
-                } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")!!.compareTo(SEND_MONEY) == 0) {
+                } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
+                }
+                else if(transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0){
+                    var cardNumber = prefs.getString(CARD_NUMBER, "")
+                    var expiryDate = prefs.getString(EXPIRY_DATE, "")
+                    var cvvNumber = prefs.getString(CVV_NUMBER, "")
+                    var country = prefs.getString(COUNTRY, "")
+
+                }
+                else if(transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0){
+                    var mobileNumber = prefs.getString(PHONE_NUMBER, "")
                 }
             }
 
-            binding.arrowBack.setOnClickListener{
+            binding.arrowBack.setOnClickListener {
                 startActivity(Intent(this, RequestFundsActivity::class.java))
 
             }
@@ -175,7 +192,7 @@ class FundAmountActivity : AppCompatActivity() {
 
             val progressBar = CustomProgressBar()
             progressBar.show(this, "Please Wait...")
-            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider,"Payment")
+            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
                     .setCallback { e, result ->
                         Log.e("FundAmountActivity", result.toString())
                         progressBar.dialog.dismiss()

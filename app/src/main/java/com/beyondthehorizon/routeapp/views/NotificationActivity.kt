@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.views
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -63,7 +64,8 @@ class NotificationActivity : AppCompatActivity() {
         }
 
         binding.arrowBack.setOnClickListener {
-            onBackPressed()
+            startActivity(Intent(applicationContext, MainActivity::class.java))
+
         }
     }
 

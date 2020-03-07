@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                 Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
                 startActivity(intent);
+        add_money_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
             }
         });
         btn_request_fund.setOnClickListener(new View.OnClickListener() {

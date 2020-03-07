@@ -46,6 +46,14 @@ public class Constants {
     public static final String MOBILE_PROVIDERS = "MOBILE_PROVIDERS";
     public static final String BANK_PROVIDERS = "BANK_PROVIDERS";
 
+    public static final String LOAD_WALLET_FROM_CARD = "LOAD_WALLET_FROM_CARD";
+    public static final String LOAD_WALLET_FROM_MPESA = "LOAD_WALLET_FROM_MPESA";
+    public static final String CARD_NUMBER = "CARD_NUMBER";
+    public static final String EXPIRY_DATE = "EXPIRY_DATE";
+    public static final String CVV_NUMBER= "CVV_NUMBER";
+    public static final String COUNTRY = "COUNTRY";
+    public static final String PHONE_NUMBER = "PHONE_NUMBER";
+
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
