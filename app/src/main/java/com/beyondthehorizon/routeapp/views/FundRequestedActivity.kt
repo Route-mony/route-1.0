@@ -17,14 +17,23 @@ import java.lang.Exception
 class FundRequestedActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFundRequestedBinding
     private lateinit var prefs: SharedPreferences
+    private lateinit var prefsEditor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_requested)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefsEditor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
 
         try {
             binding.txtRequestInform.text = intent.getStringExtra("Message")
+            prefsEditor.putString("Amount", "")
+            prefsEditor.putString("Id", "")
+            prefsEditor.putString("Phone", "")
+            prefsEditor.putString("Username", "")
+            prefsEditor.putString("accountNumber", "")
+            prefsEditor.putString("walletAccountNumber", "")
+            prefsEditor.apply()
 
             binding.btnDone.setOnClickListener {
                 val intent = Intent(Intent(this, MainActivity::class.java))

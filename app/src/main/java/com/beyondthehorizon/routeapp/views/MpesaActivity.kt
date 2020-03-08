@@ -11,16 +11,17 @@ import com.beyondthehorizon.routeapp.databinding.ActivityMpesaBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import kotlinx.android.synthetic.main.activity_mpesa.*
+import kotlinx.android.synthetic.main.activity_phone.*
 
 class MpesaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMpesaBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mpesa)
-        binding.phoneNumberInput.setFormat("---- --- ----")
+        binding.phoneNumberInput.setFormat("---- ------")
         binding.btnSavePhone.setOnClickListener {
-            var phoneNumber = binding.phoneNumberInput.text.toString()
-            if(phoneNumber.isNotEmpty()){
+            var phoneNumber = binding.phoneNumberInput.text.toString().replace(" ","").trim()
+            if(phoneNumber.length < 10){
                 binding.phoneNumberInput.error = "Enter valid phone number"
             }
             else{

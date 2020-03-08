@@ -4,11 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.androidwidgets.formatedittext.widgets.FormatEditText
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityCardBinding
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.LOAD_WALLET_FROM_CARD
+import com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY
 
 class CardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCardBinding
@@ -20,20 +19,20 @@ class CardActivity : AppCompatActivity() {
         binding.expiryDateInput.setFormat("--/--")
 
         binding.btnSaveCard.setOnClickListener {
-            var cardNumber = binding.cardNumberInput.text.toString()
-            var expDate = binding.expiryDateInput.text.toString()
-            var cvvNumber = binding.cvvInput.text.toString()
-            var country = binding.countryInput.text.toString()
-            if (cardNumber.toString().isEmpty()){
-                binding.cardNumberInput.error = "Enter card number"
+            var cardNumber = binding.cardNumberInput.text.toString().replace(" ","").trim()
+            var expDate = binding.expiryDateInput.text.toString().replace(" ","").trim()
+            var cvvNumber = binding.cvvInput.text.toString().replace(" ","").trim()
+            var country = binding.countryInput.text.toString().replace(" ","").trim()
+            if (cardNumber.length < 16){
+                binding.cardNumberInput.error = "Enter valid card number"
                 binding.cardNumberInput.requestFocus()
             }
-            else if (expDate.isEmpty()) {
-                binding.expiryDateInput.error = "Enter expiry date"
+            else if (expDate.replace("/","").length < 4) {
+                binding.expiryDateInput.error = "Enter valid expiry date"
                 binding.expiryDateInput.requestFocus()
             }
-            else if (cvvNumber.isEmpty()) {
-                binding.cvvInput.error = "Enter CSV number"
+            else if (cvvNumber.length < 3) {
+                binding.cvvInput.error = "Enter valid CSV number"
                 binding.cvvInput.requestFocus()
             }
             else if (country.isEmpty()) {
@@ -42,7 +41,7 @@ class CardActivity : AppCompatActivity() {
             }
             else {
                 var intent = Intent(this, FundAmountActivity::class.java)
-                intent.putExtra(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
                 startActivity(intent)
             }
         }

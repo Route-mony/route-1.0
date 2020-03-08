@@ -3,24 +3,18 @@ package com.beyondthehorizon.routeapp.views
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
-import kotlinx.android.synthetic.main.enter_pin_transaction_pin.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
-import kotlinx.android.synthetic.main.send_money_to_bank_dialog_layout.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -37,14 +31,13 @@ class FundAmountActivity : AppCompatActivity() {
         var binding: ActivityFundAmountBinding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
         var editor: SharedPreferences.Editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         var prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
+        var parentIntent = getIntent()
         var intent = Intent(this, ConfirmFundRequestActivity::class.java)
-        var transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+        var transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
         pref = getSharedPreferences(REG_APP_PREFERENCES, 0)
 
         format = DecimalFormat("#,###")
         try {
-            username = prefs.getString("Username", "").toString()
-            binding.requestUserName.text = username
 
             binding.btnOne.setOnClickListener {
                 binding.txtAmount.text = formatAmount("${amount}${binding.btnOne.text}")
@@ -85,15 +78,14 @@ class FundAmountActivity : AppCompatActivity() {
                     binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
                 }
             }
+            if (transactionType!!.compareTo(REQUEST_MONEY) == 0) {
+                username = prefs.getString("Username", "").toString()
 
-            if (transactionType!!.compareTo(SEND_MONEY) == 0) {
+                binding.requestTitle.text = "Request $username"
+            } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                 binding.btnRequest.text = "SEND"
                 binding.requestTitle.text = "Send Money To"
-            } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
-                binding.btnRequest.text = "PAY"
-                binding.requestTitle.text = "Enter Amount to Pay"
-            }
-            else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
+            } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
             }
@@ -113,22 +105,19 @@ class FundAmountActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
-                }
-                else if(transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0){
+                } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
                     var cardNumber = prefs.getString(CARD_NUMBER, "")
                     var expiryDate = prefs.getString(EXPIRY_DATE, "")
                     var cvvNumber = prefs.getString(CVV_NUMBER, "")
                     var country = prefs.getString(COUNTRY, "")
 
-                }
-                else if(transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0){
+                } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                     var mobileNumber = prefs.getString(PHONE_NUMBER, "")
                 }
             }
 
             binding.arrowBack.setOnClickListener {
-                startActivity(Intent(this, RequestFundsActivity::class.java))
-
+                onBackPressed()
             }
         } catch (ex: Exception) {
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()

@@ -102,7 +102,7 @@
                     android:paddingTop="8dp"
                     android:textSize="16sp"
                     android:digits="01234 56789"
-                    android:hint="0712 456 7896"
+                    android:hint="0712 456789"
                     android:maxLength="16"
                     android:inputType="phone"
                     android:imeOptions="actionSend"
