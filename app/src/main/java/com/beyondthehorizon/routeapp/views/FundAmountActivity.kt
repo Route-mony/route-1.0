@@ -23,18 +23,22 @@ class FundAmountActivity : AppCompatActivity() {
 
     private var username = ""
     private var amount = ""
+    private lateinit var parentIntent:Intent
+    private lateinit var childIntent:Intent
     private lateinit var format: NumberFormat
-    lateinit var pref: SharedPreferences
+    private lateinit var prefs: SharedPreferences
+    private lateinit var binding: ActivityFundAmountBinding
+    private lateinit var editor: SharedPreferences.Editor
+    private lateinit var transactionType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var binding: ActivityFundAmountBinding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
-        var editor: SharedPreferences.Editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
-        var prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
-        var parentIntent = getIntent()
-        var intent = Intent(this, ConfirmFundRequestActivity::class.java)
-        var transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
-        pref = getSharedPreferences(REG_APP_PREFERENCES, 0)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
+        editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
+        parentIntent = getIntent()
+        childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
+        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
+        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
 
         format = DecimalFormat("#,###")
         try {
@@ -83,8 +87,9 @@ class FundAmountActivity : AppCompatActivity() {
 
                 binding.requestTitle.text = "Request $username"
             } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
+                val phone = prefs.getString("Phone", "").toString()
                 binding.btnRequest.text = "SEND"
-                binding.requestTitle.text = "Send Money To"
+                binding.requestTitle.text = "Send To ${phone}"
             } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
@@ -102,7 +107,7 @@ class FundAmountActivity : AppCompatActivity() {
 
                     editor.putString("Amount", amount)
                     editor.apply()
-                    startActivity(intent)
+                    startActivity(childIntent)
                 } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
@@ -159,7 +164,7 @@ class FundAmountActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             when {
-                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
+                transactionType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
                     account = prefs.getString("Phone", "").toString()
                     provider = "MPESA WALLET"
                 }
