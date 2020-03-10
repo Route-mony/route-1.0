@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (result.get("status").toString().contains("failed")) {
                                 Toast.makeText(LoginActivity.this, "A user with this email and password was not found.", Toast.LENGTH_SHORT).show();
                             } else {
-
                                 String email = result.get("data").getAsJsonObject().get("email").toString();
                                 String token = result.get("data").getAsJsonObject().get("token").toString();
 

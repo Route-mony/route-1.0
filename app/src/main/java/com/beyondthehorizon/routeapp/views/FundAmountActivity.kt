@@ -14,6 +14,11 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.interswitchgroup.mobpaylib.MobPay
+import com.interswitchgroup.mobpaylib.model.Card
+import com.interswitchgroup.mobpaylib.model.Customer
+import com.interswitchgroup.mobpaylib.model.Merchant
+import com.interswitchgroup.mobpaylib.model.Payment
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -23,13 +28,15 @@ class FundAmountActivity : AppCompatActivity() {
 
     private var username = ""
     private var amount = ""
-    private lateinit var parentIntent:Intent
-    private lateinit var childIntent:Intent
+    private lateinit var parentIntent: Intent
+    private lateinit var childIntent: Intent
     private lateinit var format: NumberFormat
     private lateinit var prefs: SharedPreferences
     private lateinit var binding: ActivityFundAmountBinding
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var transactionType: String
+    private lateinit var phone: String
+    private lateinit var oldIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +46,8 @@ class FundAmountActivity : AppCompatActivity() {
         childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
         transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
+        oldIntent = getIntent()
+        phone = prefs.getString(PHONE_NUMBER, "").toString()
 
         format = DecimalFormat("#,###")
         try {
@@ -87,12 +96,13 @@ class FundAmountActivity : AppCompatActivity() {
 
                 binding.requestTitle.text = "Request $username"
             } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
-                val phone = prefs.getString("Phone", "").toString()
                 binding.btnRequest.text = "SEND"
                 binding.requestTitle.text = "Send To ${phone}"
             } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
+            } else if (transactionType!!.compareTo(BUY_AIRTIME) == 0) {
+                binding.requestTitle.text = "Buy airtime for ${phone}"
             }
 
             binding.btnRequest.setOnClickListener {
@@ -111,14 +121,59 @@ class FundAmountActivity : AppCompatActivity() {
                 } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
-                    var cardNumber = prefs.getString(CARD_NUMBER, "")
-                    var expiryDate = prefs.getString(EXPIRY_DATE, "")
-                    var cvvNumber = prefs.getString(CVV_NUMBER, "")
-                    var country = prefs.getString(COUNTRY, "")
+                    val lower = 100000000
+                    val upper = 999999999
+                    var merchantId = "TZLETU0001"
+                    var expDate = oldIntent.getStringExtra(EXPIRY_DATE)
+                    var expYear = expDate.substring(0, 2)
+                    var expMonth = expDate.substring(3, 5)
+                    var cvvNumber = oldIntent.getStringExtra(CVV_NUMBER)
+                    var country = oldIntent.getStringExtra(COUNTRY)
+                    var domain = "ISWKE"
+                    var amount = amount
+                    var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
+                    var terminalId = "3TLP0001"
+                    var currency = "KES"
+                    var orderId = "TZL_ANDR_132"
+                    var preauth = "1"
+                    var customerId = prefs.getString(USER_ID, "")
+                    var customerEmail = prefs.getString(USER_EMAIL, "")
+                    var clientId = "IKIAAB09E4ECCB92A508AEDE0D01B36472E27C309F05"
+                    var clientSecret = "f4Vm0o0bXBQTIG4DAKrbs4urZZgJSieih/EiHjnf9/E="
 
+                    try {
+                        var merchant = Merchant(merchantId, domain);
+                        var payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId);
+                        payment.setPreauth(preauth);
+                        var customer = Customer(customerId);
+                        customer.setEmail(customerEmail);
+                        var card = Card(merchantId, cvvNumber, expYear, expMonth);
+                        lateinit var mobPay: MobPay;
+
+                        var config = MobPay.Config();
+                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config);
+
+                        mobPay.makeCardPayment(
+                                card,
+                                merchant,
+                                payment,
+                                customer,
+                                {
+                                    Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
+                                    Toast.makeText(this@FundAmountActivity, it.transactionOrderId, Toast.LENGTH_LONG).show()
+                                }, {
+                            Log.d("INTERSWITCH_MESSAGE", it.message)
+                            Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+
+                        });
+                    } catch (e: Exception) {
+                        Log.d("INTERSWITCH_MESSAGE", e.message)
+                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
+                    }
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                     var mobileNumber = prefs.getString(PHONE_NUMBER, "")
                 }
+
             }
 
             binding.arrowBack.setOnClickListener {
@@ -149,7 +204,7 @@ class FundAmountActivity : AppCompatActivity() {
         val alertDialog = builder.create()
         alertDialog.show()
 
-//        val pin: String = enterPin.text.toString()
+        // val pin: String = enterPin.text.toString()
 
         val prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         val token = "Bearer " + prefs.getString(USER_TOKEN, "")
@@ -165,7 +220,7 @@ class FundAmountActivity : AppCompatActivity() {
             }
             when {
                 transactionType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-                    account = prefs.getString("Phone", "").toString()
+                    account = prefs.getString(PHONE_NUMBER, "").toString()
                     provider = "MPESA WALLET"
                 }
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {

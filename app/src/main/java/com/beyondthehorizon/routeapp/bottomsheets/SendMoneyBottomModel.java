@@ -68,7 +68,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 Intent intent = new Intent(getActivity(), RequestFundsActivity.class);
                 intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
-                editor.apply();
                 startActivity(intent);
                 dismiss();
             }

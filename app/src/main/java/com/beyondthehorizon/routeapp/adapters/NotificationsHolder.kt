@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.models.Notification
+import com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_contact.view.*
@@ -64,7 +65,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
 
                 intent.putExtra("Id", id)
                 intent.putExtra("Username", username)
-                intent.putExtra("Phone", phone)
+                intent.putExtra(PHONE_NUMBER, phone)
                 intent.putExtra("Reason", reason)
                 intent.putExtra("Amount", amount)
                 intent.putExtra("Status", status)

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeModel;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
@@ -46,9 +47,10 @@ import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
+import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
-public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener {
+public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener, BuyAirtimeModel.AirtimeBottomSheetListener {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             btn_request2, btn_settings, btn_transactions, btn_fav1, btn_request54;
     private RelativeLayout RL1;
     private Intent intent; // Animation
+    private LinearLayout mobileMoneyLayout;
     private Animation moveUp;
 
     @Override
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         RL1 = findViewById(R.id.RL1);
         btn_request_fund = findViewById(R.id.btn_request);
         btn_notifications = findViewById(R.id.notifications);
+        btn_buy_airtime = findViewById(R.id.btn_request24);
+        mobileMoneyLayout = findViewById(R.id.mobileLayout);
         moveUp = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.move_up);
 
@@ -175,6 +180,13 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
             }
         });
+        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BuyAirtimeModel airtimeModel = new BuyAirtimeModel();
+                airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
+            }
+        });
 
         isLoggedIn();
     }
@@ -216,7 +228,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
 
-                                String name = result.get("data").getAsJsonObject().get("username").getAsString();
+                                String id = result.get("data").getAsJsonObject().get("id").toString();
+                                String name = result.get("data").getAsJsonObject().get("username").toString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
                                 String username = "Hey " + name + " !";
 
@@ -227,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.apply();
                                 user_name.setText(username);
                                 balance_value.setText("KES " + wallet_balance);
+
+                                editor.putString(USER_ID, id);
+                                editor.apply();
 
                                 getServiceProviders();
                                 sendRegistrationToServer();
@@ -402,5 +418,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 }
             }
         });
+    }
+
+    @Override
+    public void airtimeBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
+        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
     }
 }
