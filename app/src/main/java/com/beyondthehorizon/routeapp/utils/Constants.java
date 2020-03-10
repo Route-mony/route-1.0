@@ -190,7 +190,7 @@ public class Constants {
 
     public static ResponseFuture<JsonObject> sendMoney(Context context, String beneficiary_account,
                                                        String amount, String pin, String token,
-                                                       String provider,String narration) {
+                                                       String provider, String narration) {
         String SERVER_URL = BASE_URL + "wallets/transactions";
         JsonObject json = new JsonObject();
         json.addProperty("beneficiary_account", beneficiary_account);
@@ -245,6 +245,21 @@ public class Constants {
         String SERVER_URL = BASE_URL + "users/profile";
         JsonObject json = new JsonObject();
         json.addProperty("registration_token", registration_token);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //UPDATE USER PROFILE
+    public static ResponseFuture<JsonObject> updateUserProfile(Context context, String token,
+                                                               String phone_number, String username) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("phone_number", phone_number);
+        json.addProperty("username", username);
         return Ion.with(context)
                 .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
