@@ -29,6 +29,7 @@ import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity;
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
-    private ImageButton btn_request_fund, btn_request34, btn_request2, btn_settings;
+    private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
+            btn_request2, btn_settings, btn_transactions, btn_fav1;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private Animation moveUp;
@@ -65,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         editor = pref.edit();
         setContentView(R.layout.activity_main);
 
+        btn_fav1 = findViewById(R.id.btn_fav1);
+        btn_fav2 = findViewById(R.id.btn_fav2);
+        btn_fav3 = findViewById(R.id.btn_fav3);
+        btn_transactions = findViewById(R.id.btn_transactions);
         btn_settings = findViewById(R.id.btn_settings);
         btn_request2 = findViewById(R.id.btn_request2);
         btn_request34 = findViewById(R.id.btn_request34);
@@ -91,11 +97,27 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 startActivity(intent);
             }
         });
+        btn_fav1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
+                editor.apply();
+                startActivity(intent);
+            }
+        });
 
         btn_notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_transactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
                 startActivity(intent);
             }
         });
@@ -108,11 +130,26 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             }
         });
 
+        btn_fav3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
+                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
+            }
+        });
         btn_request34.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
                 sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
+            }
+        });
+        btn_fav2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                viewMpesaPaymentOption();
+                MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
+                mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
             }
         });
         btn_request2.setOnClickListener(new View.OnClickListener() {

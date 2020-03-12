@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class ChangePasswordActivity : AppCompatActivity() {
@@ -21,6 +22,12 @@ class ChangePasswordActivity : AppCompatActivity() {
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@ChangePasswordActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@ChangePasswordActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
         }

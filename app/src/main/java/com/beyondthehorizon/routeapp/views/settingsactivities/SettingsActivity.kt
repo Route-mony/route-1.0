@@ -8,6 +8,7 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
@@ -26,6 +27,12 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(this@SettingsActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        }
+
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@SettingsActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
         }
         back.setOnClickListener {
             onBackPressed()

@@ -267,4 +267,14 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    //GET STATEMENT
+    public static ResponseFuture<JsonObject> getUserStatement(Context context, String token) {
+        String SERVER_URL = BASE_URL + "wallets/statement";
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .asJsonObject();
+    }
 }

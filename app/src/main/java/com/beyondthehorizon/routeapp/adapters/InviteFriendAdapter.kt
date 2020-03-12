@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.InviteFriend
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
+import android.R.attr.name
+
+
 
 class InviteFriendAdapter(private val context: Context) :
         RecyclerView.Adapter<InviteFriendAdapter.ViewHolder>(), Filterable {
@@ -51,13 +56,12 @@ class InviteFriendAdapter(private val context: Context) :
 
         init {
             inviteBtn.setOnClickListener {
-                //                val editor = sharedPref.edit()
-//                val gson = Gson()
-//                val personString = gson.toJson(Patient)
-//                editor.putString(VISITING_HISTORY_PROFILE, personString)
-//                editor.apply()
-//                context.startActivity(Intent(context, HealthRecordsActivity::class.java))
-                Toast.makeText(context, "Coming soon", Toast.LENGTH_LONG).show()
+                val shareBody = "Hello checkout this awesome app! Route App"
+                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+                sharingIntent.type = "text/plain"
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+                context.startActivity(Intent.createChooser(sharingIntent,"Invite Friend To Route App"))
             }
         }
 

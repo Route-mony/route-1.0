@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_terms_of_use.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
@@ -26,6 +27,12 @@ class TermsOfUseActivity : AppCompatActivity() {
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@TermsOfUseActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@TermsOfUseActivity, TransactionsActivity::class.java::class.java)
             startActivity(intent)
             finish()
         }

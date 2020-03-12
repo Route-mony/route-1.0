@@ -14,6 +14,7 @@ import com.beyondthehorizon.routeapp.adapters.InviteFriendAdapter
 import com.beyondthehorizon.routeapp.models.InviteFriend
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.activity_invite_friend.*
@@ -38,6 +39,11 @@ class InviteFriendActivity : AppCompatActivity() {
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@InviteFriendActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@InviteFriendActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -84,7 +90,6 @@ class InviteFriendActivity : AppCompatActivity() {
 
     private fun mapContactsToList(result: JsonArray) {
 
-//        Log.e("AllergiesFragment", result.toString())
         val list = ArrayList<InviteFriend>()
         inviteFriendAdapter.clearList()
 

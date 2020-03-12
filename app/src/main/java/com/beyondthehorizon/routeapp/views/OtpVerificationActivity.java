@@ -192,23 +192,23 @@ public class OtpVerificationActivity extends AppCompatActivity {
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                editTextCode.setError("Invalid code.");
+//                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            editTextCode.setError("Invalid code.");
 
-                                Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_1), "Invalid code.", Snackbar.LENGTH_LONG);
-                                snackbar.setAction("Try again", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //getting mobile number from the previous activity and sending the verification code to the number
-                                        String mobile = pref.getString(MyPhoneNumber, "");
-                                        startPhoneNumberVerification(mobile);
-                                        startCountDown();   //getting mobile number from the previous activity
-                                    }
-                                });
-                                snackbar.show();
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_1), "Invalid code.", Snackbar.LENGTH_LONG);
+                            snackbar.setAction("Try again", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //getting mobile number from the previous activity and sending the verification code to the number
+                                    String mobile = pref.getString(MyPhoneNumber, "");
+                                    startPhoneNumberVerification(mobile);
+                                    startCountDown();   //getting mobile number from the previous activity
+                                }
+                            });
+                            snackbar.show();
 
-                            }
+//                            }
 
                         }
                     }

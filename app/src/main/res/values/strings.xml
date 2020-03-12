@@ -84,4 +84,9 @@
     <string name="invite_friend">Invite a friend</string>
     <string name="get_cash_gifts">Get cash gifts</string>
     <string name="earn_cash_gifts">Earn Ksh 5 every time a friend signs up on \nRoute with your code below </string>
+    <string name="title_activity_transactions">TransactionsActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+
 </resources>

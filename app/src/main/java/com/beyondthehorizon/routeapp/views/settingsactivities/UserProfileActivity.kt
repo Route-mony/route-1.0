@@ -11,6 +11,7 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_terms_of_use.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
@@ -44,6 +45,12 @@ class UserProfileActivity : AppCompatActivity() {
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@UserProfileActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@UserProfileActivity, TransactionsActivity::class.java::class.java)
             startActivity(intent)
             finish()
         }
