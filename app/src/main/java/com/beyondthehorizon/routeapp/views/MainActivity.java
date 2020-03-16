@@ -162,8 +162,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         });
 
         isLoggedIn();
-
-
     }
 
     private void isLoggedIn() {

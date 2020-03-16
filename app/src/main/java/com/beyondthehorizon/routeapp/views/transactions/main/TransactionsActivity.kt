@@ -21,7 +21,7 @@ class TransactionsActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         tabs.setupWithViewPager(view_pager)
-        sectionsPagerAdapter.addFragment(SentFragment(), "Sent")
+//        sectionsPagerAdapter.addFragment(SentFragment(), "Sent")
         sectionsPagerAdapter.addFragment(ReceivedFragment(), "Received")
         sectionsPagerAdapter.addFragment(CashOutFragment(), "Cash Outs")
         view_pager.adapter = sectionsPagerAdapter

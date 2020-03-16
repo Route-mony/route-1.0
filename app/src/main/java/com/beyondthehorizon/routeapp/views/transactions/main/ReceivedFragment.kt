@@ -43,39 +43,44 @@ class ReceivedFragment : Fragment() {
             progressDialog.setMessage("please wait...")
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
-            Constants.getUserStatement(activity, token).setCallback { e, result ->
+            Constants.getUserStatement(activity, token, "received").setCallback { _, result ->
                 progressDialog.dismiss()
                 if (result != null) {
-                    Log.e("HERE", result.get("data").asJsonObject.get("rows").asJsonArray.toString())
 
-                    val list = ArrayList<TransactionModel>()
-                    transactionsAdapter.clearList()
-                    for (item: JsonElement in result.get("data").asJsonObject.get("rows").asJsonArray) {
+                    Log.e("HERE 13 ", result.toString())
+
+                    if (result.get("status").asString.toString().compareTo("success") == 0) {
+
+                        val list = ArrayList<TransactionModel>()
+                        transactionsAdapter.clearList()
+                        if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
+                            return@setCallback
+                        }
+                        for (item: JsonElement in result.get("data").asJsonObject.get("rows").asJsonArray) {
 //                        var id = item.asJsonObject.get("id").asString
 //                        var username = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString + " " +
 //                                item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
 //                        var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
 //                        var imageUrl = R.drawable.group416
-                        val created_at = item.asJsonObject.get("created_at").asString
-                        val details = item.asJsonObject.get("details").asString
-                        val withdrawn = "Ksh. ${item.asJsonObject.get("withdrawn").asString}"
-                        val paid_in = item.asJsonObject.get("paid_in").asString
-                        val balance = item.asJsonObject.get("balance").asString
-                        val wallet_account = item.asJsonObject.get("wallet_account").asString
-                        val reference = item.asJsonObject.get("reference").asString
+                            val created_at = item.asJsonObject.get("created_at").asString
+                            val details = item.asJsonObject.get("details").asString
+                            val withdrawn = "Ksh. ${item.asJsonObject.get("received").asString}"
+//                            val paid_in = item.asJsonObject.get("paid_in").asString
+                            val balance = item.asJsonObject.get("balance").asString
+                            val wallet_account = item.asJsonObject.get("wallet_account").asString
+                            val reference = item.asJsonObject.get("reference").asString
 //                        var status = item.asJsonObject.get("status").asString.toLowerCase()
 //                        var statusIcon = statusMapper[status]
 
-                        list.add(TransactionModel(created_at, details, withdrawn,
-                                paid_in, balance, wallet_account, reference))
+                            list.add(TransactionModel(created_at, details, withdrawn,
+                                    "", balance, wallet_account, reference))
+                        }
+                        receivedRecycler.apply {
+                            layoutManager = LinearLayoutManager(activity)
+                            adapter = transactionsAdapter
+                        }
+                        transactionsAdapter.setContact(list)
                     }
-                    receivedRecycler.apply {
-                        layoutManager = LinearLayoutManager(activity)
-                        adapter = transactionsAdapter
-                    }
-                    transactionsAdapter.setContact(list)
-                } else {
-                    Toast.makeText(activity, "No statement found", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: Exception) {

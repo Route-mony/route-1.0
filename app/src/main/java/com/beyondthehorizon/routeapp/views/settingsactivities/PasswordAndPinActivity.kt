@@ -16,7 +16,7 @@ class PasswordAndPinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_password_and_pin)
 
         changePassword.setOnClickListener {
-            startActivity(Intent(this@PasswordAndPinActivity, PasswordAndPinActivity::class.java))
+            startActivity(Intent(this@PasswordAndPinActivity, ChangePasswordActivity::class.java))
         }
         btn_home.setOnClickListener {
             val intent = Intent(this@PasswordAndPinActivity, MainActivity::class.java)
@@ -31,9 +31,12 @@ class PasswordAndPinActivity : AppCompatActivity() {
         }
 
         btn_transactions.setOnClickListener {
-            val intent = Intent(this@PasswordAndPinActivity, TransactionsActivity::class.java::class.java)
+            val intent = Intent(this@PasswordAndPinActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
+        }
+        back.setOnClickListener {
+            onBackPressed()
         }
     }
 }

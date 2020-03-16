@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
+import java.net.URLEncoder;
+
 public class Constants {
     public static String BASE_URL = "http://167.172.214.193/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
@@ -269,10 +271,11 @@ public class Constants {
     }
 
     //GET STATEMENT
-    public static ResponseFuture<JsonObject> getUserStatement(Context context, String token) {
-        String SERVER_URL = BASE_URL + "wallets/statement";
+    public static ResponseFuture<JsonObject> getUserStatement(Context context, String token, String transaction_type) {
+
+        String SERVER_URL = BASE_URL + "wallets/statement?transaction_type=" + transaction_type;
         return Ion.with(context)
-                .load(SERVER_URL)
+                .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .asJsonObject();

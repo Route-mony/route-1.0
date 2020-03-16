@@ -14,7 +14,7 @@
         <activity
             android:name=".views.transactions.main.TransactionsActivity"
             android:label="@string/title_activity_transactions"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".views.settingsactivities.UserProfileActivity"
             android:launchMode="singleTask" />
