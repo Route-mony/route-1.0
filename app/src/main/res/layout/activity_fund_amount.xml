@@ -181,6 +181,42 @@
                         app:layout_constraintTop_toBottomOf="@id/btn_three" />
 
                     <Button
+                        android:id="@+id/btn_seven"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@drawable/service_buttons"
+                        android:text="7"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@id/btn_five"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_four" />
+
+                    <Button
+                        android:id="@+id/btn_eight"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@drawable/service_buttons"
+                        android:text="8"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@id/btn_seven"
+                        app:layout_constraintStart_toEndOf="@id/btn_six"
+                        app:layout_constraintTop_toBottomOf="@id/btn_five" />
+
+                    <Button
+                        android:id="@+id/btn_nine"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="@drawable/service_buttons"
+                        android:text="9"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/btn_eight"
+                        app:layout_constraintTop_toBottomOf="@id/btn_six" />
+
+                    <Button
                         android:id="@+id/btn_zero_zero"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
@@ -190,7 +226,7 @@
                         android:textSize="24sp"
                         app:layout_constraintEnd_toStartOf="@id/btn_zero"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_four" />
+                        app:layout_constraintTop_toBottomOf="@id/btn_seven" />
 
                     <Button
                         android:id="@+id/btn_zero"
@@ -201,8 +237,8 @@
                         android:text="0"
                         android:textSize="24sp"
                         app:layout_constraintEnd_toStartOf="@id/btn_clear"
-                        app:layout_constraintStart_toEndOf="@id/btn_four"
-                        app:layout_constraintTop_toBottomOf="@id/btn_five" />
+                        app:layout_constraintStart_toEndOf="@id/btn_zero_zero"
+                        app:layout_constraintTop_toBottomOf="@id/btn_eight" />
 
                     <Button
                         android:id="@+id/btn_clear"
@@ -212,7 +248,7 @@
                         android:background="@drawable/clear_button"
                         app:layout_constraintBottom_toBottomOf="@id/btn_zero"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/btn_five"
+                        app:layout_constraintStart_toEndOf="@id/btn_eight"
                         app:layout_constraintTop_toTopOf="@id/btn_zero" />
 
                     <Button
@@ -220,9 +256,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="50dp"
-                        android:layout_marginVertical="20dp"
+                        android:layout_marginVertical="30dp"
                         android:background="@drawable/round_route_button"
-                        android:padding="20dp"
                         android:text="Request"
                         android:textAllCaps="false"
                         android:textColor="@color/colorAccent"

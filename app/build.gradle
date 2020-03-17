@@ -81,7 +81,7 @@ dependencies {
     implementation 'com.androidwidgets:formatedittext:0.2.0'
 
     //Interswitch
-    implementation 'com.github.interswitch-kenya-limited:mobpay:0.2.0'
+    implementation 'com.github.interswitch-kenya-limited:mobpay:0.2.01'
 
     implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'

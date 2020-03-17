@@ -9,19 +9,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
-import com.google.android.material.snackbar.Snackbar
 import com.interswitchgroup.mobpaylib.MobPay
-import com.interswitchgroup.mobpaylib.api.model.TransactionResponse
-import com.interswitchgroup.mobpaylib.interfaces.TransactionFailureCallback
-import com.interswitchgroup.mobpaylib.interfaces.TransactionSuccessCallback
 import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
+import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -78,6 +74,18 @@ class FundAmountActivity : AppCompatActivity() {
                 binding.txtAmount.text = formatAmount("${amount}${binding.btnSix.text}")
             }
 
+            binding.btnSeven.setOnClickListener {
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnSeven.text}")
+            }
+
+            binding.btnEight.setOnClickListener {
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnEight.text}")
+            }
+
+            binding.btnNine.setOnClickListener {
+                binding.txtAmount.text = formatAmount("${amount}${binding.btnNine.text}")
+            }
+
             binding.btnZero.setOnClickListener {
                 binding.txtAmount.text = formatAmount("${amount}${binding.btnZero.text}")
             }
@@ -110,26 +118,27 @@ class FundAmountActivity : AppCompatActivity() {
             binding.btnRequest.setOnClickListener {
                 val lower = 100000000
                 val upper = 999999999
-                var merchantId = "TZLETU0001"
+                val secureRandom = SecureRandom()
+                var merchantId = "ROUTEK0001"
                 var country = oldIntent.getStringExtra(COUNTRY)
                 var domain = "ISWKE"
                 var amount = amount
                 var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
                 var terminalId = "3TLP0001"
                 var currency = "KES"
-                var orderId = "TZL_ANDR_132"
+                var orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
                 var preauth = "1"
                 var customerId = prefs.getString(USER_ID, "")
                 var customerEmail = prefs.getString(USER_EMAIL, "")
-                var clientId = "IKIAAB09E4ECCB92A508AEDE0D01B36472E27C309F05"
-                var clientSecret = "f4Vm0o0bXBQTIG4DAKrbs4urZZgJSieih/EiHjnf9/E="
+                var clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
+                var clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
 
 
                 var merchant = Merchant(merchantId, domain);
-                var payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId);
-                payment.setPreauth(preauth);
-                var customer = Customer(customerId);
-                customer.setEmail(customerEmail);
+                var payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                payment.setPreauth(preauth)
+                var customer = Customer(customerId)
+                customer.setEmail(customerEmail)
 
                 if (binding.txtAmount.text.isNullOrEmpty()) {
                     Toast.makeText(this, "Please enter amount to request", Toast.LENGTH_LONG).show()
@@ -146,17 +155,18 @@ class FundAmountActivity : AppCompatActivity() {
                 } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
+                    var cardNumber = oldIntent.getStringExtra(CARD_NUMBER)
                     var expDate = oldIntent.getStringExtra(EXPIRY_DATE)
                     var expYear = expDate.substring(3, 5)
                     var expMonth = expDate.substring(0, 2)
                     var cvvNumber = oldIntent.getStringExtra(CVV_NUMBER)
 
                     try {
-                        var card = Card(merchantId, cvvNumber, expYear, expMonth);
+                        var card = Card(cardNumber, cvvNumber, expYear, expMonth);
                         lateinit var mobPay: MobPay;
 
                         var config = MobPay.Config();
-                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config);
+                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
 
                         mobPay.makeCardPayment(
                                 card,
@@ -175,27 +185,27 @@ class FundAmountActivity : AppCompatActivity() {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
                     }
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
-                    var mobileNumber = oldIntent.getStringExtra(PHONE_NUMBER)
-                    var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
-                    var mobPay: MobPay
                     try {
+                        var mobileNumber = oldIntent.getStringExtra(PHONE_NUMBER)
+                        var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
+                        var config = MobPay.Config()
+                        var mobPay: MobPay
                         mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
+                        mobPay.makeMobileMoneyPayment(
+                                mobile,
+                                merchant,
+                                payment,
+                                customer, {
+                            Log.d("INTERSWITCH_MESSAGE", "Transaction succeeded, ref:\t${it.transactionOrderId}")
+                            Toast.makeText(this@FundAmountActivity, "Transaction succeeded, ref:\t${it.transactionOrderId}", Toast.LENGTH_LONG).show()
+                        }, {
+                            Log.d("INTERSWITCH_MESSAGE", it.message)
+                            Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+
+                        })
                     } catch (e: Exception) {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
-                        return@setOnClickListener
                     }
-                    mobPay.makeMobileMoneyPayment(
-                            mobile,
-                            merchant,
-                            payment,
-                            customer,{
-                                    Log.d("INTERSWITCH_MESSAGE", "Transaction succeeded, ref:\t${it.transactionOrderId}")
-                                    Toast.makeText(this@FundAmountActivity, "Transaction succeeded, ref:\t${it.transactionOrderId}", Toast.LENGTH_LONG).show()
-                            },{
-                        Log.d("INTERSWITCH_MESSAGE", it.message)
-                        Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
-
-                    })
                 }
 
             }
