@@ -35,6 +35,7 @@ class FundAmountActivity : AppCompatActivity() {
     private lateinit var transactionType: String
     private lateinit var phone: String
     private lateinit var oldIntent: Intent
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class FundAmountActivity : AppCompatActivity() {
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         oldIntent = getIntent()
         phone = prefs.getString(PHONE_NUMBER, "").toString()
+        val token = "Bearer " + prefs.getString(USER_TOKEN, "")
 
         format = DecimalFormat("#,###")
         try {
@@ -161,29 +163,57 @@ class FundAmountActivity : AppCompatActivity() {
                     var expMonth = expDate.substring(0, 2)
                     var cvvNumber = oldIntent.getStringExtra(CVV_NUMBER)
 
-                    try {
-                        var card = Card(cardNumber, cvvNumber, expYear, expMonth);
-                        lateinit var mobPay: MobPay;
-
-                        var config = MobPay.Config();
-                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
-
-                        mobPay.makeCardPayment(
-                                card,
-                                merchant,
-                                payment,
-                                customer,{
-                                    Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
-                                    Toast.makeText(this@FundAmountActivity, it.transactionOrderId, Toast.LENGTH_LONG).show()
-                                }, {
-                                Log.d("INTERSWITCH_MESSAGE", it.message)
-                                Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
-
-                        });
-                    } catch (e: Exception) {
-                        Log.d("INTERSWITCH_MESSAGE", e.message)
-                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
-                    }
+                    addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
+                            .setCallback { e, result ->
+                                Log.e("FundAmountActivity", result.toString())
+//                                        progressBar.dialog.dismiss()
+                                if (result.has("errors")) {
+                                    Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.toString(), Toast.LENGTH_LONG).show()
+                                } else {
+                                    val message = result.get("data").asJsonObject.get("message").asString
+                                    val intent = Intent(this, FundRequestedActivity::class.java)
+                                    intent.putExtra("Message", message)
+                                    startActivity(intent)
+                                }
+                            }
+//                    try {
+//                        var card = Card(cardNumber, cvvNumber, expYear, expMonth);
+//                        lateinit var mobPay: MobPay;
+//
+//                        var config = MobPay.Config();
+//                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
+//
+//                        mobPay.makeCardPayment(
+//                                card,
+//                                merchant,
+//                                payment,
+//                                customer,{
+//                                    Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
+//                            val token = "Bearer " + prefs.getString(USER_TOKEN, "")
+////                            val progressBar = CustomProgressBar()
+////                            progressBar.show(this, "Please Wait...")
+//                            addPaymentCard(this@FundAmountActivity, cardNumber.toInt(), expDate, cvvNumber.toInt(), country, token)
+//                                    .setCallback { e, result ->
+//                                        Log.e("FundAmountActivity", result.toString())
+////                                        progressBar.dialog.dismiss()
+//                                        if (result.has("errors")) {
+//                                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.toString(), Toast.LENGTH_LONG).show()
+//                                        } else {
+//                                            val message = result.get("data").asJsonObject.get("message").asString
+//                                            val intent = Intent(this, FundRequestedActivity::class.java)
+//                                            intent.putExtra("Message", message)
+//                                            startActivity(intent)
+//                                        }
+//                                    }
+//                                }, {
+//                                Log.d("INTERSWITCH_MESSAGE", it.message)
+//                                Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+//
+//                        });
+//                    } catch (e: Exception) {
+//                        Log.d("INTERSWITCH_MESSAGE", e.message)
+//                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
+//                    }
                 } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                     try {
                         var mobileNumber = oldIntent.getStringExtra(PHONE_NUMBER)
@@ -239,9 +269,6 @@ class FundAmountActivity : AppCompatActivity() {
         alertDialog.show()
 
         // val pin: String = enterPin.text.toString()
-
-        val prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
-        val token = "Bearer " + prefs.getString(USER_TOKEN, "")
         var account = ""
         var provider = ""
 
