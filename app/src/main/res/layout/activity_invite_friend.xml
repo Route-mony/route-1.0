@@ -23,10 +23,10 @@
             app:srcCompat="@drawable/leftarrow29" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:text="@string/invite_friend"
             android:textColor="@color/white"
             android:textSize="23sp"
@@ -92,6 +92,7 @@
         android:padding="20dp">
 
         <TextView
+            android:id="@+id/inner_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

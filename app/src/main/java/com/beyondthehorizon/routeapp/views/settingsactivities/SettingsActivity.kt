@@ -38,7 +38,9 @@ class SettingsActivity : AppCompatActivity() {
             onBackPressed()
         }
         inviteFriends.setOnClickListener {
-            startActivity(Intent(this@SettingsActivity, InviteFriendActivity::class.java))
+            val intent = Intent(this@SettingsActivity, InviteFriendActivity::class.java)
+            intent.putExtra("TYPE", "Invite")
+            startActivity(intent)
         }
         pinAndPass.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, PasswordAndPinActivity::class.java))

@@ -62,7 +62,8 @@ class ReceivedFragment : Fragment() {
 //                                item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
 //                        var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
 //                        var imageUrl = R.drawable.group416
-                            val created_at = item.asJsonObject.get("created_at").asString
+                            val date = item.asJsonObject.get("date").asString
+                            val time = item.asJsonObject.get("time").asString
                             val details = item.asJsonObject.get("details").asString
                             val withdrawn = "Ksh. ${item.asJsonObject.get("received").asString}"
 //                            val paid_in = item.asJsonObject.get("paid_in").asString
@@ -72,6 +73,7 @@ class ReceivedFragment : Fragment() {
 //                        var status = item.asJsonObject.get("status").asString.toLowerCase()
 //                        var statusIcon = statusMapper[status]
 
+                            val created_at= "$date  $time"
                             list.add(TransactionModel(created_at, details, withdrawn,
                                     "", balance, wallet_account, reference))
                         }

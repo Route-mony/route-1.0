@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.transactions.main.TransactionDetailsActivity"></activity>
         <activity
             android:name=".views.transactions.main.TransactionsActivity"
             android:label="@string/title_activity_transactions"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.settingsactivities.UserProfileActivity"
             android:launchMode="singleTask" />

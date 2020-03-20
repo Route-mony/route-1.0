@@ -17,20 +17,24 @@ import androidx.core.content.ContextCompat.startActivity
 import android.R.attr.name
 
 
+class InviteFriendAdapter(private val context: Context, private val theView: String) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-class InviteFriendAdapter(private val context: Context) :
-        RecyclerView.Adapter<InviteFriendAdapter.ViewHolder>(), Filterable {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-    private var listOfContacts = ArrayList<InviteFriend>()
-    private var filterListOfContacts = ArrayList<InviteFriend>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-                LayoutInflater.from(context).inflate(
-                        R.layout.invite_friend_layout_item,
-                        parent,
-                        false
-                )
-        )
+//        val inflater = LayoutInflater.from(parent.context)
+
+        return when (viewType) {
+            R.layout.invite_friend_layout_item -> ViewHolderInvite(
+                    LayoutInflater.from(context).inflate(R.layout.invite_friend_layout_item, parent, false)
+            )
+
+            R.layout.share_receipt -> ViewHolderShareReceipt(
+                    LayoutInflater.from(context).inflate(R.layout.share_receipt, parent, false)
+            )
+
+            else -> throw IllegalArgumentException("Unsupported layout") // in case populated with a model we don't know how to display.
+        }
     }
 
     override fun getItemCount(): Int {
@@ -41,12 +45,27 @@ class InviteFriendAdapter(private val context: Context) :
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val inviteFriend: InviteFriend = listOfContacts[position]
-        holder.bind(inviteFriend)
+
+        when (holder) {
+            is ViewHolderInvite -> {
+                holder.bind(inviteFriend)
+            }
+
+            is ViewHolderShareReceipt -> {
+//                val adModel = element as AdModel
+                // bind AdViewHolder
+                holder.bind(inviteFriend)
+            }
+
+        }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private var listOfContacts = ArrayList<InviteFriend>()
+    private var filterListOfContacts = ArrayList<InviteFriend>()
+
+    inner class ViewHolderInvite(view: View) : RecyclerView.ViewHolder(view) {
         // Holds the TextView that will add each animal to
 
         //        private val patientDoctor = view.p_doctor!!
@@ -61,7 +80,7 @@ class InviteFriendAdapter(private val context: Context) :
                 sharingIntent.type = "text/plain"
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
-                context.startActivity(Intent.createChooser(sharingIntent,"Invite Friend To Route App"))
+                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
             }
         }
 
@@ -70,6 +89,45 @@ class InviteFriendAdapter(private val context: Context) :
             phoneNumber.text = invite.phone
 
         }
+
+    }
+
+    inner class ViewHolderShareReceipt(view: View) : RecyclerView.ViewHolder(view) {
+        // Holds the TextView that will add each animal to
+
+        //        private val patientDoctor = view.p_doctor!!
+        private val userName = view.userName!!
+        private val phoneNumber = view.phoneNumber!!
+        private val inviteBtn = view.inviteBtn!!
+
+        init {
+            inviteBtn.setOnClickListener {
+
+                Toast.makeText(context, "coming soon....", Toast.LENGTH_LONG).show()
+//                val shareBody = "Hello checkout this awesome app! Route App"
+//                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+//                sharingIntent.type = "text/plain"
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+//                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
+            }
+        }
+
+        fun bind(invite: InviteFriend) {
+            userName.text = invite.username
+            phoneNumber.text = invite.phone
+
+        }
+
+    }
+
+
+    override fun getItemViewType(position: Int): Int {
+
+        if (theView.contains("Invite")) {
+            return R.layout.invite_friend_layout_item
+        }
+        return R.layout.share_receipt
 
     }
 
@@ -113,4 +171,5 @@ class InviteFriendAdapter(private val context: Context) :
             notifyDataSetChanged()
         }
     }
+
 }

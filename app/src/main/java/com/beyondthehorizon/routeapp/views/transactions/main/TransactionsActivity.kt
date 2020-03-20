@@ -22,8 +22,9 @@ class TransactionsActivity : AppCompatActivity() {
 
         tabs.setupWithViewPager(view_pager)
 //        sectionsPagerAdapter.addFragment(SentFragment(), "Sent")
-        sectionsPagerAdapter.addFragment(ReceivedFragment(), "Received")
+        sectionsPagerAdapter.addFragment(ReceivedFragment(), "Cash In")
         sectionsPagerAdapter.addFragment(CashOutFragment(), "Cash Outs")
+
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
 

@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.beyondthehorizon.routeapp.R
 import android.provider.ContactsContract
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,12 @@ class InviteFriendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite_friend)
 
+        val requestType = intent.getStringExtra("TYPE")
+        if (requestType.contains("SHARE")) {
+            header2.visibility = View.GONE
+            inner_txt.visibility = View.GONE
+            txt_title.text = "Share Receipt"
+        }
         btn_home.setOnClickListener {
             val intent = Intent(this@InviteFriendActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -54,7 +61,7 @@ class InviteFriendActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        inviteFriendAdapter = InviteFriendAdapter(this@InviteFriendActivity)
+        inviteFriendAdapter = InviteFriendAdapter(this@InviteFriendActivity, requestType)
         loadRouteContacts()
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

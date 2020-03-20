@@ -202,14 +202,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
 
-                                String name = result.get("data").getAsJsonObject().get("username").toString();
+                                String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
-                                String username = "Hey " + name.substring(1, name.length() - 1) + " !";
+                                String username = "Hey " + name+ " !";
 
-                                String fname = result.get("data").getAsJsonObject().get("first_name").toString();
-                                String lname = result.get("data").getAsJsonObject().get("last_name").toString();
+                                String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
+                                String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
 
-                                editor.putString("FullName", fname.substring(1, fname.length() - 1) + " " + lname.substring(1, fname.length() - 1));
+                                editor.putString("FullName", fname+ " " + lname);
                                 editor.apply();
                                 user_name.setText(username);
                                 balance_value.setText("KES " + wallet_balance);

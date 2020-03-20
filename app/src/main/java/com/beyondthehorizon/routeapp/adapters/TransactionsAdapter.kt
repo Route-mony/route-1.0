@@ -1,6 +1,7 @@
 package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.TransactionModel
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
 import kotlinx.android.synthetic.main.sent_transactions.view.*
@@ -58,8 +60,8 @@ class TransactionsAdapter(private val context: Context) :
 //                val personString = gson.toJson(Patient)
 //                editor.putString(VISITING_HISTORY_PROFILE, personString)
 //                editor.apply()
-//                context.startActivity(Intent(context, HealthRecordsActivity::class.java))
-                Toast.makeText(context, "Coming soon", Toast.LENGTH_LONG).show()
+                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
+//                Toast.makeText(context, "Coming soon", Toast.LENGTH_LONG).show()
             }
         }
 
