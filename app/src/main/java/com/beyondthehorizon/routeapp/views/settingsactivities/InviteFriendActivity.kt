@@ -1,5 +1,6 @@
 package com.beyondthehorizon.routeapp.views.settingsactivities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ class InviteFriendActivity : AppCompatActivity() {
 
     lateinit var inviteFriendAdapter: InviteFriendAdapter
     private lateinit var prefs: SharedPreferences
+    private lateinit var progressBar: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite_friend)
@@ -38,6 +40,9 @@ class InviteFriendActivity : AppCompatActivity() {
             inner_txt.visibility = View.GONE
             txt_title.text = "Share Receipt"
         }
+        progressBar = ProgressDialog(this@InviteFriendActivity)
+        progressBar.setMessage("Please wait...")
+        progressBar.setCanceledOnTouchOutside(false)
         btn_home.setOnClickListener {
             val intent = Intent(this@InviteFriendActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -83,6 +88,7 @@ class InviteFriendActivity : AppCompatActivity() {
     }
 
     private fun loadRouteContacts() {
+        progressBar.show()
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
             Constants.loadUserContacts(this, token).setCallback { e, result ->
@@ -102,6 +108,7 @@ class InviteFriendActivity : AppCompatActivity() {
 
         // Hash Maps
         val namePhoneMap = HashMap<String, String>()
+        val sharePhoneMap = HashMap<String, String>()
         val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, null)
 
@@ -121,28 +128,66 @@ class InviteFriendActivity : AppCompatActivity() {
         }
 
         phones.close()
+
+        var idList = ArrayList<String>()
+        val requestType = intent.getStringExtra("TYPE")
         if (result != null) {
             for (item: JsonElement in result) {
                 val phone = item.asJsonObject.get("phone_number").asString
-                if (namePhoneMap.keys.contains(phone.substring(phone.length - 9))) {
-                    namePhoneMap.remove(phone.substring(phone.length - 9))
+                val id = item.asJsonObject.get("id").asString
+
+
+                if (requestType.contains("Invite")) {
+                    if (namePhoneMap.keys.contains(phone.substring(phone.length - 9))) {
+                        namePhoneMap.remove(phone.substring(phone.length - 9))
+                    }
+                } else {
+                    if (namePhoneMap.keys.contains(phone.substring(phone.length - 9))) {
+
+                        Log.e("FragmentActivity.TAG", "Name :")
+                        idList.add(id)
+//                        sharePhoneMap[phone.substring(phone.length - 9)] = namePhoneMap.get(phone.substring(phone.length - 9))
+
+                        sharePhoneMap[phone.substring(phone.length - 9)] = namePhoneMap[phone.substring(phone.length - 9)].toString()
+                    }
                 }
+
             }
+
             // Get The Contents of Hash Map in Log
-            for (entry in namePhoneMap.entries) {
-                val keyPhone = entry.key
 
-                val valueUserName = entry.value
-                Log.d("FragmentActivity.TAG", "Name :$valueUserName")
+            if (requestType.contains("Invite")) {
+                for (entry in namePhoneMap.entries) {
+                    val keyPhone = entry.key
+//                val idPhone = entry.
 
-                list.add(InviteFriend(valueUserName, "0$keyPhone"))
+                    val valueUserName = entry.value
 
-                inviteFriendsRecycler.apply {
-                    layoutManager = LinearLayoutManager(this@InviteFriendActivity)
-                    adapter = inviteFriendAdapter
+                    list.add(InviteFriend(valueUserName, "0$keyPhone", ""))
+                    inviteFriendsRecycler.apply {
+                        layoutManager = LinearLayoutManager(this@InviteFriendActivity)
+                        adapter = inviteFriendAdapter
+                    }
+                    inviteFriendAdapter.setContact(list)
                 }
-                inviteFriendAdapter.setContact(list)
+            } else {
+                var i = 0
+                for (entry in sharePhoneMap.entries) {
+                    val keyPhone = entry.key
+                    val valueUserName = entry.value
+
+                    list.add(InviteFriend(valueUserName, "0$keyPhone", idList[i]))
+                    i++
+
+                    inviteFriendsRecycler.apply {
+                        layoutManager = LinearLayoutManager(this@InviteFriendActivity)
+                        adapter = inviteFriendAdapter
+                    }
+                    inviteFriendAdapter.setContact(list)
+                }
+
             }
+            progressBar.dismiss()
         } else {
             Log.d("ContactResponse", "No contacts registered on route")
         }

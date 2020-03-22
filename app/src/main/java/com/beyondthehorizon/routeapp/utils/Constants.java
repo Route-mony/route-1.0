@@ -14,6 +14,11 @@ public class Constants {
     public static String BASE_URL = "http://167.172.214.193/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
+    public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
+    public static String TRANS_TYPE = "TRANS_TYPE";
+    public static String TRANSACTION_DETAILS = "TRANSACTION_DETAILS";
+    public static String SHARE_RECEIPT_TO_ID = "SHARE_RECEIPT_TO_ID";
+    public static String SHARE_RECEIPT_TITLE = "SHARE_RECEIPT_TITLE";
 
     public static final String LOGGED_IN = "LOGGED_IN";
     public static final String TRANSACTIONS_PIN = "TRANSACTIONS_PIN";
@@ -278,6 +283,68 @@ public class Constants {
                 .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
+    //GET RECEIPT http://167.172.214.193/api/v1/receipts/?receipt_option=sent/received
+    public static ResponseFuture<JsonObject> getUserReceipt(Context context, String token, String receipt_type) {
+
+        String SERVER_URL = BASE_URL + "receipts/?receipt_option=" + receipt_type;
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
+    //GET RECEIPT http://167.172.214.193/api/v1/receipts/?receipt_option=sent/received
+    public static ResponseFuture<JsonObject> postUserReceipt(Context context, String token,
+                                                             String title,
+                                                             String recipient,
+                                                             String amount_spent,
+                                                             String description,
+                                                             String image,
+                                                             String transaction_date) {
+        JsonObject json = new JsonObject();
+        json.addProperty("title", title);
+        json.addProperty("recipient", recipient);
+        json.addProperty("amount_spent", amount_spent);
+        json.addProperty("description", description);
+        json.addProperty("image", image);
+        json.addProperty("transaction_date", transaction_date);
+
+        String SERVER_URL = BASE_URL + "receipts/";
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    // approveUserReceipt
+    public static ResponseFuture<JsonObject> approveUserReceipt(Context context, String token,
+                                                                String receipt_id) {
+        String SERVER_URL = BASE_URL + "receipts/" + receipt_id + "/approve";
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
+    // rejectUserReceipt
+    public static ResponseFuture<JsonObject> rejectUserReceipt(Context context, String token,
+                                                               String receipt_id,
+                                                               String cancel_reason) {
+        JsonObject json = new JsonObject();
+        json.addProperty("cancellation_reason", cancel_reason);
+        String SERVER_URL = BASE_URL + "receipts/" + receipt_id + "/cancel";
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
                 .asJsonObject();
     }
 }

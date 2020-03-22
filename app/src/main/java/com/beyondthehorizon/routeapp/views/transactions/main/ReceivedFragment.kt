@@ -64,18 +64,20 @@ class ReceivedFragment : Fragment() {
 //                        var imageUrl = R.drawable.group416
                             val date = item.asJsonObject.get("date").asString
                             val time = item.asJsonObject.get("time").asString
-                            val details = item.asJsonObject.get("details").asString
-                            val withdrawn = "Ksh. ${item.asJsonObject.get("received").asString}"
+                            val sender = item.asJsonObject.get("sender").asString
+                            val withdrawn = item.asJsonObject.get("received").asString
 //                            val paid_in = item.asJsonObject.get("paid_in").asString
+
+                            val description = item.asJsonObject.get("description").asString
                             val balance = item.asJsonObject.get("balance").asString
                             val wallet_account = item.asJsonObject.get("wallet_account").asString
                             val reference = item.asJsonObject.get("reference").asString
 //                        var status = item.asJsonObject.get("status").asString.toLowerCase()
 //                        var statusIcon = statusMapper[status]
 
-                            val created_at= "$date  $time"
-                            list.add(TransactionModel(created_at, details, withdrawn,
-                                    "", balance, wallet_account, reference))
+                            val created_at = "$date  $time"
+                            list.add(TransactionModel(created_at, sender, withdrawn,
+                                    "", balance, wallet_account, reference, description))
                         }
                         receivedRecycler.apply {
                             layoutManager = LinearLayoutManager(activity)

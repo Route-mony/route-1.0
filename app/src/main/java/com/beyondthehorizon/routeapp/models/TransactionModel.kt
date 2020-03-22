@@ -7,5 +7,6 @@ data class TransactionModel(
         var paid_in: String,
         var balance: String,
         var wallet_account: String,
-        var reference: String
+        var reference: String,
+        var description: String
 )

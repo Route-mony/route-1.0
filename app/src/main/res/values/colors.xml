@@ -42,4 +42,7 @@
     <color name="background_color">#78ffffff</color>
     <color name="sign_up_shady">#8C2196F3</color>
     <color name="keyboard_color">#034380</color>
+
+    <color name="view_color_red">#FD0303</color>
+    <color name="view_color_green">#49EE07</color>
 </resources>

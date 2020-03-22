@@ -48,6 +48,10 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
 
+    //circular images, cropper and compression
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation 'id.zelory:compressor:2.1.0'
+
     // retrofitimplementation 'com.github.IslamKhSh:CardSlider:
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -67,6 +71,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
 
     //NETWORK CALL
     implementation 'com.koushikdutta.ion:ion:2.2.1'

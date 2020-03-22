@@ -28,6 +28,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity;
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity;
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
     private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
-            btn_request2, btn_settings, btn_transactions, btn_fav1;
+            btn_request2, btn_settings, btn_transactions, btn_fav1, btn_request54;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private Animation moveUp;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         editor = pref.edit();
         setContentView(R.layout.activity_main);
 
+        btn_request54 = findViewById(R.id.btn_request54);
         btn_fav1 = findViewById(R.id.btn_fav1);
         btn_fav2 = findViewById(R.id.btn_fav2);
         btn_fav3 = findViewById(R.id.btn_fav3);
@@ -89,6 +91,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
         intent = new Intent(this, RequestFundsActivity.class);
 
+        btn_request54.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+                startActivity(intent);
+            }
+        });
         btn_request_fund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,12 +214,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
-                                String username = "Hey " + name+ " !";
+                                String username = "Hey " + name + " !";
 
                                 String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
                                 String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
 
-                                editor.putString("FullName", fname+ " " + lname);
+                                editor.putString("FullName", fname + " " + lname);
                                 editor.apply();
                                 user_name.setText(username);
                                 balance_value.setText("KES " + wallet_balance);

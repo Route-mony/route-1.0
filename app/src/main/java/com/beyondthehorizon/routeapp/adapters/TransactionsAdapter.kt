@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.TransactionModel
+import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.utils.Constants.TRANSACTION_DETAILS
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
 import kotlinx.android.synthetic.main.sent_transactions.view.*
@@ -53,13 +57,18 @@ class TransactionsAdapter(private val context: Context) :
         private val transTime = view.transTime!!
         private val amountTxt = view.amountTxt!!
 
+        private var transactionModel: TransactionModel? = null
+
+        var sharedPref: SharedPreferences =
+                context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+
         init {
             view.setOnClickListener {
-                //                val editor = sharedPref.edit()
-//                val gson = Gson()
-//                val personString = gson.toJson(Patient)
-//                editor.putString(VISITING_HISTORY_PROFILE, personString)
-//                editor.apply()
+                val editor = sharedPref.edit()
+                val gson = Gson()
+                val personString = gson.toJson(transactionModel)
+                editor.putString(TRANSACTION_DETAILS, personString)
+                editor.apply()
                 context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
 //                Toast.makeText(context, "Coming soon", Toast.LENGTH_LONG).show()
             }
@@ -68,8 +77,8 @@ class TransactionsAdapter(private val context: Context) :
         fun bind(invite: TransactionModel) {
             userName.text = invite.details
             transTime.text = invite.created_at
-            amountTxt.text = invite.withdrawn
-
+            amountTxt.text = "Ksh. ${invite.withdrawn}"
+            transactionModel = invite
         }
 
     }
