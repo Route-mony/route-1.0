@@ -1,9 +1,6 @@
 package com.beyondthehorizon.routeapp.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.ScaleGestureDetector;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
@@ -358,7 +355,7 @@ public class Constants {
     //ADD PAYMENT CARD
     public static ResponseFuture<JsonObject> addPaymentCard(Context context, String cardNumber,
                                                             String expiryDate, String cvv, String country, String token) {
-        String SERVER_URL = BASE_URL + "/payments/creditcard";
+        String SERVER_URL = BASE_URL + "payments/creditcard";
         JsonObject json = new JsonObject();
         json.addProperty("card_number", cardNumber);
         json.addProperty("expiry_date", expiryDate);
@@ -368,6 +365,7 @@ public class Constants {
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }

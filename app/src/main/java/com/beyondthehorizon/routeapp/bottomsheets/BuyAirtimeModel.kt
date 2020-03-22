@@ -7,13 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.core.view.isVisible
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants
-import com.beyondthehorizon.routeapp.utils.Constants.BUY_AIRTIME
-import com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY
-import com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity
+import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.beyondthehorizon.routeapp.views.RequestFundsActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -32,9 +31,10 @@ class BuyAirtimeModel : BottomSheetDialogFragment() {
         var contactsButton = v.findViewById<ImageView>(R.id.imgSearch)
         myPhoneButton.visibility = View.VISIBLE
         myPhoneButton.setOnClickListener {
-            val phone = pref!!.getString("Phone", "")
+            val phone = pref!!.getString(MyPhoneNumber, "")
             var intent = Intent(activity, FundAmountActivity::class.java)
-            intent.putExtra("Phone", phone)
+            intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, BUY_AIRTIME)
+            intent.putExtra(PHONE_NUMBER, phone)
             startActivity(intent)
         }
 

@@ -1,8 +1,5 @@
 package com.beyondthehorizon.routeapp.views;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,13 +19,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeModel;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
+import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
-import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity;
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity;
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity;
@@ -43,6 +43,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.MOBILE_PROVIDERS;
+import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
@@ -232,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 String name = result.get("data").getAsJsonObject().get("username").toString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
                                 String username = "Hey " + name + " !";
+                                String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
 
                                 String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
                                 String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
@@ -242,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 balance_value.setText("KES " + wallet_balance);
 
                                 editor.putString(USER_ID, id);
+                                editor.putString(MyPhoneNumber, phone);
                                 editor.apply();
 
                                 getServiceProviders();
