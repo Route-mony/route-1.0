@@ -135,11 +135,11 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 btnOk.setText("Ok");
                 btnCancel.setVisibility(View.GONE);
             } else {
-                btnCancel.setText("Cancel Receipt");
+                btnCancel.setText("Delete");
                 btnOk.setText("Approve");
             }
         } else if (pref.getString(Constants.TRANS_TYPE, "").compareTo("SentReceiptFragment") == 0) {
-            btnCancel.setText("Cancel Receipt");
+            btnCancel.setText("Delete");
             btnOk.setText("Ok");
         }
 
@@ -174,8 +174,13 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnCancel.getText().toString().contains("Cancel Receipt" +
+                if (btnCancel.getText().toString().contains("Delete" +
                         "")) {
+
+                    if (receiptModel.getStatus().compareTo("pending") != 0) {
+                        Toast.makeText(getActivity(), "You cannot cancel a receipt that has been " + receiptModel.getStatus(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
 
                     //before inflating the custom alert dialog layout, we will get the current activity viewgroup

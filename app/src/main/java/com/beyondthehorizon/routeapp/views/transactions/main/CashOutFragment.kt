@@ -71,17 +71,17 @@ class CashOutFragment : Fragment() {
                             val time = item.asJsonObject.get("time").asString
                             val recipient = item.asJsonObject.get("recipient").asString
                             val withdrawn = item.asJsonObject.get("cash_outs").asString
-//                            val paid_in = item.asJsonObject.get("paid_in").asString
+                            val paymentType = "cash_outs"
                             val balance = item.asJsonObject.get("balance").asString
                             val description = item.asJsonObject.get("description").asString
                             val wallet_account = item.asJsonObject.get("wallet_account").asString
                             val reference = item.asJsonObject.get("reference").asString
 //                        var status = item.asJsonObject.get("status").asString.toLowerCase()
 //                        var statusIcon = statusMapper[status]
-                            val created_at= "$date  $time"
-                            
+                            val created_at = "$date  $time"
+
                             list.add(TransactionModel(created_at, recipient, withdrawn,
-                                    "", balance, wallet_account, reference,description))
+                                    paymentType, balance, wallet_account, reference, description))
                         }
                         cashOutRecycler.apply {
                             layoutManager = LinearLayoutManager(activity!!)

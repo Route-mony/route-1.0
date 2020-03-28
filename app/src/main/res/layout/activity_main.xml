@@ -41,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:fontFamily="@string/font_family_medium"
-                    android:text="Hey !"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -67,7 +66,6 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/email_valid_background"
                     android:padding="3dp"
-                    android:text="Verify your email ! "
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -170,7 +168,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Favorites"
+                        android:text="Quick access"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold" />
@@ -225,7 +223,7 @@
                             android:layout_height="@dimen/item_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_paybillmpesa" />
+                            app:srcCompat="@drawable/ic_group492" />
 
                         <TextView
                             android:id="@+id/txt_fav2"
@@ -233,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:fontFamily="@string/font_family_medium"
-                            android:text="Paybill"
+                            android:text="Route it"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
                             android:textSize="12sp" />
@@ -260,7 +258,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:fontFamily="@string/font_family_medium"
-                            android:text="Send"
+                            android:text="Receipts"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
                             android:textSize="12sp" />
@@ -394,8 +392,7 @@
                                 android:id="@+id/btn_request4"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
+                                android:background="@drawable/service_faded_buttons"
                                 app:srcCompat="@drawable/ic_group776" />
 
                             <TextView
@@ -406,6 +403,7 @@
                                 android:fontFamily="@string/font_family_medium"
                                 android:text="Send To Many"
                                 android:textAlignment="center"
+                                android:textColor="#BBB9B9"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -420,8 +418,8 @@
                                 android:id="@+id/btn_request24"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
+                                android:background="@drawable/service_faded_buttons"
+
                                 app:srcCompat="@drawable/ic_group777" />
 
                             <TextView
@@ -432,6 +430,7 @@
                                 android:fontFamily="@string/font_family_medium"
                                 android:text="Airtime"
                                 android:textAlignment="center"
+                                android:textColor="#BBB9B9"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -446,8 +445,8 @@
                                 android:id="@+id/btn_request3"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
+                                android:background="@drawable/service_faded_buttons"
+
                                 app:srcCompat="@drawable/ic_group778" />
 
                             <TextView
@@ -458,6 +457,7 @@
                                 android:fontFamily="@string/font_family_medium"
                                 android:text="Split Bill"
                                 android:textAlignment="center"
+                                android:textColor="#BBB9B9"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -481,8 +481,8 @@
                                 android:id="@+id/btn_request54"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
+                                android:background="@drawable/service_faded_buttons"
+
                                 app:srcCompat="@drawable/ic_group782" />
 
                             <TextView
@@ -493,6 +493,7 @@
                                 android:fontFamily="@string/font_family_medium"
                                 android:text="Receipts"
                                 android:textAlignment="center"
+                                android:textColor="#BBB9B9"
                                 android:textSize="12sp" />
                         </LinearLayout>
 

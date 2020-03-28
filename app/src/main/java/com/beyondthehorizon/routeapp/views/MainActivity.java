@@ -140,11 +140,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             }
         });
 
+
         btn_fav3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
-                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
+                Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+                startActivity(intent);
             }
         });
         btn_request34.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             @Override
             public void onClick(View v) {
 //                viewMpesaPaymentOption();
-                MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
-                mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
+                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
+                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
             }
         });
         btn_request2.setOnClickListener(new View.OnClickListener() {

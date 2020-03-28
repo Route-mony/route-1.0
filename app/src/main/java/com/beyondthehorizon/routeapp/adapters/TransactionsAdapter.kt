@@ -3,6 +3,7 @@ package com.beyondthehorizon.routeapp.adapters
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -77,6 +78,11 @@ class TransactionsAdapter(private val context: Context) :
         fun bind(invite: TransactionModel) {
             userName.text = invite.details
             transTime.text = invite.created_at
+            if (invite.paymentType.compareTo("received") == 0) {
+                amountTxt.setTextColor(Color.parseColor("#49EE07"))
+            }else{
+                amountTxt.setTextColor(Color.parseColor("#FD0303"))
+            }
             amountTxt.text = "Ksh. ${invite.withdrawn}"
             transactionModel = invite
         }

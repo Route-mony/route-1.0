@@ -28,6 +28,12 @@ import android.widget.EditText
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.share_receipt_to_admin.view.*
+import androidx.core.content.ContextCompat.startActivity
+import android.R.attr.name
+import com.beyondthehorizon.routeapp.views.MainActivity
+import androidx.core.content.ContextCompat.startActivity
+import android.R.attr.name
+import android.net.Uri
 
 
 class InviteFriendAdapter(private val context: Context, private val theView: String) :
@@ -85,22 +91,29 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
         private val userName = view.userName!!
         private val phoneNumber = view.phoneNumber!!
         private val inviteBtn = view.inviteBtn!!
+        lateinit var inviteFriend: InviteFriend
 
         init {
             inviteBtn.setOnClickListener {
                 val shareBody = "Hello checkout this awesome app! Route App"
-                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
-                sharingIntent.type = "text/plain"
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
-                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
+//                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+//                sharingIntent.type = "text/plain"
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+//                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
+
+                val uri = Uri.parse("smsto:${inviteFriend.phone}")
+                val intent = Intent(Intent.ACTION_SENDTO, uri)
+                intent.putExtra("sms_body", shareBody)
+                context.startActivity(intent)
+
             }
         }
 
         fun bind(invite: InviteFriend) {
             userName.text = invite.username
             phoneNumber.text = invite.phone
-
+            inviteFriend = invite
         }
 
     }
