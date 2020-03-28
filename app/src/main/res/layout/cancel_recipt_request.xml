@@ -9,21 +9,22 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
         android:gravity="center"
-        android:padding="5dp"
-        android:text="REJECT REASON"
+        android:padding="15dp"
+        android:text="CANCELLATION REASON"
         android:textColor="@color/white" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:hint="Rejection Reason"
+        android:hint="Cancellation Reason"
         android:theme="@style/TextLabel">
 
         <EditText
             android:id="@+id/reject_reason"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textCapSentences" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -51,7 +52,7 @@
             android:padding="8dp"
             android:text="Ok"
             android:textAllCaps="false"
-            android:textColor="#000" />
+            android:textColor="#0A38F7" />
 
     </LinearLayout>
 </LinearLayout>

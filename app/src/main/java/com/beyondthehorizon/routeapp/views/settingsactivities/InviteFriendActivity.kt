@@ -3,6 +3,7 @@ package com.beyondthehorizon.routeapp.views.settingsactivities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beyondthehorizon.routeapp.R
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.adapters.InviteFriendAdapter
 import com.beyondthehorizon.routeapp.models.InviteFriend
@@ -30,6 +32,8 @@ class InviteFriendActivity : AppCompatActivity() {
     lateinit var inviteFriendAdapter: InviteFriendAdapter
     private lateinit var prefs: SharedPreferences
     private lateinit var progressBar: ProgressDialog
+    private var REQUEST_READ_CONTACTS = 79
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite_friend)
@@ -67,7 +71,17 @@ class InviteFriendActivity : AppCompatActivity() {
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
         inviteFriendAdapter = InviteFriendAdapter(this@InviteFriendActivity, requestType)
-        loadRouteContacts()
+
+        try {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                loadRouteContacts()
+            } else {
+                requestPermission()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+        }
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
@@ -85,6 +99,35 @@ class InviteFriendActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+            // show UI part if you want here to show some rationale !!!
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
+                    REQUEST_READ_CONTACTS)
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
+                    REQUEST_READ_CONTACTS)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_READ_CONTACTS -> {
+
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    loadRouteContacts()
+                }
+            }
+        }
     }
 
     private fun loadRouteContacts() {

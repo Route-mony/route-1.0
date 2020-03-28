@@ -84,7 +84,7 @@ class CashOutFragment : Fragment() {
                                     "", balance, wallet_account, reference,description))
                         }
                         cashOutRecycler.apply {
-                            layoutManager = LinearLayoutManager(activity)
+                            layoutManager = LinearLayoutManager(activity!!)
                             adapter = transactionsAdapter
                         }
                         transactionsAdapter.setContact(list)

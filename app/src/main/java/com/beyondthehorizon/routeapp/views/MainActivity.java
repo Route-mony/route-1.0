@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         }
     }
 
-
     private void getProfile() {
         String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
 

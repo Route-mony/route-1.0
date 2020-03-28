@@ -101,12 +101,12 @@ class RequestFundsActivity : AppCompatActivity() {
             // show UI part if you want here to show some rationale !!!
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
-                    REQUEST_READ_CONTACTS);
+                    REQUEST_READ_CONTACTS)
         }
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS)) {
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS),
-                    REQUEST_READ_CONTACTS);
+                    REQUEST_READ_CONTACTS)
         }
     }
 

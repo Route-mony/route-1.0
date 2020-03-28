@@ -135,11 +135,11 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 btnOk.setText("Ok");
                 btnCancel.setVisibility(View.GONE);
             } else {
-                btnCancel.setText("Reject");
+                btnCancel.setText("Cancel Receipt");
                 btnOk.setText("Approve");
             }
         } else if (pref.getString(Constants.TRANS_TYPE, "").compareTo("SentReceiptFragment") == 0) {
-            btnCancel.setText("Delete");
+            btnCancel.setText("Cancel Receipt");
             btnOk.setText("Ok");
         }
 
@@ -157,12 +157,11 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                 @Override
                                 public void onCompleted(Exception e, JsonObject result) {
                                     progressDialog.dismiss();
-                                    Log.e("HospitalsAdapter", "onCompleted: " + result.toString());
                                     if (result.get("status").getAsString().contains("success")) {
                                         Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
                                         dismiss();
                                     } else {
-                                        Toast.makeText(getActivity(), "Failed to approved Receipt.Try again later.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -175,7 +174,8 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnCancel.getText().toString().contains("Reject")) {
+                if (btnCancel.getText().toString().contains("Cancel Receipt" +
+                        "")) {
                     final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
 
                     //before inflating the custom alert dialog layout, we will get the current activity viewgroup
@@ -204,7 +204,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                         @Override
                         public void onClick(View v) {
                             if (reject_reason.getText().toString().isEmpty()) {
-                                reject_reason.setError("Cannot be empty");
+                                Toast.makeText(getActivity(), "Add Cancel reason", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             progressDialog.setCanceledOnTouchOutside(false);
@@ -214,14 +214,14 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                     .setCallback(new FutureCallback<JsonObject>() {
                                         @Override
                                         public void onCompleted(Exception e, JsonObject result) {
-
                                             progressDialog.dismiss();
-                                            Log.e("HospitalsAdapter 11", "onCompleted: " + result.toString());
-//                                            if (result.get("status").getAsString().contains("success")) {
-//                                                Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
-//                                            } else {
-//                                                Toast.makeText(getActivity(), "Failed to approved Receipt.Try again later.", Toast.LENGTH_LONG).show();
-//                                            }
+                                            if (result.get("status").getAsString().contains("success")) {
+                                                Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
+                                                alertDialog.dismiss();
+                                                dismiss();
+                                            } else {
+                                                Toast.makeText(getActivity(), result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                     });
                         }
