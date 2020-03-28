@@ -102,7 +102,7 @@ class ReceiptAdapter(private val context: Context,
             val img = invite.image
 
             Glide.with(context)
-                    .load(img.substring(1, img.length - 1))
+                    .load(invite.image)
                     .centerCrop()
                     .placeholder(R.color.input_back)
                     .into(receipt_image)

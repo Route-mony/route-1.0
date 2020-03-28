@@ -67,7 +67,7 @@ class SentReceiptFragment : Fragment() {
 
 
 //                            val details = item.asJsonObject.get("sender").asString
-                            Log.e("ReceivedReceiptFragment", item.toString())
+                            Log.e("ReceivedReceipt22", item.asJsonObject.get("image").asString)
 
 
 //                        var id = item.asJsonObject.get("id").asString
@@ -83,7 +83,7 @@ class SentReceiptFragment : Fragment() {
                             val title = item.asJsonObject.get("title").asString
                             val description = item.asJsonObject.get("description").asString
                             val status = item.asJsonObject.get("status").asString
-                            val image = item.asJsonObject.get("image").toString()
+                            val image = item.asJsonObject.get("image").asString
                             val cancellation_reason = item.asJsonObject.get("cancellation_reason").asString
                             val transaction_date = item.asJsonObject.get("transaction_date").asString
 

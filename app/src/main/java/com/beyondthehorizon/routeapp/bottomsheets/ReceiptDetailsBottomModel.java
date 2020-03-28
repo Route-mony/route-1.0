@@ -103,7 +103,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 Button saveImage11 = dialogView.findViewById(R.id.saveImage11);
 
                 Glide.with(getActivity())
-                        .load(img.substring(1, img.length() - 1))
+                        .load(receiptModel.getImage())
                         .centerCrop()
                         .placeholder(R.color.input_back)
                         .into(myImage11);
