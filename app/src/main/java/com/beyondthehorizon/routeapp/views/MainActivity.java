@@ -23,9 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeModel;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
+import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
@@ -41,6 +41,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
+import static com.beyondthehorizon.routeapp.utils.Constants.CARDS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.MOBILE_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
@@ -51,7 +52,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 
-public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener, BuyAirtimeModel.AirtimeBottomSheetListener {
+public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BuyAirtimeModel airtimeModel = new BuyAirtimeModel();
+                TransactionModel airtimeModel = new TransactionModel();
                 airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
             }
         });
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
                                 String username = "Hey " + name + " !";
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
+                                String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
 
                                 String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
                                 String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
@@ -242,9 +244,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.apply();
                                 user_name.setText(username);
                                 balance_value.setText("KES " + wallet_balance);
-
                                 editor.putString(USER_ID, id);
                                 editor.putString(MyPhoneNumber, phone);
+                                editor.putString(CARDS, cards);
                                 editor.apply();
 
                                 getServiceProviders();
@@ -424,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     @Override
-    public void airtimeBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
+    public void transactionBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
         final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
     }
 }

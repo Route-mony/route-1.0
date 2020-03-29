@@ -53,6 +53,8 @@ public class Constants {
     public static final String COUNTRY = "COUNTRY";
     public static final String PHONE_NUMBER = "PHONE_NUMBER";
     public static final String BUY_AIRTIME = "BUY_AIRTIME";
+    public static final String MOBILE_TRANSACTION = "MOBILE_TRANSACTION";
+    public static final String CARDS = "CARD";
 
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,

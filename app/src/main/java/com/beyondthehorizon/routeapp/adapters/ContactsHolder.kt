@@ -5,13 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
-import com.beyondthehorizon.routeapp.views.NotificationActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_contact.view.*
 
@@ -39,6 +37,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
                 prefs.apply()
 
                 intent.putExtra(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY)
+                intent.putExtra(PHONE_NUMBER, value.contact)
                 context.startActivity(intent)
             } catch (ex: Exception) {
                 Log.d("TAG", ex.message)

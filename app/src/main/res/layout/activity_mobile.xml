@@ -7,12 +7,12 @@
 
         <variable
             name="money"
-            type="com.beyondthehorizon.routeapp.views.MpesaActivity" />
+            type="com.beyondthehorizon.routeapp.views.MobileActivity" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.MpesaActivity">
+    tools:context=".views.MobileActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -108,7 +108,8 @@
                     android:imeOptions="actionSend"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card_number_title"/>
-
+                <Text
+                    />
                 <Button
                     android:id="@+id/btn_save_phone"
                     android:layout_width="match_parent"

@@ -1,7 +1,5 @@
 package com.beyondthehorizon.routeapp.views.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(LOGGED_IN, "true");
                                 editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
                                 editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
+
                                 editor.apply();
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -1,24 +1,20 @@
 package com.beyondthehorizon.routeapp.views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.databinding.ActivityAddMoneyBinding
-import com.beyondthehorizon.routeapp.databinding.ActivityMpesaBinding
-import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.databinding.ActivityMobileBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
-import kotlinx.android.synthetic.main.activity_mpesa.*
-import kotlinx.android.synthetic.main.activity_phone.*
 
-class MpesaActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMpesaBinding
+class MobileActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMobileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_mpesa)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_mobile)
         binding.phoneNumberInput.setFormat("---- ------")
+        val phone = intent.getStringExtra(PHONE_NUMBER)
         binding.btnSavePhone.setOnClickListener {
             var phoneNumber = binding.phoneNumberInput.text.toString().replace(" ","").trim()
             if(phoneNumber.length < 10){

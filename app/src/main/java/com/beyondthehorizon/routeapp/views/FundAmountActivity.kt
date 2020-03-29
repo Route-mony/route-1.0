@@ -34,19 +34,16 @@ class FundAmountActivity : AppCompatActivity() {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var transactionType: String
     private lateinit var phone: String
-    private lateinit var oldIntent: Intent
     private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
+        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         parentIntent = getIntent()
         childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
         transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
-        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
-        oldIntent = getIntent()
-        phone = prefs.getString(PHONE_NUMBER, "").toString()
         val token = "Bearer " + prefs.getString(USER_TOKEN, "")
         val progressBar = CustomProgressBar()
 
@@ -104,17 +101,17 @@ class FundAmountActivity : AppCompatActivity() {
                     binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
                 }
             }
-            if (transactionType!!.compareTo(REQUEST_MONEY) == 0) {
+            if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 username = prefs.getString("Username", "").toString()
 
                 binding.requestTitle.text = "Request $username"
-            } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
+            } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                 binding.btnRequest.text = "SEND"
                 binding.requestTitle.text = "Send To ${phone}"
-            } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
+            } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
-            } else if (transactionType!!.compareTo(BUY_AIRTIME) == 0) {
+            } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 binding.requestTitle.text = "Buy airtime for ${phone}"
             }
 
@@ -123,7 +120,6 @@ class FundAmountActivity : AppCompatActivity() {
                 val upper = 999999999
                 val secureRandom = SecureRandom()
                 var merchantId = "ROUTEK0001"
-                var country = oldIntent.getStringExtra(COUNTRY)
                 var domain = "ISWKE"
                 var amount = amount
                 var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
@@ -150,19 +146,17 @@ class FundAmountActivity : AppCompatActivity() {
                 }
 
                 /**HERE NOW*/
-                else if (transactionType!!.compareTo(REQUEST_MONEY) == 0) {
-
-                    editor.putString("Amount", amount)
-                    editor.apply()
+                else if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                     startActivity(childIntent)
-                } else if (transactionType!!.compareTo(SEND_MONEY) == 0) {
+                } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
-                } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
-                    var cardNumber = oldIntent.getStringExtra(CARD_NUMBER)
-                    var expDate = oldIntent.getStringExtra(EXPIRY_DATE)
+                } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
+                    var country = parentIntent.getStringExtra(COUNTRY)
+                    var cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
+                    var expDate = parentIntent.getStringExtra(EXPIRY_DATE)
                     var expYear = expDate.substring(3, 5)
                     var expMonth = expDate.substring(0, 2)
-                    var cvvNumber = oldIntent.getStringExtra(CVV_NUMBER)
+                    var cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
 
                     try {
                         var card = Card(cardNumber, cvvNumber, expYear, expMonth);
@@ -179,18 +173,20 @@ class FundAmountActivity : AppCompatActivity() {
                             Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
                             Toast.makeText(this@FundAmountActivity, it.transactionOrderId, Toast.LENGTH_LONG).show()
 
-                            progressBar.show(this, "Please Wait...")
+                            progressBar.show(this, "Processing payment...")
                         addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
                                 .setCallback { e, result ->
+                                    progressBar.dialog.dismiss()
                                     try {
                                         if (result != null) {
-                                        progressBar.dialog.dismiss()
                                             if (result.has("errors")) {
                                                 var error = result.get("errors").asJsonObject.get("card_number").asString
                                                 Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
                                             } else {
                                                 val message = result.get("data").asJsonObject.get("message").asString
                                                 val intent = Intent(this, FundRequestedActivity::class.java)
+                                                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                                                editor.apply()
                                                 intent.putExtra("Message", message)
                                                 startActivity(intent)
                                             }
@@ -211,18 +207,23 @@ class FundAmountActivity : AppCompatActivity() {
                         Log.d("INTERSWITCH_MESSAGE", e.message)
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
                     }
-                } else if (transactionType!!.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
+
+                } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                     try {
-                        var mobileNumber = oldIntent.getStringExtra(PHONE_NUMBER)
+                        var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
                         var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
                         var config = MobPay.Config()
                         var mobPay: MobPay
                         mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
+                        progressBar.show(this, "Processing payment...")
                         mobPay.makeMobileMoneyPayment(
                                 mobile,
                                 merchant,
                                 payment,
                                 customer, {
+                            progressBar.dialog.dismiss()
+                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                            editor.apply()
                             Log.d("INTERSWITCH_MESSAGE", "Transaction succeeded, ref:\t${it.transactionOrderId}")
                             Toast.makeText(this@FundAmountActivity, "Transaction succeeded, ref:\t${it.transactionOrderId}", Toast.LENGTH_LONG).show()
                         }, {
@@ -231,13 +232,6 @@ class FundAmountActivity : AppCompatActivity() {
 
                         })
                     } catch (e: Exception) {
-                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-                else if (transactionType!!.compareTo(BUY_AIRTIME) == 0) {
-                    try {
-                        Toast.makeText(this@FundAmountActivity, "Not implemented yet", Toast.LENGTH_LONG).show()
-                    }catch (e: Exception) {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
@@ -312,6 +306,8 @@ class FundAmountActivity : AppCompatActivity() {
                         if (result.has("errors")) {
                             Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.toString(), Toast.LENGTH_LONG).show()
                         } else {
+                            editor.putString("Amount", amount)
+                            editor.apply()
                             val message = result.get("data").asJsonObject.get("message").asString
                             val intent = Intent(this, FundRequestedActivity::class.java)
                             intent.putExtra("Message", message)
