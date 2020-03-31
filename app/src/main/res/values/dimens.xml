@@ -13,4 +13,6 @@
     <dimen name="keyboard_screen_top">20dp</dimen>
     <dimen name="keyboard_screen_bottom">10dp</dimen>
     <dimen name="keyboard_btn_radius">30dp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 </resources>

@@ -78,7 +78,7 @@
         android:id="@+id/txt_pool"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pool"
+        android:text="receipts"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/txt_settings"

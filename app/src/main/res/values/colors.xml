@@ -10,7 +10,7 @@
     <color name="colorPrimaryMain">#EDEEF0</color>
     <color name="colorNotification">#FA0505</color>
 
-
+    <color name="faded_color">#DFDDDD</color>
     <color name="line_table_color">#ffffff</color>
     <color name="blue">#0084ff</color>
     <color name="blackish">#313030</color>
@@ -42,4 +42,7 @@
     <color name="background_color">#78ffffff</color>
     <color name="sign_up_shady">#8C2196F3</color>
     <color name="keyboard_color">#034380</color>
+
+    <color name="view_color_red">#FD0303</color>
+    <color name="view_color_green">#40CA08</color>
 </resources>

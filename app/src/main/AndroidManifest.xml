@@ -3,6 +3,8 @@
     package="com.beyondthehorizon.routeapp">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +14,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.auth.SetSecurityInfo" />
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".views.receipt.ReceiptActivity"
+            android:label="@string/title_activity_receipt"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".views.transactions.main.TransactionDetailsActivity" />
+        <activity
+            android:name=".views.transactions.main.TransactionsActivity"
+            android:label="@string/title_activity_transactions"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.settingsactivities.UserProfileActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".views.settingsactivities.InviteFriendActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".views.settingsactivities.ChangePasswordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".views.settingsactivities.PasswordAndPinActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".views.settingsactivities.TermsOfUseActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".views.settingsactivities.SettingsActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".views.auth.SetSecurityInfo" />
         <activity android:name=".views.RejectRequestActivity" />
         <activity android:name=".views.RequestReminderActivity" />
         <activity android:name=".views.RequestConfirmedActivity" />
@@ -28,7 +59,8 @@
         <activity
             android:name=".views.auth.SetTransactionPinActivity"
             android:theme="@style/Theme.Transparent" />
-        <activity android:name=".views.auth.LoginActivity" />
+        <activity android:name=".views.auth.LoginActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".views.auth.UserNamesActivity" />
         <activity
             android:name=".views.auth.PasswordActivity"
