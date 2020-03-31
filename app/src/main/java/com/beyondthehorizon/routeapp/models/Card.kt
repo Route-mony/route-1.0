@@ -1,8 +1,8 @@
 package com.beyondthehorizon.routeapp.models
 
 data class Card(
-        val card_number: Long,
+        val card_number: String,
         val expiry_date: String,
-        val cvv: Int,
+        val cvv: String,
         val country: String
 )

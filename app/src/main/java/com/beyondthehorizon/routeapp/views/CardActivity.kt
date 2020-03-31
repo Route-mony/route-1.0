@@ -1,13 +1,11 @@
 package com.beyondthehorizon.routeapp.views
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityCardBinding
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 
 class CardActivity : AppCompatActivity() {

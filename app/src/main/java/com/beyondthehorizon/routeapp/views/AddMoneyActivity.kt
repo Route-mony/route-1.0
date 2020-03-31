@@ -32,12 +32,12 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
         try {
             var cards = JSONArray(prefs.getString(CARDS, ""))
             for (i in 0 until cards.length()) {
-                val item = cards.getJSONObject(i)
-                var number = item.get("card_number") as Long
-                var expiry_date = item.get("expiry_date") as String
-                var clean_date = expiry_date.substring(0, 2) + "/" + expiry_date.substring(expiry_date.length - 3, expiry_date.length - 1)
-                var cvv = item.get("cvv") as Int
-                var country = item.get("country") as String
+                var item = cards.getJSONObject(i)
+                var number: String = item.get("card_number").toString()
+                var expiry_date:String = item.get("expiry_date").toString()
+                var clean_date:String = expiry_date.substring(0, 2) + "/" + expiry_date.substring(expiry_date.length - 3, expiry_date.length - 1)
+                var cvv: String = item.get("cvv").toString()
+                var country: String = item.get("country").toString()
                 cardList.add(Card(number, clean_date, cvv, country))
             }
         } catch (ex: Exception) {
@@ -46,9 +46,10 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
         var numberOfCards = cardList.size
         if (numberOfCards > 0) {
             binding.cardOne.visibility = View.VISIBLE
-            var card = cardList[0].card_number.toString()
-            binding.visa.setImageResource(getCardIcon(card.substring(0).toInt()))
-            binding.visaNumber.text = "---- ---- ---- ${card.substring(card.length - 5, card.length - 1)}"
+            var card = cardList[0].card_number
+            var cardSufix = "---- ---- ---- ${card.substring(card.length - 4, card.length)}"
+            binding.visa.setImageResource(getCardIcon(card.get(0)))
+            binding.visaNumber.text = cardSufix
             binding.cardOne.setOnClickListener {
                 try {
                     if (numberOfCards > 0) {
@@ -64,11 +65,13 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
                     Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
                 }
             }
-        } else if (numberOfCards > 1) {
+        }
+        if (numberOfCards > 1) {
             binding.cardTwo.visibility = View.VISIBLE
-            var card = cardList[1].card_number.toString()
-            binding.masterCard.setImageResource(getCardIcon(card.substring(0).toInt()))
-            binding.masterCardNumber.text = "---- ---- ---- ${card.substring(card.length - 5, card.length - 1)}"
+            var card = cardList[1].card_number
+            var cardSufix = "---- ---- ---- ${card.substring(card.length - 4, card.length)}"
+            binding.masterCard.setImageResource(getCardIcon(card.get(0)))
+            binding.masterCardNumber.text = cardSufix
             binding.cardTwo.setOnClickListener {
                 try {
                     var intent = Intent(this, FundAmountActivity::class.java)
@@ -101,12 +104,12 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
             val token = "Bearer " + prefs.getString(USER_TOKEN, "")
         }
 
-        fun getCardIcon(cardInitialNumber: Int): Int {
+        fun getCardIcon(cardInitialNumber: Char): Int {
             var icon = R.drawable.ic_unkown_card
-            if (cardInitialNumber == 4) {
-                icon = R.drawable.visa
-            } else if (cardInitialNumber == 5) {
-                icon = R.drawable.mastercard
+            if (cardInitialNumber.compareTo('4').equals(0)) {
+                icon = R.drawable.ic_visa
+            } else if (cardInitialNumber.compareTo('5').equals(0)) {
+                icon = R.drawable.ic_mastercard
             }
             return icon
         }

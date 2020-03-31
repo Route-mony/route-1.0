@@ -106,12 +106,14 @@ class FundAmountActivity : AppCompatActivity() {
 
                 binding.requestTitle.text = "Request $username"
             } else if (transactionType.compareTo(SEND_MONEY) == 0) {
+                phone = parentIntent.getStringExtra(PHONE_NUMBER)
                 binding.btnRequest.text = "SEND"
                 binding.requestTitle.text = "Send To ${phone}"
             } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
+                phone = parentIntent.getStringExtra(PHONE_NUMBER)
                 binding.requestTitle.text = "Buy airtime for ${phone}"
             }
 
@@ -165,15 +167,17 @@ class FundAmountActivity : AppCompatActivity() {
                         var config = MobPay.Config();
                         mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
 
+                        progressBar.show(this, "Interswitch payment processing ...")
                         mobPay.makeCardPayment(
                                 card,
                                 merchant,
                                 payment,
                                 customer, {
+                            progressBar.dialog.dismiss()
                             Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
                             Toast.makeText(this@FundAmountActivity, it.transactionOrderId, Toast.LENGTH_LONG).show()
 
-                            progressBar.show(this, "Processing payment...")
+                            progressBar.show(this, "Updating route ...")
                         addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
                                 .setCallback { e, result ->
                                     progressBar.dialog.dismiss()
@@ -199,6 +203,7 @@ class FundAmountActivity : AppCompatActivity() {
                                     }
                                 }
                         }, {
+                            progressBar.dialog.dismiss()
                             Log.d("INTERSWITCH_MESSAGE", it.message)
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
 
@@ -227,6 +232,7 @@ class FundAmountActivity : AppCompatActivity() {
                             Log.d("INTERSWITCH_MESSAGE", "Transaction succeeded, ref:\t${it.transactionOrderId}")
                             Toast.makeText(this@FundAmountActivity, "Transaction succeeded, ref:\t${it.transactionOrderId}", Toast.LENGTH_LONG).show()
                         }, {
+                            progressBar.dialog.dismiss()
                             Log.d("INTERSWITCH_MESSAGE", it.message)
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
 

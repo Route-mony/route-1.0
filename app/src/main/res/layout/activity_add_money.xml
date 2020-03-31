@@ -204,6 +204,14 @@
                             app:layout_constraintBottom_toBottomOf="@id/mobileImage"
                             app:layout_constraintStart_toEndOf="@id/mobileImage"/>
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            app:srcCompat="@drawable/ic_chevron_right"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/mobileImage"
+                            app:layout_constraintBottom_toBottomOf="@id/mobileImage"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
