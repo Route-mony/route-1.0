@@ -35,7 +35,7 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
                 var item = cards.getJSONObject(i)
                 var number: String = item.get("card_number").toString()
                 var expiry_date:String = item.get("expiry_date").toString()
-                var clean_date:String = expiry_date.substring(0, 2) + "/" + expiry_date.substring(expiry_date.length - 3, expiry_date.length - 1)
+                var clean_date:String = expiry_date.substring(0, 2) + "/" + expiry_date.substring(expiry_date.length - 2, expiry_date.length)
                 var cvv: String = item.get("cvv").toString()
                 var country: String = item.get("country").toString()
                 cardList.add(Card(number, clean_date, cvv, country))
@@ -45,6 +45,8 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
         }
         var numberOfCards = cardList.size
         if (numberOfCards > 0) {
+            var intent = Intent(this, FundAmountActivity::class.java)
+            intent.putExtra(CARD_STATUS, OLD_CARD)
             binding.cardOne.visibility = View.VISIBLE
             var card = cardList[0].card_number
             var cardSufix = "---- ---- ---- ${card.substring(card.length - 4, card.length)}"
@@ -53,7 +55,6 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
             binding.cardOne.setOnClickListener {
                 try {
                     if (numberOfCards > 0) {
-                        var intent = Intent(this, FundAmountActivity::class.java)
                         intent.putExtra(CARD_NUMBER, cardList[0].card_number)
                         intent.putExtra(EXPIRY_DATE, cardList[0].expiry_date)
                         intent.putExtra(CVV_NUMBER, cardList[0].cvv)

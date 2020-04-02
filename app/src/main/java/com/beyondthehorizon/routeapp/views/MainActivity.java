@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private TextView user_name, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
     private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
-            btn_request2, btn_settings, btn_transactions, btn_fav1, btn_request54;
+            btn_request2, btn_settings, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                 Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
                 startActivity(intent);
+            }
+        });
         add_money_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
-import java.net.URLEncoder;
-
 public class Constants {
     public static String BASE_URL = "http://167.172.214.193/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
@@ -55,7 +53,11 @@ public class Constants {
     public static final String BUY_AIRTIME = "BUY_AIRTIME";
     public static final String MOBILE_TRANSACTION = "MOBILE_TRANSACTION";
     public static final String CARDS = "CARD";
-
+    public static final String CARD_STATUS = "CARD";
+    public static final String NEW_CARD = "NEW_CARD";
+    public static final String OLD_CARD = "OLD_CARD";
+    public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
+    public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -354,10 +356,14 @@ public class Constants {
                 .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
     //ADD PAYMENT CARD
     public static ResponseFuture<JsonObject> addPaymentCard(Context context, String cardNumber,
                                                             String expiryDate, String cvv, String country, String token) {
-        String SERVER_URL = BASE_URL + "payments/creditcard";
+        String SERVER_URL = BASE_URL + "payments/debitcard";
         JsonObject json = new JsonObject();
         json.addProperty("card_number", cardNumber);
         json.addProperty("expiry_date", expiryDate);

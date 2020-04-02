@@ -46,6 +46,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra(CVV_NUMBER, cvvNumber)
                 intent.putExtra(COUNTRY, country)
                 intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                intent.putExtra(CARD_STATUS, NEW_CARD)
                 startActivity(intent)
             }
         }

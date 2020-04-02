@@ -40,7 +40,8 @@ class TransactionModel : BottomSheetDialogFragment() {
 
         contactsButton.setOnClickListener {
             var intent = Intent(activity, RequestFundsActivity::class.java)
-            intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.apply()
             startActivity(intent)
         }
 
