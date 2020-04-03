@@ -16,15 +16,14 @@
             android:background="@drawable/divider"
             android:padding="16dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
+                <ImageButton
+                    android:id="@+id/contact_image"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/round_light_blue_button"
                     android:padding="4dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/round_light_blue_button"
-                    android:src="@drawable/default_avatar"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#FFFFFFFF"
                     app:layout_constraintTop_toTopOf="parent"
@@ -32,31 +31,25 @@
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <TextView
-                    android:id="@+id/username"
+                    android:id="@+id/title"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="8dp"
-                    app:layout_constraintTop_toTopOf="@id/profile_image"
-                    app:layout_constraintBottom_toTopOf="@id/contact"
-                    app:layout_constraintStart_toEndOf="@id/profile_image"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    app:srcCompat="@drawable/ic_chevron_right"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/profile_image"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_image"/>
+                    android:text="MPESA"
+                    app:layout_constraintTop_toTopOf="@id/contact_image"
+                    app:layout_constraintBottom_toBottomOf="@id/contact_image"
+                    app:layout_constraintStart_toEndOf="@id/contact_image"/>
 
                 <TextView
-                    android:id="@+id/contact"
+                    android:id="@+id/number"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:text="0700456439"
+                    android:paddingRight="10dp"
                     android:layout_marginHorizontal="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/username"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_image"
-                    app:layout_constraintStart_toEndOf="@id/profile_image"/>
+                    app:layout_constraintTop_toTopOf="@id/contact_image"
+                    app:layout_constraintBottom_toBottomOf="@id/contact_image"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

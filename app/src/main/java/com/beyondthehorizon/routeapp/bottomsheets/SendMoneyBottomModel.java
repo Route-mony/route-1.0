@@ -66,9 +66,8 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RequestFundsActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
-                editor.apply();
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
                 startActivity(intent);
                 dismiss();
             }
@@ -106,9 +105,8 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RequestFundsActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.apply();
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
                 startActivity(intent);
             }
         });
@@ -123,8 +121,8 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     return;
                 }
                 Intent intent = new Intent(getActivity(), FundAmountActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
                 editor.putString("Phone", mobileNumber.getText().toString());
                 editor.apply();
                 startActivity(intent);
@@ -172,8 +170,8 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     return;
                 }
                 Intent intent = new Intent(getActivity(), FundAmountActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
                 editor.putString("bankAcNumber", accountNumber.getText().toString().trim());
                 editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
                 editor.apply();

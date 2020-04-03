@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityConfirmFundRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER
 import java.text.DecimalFormat
 
 class ConfirmFundRequestActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class ConfirmFundRequestActivity : AppCompatActivity() {
         amount = prefs.getString("Amount","0").toString()
         username = prefs.getString("Username", "").toString()
         userId = prefs.getString("Id", "").toString()
-        contact = prefs.getString("Phone","").toString()
+        contact = prefs.getString(PHONE_NUMBER,"").toString()
         format = DecimalFormat("#,###")
 
         binding.txtAmount.text = format.format(amount.toInt())
