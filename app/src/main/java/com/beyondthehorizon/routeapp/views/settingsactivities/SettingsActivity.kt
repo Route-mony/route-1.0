@@ -22,7 +22,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
-        btn_settings.setColorFilter((R.color.button_icon_color_blue))
+        btn_settings.setImageResource(R.drawable.ic_group663_active)
+        txt_settings.setTextColor(resources.getColor(R.color.colorButton))
 
         user_name.text = (pref.getString("FullName", ""))
 

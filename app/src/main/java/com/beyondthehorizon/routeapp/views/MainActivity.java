@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private ImageView profile_pic, btn_notifications;
-    private TextView user_name, query_text, balance_title, balance_value, verify_email;
+    private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email;
     private Button add_money_button;
     private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
             btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         setContentView(R.layout.activity_main);
 
         btn_home = findViewById(R.id.btn_home);
+        txt_home = findViewById(R.id.txt_home);
         btn_request54 = findViewById(R.id.btn_request54);
         btn_fav1 = findViewById(R.id.btn_fav1);
         btn_fav2 = findViewById(R.id.btn_fav2);
@@ -97,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_buy_airtime = findViewById(R.id.btn_request24);
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
 
-        btn_home.setColorFilter(R.color.button_icon_color_blue);
+        btn_home.setImageResource(R.drawable.ic_group762_active);
+        txt_home.setTextColor(getResources().getColor(R.color.colorButton));
+
         moveUp = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.move_up);
 
@@ -245,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             } else if (result.get("status").toString().contains("success")) {
 
                                 String id = result.get("data").getAsJsonObject().get("id").toString();
-                                String name = result.get("data").getAsJsonObject().get("username").toString();
+                                String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
                                 String username = "Hey " + name + " !";
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();

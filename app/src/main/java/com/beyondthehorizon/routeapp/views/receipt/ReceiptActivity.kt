@@ -2,14 +2,8 @@ package com.beyondthehorizon.routeapp.views.receipt
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.adapters.ReceiptAdapter
 import com.beyondthehorizon.routeapp.bottomsheets.ReceiptDetailsBottomModel
@@ -31,7 +25,8 @@ class ReceiptActivity : AppCompatActivity(), ReceiptAdapter.ReceiptInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt)
-        btn_pool.setColorFilter((R.color.button_icon_color_blue))
+        btn_pool.setImageResource(R.drawable.ic_group705_active);
+        txt_pool.setTextColor(resources.getColor(R.color.colorButton))
 
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
