@@ -31,6 +31,7 @@ class ReceiptActivity : AppCompatActivity(), ReceiptAdapter.ReceiptInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt)
+        btn_pool.setColorFilter((R.color.button_icon_color_blue))
 
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 

@@ -6,9 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
-import com.beyondthehorizon.routeapp.views.transactions.main.SectionsPagerAdapter
-import kotlinx.android.synthetic.main.activity_services.*
 import kotlinx.android.synthetic.main.activity_transactions.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
@@ -17,6 +16,7 @@ class TransactionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
+        btn_transactions.setColorFilter(R.color.button_icon_color_blue)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
@@ -33,6 +33,11 @@ class TransactionsActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+
+        btn_pool.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@TransactionsActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+        })
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@TransactionsActivity, SettingsActivity::class.java)
