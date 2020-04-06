@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
+    android:layout_marginBottom="-8dp"
+    android:layout_marginRight="-8dp"
     tools:context=".views.auth.EmailIDActivity">
 
     <LinearLayout
@@ -43,6 +45,7 @@
             android:id="@+id/lbl_id_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="32dp"
             android:text="@string/lbl_id_number"
             android:textAllCaps="true"
@@ -59,7 +62,6 @@
             android:backgroundTint="@color/colorAccent"
             android:hint="@string/id_number"
             android:inputType="number"
-            android:paddingStart="0dp"
             android:textColor="@color/colorAccent"
             android:textColorHint="#33FFFFFF"
             android:textSize="14sp"
@@ -69,6 +71,7 @@
             android:id="@+id/lbl_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
             android:text="@string/lbl_email"
             android:textAllCaps="true"
@@ -85,11 +88,24 @@
             android:backgroundTint="@color/colorAccent"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:paddingLeft="0dp"
             android:textColor="@color/colorAccent"
             android:textColorHint="#33FFFFFF"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/lbl_email" />
+
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/next_button_circle"
+            android:onClick="nextPage"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_chevron_right" />
 
         <TextView
             android:id="@+id/exitsTxt"
@@ -103,19 +119,6 @@
             android:textStyle="italic"
             android:visibility="gone" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/next_button_circle"
-        android:onClick="nextPage"
-        android:padding="8dp"
-        app:srcCompat="@drawable/ic_chevron_right" />
 
     <ImageView
         android:id="@+id/globe"

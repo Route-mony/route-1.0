@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
+    android:layout_marginBottom="-8dp"
+    android:layout_marginRight="-8dp"
     tools:context=".views.auth.EmailIDActivity">
 
     <LinearLayout
@@ -45,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginLeft="4dp"
             android:text="@string/lbl_user_name"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
@@ -65,6 +68,19 @@
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/lbl_user_name" />
 
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/next_button_circle"
+            android:onClick="nextPage"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_chevron_right" />
+
         <TextView
             android:id="@+id/exitsTxt"
             android:layout_width="match_parent"
@@ -77,19 +93,6 @@
             android:textStyle="italic"
             android:visibility="gone" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/next_button_circle"
-        android:onClick="nextPage"
-        android:padding="8dp"
-        app:srcCompat="@drawable/ic_chevron_right" />
 
     <ImageView
         android:id="@+id/globe"
