@@ -69,7 +69,11 @@ class CashOutFragment : Fragment() {
 //                        var imageUrl = R.drawable.group416
                             val date = item.asJsonObject.get("date").asString
                             val time = item.asJsonObject.get("time").asString
-                            val recipient = item.asJsonObject.get("recipient").asString
+                            val first_name = item.asJsonObject.get("recipient").asJsonObject.get("first_name").asString
+                            val last_name = item.asJsonObject.get("recipient").asJsonObject.get("last_name").asString
+                            val email = item.asJsonObject.get("recipient").asJsonObject.get("email").asString
+
+                            val recipient = "$first_name $last_name"
                             val withdrawn = item.asJsonObject.get("cash_outs").asString
                             val paymentType = "cash_outs"
                             val balance = item.asJsonObject.get("balance").asString
@@ -80,8 +84,8 @@ class CashOutFragment : Fragment() {
 //                        var statusIcon = statusMapper[status]
                             val created_at = "$date  $time"
 
-                            list.add(TransactionModel(created_at, recipient, withdrawn,
-                                    paymentType, balance, wallet_account, reference, description))
+                            list.add(TransactionModel(created_at, recipient, withdrawn, paymentType,
+                                    balance, wallet_account, reference, description, email))
                         }
                         cashOutRecycler.apply {
                             layoutManager = LinearLayoutManager(activity!!)

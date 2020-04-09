@@ -8,5 +8,6 @@ data class TransactionModel(
         var balance: String,
         var wallet_account: String,
         var reference: String,
-        var description: String
+        var description: String,
+        var email: String
 )

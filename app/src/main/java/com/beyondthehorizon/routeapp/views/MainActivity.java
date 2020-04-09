@@ -22,12 +22,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
+import com.beyondthehorizon.routeapp.databases.NotificationCount;
+import com.beyondthehorizon.routeapp.models.Notification;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.viewmodels.RoutViewModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity;
@@ -40,6 +45,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.CARDS;
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private ImageView profile_pic, btn_notifications;
-    private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email;
+    private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
     private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
             btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
@@ -67,12 +75,17 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private LinearLayout mobileMoneyLayout;
     private Animation moveUp;
 
+
+    private RoutViewModel routViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
         setContentView(R.layout.activity_main);
+
+        routViewModel = ViewModelProviders.of(this).get(RoutViewModel.class);
 
         btn_home = findViewById(R.id.btn_home);
         txt_home = findViewById(R.id.txt_home);
@@ -91,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         balance_value = findViewById(R.id.balance_value);
         add_money_button = findViewById(R.id.add_money_button);
         verify_email = findViewById(R.id.verify_email);
+        notifCount = findViewById(R.id.notifCount);
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
         btn_request_fund = findViewById(R.id.btn_request);
@@ -140,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+                routViewModel.deleteNotifiCount();
                 startActivity(intent);
             }
         });
@@ -219,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             startActivity(intent);
         } else {
             getProfile();
+            notificationCount();
         }
     }
 
@@ -358,6 +374,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                         }
                     }
                 });
+    }
+
+    private void notificationCount() {
+        routViewModel.getNotifiCount().observe(this, new Observer<List<NotificationCount>>() {
+            @Override
+            public void onChanged(List<NotificationCount> recentChatModels) {
+                Log.d(TAG, "onChanged: " + recentChatModels.size());
+                if (recentChatModels.size() > 0) {
+                    if (Integer.parseInt(recentChatModels.get(0).notif_count) > 0) {
+
+                        notifCount.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    notifCount.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override

@@ -19,7 +19,7 @@
         <activity
             android:name=".views.receipt.ReceiptActivity"
             android:label="@string/title_activity_receipt"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.transactions.main.TransactionDetailsActivity" />
         <activity
             android:name=".views.transactions.main.TransactionsActivity"
@@ -43,8 +43,8 @@
         <activity
             android:name=".views.settingsactivities.SettingsActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".views.MpesaActivity"/>
-        <activity android:name=".views.MobileActivity"/>
+        <activity android:name=".views.MpesaActivity" />
+        <activity android:name=".views.MobileActivity" />
         <activity android:name=".views.CardActivity" />
         <activity android:name=".views.AddMoneyActivity" />
         <activity android:name=".views.auth.SetSecurityInfo" />
@@ -62,7 +62,8 @@
         <activity
             android:name=".views.auth.SetTransactionPinActivity"
             android:theme="@style/Theme.Transparent" />
-        <activity android:name=".views.auth.LoginActivity"
+        <activity
+            android:name=".views.auth.LoginActivity"
             android:launchMode="singleTask" />
         <activity android:name=".views.auth.UserNamesActivity" />
         <activity
@@ -99,6 +100,12 @@
         <meta-data
             android:name="interswitch-kenya-limited.mobpay.exponent"
             android:value="010001" />
+
+        <service android:name=".utils.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
