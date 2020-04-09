@@ -70,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         editor.putInt("notifCount", pref.getInt("notifCount", 0));
         editor.apply();
 
-        chatsRepository.insertChat(new NotificationCount(0, String.valueOf(pref.getInt("notifCount", 0))));
+        chatsRepository.insertChat(new NotificationCount(String.valueOf(pref.getInt("notifCount", 0))));
 
 //        final String dataSender, dataMessage, phoneNumber, senderUID, newGroup,
 //                receiverUID, timestamp, type, profileImage, imageUrl, groupName, message_key;

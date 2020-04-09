@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 
-@Database(entities = {NotificationCount.class}, exportSchema = false, version = 3)
+@Database(entities = {NotificationCount.class}, exportSchema = false, version = 4)
 public abstract class RouteDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "notification_count_db";

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "notif_count_table")
 public class NotificationCount {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
     public String notif_count;
 
@@ -14,8 +14,7 @@ public class NotificationCount {
     public NotificationCount() {
     }
 
-    public NotificationCount(int id, String notif_count) {
-        this.id = id;
+    public NotificationCount(String notif_count) {
         this.notif_count = notif_count;
     }
 
