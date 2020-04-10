@@ -298,7 +298,7 @@ class FundAmountActivity : AppCompatActivity() {
             }
             when {
                 transactionType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-                    account = prefs.getString(PHONE_NUMBER, "").toString()
+                    account = parentIntent.getStringExtra(PHONE_NUMBER)
                     provider = "MPESA WALLET"
                 }
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
