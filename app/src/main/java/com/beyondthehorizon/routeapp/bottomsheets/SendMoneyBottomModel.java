@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.views.FundAmountActivity;
-import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.beyondthehorizon.routeapp.views.RequestFundsActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -30,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
+import static com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
@@ -37,7 +37,6 @@ import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_BANK;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class SendMoneyBottomModel extends BottomSheetDialogFragment {
     private SendMoneyBottomSheetListener mListener;
@@ -123,8 +122,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 Intent intent = new Intent(getActivity(), FundAmountActivity.class);
                 intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.putString("Phone", mobileNumber.getText().toString());
-                editor.apply();
+                intent.putExtra(PHONE_NUMBER, mobileNumber.getText().toString());
                 startActivity(intent);
             }
         });
