@@ -2,14 +2,11 @@ package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.content.Intent.getIntentOld
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.models.Contact
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.squareup.picasso.Picasso
@@ -34,11 +31,16 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
         itemView.setOnClickListener {
             try {
                 prefs = context.getSharedPreferences(REG_APP_PREFERENCES, 0)
-                requestType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString();
+                requestType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString();
                 if (requestType.compareTo(MOBILE_TRANSACTION) == 0) {
                     intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
                     editor.putString(MOBILE_TRANSACTION, "")
-                } else {
+                } else if(requestType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0){
+                    intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY)
+                    intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY)
+                    editor.putString(SEND_MONEY_TO_MOBILE_MONEY, "")
+                }
+                else{
                     intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY)
                 }
                 editor.putString("Id", value.id)
