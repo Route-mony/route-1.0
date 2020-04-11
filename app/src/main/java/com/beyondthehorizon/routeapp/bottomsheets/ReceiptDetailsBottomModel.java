@@ -135,12 +135,12 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 btnOk.setText("Ok");
                 btnCancel.setVisibility(View.GONE);
             } else {
-                btnCancel.setText("Delete");
+                btnCancel.setText("Reject");
                 btnOk.setText("Approve");
             }
         } else if (pref.getString(Constants.TRANS_TYPE, "").compareTo("SentReceiptFragment") == 0) {
-            btnCancel.setText("Delete");
-            btnOk.setText("Ok");
+            btnCancel.setText("Reject");
+            btnOk.setText("Approve");
         }
 
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +174,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnCancel.getText().toString().contains("Delete" +
+                if (btnCancel.getText().toString().contains("Reject" +
                         "")) {
 
                     if (receiptModel.getStatus().compareTo("pending") != 0) {
@@ -219,9 +219,10 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                     .setCallback(new FutureCallback<JsonObject>() {
                                         @Override
                                         public void onCompleted(Exception e, JsonObject result) {
+//                                            Log.e(TAG, "onCompleted: "+result.toString() );
                                             progressDialog.dismiss();
                                             if (result.get("status").getAsString().contains("success")) {
-                                                Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_LONG).show();
                                                 alertDialog.dismiss();
                                                 dismiss();
                                             } else {

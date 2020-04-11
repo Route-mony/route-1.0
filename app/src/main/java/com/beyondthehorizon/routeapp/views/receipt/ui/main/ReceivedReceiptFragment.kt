@@ -18,6 +18,8 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.fragment_received_receipt.*
 import kotlinx.android.synthetic.main.fragment_received_receipt.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -95,6 +97,7 @@ class ReceivedReceiptFragment : Fragment() {
                             layoutManager = LinearLayoutManager(activity)
                             adapter = receiptAdapter
                         }
+                        list.reverse()
                         receiptAdapter.setContact(list)
                     }
                 }

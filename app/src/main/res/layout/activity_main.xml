@@ -79,7 +79,7 @@
                     android:id="@+id/notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/group707" />
+                    app:srcCompat="@drawable/ic_notification_icon" />
 
                 <TextView
                     android:id="@+id/notifCount"
@@ -136,7 +136,7 @@
 
                 <Button
                     android:id="@+id/add_money_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="38dp"
                     android:background="@drawable/route_button"
                     android:padding="3dp"
@@ -193,11 +193,13 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav1"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group779" />
+                            android:padding="13dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_request" />
 
                         <TextView
                             android:id="@+id/txt_fav1"
@@ -220,11 +222,13 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav2"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group492" />
+                            android:padding="15dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_route_it" />
 
                         <TextView
                             android:id="@+id/txt_fav2"
@@ -247,11 +251,13 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav3"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group492" />
+                            android:padding="13dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_receipts" />
 
                         <TextView
                             android:id="@+id/txt_fav3"
@@ -303,12 +309,12 @@
                             android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request"
+                                android:id="@+id/btn_request34"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                app:srcCompat="@drawable/ic_group779" />
+                                app:srcCompat="@drawable/ic_group492" />
 
                             <TextView
                                 android:id="@+id/txt_request"
@@ -316,7 +322,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@string/font_family_medium"
-                                android:text="Request"
+                                android:text="Send"
                                 android:textAlignment="center"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -355,12 +361,13 @@
                             android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request34"
+                                android:id="@+id/btn_request4"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
-                                app:srcCompat="@drawable/ic_group492" />
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_send_to_many_greyed" />
 
                             <TextView
                                 android:id="@+id/txt_request34"
@@ -368,7 +375,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@string/font_family_medium"
-                                android:text="Send"
+                                android:text="Send To Many"
                                 android:textAlignment="center"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -390,38 +397,13 @@
                             android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request4"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-                                app:srcCompat="@drawable/ic_group776" />
-
-                            <TextView
-                                android:id="@+id/txt_request32"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Send To Many"
-                                android:textAlignment="center"
-                                android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
                                 android:id="@+id/btn_request24"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group777" />
+                                android:background="@drawable/service_buttons"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_airtime_greyed" />
 
                             <TextView
                                 android:id="@+id/txt_request24"
@@ -446,9 +428,10 @@
                                 android:id="@+id/btn_request3"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group778" />
+                                android:background="@drawable/service_buttons"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_split_bill_greyed" />
 
                             <TextView
                                 android:id="@+id/txt_request3"
@@ -457,6 +440,34 @@
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@string/font_family_medium"
                                 android:text="Split Bill"
+                                android:textAlignment="center"
+                                android:textColor="#BBB9B9"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/btn_request54"
+                                android:layout_width="@dimen/item_round_size"
+                                android:layout_height="@dimen/item_round_size"
+                                android:background="@drawable/service_buttons"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_utilities_greyed" />
+
+                            <TextView
+                                android:id="@+id/txt_request35"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:fontFamily="@string/font_family_medium"
+                                android:text="Utilities"
                                 android:textAlignment="center"
                                 android:textColor="#BBB9B9"
                                 android:textSize="12sp" />
@@ -471,32 +482,6 @@
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
-                                android:id="@+id/btn_request54"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group782" />
-
-                            <TextView
-                                android:id="@+id/txt_request35"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Receipts"
-                                android:textAlignment="center"
-                                android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
-                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
