@@ -34,6 +34,7 @@ class FundRequestedActivity : AppCompatActivity() {
         }
 
         try {
+            val activity = intent.getStringExtra(ACTIVITY_TYPE)
             binding.txtRequestInform.text = intent.getStringExtra("Message")
             prefsEditor.putString("Amount", "")
             prefsEditor.putString("Id", "")
@@ -43,7 +44,7 @@ class FundRequestedActivity : AppCompatActivity() {
             prefsEditor.putString("walletAccountNumber", "")
             prefsEditor.apply()
 
-            if (intent.getStringExtra(ACTIVITY_TYPE).compareTo(ADD_MONEY_ACTIVITY) == 0) {
+            if (activity != null && activity.compareTo(ADD_MONEY_ACTIVITY) == 0) {
                 binding.btnDone.visibility = View.GONE
                 binding.btnNewRequest.visibility = View.GONE
                 binding.arrowBack.setOnClickListener {
@@ -53,19 +54,20 @@ class FundRequestedActivity : AppCompatActivity() {
                     this@FundRequestedActivity.finish()
                 }
             }
+            else {
+                binding.btnDone.setOnClickListener {
+                    val intent = Intent(Intent(this, MainActivity::class.java))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    this@FundRequestedActivity.finish()
+                }
 
-            binding.btnDone.setOnClickListener {
-                val intent = Intent(Intent(this, MainActivity::class.java))
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                this@FundRequestedActivity.finish()
-            }
-
-            binding.btnNewRequest.setOnClickListener {
-                val intent = Intent(Intent(this, RequestFundsActivity::class.java))
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                this@FundRequestedActivity.finish()
+                binding.btnNewRequest.setOnClickListener {
+                    val intent = Intent(Intent(this, RequestFundsActivity::class.java))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    this@FundRequestedActivity.finish()
+                }
             }
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
