@@ -60,6 +60,7 @@ class TransactionDetailsActivity : AppCompatActivity() {
         receipt_date.text = transactionModel.created_at
 //        receipt_status.text = transactionModel.st
         username.text = transactionModel.details
+        email.text = transactionModel.email
         destination.text = transactionModel.description
 
         //upload image

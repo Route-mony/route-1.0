@@ -59,7 +59,8 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
                         intent.putExtra(EXPIRY_DATE, cardList[0].expiry_date)
                         intent.putExtra(CVV_NUMBER, cardList[0].cvv)
                         intent.putExtra(COUNTRY, cardList[0].country)
-                        intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                        editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                        editor.apply()
                         startActivity(intent)
                     }
                 } catch (ex: Exception) {
@@ -80,7 +81,8 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
                     intent.putExtra(EXPIRY_DATE, cardList[1].expiry_date)
                     intent.putExtra(CVV_NUMBER, cardList[1].cvv)
                     intent.putExtra(COUNTRY, cardList[1].country)
-                    intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                    editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
+                    editor.apply()
                     startActivity(intent)
                 } catch (ex: Exception) {
                     Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()

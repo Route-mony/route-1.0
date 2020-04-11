@@ -17,7 +17,6 @@ import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
-import kotlinx.android.synthetic.main.row_notification.*
 import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -34,7 +33,7 @@ class FundAmountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFundAmountBinding
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var transactionType: String
-    private lateinit var cardStatus:String
+    private lateinit var cardStatus: String
     private lateinit var phone: String
     private lateinit var token: String
 
@@ -45,8 +44,9 @@ class FundAmountActivity : AppCompatActivity() {
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         parentIntent = getIntent()
         childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
-        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
-        val token = "Bearer " + prefs.getString(USER_TOKEN, "")
+//        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
+        transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
+        token = "Bearer " + prefs.getString(USER_TOKEN, "")
         val progressBar = CustomProgressBar()
         var transactionMessage = ""
 
@@ -106,18 +106,26 @@ class FundAmountActivity : AppCompatActivity() {
             }
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 username = prefs.getString("Username", "").toString()
-
                 binding.requestTitle.text = "Request $username"
             } else if (transactionType.compareTo(SEND_MONEY) == 0) {
-                phone = parentIntent.getStringExtra(PHONE_NUMBER)
-                binding.btnRequest.text = "SEND"
-                binding.requestTitle.text = "Send To ${phone}"
+                if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0) {
+                    phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                    binding.btnRequest.text = "SEND"
+                    binding.requestTitle.text = "Send To ${phone}"
+
+                } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0) {
+                    username = prefs.getString("Username", "").toString()
+                    binding.btnRequest.text = "SEND"
+                    binding.requestTitle.text = "Send To ${username}"
+
+                }
             } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER)
                 binding.requestTitle.text = "Buy airtime for ${phone}"
+                binding.btnRequest.text = "BUY"
             }
 
             binding.btnRequest.setOnClickListener {
@@ -152,6 +160,8 @@ class FundAmountActivity : AppCompatActivity() {
 
                 /**HERE NOW*/
                 else if (transactionType.compareTo(REQUEST_MONEY) == 0) {
+                    editor.putString("Amount", amount)
+                    editor.apply()
                     startActivity(childIntent)
                 } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
@@ -180,7 +190,7 @@ class FundAmountActivity : AppCompatActivity() {
                             progressBar.dialog.dismiss()
                             Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
 
-                            if(cardStatus.compareTo(NEW_CARD) == 0) {
+                            if (cardStatus.compareTo(NEW_CARD) == 0) {
                                 progressBar.show(this, "Updating route ...")
                                 addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
                                         .setCallback { e, result ->
@@ -209,6 +219,7 @@ class FundAmountActivity : AppCompatActivity() {
                             editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                             editor.apply()
                             intent.putExtra("Message", transactionMessage)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
                             startActivity(intent)
 
@@ -242,6 +253,7 @@ class FundAmountActivity : AppCompatActivity() {
                             editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                             editor.apply()
                             intent.putExtra("Message", transactionMessage)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
                             startActivity(intent)
                         }, {
@@ -250,8 +262,7 @@ class FundAmountActivity : AppCompatActivity() {
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
 
                         })
-                    }
-                catch (e: Exception) {
+                    } catch (e: Exception) {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
@@ -297,8 +308,9 @@ class FundAmountActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             when {
-                transactionType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-                    account = parentIntent.getStringExtra(PHONE_NUMBER)
+                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
+//                    account = parentIntent.getStringExtra(PHONE_NUMBER)
+                    account = prefs.getString(PHONE_NUMBER, "").toString()
                     provider = "MPESA WALLET"
                 }
                 prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
@@ -324,12 +336,13 @@ class FundAmountActivity : AppCompatActivity() {
                         Log.e("FundAmountActivity", result.toString())
                         progressBar.dialog.dismiss()
                         if (result.has("errors")) {
-                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
                         } else {
                             editor.putString("Amount", amount)
                             editor.apply()
                             val message = result.get("data").asJsonObject.get("message").asString
                             val intent = Intent(this, FundRequestedActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra("Message", message)
                             startActivity(intent)
                             alertDialog.dismiss()

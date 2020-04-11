@@ -152,6 +152,7 @@ class InviteFriendActivity : AppCompatActivity() {
         // Hash Maps
         val namePhoneMap = HashMap<String, String>()
         val sharePhoneMap = HashMap<String, String>()
+        val userUniqueKeys = HashMap<String, String>()
         val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, null)
 
@@ -176,9 +177,8 @@ class InviteFriendActivity : AppCompatActivity() {
         val requestType = intent.getStringExtra("TYPE")
         if (result != null) {
             for (item: JsonElement in result) {
-                val phone = item.asJsonObject.get("phone_number").asString
-                val id = item.asJsonObject.get("id").asString
 
+                val phone = item.asJsonObject.get("phone_number").asString
 
                 if (requestType.contains("Invite")) {
                     if (namePhoneMap.keys.contains(phone.substring(phone.length - 9))) {
@@ -187,11 +187,14 @@ class InviteFriendActivity : AppCompatActivity() {
                 } else {
                     if (namePhoneMap.keys.contains(phone.substring(phone.length - 9))) {
 
-                        Log.e("FragmentActivity.TAG", "Name :")
-                        idList.add(id)
-//                        sharePhoneMap[phone.substring(phone.length - 9)] = namePhoneMap.get(phone.substring(phone.length - 9))
+                        val id = item.asJsonObject.get("id").asString
+                        val phone = item.asJsonObject.get("phone_number").asString
 
-                        sharePhoneMap[phone.substring(phone.length - 9)] = namePhoneMap[phone.substring(phone.length - 9)].toString()
+                        idList.add(id)
+                        userUniqueKeys.put(phone.substring(phone.length - 9), id)
+
+                        sharePhoneMap[phone.substring(phone.length - 9)] =
+                                namePhoneMap[phone.substring(phone.length - 9)].toString()
                     }
                 }
 
@@ -214,19 +217,17 @@ class InviteFriendActivity : AppCompatActivity() {
                     inviteFriendAdapter.setContact(list)
                 }
             } else {
-                var i = 0
+
                 for (entry in sharePhoneMap.entries) {
                     val keyPhone = entry.key
                     val valueUserName = entry.value
 
-                    list.add(InviteFriend(valueUserName, "0$keyPhone", idList[i]))
-                    i++
-
+                    list.add(InviteFriend(valueUserName, "0$keyPhone", userUniqueKeys[keyPhone].toString()))
+                    inviteFriendAdapter.setContact(list)
                     inviteFriendsRecycler.apply {
                         layoutManager = LinearLayoutManager(this@InviteFriendActivity)
                         adapter = inviteFriendAdapter
                     }
-                    inviteFriendAdapter.setContact(list)
                 }
 
             }
