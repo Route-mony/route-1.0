@@ -87,10 +87,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group752" />
+                    app:srcCompat="@drawable/ic_password_and_pin" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,8 +114,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -124,10 +122,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group753" />
+                    app:srcCompat="@drawable/ic_view_my_account_balance" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,8 +149,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -161,10 +157,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group790" />
+                    app:srcCompat="@drawable/ic_payment_methods" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,8 +184,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -199,10 +193,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group755" />
+                    app:srcCompat="@drawable/ic_invite_your_friends" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,8 +221,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -237,10 +229,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group756" />
+                    app:srcCompat="@drawable/ic_download_my_account_statement" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -264,8 +256,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -274,10 +264,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group757" />
+                    app:srcCompat="@drawable/ic_help_and_support" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -301,8 +291,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -312,10 +300,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group758" />
+                    app:srcCompat="@drawable/ic_terms_and_conditions" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -339,8 +327,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -350,11 +336,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/group751" />
+                    app:srcCompat="@drawable/ic_sign_out" />
 
                 <TextView
                     android:layout_width="wrap_content"

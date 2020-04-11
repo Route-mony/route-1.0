@@ -181,7 +181,7 @@ class FundAmountActivity : AppCompatActivity() {
                         var config = MobPay.Config();
                         mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
 
-                        progressBar.show(this, "Interswitch payment processing ...")
+                        progressBar.show(this, "Processing payment...")
                         mobPay.makeCardPayment(
                                 card,
                                 merchant,

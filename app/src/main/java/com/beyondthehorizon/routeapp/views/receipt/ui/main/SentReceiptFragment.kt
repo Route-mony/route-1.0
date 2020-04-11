@@ -97,6 +97,7 @@ class SentReceiptFragment : Fragment() {
                             layoutManager = LinearLayoutManager(activity)
                             adapter = receiptAdapter
                         }
+                        list.reverse()
                         receiptAdapter.setContact(list)
                     }
                 }
