@@ -33,31 +33,32 @@ class TransactionModel : BottomSheetDialogFragment() {
         myPhoneButton.setOnClickListener {
             var phone = pref.getString(MyPhoneNumber, "")
             var intent = Intent(activity, FundAmountActivity::class.java)
-            intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.apply()
             intent.putExtra(PHONE_NUMBER, phone)
             startActivity(intent)
         }
 
         contactsButton.setOnClickListener {
-            var intent = Intent(activity, RequestFundsActivity::class.java)
             editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
             editor.apply()
+            var intent = Intent(activity, RequestFundsActivity::class.java)
             startActivity(intent)
         }
 
         sendButton.setOnClickListener {
             val phone = mobileInput.text.trim().toString()
             var intent = Intent(activity, FundAmountActivity::class.java)
-            if(phone.length < 10){
+            if (phone.length < 10) {
                 mobileInput.error = "Enter valid phone number"
-            }
-            else {
-                intent.putExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            } else {
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+                editor.apply()
                 intent.putExtra(PHONE_NUMBER, phone)
                 startActivity(intent)
             }
         }
-       return v;
+        return v;
     }
 
     override fun onAttach(context: Context) {
