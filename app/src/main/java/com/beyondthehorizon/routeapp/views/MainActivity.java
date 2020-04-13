@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-    private ImageButton btn_request_fund, btn_request34, btn_fav2, btn_fav3,
+    private ImageButton btn_request34, btn_fav2, btn_fav3,
             btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         verify_email = findViewById(R.id.verify_email);
         profile_pic = findViewById(R.id.profile_pic);
         RL1 = findViewById(R.id.RL1);
-        btn_request_fund = findViewById(R.id.btn_request);
+//        btn_request_fund = findViewById(R.id.btn_request);
         btn_notifications = findViewById(R.id.notifications);
         btn_buy_airtime = findViewById(R.id.btn_request24);
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
@@ -128,14 +128,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
             }
         });
-        btn_request_fund.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
-                editor.apply();
-                startActivity(intent);
-            }
-        });
+//        btn_request_fund.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
+//                editor.apply();
+//                startActivity(intent);
+//            }
+//        });
         btn_fav1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

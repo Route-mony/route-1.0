@@ -213,7 +213,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:text="Cancel"
+                        android:text="Reject"
                         android:textAllCaps="false"
                         android:textColor="#FD0202" />
 
@@ -224,7 +224,7 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Ok"
+                        android:text="Approve"
                         android:textAllCaps="false"
                         android:textColor="@color/colorButton" />
                 </LinearLayout>
