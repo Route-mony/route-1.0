@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                                 String id = result.get("data").getAsJsonObject().get("id").toString();
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
-                                String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").toString();
+                                String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
                                 String username = "Hey " + name + " !";
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
                                 String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
