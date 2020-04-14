@@ -18,9 +18,13 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.ReceiptModel
 import com.beyondthehorizon.routeapp.models.TransactionModel
 import com.beyondthehorizon.routeapp.utils.Constants
-import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
-import com.beyondthehorizon.routeapp.utils.Constants.TRANSACTION_DETAILS
+import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.settingsactivities.InviteFriendActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.ktx.Firebase
@@ -63,6 +67,17 @@ class TransactionDetailsActivity : AppCompatActivity() {
         email.text = transactionModel.email
         destination.text = transactionModel.description
 
+        var requestOptions = RequestOptions();
+        requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16));
+        Glide.with(this@TransactionDetailsActivity)
+                .load(transactionModel.profile_image)
+                .centerCrop()
+                .error(R.drawable.ic_user)
+                .placeholder(R.drawable.ic_user)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .apply(requestOptions)
+                .into(profile_image)
         //upload image
         uploadReceipt.setOnClickListener {
             // start picker to get image for cropping and then use the image in cropping activity
@@ -145,7 +160,7 @@ class TransactionDetailsActivity : AppCompatActivity() {
                 val urL = username.text.toString() + "/" + System.currentTimeMillis()
 
 //                val userToken = sharedpreferences.getString(UserToken, "empty")
-                val filePath = storageReference.child("RECEIPTS")
+                val filePath = storageReference.child(RECEIPTS)
                         .child("$urL.jpg")
 
                 val uploadTask = filePath.putBytes(finalImage)

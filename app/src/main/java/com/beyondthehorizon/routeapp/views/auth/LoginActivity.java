@@ -1,11 +1,13 @@
 package com.beyondthehorizon.routeapp.views.auth;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
             password.setError("Password cannot be less than 8 characters");
             return;
         }
+        View view1 = this.getCurrentFocus();
+        if (view1 != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage("please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -72,17 +81,15 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (result != null) {
                             if (result.get("status").toString().contains("failed")) {
-                                Toast.makeText(LoginActivity.this, "A user with this email and password was not found.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "A user with this email and password was not found.", Toast.LENGTH_LONG).show();
                             } else {
-                                String email = result.get("data").getAsJsonObject().get("email").toString();
-                                String token = result.get("data").getAsJsonObject().get("token").toString();
+                                String email = result.get("data").getAsJsonObject().get("email").getAsString();
+                                String token = result.get("data").getAsJsonObject().get("token").getAsString();
 
                                 editor.putString(LOGGED_IN, "true");
-                                editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
-                                editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
-
+                                editor.putString(USER_EMAIL, email);
+                                editor.putString(USER_TOKEN, token);
                                 editor.apply();
-
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);

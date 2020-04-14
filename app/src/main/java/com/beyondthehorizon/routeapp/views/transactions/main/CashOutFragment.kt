@@ -48,7 +48,8 @@ class CashOutFragment : Fragment() {
             Constants.getUserStatement(activity, token, "cash_outs").setCallback { _, result ->
                 progressDialog.dismiss()
 
-                Log.e("HERE 13 ", result.get("data").asJsonObject.get("rows").asJsonArray.toString())
+//                Log.e("HERE 13 ", result.toString())
+//                Log.e("HERE 13 ", result.get("data").asJsonObject.get("rows").asJsonArray.toString())
 
                 if (result != null) {
 
@@ -72,6 +73,7 @@ class CashOutFragment : Fragment() {
                             val first_name = item.asJsonObject.get("recipient").asJsonObject.get("first_name").asString
                             val last_name = item.asJsonObject.get("recipient").asJsonObject.get("last_name").asString
                             val email = item.asJsonObject.get("recipient").asJsonObject.get("email").asString
+                            val image = item.asJsonObject.get("recipient").asJsonObject.get("image").asString
 
                             val recipient = "$first_name $last_name"
                             val withdrawn = item.asJsonObject.get("cash_outs").asString
@@ -85,7 +87,7 @@ class CashOutFragment : Fragment() {
                             val created_at = "$date  $time"
 
                             list.add(TransactionModel(created_at, recipient, withdrawn, paymentType,
-                                    balance, wallet_account, reference, description, email))
+                                    balance, wallet_account, reference, description, email, image))
                         }
                         cashOutRecycler.apply {
                             layoutManager = LinearLayoutManager(activity!!)

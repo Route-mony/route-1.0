@@ -18,6 +18,7 @@ import com.beyondthehorizon.routeapp.adapters.InviteFriendAdapter
 import com.beyondthehorizon.routeapp.models.InviteFriend
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
@@ -47,19 +48,26 @@ class InviteFriendActivity : AppCompatActivity() {
         progressBar = ProgressDialog(this@InviteFriendActivity)
         progressBar.setMessage("Please wait...")
         progressBar.setCanceledOnTouchOutside(false)
+
+
         btn_home.setOnClickListener {
             val intent = Intent(this@InviteFriendActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
-
-        btn_settings.setOnClickListener {
-            val intent = Intent(this@InviteFriendActivity, SettingsActivity::class.java)
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@InviteFriendActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
         }
-        btn_transactions.setOnClickListener {
-            val intent = Intent(this@InviteFriendActivity, TransactionsActivity::class.java)
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@InviteFriendActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@InviteFriendActivity, SettingsActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -8,10 +8,11 @@
     android:orientation="vertical"
     tools:context=".views.transactions.main.TransactionDetailsActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/top_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -23,7 +24,7 @@
             app:layout_constraintBottom_toBottomOf="@id/logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/logo"
-            app:srcCompat="@drawable/leftarrow29" />
+            app:srcCompat="@drawable/ic_arrow_back" />
 
         <ImageView
             android:id="@+id/logo"
@@ -31,11 +32,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="5dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_logo" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,8 +48,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
             android:src="@drawable/profile_pic" />
 
         <LinearLayout
@@ -70,7 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="username@email.com"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -111,7 +115,8 @@
                         <EditText
                             android:id="@+id/receipt_title"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/route_fonts" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <!--            L1-->
                     <RelativeLayout
@@ -129,6 +134,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/route_fonts"
                                 android:text="Amount"
                                 android:textStyle="bold" />
 
@@ -136,6 +142,7 @@
                                 android:id="@+id/receipt_amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/route_fonts"
                                 android:text="0.00" />
                         </LinearLayout>
 
@@ -149,11 +156,13 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/route_fonts"
                                 android:text="Route fee " />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/route_fonts"
                                 android:text="0.00"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -241,9 +250,8 @@
                             android:padding="8dp">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 app:srcCompat="@drawable/ic_account_balance_wallet" />
 
                         </LinearLayout>
@@ -325,13 +333,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_margin="5dp"
+                            android:layout_centerVertical="true"
                             android:orientation="vertical"
                             android:padding="8dp">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="fitXY"
                                 app:srcCompat="@drawable/ic_upload_receipt" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -346,7 +355,8 @@
                         android:id="@+id/shareReceipt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:background="@drawable/route_button"
                         android:text="Share Receipt"
                         android:textAllCaps="false"

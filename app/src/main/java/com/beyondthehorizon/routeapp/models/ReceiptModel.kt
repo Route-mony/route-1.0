@@ -14,5 +14,6 @@ data class ReceiptModel(
         var transaction_date: String,
         var phone_number: String,
         var status: String,
-        var email: String
+        var email: String,
+        var type: String
 )

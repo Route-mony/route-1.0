@@ -10,6 +10,10 @@ import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityRequestReminderBinding
 import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import java.lang.Exception
 
 class RequestReminderActivity : AppCompatActivity() {
@@ -20,6 +24,29 @@ class RequestReminderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_request_reminder)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@RequestReminderActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@RequestReminderActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@RequestReminderActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@RequestReminderActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         pref = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         oldIntent = getIntent()
 
@@ -51,12 +78,12 @@ class RequestReminderActivity : AppCompatActivity() {
             Log.d("TAG", ex.message)
         }
 
-        binding.btnRemind.setOnClickListener{
+        binding.btnRemind.setOnClickListener {
             intent.putExtra("Message", "We have successfully sent a reminder to $username for the request of Ksh. $amount for $reason.")
             startActivity(intent)
         }
 
-        binding.arrowBack.setOnClickListener{
+        binding.arrowBack.setOnClickListener {
             onBackPressed()
         }
     }

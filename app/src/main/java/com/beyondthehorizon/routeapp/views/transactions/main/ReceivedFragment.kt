@@ -69,7 +69,7 @@ class ReceivedFragment : Fragment() {
                             val first_name = item.asJsonObject.get("sender").asJsonObject.get("first_name").asString
                             val last_name = item.asJsonObject.get("sender").asJsonObject.get("last_name").asString
                             val email = item.asJsonObject.get("sender").asJsonObject.get("email").asString
-
+                            val image = item.asJsonObject.get("sender").asJsonObject.get("image").asString
                             val sender = "$first_name $last_name"
                             val description = item.asJsonObject.get("description").asString
                             val balance = item.asJsonObject.get("balance").asString
@@ -80,7 +80,7 @@ class ReceivedFragment : Fragment() {
 
                             val created_at = "$date  $time"
                             list.add(TransactionModel(created_at, sender, withdrawn,
-                                    paymentType, balance, wallet_account, reference, description, email))
+                                    paymentType, balance, wallet_account, reference, description, email, image))
                         }
                         receivedRecycler.apply {
                             layoutManager = LinearLayoutManager(activity)

@@ -91,7 +91,7 @@ class SentReceiptFragment : Fragment() {
                                     username, image, created_at,
                                     amount_spent, title,
                                     description, cancellation_reason,
-                                    transaction_date, phone_number, status, email))
+                                    transaction_date, phone_number, status, email, "sent"))
                         }
                         receivedRecycler.apply {
                             layoutManager = LinearLayoutManager(activity)

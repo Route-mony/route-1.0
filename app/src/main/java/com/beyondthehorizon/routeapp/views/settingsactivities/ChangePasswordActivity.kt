@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.views.MainActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
@@ -20,19 +21,22 @@ class ChangePasswordActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
-
-        btn_settings.setOnClickListener {
-            val intent = Intent(this@ChangePasswordActivity, SettingsActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         btn_transactions.setOnClickListener {
             val intent = Intent(this@ChangePasswordActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@ChangePasswordActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@ChangePasswordActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         back.setOnClickListener {
             onBackPressed()
         }

@@ -8,18 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.views.FundAmountActivity;
-import com.beyondthehorizon.routeapp.views.RequestFundsActivity;
+import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.json.JSONArray;
@@ -64,7 +64,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         toRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RequestFundsActivity.class);
+                Intent intent = new Intent(getActivity(), RequestFundActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
                 editor.apply();
@@ -104,7 +104,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RequestFundsActivity.class);
+                Intent intent = new Intent(getActivity(), RequestFundActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
                 editor.apply();
@@ -131,14 +131,14 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 startActivity(intent);
             }
         });
-        
+
         /**SEND TO BANK*/
-        
+
         final EditText accountNumber = v.findViewById(R.id.accountNumber);
         Button bankButton = v.findViewById(R.id.bankButton);
-        final Spinner chooseBank = v.findViewById(R.id.chooseBank);
+//        final Spinner chooseBank = v.findViewById(R.id.chooseBank);
+        final AutoCompleteTextView findBank = v.findViewById(R.id.findBank);
         ArrayList<String> list = new ArrayList<>();
-        list.add("Select bank");
 
         try {
             JSONArray jsonArray = new JSONArray(pref.getString(BANK_PROVIDERS, ""));
@@ -147,9 +147,9 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 list.add(jsonObject.getString("providerName"));
             }
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_spinner_item, list);
+                    R.layout.custom_list_item, R.id.text_view_list_item, list);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            chooseBank.setAdapter(dataAdapter);
+            findBank.setAdapter(dataAdapter);
 
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -168,15 +168,22 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     accountNumber.requestFocus();
                     return;
                 }
-                if (chooseBank.getSelectedItemPosition() == 0) {
-                    Toast.makeText(getActivity(), "Choose a bank", Toast.LENGTH_LONG).show();
+                if (findBank.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Select bank", Toast.LENGTH_LONG).show();
+                    findBank.setError("Select bank");
+                    findBank.requestFocus();
                     return;
                 }
+//                if (chooseBank.getSelectedItemPosition() == 0) {
+//                    Toast.makeText(getActivity(), "Choose a bank", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
                 Intent intent = new Intent(getActivity(), FundAmountActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
                 editor.putString("bankAcNumber", accountNumber.getText().toString().trim());
-                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
+//                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
+                editor.putString("chosenBank", findBank.getText().toString().trim());
                 editor.apply();
                 startActivity(intent);
             }

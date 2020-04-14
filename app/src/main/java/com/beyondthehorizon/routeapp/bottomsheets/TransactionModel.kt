@@ -15,6 +15,7 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.beyondthehorizon.routeapp.views.RequestFundsActivity
+import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class TransactionModel : BottomSheetDialogFragment() {
@@ -42,7 +43,7 @@ class TransactionModel : BottomSheetDialogFragment() {
         contactsButton.setOnClickListener {
             editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
             editor.apply()
-            var intent = Intent(activity, RequestFundsActivity::class.java)
+            var intent = Intent(activity, RequestFundActivity::class.java)
             startActivity(intent)
         }
 

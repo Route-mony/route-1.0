@@ -1,5 +1,6 @@
 package com.beyondthehorizon.routeapp.views
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,9 +15,13 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -37,9 +42,33 @@ class FundAmountActivity : AppCompatActivity() {
     private lateinit var phone: String
     private lateinit var token: String
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@FundAmountActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@FundAmountActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@FundAmountActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@FundAmountActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         parentIntent = getIntent()
@@ -115,6 +144,11 @@ class FundAmountActivity : AppCompatActivity() {
 
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                     username = prefs.getString("Username", "").toString()
+                    binding.btnRequest.text = "SEND"
+                    binding.requestTitle.text = "Send To ${username}"
+
+                } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0) {
+                    username = prefs.getString("chosenBank", "").toString() + "\nAccount No: " + prefs.getString("bankAcNumber", "").toString()
                     binding.btnRequest.text = "SEND"
                     binding.requestTitle.text = "Send To ${username}"
 

@@ -14,6 +14,11 @@ import com.beyondthehorizon.routeapp.databinding.ActivityFundRequestedBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ACTIVITY_TYPE
 import com.beyondthehorizon.routeapp.utils.Constants.ADD_MONEY_ACTIVITY
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import java.lang.Exception
 
 
@@ -28,6 +33,27 @@ class FundRequestedActivity : AppCompatActivity() {
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         prefsEditor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
 
+        btn_home.setOnClickListener {
+            val intent = Intent(this@FundRequestedActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@FundRequestedActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@FundRequestedActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@FundRequestedActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.arrowBack.setOnClickListener {
             onBackPressed()
@@ -63,7 +89,7 @@ class FundRequestedActivity : AppCompatActivity() {
                 }
 
                 binding.btnNewRequest.setOnClickListener {
-                    val intent = Intent(Intent(this, RequestFundsActivity::class.java))
+                    val intent = Intent(Intent(this, RequestFundActivity::class.java))
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     this@FundRequestedActivity.finish()

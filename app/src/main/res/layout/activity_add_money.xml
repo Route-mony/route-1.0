@@ -65,22 +65,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
-                    android:paddingVertical="30dp"
                     android:background="@drawable/round_route_button_white"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:paddingVertical="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/card_option_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment Methods"
                         android:paddingBottom="10dp"
-                        android:textStyle="bold"
+                        android:text="Payment Methods"
                         android:textColor="@color/colorButton"
                         android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,34 +96,34 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:layout_marginHorizontal="16dp"
+                            android:background="@drawable/round_light_blue_button"
                             android:padding="4dp"
                             android:scaleType="centerCrop"
-                            android:background="@drawable/round_light_blue_button"
-                            app:srcCompat="@drawable/ic_visa"
-                            app:civ_border_width="2dp"
                             app:civ_border_color="#FFFFFFFF"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:civ_border_width="2dp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_visa" />
 
                         <TextView
                             android:id="@+id/visa_number"
-                            android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:text="-------9261"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
-                            app:layout_constraintTop_toTopOf="@id/visa"
+                            android:text="-------9261"
                             app:layout_constraintBottom_toBottomOf="@id/visa"
-                            app:layout_constraintStart_toEndOf="@id/visa"/>
+                            app:layout_constraintStart_toEndOf="@id/visa"
+                            app:layout_constraintTop_toTopOf="@id/visa" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            app:srcCompat="@drawable/ic_chevron_right"
+                            app:layout_constraintBottom_toBottomOf="@id/visa"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/visa"
-                            app:layout_constraintBottom_toBottomOf="@id/visa"/>
+                            app:srcCompat="@drawable/ic_chevron_right" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -131,43 +131,43 @@
                         android:id="@+id/card_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/card_one"
                         android:background="@drawable/divider"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/card_one">
 
                         <ImageButton
                             android:id="@+id/master_card"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:layout_marginHorizontal="16dp"
+                            android:background="@drawable/round_light_blue_button"
                             android:padding="4dp"
                             android:scaleType="centerCrop"
-                            android:background="@drawable/round_light_blue_button"
-                            app:srcCompat="@drawable/ic_mastercard"
-                            app:civ_border_width="2dp"
                             app:civ_border_color="#FFFFFFFF"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:civ_border_width="2dp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_mastercard" />
 
                         <TextView
                             android:id="@+id/master_card_number"
-                            android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:text="-------9261"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
-                            app:layout_constraintTop_toTopOf="@id/master_card"
+                            android:text="-------9261"
                             app:layout_constraintBottom_toBottomOf="@id/master_card"
-                            app:layout_constraintStart_toEndOf="@id/master_card"/>
+                            app:layout_constraintStart_toEndOf="@id/master_card"
+                            app:layout_constraintTop_toTopOf="@id/master_card" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            app:srcCompat="@drawable/ic_chevron_right"
+                            app:layout_constraintBottom_toBottomOf="@id/master_card"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/master_card"
-                            app:layout_constraintBottom_toBottomOf="@id/master_card"/>
+                            app:srcCompat="@drawable/ic_chevron_right" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -185,41 +185,41 @@
                             android:layout_height="56dp"
                             android:layout_marginHorizontal="16dp"
                             android:background="@drawable/round_light_blue_button"
-                            android:padding="4dp"
-                            android:scaleType="centerCrop"
-                            app:civ_border_width="2dp"
+                            android:padding="5dp"
+                            android:scaleType="fitXY"
                             app:civ_border_color="#FFFFFFFF"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:civ_border_width="2dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:srcCompat="@drawable/ic_phone" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_add_money_ic" />
 
                         <TextView
                             android:id="@+id/mobile"
-                            android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
                             android:text="From Mobile"
-                            app:layout_constraintTop_toTopOf="@id/mobileImage"
                             app:layout_constraintBottom_toBottomOf="@id/mobileImage"
-                            app:layout_constraintStart_toEndOf="@id/mobileImage"/>
+                            app:layout_constraintStart_toEndOf="@id/mobileImage"
+                            app:layout_constraintTop_toTopOf="@id/mobileImage" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
-                            app:srcCompat="@drawable/ic_chevron_right"
+                            app:layout_constraintBottom_toBottomOf="@id/mobileImage"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/mobileImage"
-                            app:layout_constraintBottom_toBottomOf="@id/mobileImage"/>
+                            app:srcCompat="@drawable/ic_chevron_right" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/add_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp"
                         android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp"
                         app:layout_constraintTop_toBottomOf="@id/mobileCard">
 
 
@@ -228,8 +228,8 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:layout_marginHorizontal="16dp"
-                            android:padding="4dp"
                             android:background="@drawable/round_light_blue_button"
+                            android:padding="4dp"
                             android:scaleType="centerCrop"
                             app:civ_border_color="#FFFFFFFF"
                             app:civ_border_width="2dp"

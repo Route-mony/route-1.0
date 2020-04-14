@@ -11,12 +11,12 @@
 
     <ImageView
         android:id="@+id/back"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="5dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/leftarrow29" />
+        app:srcCompat="@drawable/ic_arrow_back" />
 
     <LinearLayout
         android:id="@+id/hd"
@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/profile_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
             android:scaleType="fitXY"
             android:src="@drawable/profile_pic"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -108,12 +108,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -143,12 +143,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -178,12 +178,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -215,15 +215,16 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
+                android:id="@+id/downLoadReceipt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -250,12 +251,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -285,12 +286,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout
@@ -321,12 +322,12 @@
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rightarrow" />
+                    app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="@drawable/line73" />
 
             <LinearLayout

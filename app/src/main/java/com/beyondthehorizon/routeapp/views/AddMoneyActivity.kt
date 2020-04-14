@@ -13,6 +13,10 @@ import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel.TransactionBo
 import com.beyondthehorizon.routeapp.databinding.ActivityAddMoneyBinding
 import com.beyondthehorizon.routeapp.models.Card
 import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import org.json.JSONArray
 
 class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
@@ -23,6 +27,29 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_money)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@AddMoneyActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@AddMoneyActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@AddMoneyActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@AddMoneyActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         prefs = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0)
         editor = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         cardList = mutableListOf()

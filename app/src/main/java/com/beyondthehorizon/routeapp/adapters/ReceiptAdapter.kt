@@ -20,6 +20,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.VISITING_HISTORY_PROFILE
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
@@ -104,6 +105,8 @@ class ReceiptAdapter(private val context: Context,
             Glide.with(context)
                     .load(invite.image)
                     .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.color.input_back)
                     .into(receipt_image)
 
