@@ -7,7 +7,7 @@
     <data>
         <variable
             name = "contacts"
-            type = "com.beyondthehorizon.routeapp.views.RequestFundsActivity"/>
+            type = "com.beyondthehorizon.routeapp.models.Contact"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -79,7 +79,6 @@ class SetSecurityInfo : AppCompatActivity() {
                         progressBar.show(this, "Please Wait...")
                         verifyPin(this@SetSecurityInfo, pin1set, token)
                                 .setCallback { e, result ->
-                                    progressBar.dialog.dismiss()
                                     pin1set = ""
                                     pin1 = ""
                                     pin2 = ""
@@ -87,6 +86,7 @@ class SetSecurityInfo : AppCompatActivity() {
                                     pin4 = ""
                                     updateScreen("")
                                     if (result.has("errors")) {
+                                        progressBar.dialog.dismiss()
                                         Log.e("SetSecurityInfo", result.get("errors").asString)
                                         label.text = result.get("errors").asString
                                         label.setTextColor(Color.parseColor("#FA0505"))
@@ -95,6 +95,7 @@ class SetSecurityInfo : AppCompatActivity() {
                                         label.setTextColor(Color.parseColor("#40CA08"))
                                         val intent = Intent(Intent(this, MainActivity::class.java))
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        progressBar.dialog.dismiss()
                                         startActivity(intent)
                                         this@SetSecurityInfo.finish()
                                     }

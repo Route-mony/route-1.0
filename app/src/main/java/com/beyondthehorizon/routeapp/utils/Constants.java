@@ -59,6 +59,10 @@ public class Constants {
     public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
 
+    //firebase images
+    public static final String RECEIPTS = "RECEIPTS";
+    public static final String PROFILE_IMAGES = "PROFILE IMAGES";
+
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
                                                                String phone_number, String email) {
@@ -279,6 +283,20 @@ public class Constants {
         JsonObject json = new JsonObject();
         json.addProperty("phone_number", phone_number);
         json.addProperty("username", username);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //UPDATE USER PROFILE IMAGE
+    public static ResponseFuture<JsonObject> updateUserProfileImage(Context context, String token,
+                                                                    String image) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("image", image);
         return Ion.with(context)
                 .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")

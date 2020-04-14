@@ -6,11 +6,21 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/boxbg" />
+
     <TextView
         android:id="@+id/title1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Expense"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorButton"
@@ -18,7 +28,7 @@
     <!--  SEND PAYMENT  /-->
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@drawable/line73" />
 
     <ScrollView
@@ -52,13 +62,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Title"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/line73" />
+                    android:background="@drawable/line73"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -76,7 +88,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/line73" />
 
@@ -96,7 +108,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/line73" />
 
@@ -149,7 +161,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/line73" />
 
@@ -168,8 +180,9 @@
                     android:text="desc" />
 
                 <View
+                    android:id="@+id/L1"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/line73" />
 
@@ -194,16 +207,17 @@
                         android:textColor="@color/colorButton" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/line73" />
+                <!--                <View-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="1dp"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:background="@drawable/line73" />-->
 
                 <LinearLayout
+                    android:id="@+id/buttonsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
                     android:orientation="horizontal">
 
@@ -211,22 +225,27 @@
                         android:id="@+id/btnCancel"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/route_button"
                         android:text="Reject"
                         android:textAllCaps="false"
-                        android:textColor="#FD0202" />
+                        android:textColor="@color/grey" />
 
                     <Button
                         android:id="@+id/btnOk"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/route_button"
                         android:gravity="center"
                         android:text="Approve"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorButton" />
+                        android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
 

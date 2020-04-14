@@ -16,7 +16,11 @@ import com.beyondthehorizon.routeapp.adapters.NotificationsAdapter
 import com.beyondthehorizon.routeapp.databinding.ActivityNotificationsBinding
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.gson.JsonElement
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationsBinding
@@ -31,6 +35,29 @@ class NotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notifications)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@NotificationActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@NotificationActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@NotificationActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@NotificationActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         recyclerView = binding.notificationsRecyclerView
         linearLayoutManager = LinearLayoutManager(this)

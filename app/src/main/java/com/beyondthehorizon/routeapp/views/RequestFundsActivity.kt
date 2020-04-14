@@ -21,12 +21,16 @@ import com.beyondthehorizon.routeapp.databinding.ActivityRequestFundsBinding
 import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_phone.*
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import java.io.ObjectInput
 import java.lang.Exception
 import java.util.concurrent.Future
@@ -49,6 +53,30 @@ class RequestFundsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_request_funds)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@RequestFundsActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@RequestFundsActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@RequestFundsActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@RequestFundsActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         recyclerView = binding.contactRecyclerView
         linearLayoutManager = LinearLayoutManager(this)
         searchView = binding.contactSearchView

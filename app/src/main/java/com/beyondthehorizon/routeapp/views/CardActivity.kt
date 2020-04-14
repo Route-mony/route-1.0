@@ -8,6 +8,10 @@ import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityCardBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class CardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCardBinding
@@ -17,6 +21,30 @@ class CardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_card)
+
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@CardActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@CardActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@CardActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@CardActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         binding.cardNumberInput.setFormat("---- ---- ---- ----")
         binding.expiryDateInput.setFormat("--/--")
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">RouteApp</string>
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
@@ -35,14 +35,15 @@
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
 
-    <string name="pay_bill">Pay Bill : </string>
+    <string name="send_cash"><![CDATA[<b><font color=#FF0000>-</font></b>]]></string>
+    <string name="pay_bill">Pay Bill </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
-    <string name="buy_goods">Buy Goods : </string>
-    <string name="enter_business_number">Enter Business Number : </string>
-    <string name="enter_account_number">Enter Account Number : </string>
-    <string name="enter_mobile_number">Enter Mobile Number : </string>
-    <string name="enter_bank_account">Enter Bank Account :</string>
+    <string name="buy_goods">Buy Goods </string>
+    <string name="enter_business_number">Enter Business Number </string>
+    <string name="enter_account_number">Enter Account Number </string>
+    <string name="enter_mobile_number">Enter Mobile Number </string>
+    <string name="enter_bank_account">Enter Bank Account </string>
 
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -75,6 +76,7 @@
         \n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.\n\nSections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
     </string>
     <string name="terms_of_service">Terms Of Service</string>
+    <string name="period_of_service">Choose Period</string>
     <string name="pass_and_pin">Password and PIN</string>
     <string name="change_password">Change Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
@@ -89,5 +91,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="title_activity_receipt">ReceiptActivity</string>
-
+    <string name="title_activity_request_fund">RequestFundActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
 </resources>

@@ -33,7 +33,7 @@ class TermsOfUseActivity : AppCompatActivity() {
             finish()
         }
 
-        btn_pool.setOnClickListener(View.OnClickListener {
+        btn_receipt.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@TermsOfUseActivity, ReceiptActivity::class.java)
             startActivity(intent)
         })

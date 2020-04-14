@@ -13,42 +13,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/pay_bill"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <LinearLayout
             android:id="@+id/buyGoods"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="@dimen/icon_width"
+                android:layout_height="@dimen/icon_height"
                 app:srcCompat="@drawable/ic_buy_goods" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:text="Buy Goods"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -56,35 +65,37 @@
                 app:srcCompat="@drawable/ic_chevron_right" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_margin="3dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <LinearLayout
             android:id="@+id/payBill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="@dimen/icon_width"
+                android:layout_height="@dimen/icon_height"
                 app:srcCompat="@drawable/ic_paybill_mpesa" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
                 android:text="Paybill"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -101,21 +112,28 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/buy_goods"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -177,20 +195,28 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/pay_bill"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

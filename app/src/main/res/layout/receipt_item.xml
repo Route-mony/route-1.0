@@ -11,6 +11,7 @@
         android:id="@+id/receipt_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rout_book"
         android:text="5/march/2019" />
 
     <androidx.cardview.widget.CardView
@@ -41,8 +42,10 @@
                     android:id="@+id/receipt_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/rout_medium"
                     android:text="BLUE LINE"
                     android:textAllCaps="true"
+                    android:textColor="@color/our_black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -51,8 +54,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
+                    android:fontFamily="@font/rout_book"
                     android:maxLines="1"
-                    android:text="desc" />
+                    android:text="desc"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/receipt_status"
@@ -60,13 +65,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:fontFamily="@font/rout_book"
+                    android:maxLines="1"
+                    android:text="status"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/receipt_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:fontFamily="@font/rout_book"
                     android:text="Ksh.1000" />
 
             </LinearLayout>
@@ -75,7 +84,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/line73" />
 </LinearLayout>

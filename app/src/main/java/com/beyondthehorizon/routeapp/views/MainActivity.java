@@ -32,11 +32,18 @@ import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
 import com.beyondthehorizon.routeapp.databases.NotificationCount;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.viewmodels.RoutViewModel;
+import com.beyondthehorizon.routeapp.views.notifications.NotificationsActivity;
+import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity;
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity;
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -55,6 +62,9 @@ import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
+import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
+import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_fav2 = findViewById(R.id.btn_fav2);
         btn_fav3 = findViewById(R.id.btn_fav3);
         btn_transactions = findViewById(R.id.btn_transactions);
-        btn_receipts = findViewById(R.id.btn_pool);
+        btn_receipts = findViewById(R.id.btn_receipt);
         btn_settings = findViewById(R.id.btn_settings);
         btn_request2 = findViewById(R.id.btn_request2);
         btn_request34 = findViewById(R.id.btn_request34);
@@ -113,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 R.anim.move_up);
 
         routViewModel = ViewModelProviders.of(this).get(RoutViewModel.class);
-        intent = new Intent(this, RequestFundsActivity.class);
+//        intent = new Intent(this, RequestFundsActivity.class);
+        intent = new Intent(this, RequestFundActivity.class);
 
         btn_request54.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +159,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+//                Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+                Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
                 routViewModel.deleteNotifiCount();
                 startActivity(intent);
             }
@@ -196,11 +208,15 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_fav2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                viewMpesaPaymentOption();
-                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
-                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
+//                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
+                Intent intent = new Intent(MainActivity.this, RequestFundActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
+                editor.apply();
+                startActivity(intent);
             }
         });
+
         btn_request2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,15 +250,15 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void notificationCount() {
-        Log.e(TAG, "onChanged: HERE" );
+        Log.e(TAG, "onChanged: HERE");
         routViewModel.getNotifiCount().observe(this, new Observer<List<NotificationCount>>() {
             @Override
             public void onChanged(List<NotificationCount> recentChatModels) {
                 Log.e(TAG, "onChanged: " + recentChatModels.size());
                 if (recentChatModels.size() > 0) {
 //                    if (Integer.parseInt(recentChatModels.get(0).notif_count) > 0) {
-                        notifCount.setText(String.valueOf(recentChatModels.size()));
-                        notifCount.setVisibility(View.VISIBLE);
+                    notifCount.setText(String.valueOf(recentChatModels.size()));
+                    notifCount.setVisibility(View.VISIBLE);
 //                    }
                 } else {
                     notifCount.setVisibility(View.GONE);
@@ -285,11 +301,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                                 String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
                                 String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
+                                String image = result.get("data").getAsJsonObject().get("image").getAsString();
 
-                                editor.putString("FullName", fname + " " + lname);
-                                editor.apply();
+                                RequestOptions requestOptions = new RequestOptions();
+                                requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                                Glide.with(MainActivity.this)
+                                        .load(image)
+                                        .apply(requestOptions)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .error(R.drawable.ic_user)
+                                        .placeholder(R.drawable.ic_user)
+                                        .into(profile_pic);
                                 user_name.setText(username);
                                 balance_value.setText("KES " + wallet_balance);
+
+                                editor.putString("FullName", fname + " " + lname);
+                                editor.putString("ProfileImage", image);
                                 editor.putString(USER_ID, id);
                                 editor.putString(MyPhoneNumber, phone);
                                 editor.putString(CARDS, cards);
@@ -438,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             if (result.has("errors")) {
                                 Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
                             } else {
-                                String message = result.get("data").getAsJsonObject().get("message").toString();
+                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
                                 Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
                                 intent.putExtra("Message", message);
                                 startActivity(intent);
@@ -458,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             if (result.has("errors")) {
                                 Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
                             } else {
-                                String message = result.get("data").getAsJsonObject().get("message").toString();
+                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
                                 Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
                                 intent.putExtra("Message", message);
                                 startActivity(intent);

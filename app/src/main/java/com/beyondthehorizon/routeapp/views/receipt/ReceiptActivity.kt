@@ -9,6 +9,7 @@ import com.beyondthehorizon.routeapp.adapters.ReceiptAdapter
 import com.beyondthehorizon.routeapp.bottomsheets.ReceiptDetailsBottomModel
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.receipt.ui.main.ReceivedReceiptFragment
+import com.beyondthehorizon.routeapp.views.receipt.ui.main.RequestFundSectionsPagerAdapter
 import com.beyondthehorizon.routeapp.views.receipt.ui.main.SectionsPagerAdapter
 import com.beyondthehorizon.routeapp.views.receipt.ui.main.SentReceiptFragment
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
@@ -25,7 +26,7 @@ class ReceiptActivity : AppCompatActivity(), ReceiptAdapter.ReceiptInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt)
-        btn_pool.setImageResource(R.drawable.ic_group705_active);
+        btn_receipt.setImageResource(R.drawable.ic_receipts);
         txt_pool.setTextColor(resources.getColor(R.color.colorButton))
 
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
