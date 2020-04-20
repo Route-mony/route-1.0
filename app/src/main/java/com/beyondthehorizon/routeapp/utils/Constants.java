@@ -395,4 +395,19 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    //PASSWORD CHANGE
+    public static ResponseFuture<JsonObject> changePassword(Context context, String new_password, String old_password, String token) {
+        String SERVER_URL = BASE_URL + "users/password-change";
+        JsonObject json = new JsonObject();
+        json.addProperty("new_password", new_password);
+        json.addProperty("previous_password", old_password);
+
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }
