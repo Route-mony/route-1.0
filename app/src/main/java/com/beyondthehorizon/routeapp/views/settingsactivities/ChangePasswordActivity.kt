@@ -72,7 +72,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                 val oldPassword = currentPassword.toString();
                 val newPassword = newPassword.toString();
                 var intent = Intent(this, FundRequestedActivity::class.java)
-                progressBar.show(this, "Processing payment...")
+                progressBar.show(this, "Please wait...")
                 Constants.changePassword(this, newPassword, oldPassword, token).setCallback { e, result ->
                     if (result.has("data")) {
                         progressBar.dialog.dismiss()
