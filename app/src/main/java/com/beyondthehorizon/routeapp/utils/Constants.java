@@ -410,4 +410,31 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    //RESET PASSWORD
+    public static ResponseFuture<JsonObject> resetPassword(Context context, String email) {
+        String SERVER_URL = BASE_URL + "users/password-reset-otp";
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //OTP VERIFY
+    public static ResponseFuture<JsonObject> otpVerify(Context context, String email, String otp, String token) {
+        String SERVER_URL = BASE_URL + "/users/password-otp-verify";
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        json.addProperty("one_time_password", otp);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }
