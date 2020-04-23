@@ -26,6 +26,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_password)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        val password_regex: Regex = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!\-_?&])(?=\S+$).{8,}""".toRegex()
         val progressBar = CustomProgressBar()
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
@@ -52,41 +53,42 @@ class ChangePasswordActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        btn_change.setOnClickListener{
-            val currentPassword = binding.currentPassword.text;
-            val newPassword = binding.newPassword.text;
-            val cpassword = binding.ConfirmNewPassword.text;
-            if (currentPassword.isNullOrEmpty()){
-                binding.currentPassword.setError("Please enter your current password");
-                binding.currentPassword.requestFocus();
-            }
-            else if (newPassword.isNullOrEmpty()) {
-                binding.newPassword.setError("Please enter your new password");
-                binding.newPassword.requestFocus();
-            }
-            else if (cpassword.isNullOrEmpty()){
-                binding.ConfirmNewPassword.setError("Please confirm your current password");
-                binding.ConfirmNewPassword.requestFocus();
-            }
-            else if(cpassword.toString() == newPassword.toString()){
-                val oldPassword = currentPassword.toString();
-                val newPassword = newPassword.toString();
-                var intent = Intent(this, FundRequestedActivity::class.java)
-                progressBar.show(this, "Please wait...")
-                Constants.changePassword(this, newPassword, oldPassword, token).setCallback { e, result ->
-                    if (result.has("data")) {
+        btn_change.setOnClickListener {
+            try {
+                val currentPassword = binding.currentPassword.text;
+                val newPassword = binding.newPassword.text;
+                val cpassword = binding.ConfirmNewPassword.text;
+                if (currentPassword.isNullOrEmpty()) {
+                    binding.currentPassword.setError("Please enter your current password");
+                    binding.currentPassword.requestFocus();
+                } else if (!password_regex.matches(newPassword)) {
+                    binding.newPassword.setError("Please enter a valid password");
+                    binding.newPassword.requestFocus();
+                } else if (!password_regex.matches(cpassword)) {
+                    binding.ConfirmNewPassword.setError("Please enter a valid password");
+                    binding.ConfirmNewPassword.requestFocus();
+                } else if (cpassword.toString() == newPassword.toString()) {
+                    val oldPassword = currentPassword.toString();
+                    val newPassword = newPassword.toString();
+                    var intent = Intent(this, FundRequestedActivity::class.java)
+                    progressBar.show(this, "Please wait...")
+                    Constants.changePassword(this, newPassword, oldPassword, token).setCallback { e, result ->
                         progressBar.dialog.dismiss()
-                        var message = result.get("data").asJsonObject.get("message").asString
-                        intent.putExtra("Message", message)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "The previous password provided does not match the existing", Toast.LENGTH_LONG).show();
+                        if (result.has("data")) {
+                            var message = result.get("data").asJsonObject.get("message").asString
+                            intent.putExtra("Message", message)
+                            intent.putExtra(Constants.ACTIVITY_TYPE, Constants.RESET_PASSWORD_ACTIVITY)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "The previous password provided does not match the existing", Toast.LENGTH_LONG).show();
+                        }
                     }
+                } else {
+                    binding.ConfirmNewPassword.setError("Your password doesn't match");
+                    binding.ConfirmNewPassword.requestFocus();
                 }
-            }
-            else{
-                binding.ConfirmNewPassword.setError("Your password doesn't match");
-                binding.ConfirmNewPassword.requestFocus();
+            } catch (ex: Exception) {
+                Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
             }
         }
         back.setOnClickListener {

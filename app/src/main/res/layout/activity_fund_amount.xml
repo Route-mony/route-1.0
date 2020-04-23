@@ -94,6 +94,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:hint="0"
+                        android:maxLength="10"
                         android:paddingBottom="15dp"
                         android:textSize="@dimen/lb_40_sp"
                         android:textStyle="bold"

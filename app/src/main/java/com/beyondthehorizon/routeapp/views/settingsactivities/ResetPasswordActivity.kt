@@ -13,7 +13,7 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 
-class ResetPassword : AppCompatActivity() {
+class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var prefs: SharedPreferences
     private var REQUEST_CODE_READ_SMS: Int = 1000
@@ -25,27 +25,31 @@ class ResetPassword : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECEIVE_SMS), REQUEST_CODE_READ_SMS)
 
         binding.btnReset.setOnClickListener {
-            val email = binding.email.text.toString()
-            if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                var intent = Intent(this, ResetPasswordOtpVerifyActivity::class.java)
-                prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-                progressBar.show(this, "Verifying email...")
-                Constants.resetPassword(this, email).setCallback { e, result ->
-                    if (result.has("data")) {
+            try {
+                val email = binding.email.text.toString()
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    var intent = Intent(this, ResetPasswordOtpVerifyActivity::class.java)
+                    prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+                    progressBar.show(this, "Verifying email...")
+                    Constants.resetPassword(this, email).setCallback { e, result ->
                         progressBar.dialog.dismiss()
-                        intent.putExtra("Email", email)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "This email is not yet registered", Toast.LENGTH_LONG).show();
+                        if (result.has("data")) {
+                            intent.putExtra("Email", email)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "This email is not yet registered", Toast.LENGTH_LONG).show();
+                        }
                     }
+                } else {
+                    binding.email.setError("Email is invalid")
                 }
             }
-            else{
-                binding.email.setError("Email is invalid")
+            catch (ex: Exception){
+                Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
             }
         }
     }
     override fun onBackPressed() {
-        startActivity(Intent(this@ResetPassword, LoginActivity::class.java))
+        startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
     }
 }

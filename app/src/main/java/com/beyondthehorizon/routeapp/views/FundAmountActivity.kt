@@ -80,59 +80,58 @@ class FundAmountActivity : AppCompatActivity() {
         var transactionMessage = ""
 
         format = DecimalFormat("#,###")
+        binding.btnOne.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnOne.text}")
+        }
+
+        binding.btnTwo.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnTwo.text}")
+        }
+
+        binding.btnThree.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnThree.text}")
+        }
+
+        binding.btnFour.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnFour.text}")
+        }
+
+        binding.btnFive.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnFive.text}")
+        }
+
+        binding.btnSix.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnSix.text}")
+        }
+
+        binding.btnSeven.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnSeven.text}")
+        }
+
+        binding.btnEight.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnEight.text}")
+        }
+
+        binding.btnNine.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnNine.text}")
+        }
+
+        binding.btnZero.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnZero.text}")
+        }
+
+        binding.btnZeroZero.setOnClickListener {
+            binding.txtAmount.text = formatAmount("${amount}${binding.btnZeroZero.text}")
+        }
+
+        binding.btnClear.setOnClickListener {
+            if (amount.length <= 1) {
+                binding.txtAmount.text = ""
+            } else {
+                binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
+            }
+        }
         try {
-
-            binding.btnOne.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnOne.text}")
-            }
-
-            binding.btnTwo.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnTwo.text}")
-            }
-
-            binding.btnThree.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnThree.text}")
-            }
-
-            binding.btnFour.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnFour.text}")
-            }
-
-            binding.btnFive.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnFive.text}")
-            }
-
-            binding.btnSix.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnSix.text}")
-            }
-
-            binding.btnSeven.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnSeven.text}")
-            }
-
-            binding.btnEight.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnEight.text}")
-            }
-
-            binding.btnNine.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnNine.text}")
-            }
-
-            binding.btnZero.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnZero.text}")
-            }
-
-            binding.btnZeroZero.setOnClickListener {
-                binding.txtAmount.text = formatAmount("${amount}${binding.btnZeroZero.text}")
-            }
-
-            binding.btnClear.setOnClickListener {
-                if (amount.length <= 1) {
-                    binding.txtAmount.text = ""
-                } else {
-                    binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
-                }
-            }
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 username = prefs.getString("Username", "").toString()
                 binding.requestTitle.text = "Request $username"
@@ -158,28 +157,30 @@ class FundAmountActivity : AppCompatActivity() {
                 binding.requestTitle.text = "Enter Amount to Pay"
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER)
-                binding.requestTitle.text = "Buy airtime for ${phone}"
-                binding.btnRequest.text = "BUY"
+                binding.requestTitle.text = "Pay From ${phone}"
+                binding.btnRequest.text = "PAY"
             }
+        } catch (ex: Exception) {
+            Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
+        }
+        binding.btnRequest.setOnClickListener {
+            val lower = 100000000
+            val upper = 999999999
+            val secureRandom = SecureRandom()
+            var merchantId = "ROUTEK0001"
+            var domain = "ISWKE"
+            var amount = amount
+            var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
+            var terminalId = "3TLP0001"
+            var currency = "KES"
+            var orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
+            var preauth = "1"
+            var customerId = prefs.getString(USER_ID, "")
+            var customerEmail = prefs.getString(USER_EMAIL, "")
+            var clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
+            var clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
 
-            binding.btnRequest.setOnClickListener {
-                val lower = 100000000
-                val upper = 999999999
-                val secureRandom = SecureRandom()
-                var merchantId = "ROUTEK0001"
-                var domain = "ISWKE"
-                var amount = amount
-                var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
-                var terminalId = "3TLP0001"
-                var currency = "KES"
-                var orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
-                var preauth = "1"
-                var customerId = prefs.getString(USER_ID, "")
-                var customerEmail = prefs.getString(USER_EMAIL, "")
-                var clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
-                var clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
-
-
+            try {
                 var merchant = Merchant(merchantId, domain);
                 var payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
                 payment.setPreauth(preauth)
@@ -207,65 +208,59 @@ class FundAmountActivity : AppCompatActivity() {
                     var expMonth = expDate.substring(0, 2)
                     var cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
                     cardStatus = parentIntent.getStringExtra(CARD_STATUS)
+                    var card = Card(cardNumber, cvvNumber, expYear, expMonth);
+                    lateinit var mobPay: MobPay;
 
-                    try {
-                        var card = Card(cardNumber, cvvNumber, expYear, expMonth);
-                        lateinit var mobPay: MobPay;
+                    var config = MobPay.Config();
+                    mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
 
-                        var config = MobPay.Config();
-                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
+                    progressBar.show(this, "Processing payment...")
+                    mobPay.makeCardPayment(
+                            card,
+                            merchant,
+                            payment,
+                            customer, {
+                        progressBar.dialog.dismiss()
+                        Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
 
-                        progressBar.show(this, "Processing payment...")
-                        mobPay.makeCardPayment(
-                                card,
-                                merchant,
-                                payment,
-                                customer, {
-                            progressBar.dialog.dismiss()
-                            Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
-
-                            if (cardStatus.compareTo(NEW_CARD) == 0) {
-                                progressBar.show(this, "Updating route ...")
-                                addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
-                                        .setCallback { e, result ->
-                                            progressBar.dialog.dismiss()
-                                            try {
-                                                if (result != null) {
-                                                    if (result.has("errors")) {
-                                                        var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
-                                                        Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
-                                                    } else {
-                                                        transactionMessage = result.get("data").asJsonObject.get("message").asString
-                                                        Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
-                                                    }
-
-                                                } else if (e != null) {
-                                                    Log.d("INTERSWITCH_MESSAGE", e.toString())
-                                                    Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                        if (cardStatus.compareTo(NEW_CARD) == 0) {
+                            progressBar.show(this, "Updating route ...")
+                            addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
+                                    .setCallback { e, result ->
+                                        progressBar.dialog.dismiss()
+                                        try {
+                                            if (result != null) {
+                                                if (result.has("errors")) {
+                                                    var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
+                                                    Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
+                                                } else {
+                                                    transactionMessage = result.get("data").asJsonObject.get("message").asString
+                                                    Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
                                                 }
-                                            } catch (ex: Exception) {
-                                                Log.d("INTERSWITCH_MESSAGE", ex.message)
-                                            }
-                                        }
-                            }
-                            transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
-                            val intent = Intent(this, FundRequestedActivity::class.java)
-                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
-                            editor.apply()
-                            intent.putExtra("Message", transactionMessage)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
-                            startActivity(intent)
 
-                        }, {
-                            progressBar.dialog.dismiss()
-                            Log.d("INTERSWITCH_MESSAGE", it.message)
-                            Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
-                        });
-                    } catch (e: Exception) {
-                        Log.d("INTERSWITCH_MESSAGE", e.message)
-                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show();
-                    }
+                                            } else if (e != null) {
+                                                Log.d("INTERSWITCH_MESSAGE", e.toString())
+                                                Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                                            }
+                                        } catch (ex: Exception) {
+                                            Log.d("INTERSWITCH_MESSAGE", ex.message)
+                                        }
+                                    }
+                        }
+                        transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                        val intent = Intent(this, FundRequestedActivity::class.java)
+                        editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                        editor.apply()
+                        intent.putExtra("Message", transactionMessage)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
+                        startActivity(intent)
+
+                    }, {
+                        progressBar.dialog.dismiss()
+                        Log.d("INTERSWITCH_MESSAGE", it.message)
+                        Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+                    });
 
                 } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                     try {
@@ -300,13 +295,12 @@ class FundAmountActivity : AppCompatActivity() {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
+            } catch (ex: Exception) {
+                Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
             }
-
             binding.arrowBack.setOnClickListener {
                 onBackPressed()
             }
-        } catch (ex: Exception) {
-            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
 
     }

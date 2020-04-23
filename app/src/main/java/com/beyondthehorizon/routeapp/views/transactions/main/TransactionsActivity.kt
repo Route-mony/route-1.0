@@ -17,7 +17,7 @@ class TransactionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
         btn_transactions.setImageResource(R.drawable.ic_group660_active)
-//        txt_transactions.setTextColor(resources.getColor(R.color.colorButton))
+        txt_transactions.setTextColor(resources.getColor(R.color.colorButton))
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         tabs.setupWithViewPager(view_pager)

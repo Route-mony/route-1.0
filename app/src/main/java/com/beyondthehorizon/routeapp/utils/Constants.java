@@ -58,6 +58,7 @@ public class Constants {
     public static final String OLD_CARD = "OLD_CARD";
     public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
+    public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
 
     //firebase images
     public static final String RECEIPTS = "RECEIPTS";
@@ -424,14 +425,26 @@ public class Constants {
     }
 
     //OTP VERIFY
-    public static ResponseFuture<JsonObject> otpVerify(Context context, String email, String otp, String token) {
-        String SERVER_URL = BASE_URL + "/users/password-otp-verify";
+    public static ResponseFuture<JsonObject> otpVerify(Context context, String email, String otp) {
+        String SERVER_URL = BASE_URL + "users/password-otp-verify";
         JsonObject json = new JsonObject();
         json.addProperty("email", email);
         json.addProperty("one_time_password", otp);
-
         return Ion.with(context)
                 .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //UPDATE PASSWORD
+    public static ResponseFuture<JsonObject> updatePassword(Context context, String password,
+                                                                    String token) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("password", password);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
