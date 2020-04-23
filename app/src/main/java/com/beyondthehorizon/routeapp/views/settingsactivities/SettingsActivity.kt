@@ -1,12 +1,14 @@
 package com.beyondthehorizon.routeapp.views.settingsactivities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
+import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.AddMoneyActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
@@ -17,10 +19,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import io.kommunicate.KmConversationBuilder
+import io.kommunicate.Kommunicate
+import io.kommunicate.callbacks.KmCallback
+import io.kommunicate.users.KMUser
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.activity_settings.back
-import kotlinx.android.synthetic.main.activity_settings.profile_pic
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+
 
 class SettingsActivity : AppCompatActivity() {
     lateinit var pref: SharedPreferences
@@ -33,13 +38,15 @@ class SettingsActivity : AppCompatActivity() {
         btn_settings.setImageResource(R.drawable.ic_group663_active)
         txt_settings.setTextColor(resources.getColor(R.color.colorButton))
 
+        Kommunicate.init(this@SettingsActivity, "ba520ce1b1256908b973b5f89a451913");
+
         var requestOptions = RequestOptions();
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16));
         Glide.with(this@SettingsActivity)
                 .load(pref.getString("ProfileImage", ""))
                 .centerCrop()
                 .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                .placeholder(R.drawable.ic_user)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .apply(requestOptions)
@@ -77,7 +84,7 @@ class SettingsActivity : AppCompatActivity() {
         pinAndPass.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, PasswordAndPinActivity::class.java))
         }
-        paymentMethods.setOnClickListener{
+        paymentMethods.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, AddMoneyActivity::class.java))
         }
         termsAndConditions.setOnClickListener {
@@ -99,6 +106,33 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        }
+
+        //Support
+        supportHelp.setOnClickListener {
+            val prog = ProgressDialog(this@SettingsActivity)
+            prog.setMessage("Loading...")
+            prog.setCanceledOnTouchOutside(false)
+            prog.show()
+            val user = KMUser();
+            user.userId = pref.getString(USER_ID, ""); // Pass a unique key
+//            user.setPassword(<PASSWORD>); //Optional
+//            user.email=""
+            user.imageLink = pref.getString("ProfileImage", ""); // Optional
+            user.displayName = pref.getString(UserName, ""); //Optional
+
+            KmConversationBuilder(this@SettingsActivity)
+                    .setKmUser(user)
+                    .launchConversation(object : KmCallback {
+                        override fun onSuccess(message: Any) {
+                            Log.d("Conversation", "Success : $message")
+                            prog.dismiss()
+                        }
+
+                        override fun onFailure(error: Any) {
+                            Log.d("Conversation", "Failure : $error")
+                        }
+                    })
         }
     }
 }
