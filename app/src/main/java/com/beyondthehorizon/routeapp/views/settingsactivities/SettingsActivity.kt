@@ -116,12 +116,28 @@ class SettingsActivity : AppCompatActivity() {
             prog.show()
             val user = KMUser();
             user.userId = pref.getString(USER_ID, ""); // Pass a unique key
-//            user.setPassword(<PASSWORD>); //Optional
-//            user.email=""
+//            user.userId = "wesrdc6vybuinokmkmkjkmkmkmkm"; // Pass a unique key
+//            user.setPassword("<PASSWORD>"); //Optional
+//            user.email = "kk@gmail.com"
+
+            Log.e("Conversation", "Success : ${pref.getString(UNIQUE_ID, "")}")
             user.imageLink = pref.getString("ProfileImage", ""); // Optional
             user.displayName = pref.getString(UserName, ""); //Optional
 
+//            Kommunicate.login(this, user, object : KMLoginHandler {
+//                override fun onSuccess(registrationResponse: RegistrationResponse?, context: Context?) {
+//                    Log.e("kio", "success")
+//                    // You can perform operations such as opening the conversation, creating a new conversation or update user details on success
+////                    Kommunicate.openConversation(this@SettingsActivity);
+//                }
+//
+//                override fun onFailure(registrationResponse: RegistrationResponse, exception: Exception) {
+//                    // You can perform actions such as repeating the login call or throw an error message on failure
+//                }
+//            })
+
             KmConversationBuilder(this@SettingsActivity)
+                    .setWithPreChat(false)
                     .setKmUser(user)
                     .launchConversation(object : KmCallback {
                         override fun onSuccess(message: Any) {

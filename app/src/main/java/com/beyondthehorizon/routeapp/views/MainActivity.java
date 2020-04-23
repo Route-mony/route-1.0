@@ -66,6 +66,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETE
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
+import static com.beyondthehorizon.routeapp.utils.Constants.UNIQUE_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
@@ -293,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
 
-                                String id = result.get("data").getAsJsonObject().get("id").toString();
+                                String id = result.get("data").getAsJsonObject().get("id").getAsString();
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
                                 String username = "Hey " + name + " !";
