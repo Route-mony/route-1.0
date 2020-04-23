@@ -27,6 +27,7 @@ public class Constants {
     public static final String ID_NUMBER = "ID_NUMBER";
     public static final String USER_EMAIL = "EMAIL";
     public static final String USER_ID = "USER_ID";
+    public static final String UNIQUE_ID = "UNIQUE_ID";
 
     public static final String MyPhoneNumber = "MyPhoneNumber";
     public static final String USER_PASSWORD = "USER_PASSWORD";
