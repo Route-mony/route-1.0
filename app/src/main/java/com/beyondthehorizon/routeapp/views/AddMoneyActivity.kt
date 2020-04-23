@@ -117,8 +117,9 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
             }
         }
             binding.mobileCard.setOnClickListener {
-                val transactionModel = TransactionModel()
-                transactionModel.show(supportFragmentManager, "Mobile Options")
+                startActivity(Intent(this, MobileActivity::class.java))
+//                val transactionModel = TransactionModel()
+//                transactionModel.show(supportFragmentManager, "Mobile Options")
             }
 
             binding.addCard.setOnClickListener {

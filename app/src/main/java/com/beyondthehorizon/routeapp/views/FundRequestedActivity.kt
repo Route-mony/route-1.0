@@ -14,6 +14,8 @@ import com.beyondthehorizon.routeapp.databinding.ActivityFundRequestedBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ACTIVITY_TYPE
 import com.beyondthehorizon.routeapp.utils.Constants.ADD_MONEY_ACTIVITY
+import com.beyondthehorizon.routeapp.utils.Constants.RESET_PASSWORD_ACTIVITY
+import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
@@ -75,6 +77,16 @@ class FundRequestedActivity : AppCompatActivity() {
                 binding.btnNewRequest.visibility = View.GONE
                 binding.arrowBack.setOnClickListener {
                     val intent = Intent(this, AddMoneyActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    this@FundRequestedActivity.finish()
+                }
+            }
+            else if (activity != null && activity.compareTo(RESET_PASSWORD_ACTIVITY) == 0) {
+                binding.btnDone.visibility = View.GONE
+                binding.btnNewRequest.visibility = View.GONE
+                binding.arrowBack.setOnClickListener {
+                    val intent = Intent(this, LoginActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     this@FundRequestedActivity.finish()

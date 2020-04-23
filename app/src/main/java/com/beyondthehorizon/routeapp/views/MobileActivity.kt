@@ -9,6 +9,7 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityMobileBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
@@ -48,15 +49,32 @@ class MobileActivity : AppCompatActivity() {
         val phone = intent.getStringExtra(PHONE_NUMBER)
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
+
+        binding.myPhone.setOnClickListener {
+            var phone = prefs.getString(MyPhoneNumber, "")
+            var intent = Intent(this@MobileActivity, FundAmountActivity::class.java)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.apply()
+            intent.putExtra(PHONE_NUMBER, phone)
+            startActivity(intent)
+        }
+
+        binding.imgSearch.setOnClickListener {
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.apply()
+            var intent = Intent(this@MobileActivity, RequestFundActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnSavePhone.setOnClickListener {
-            var phoneNumber = binding.phoneNumberInput.text.toString().replace(" ", "").trim()
-            if (phoneNumber.length < 10) {
+            val phone = binding.phoneNumberInput.text.toString().trim()
+            var intent = Intent(this@MobileActivity, FundAmountActivity::class.java)
+            if (phone.length < 10) {
                 binding.phoneNumberInput.error = "Enter valid phone number"
             } else {
-                var intent = Intent(this, FundAmountActivity::class.java)
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_MPESA)
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
                 editor.apply()
-                intent.putExtra(PHONE_NUMBER, phoneNumber)
+                intent.putExtra(PHONE_NUMBER, phone)
                 startActivity(intent)
             }
         }

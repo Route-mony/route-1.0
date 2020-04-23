@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
+import com.beyondthehorizon.routeapp.views.AddMoneyActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -76,7 +77,9 @@ class SettingsActivity : AppCompatActivity() {
         pinAndPass.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, PasswordAndPinActivity::class.java))
         }
-
+        paymentMethods.setOnClickListener{
+            startActivity(Intent(this@SettingsActivity, AddMoneyActivity::class.java))
+        }
         termsAndConditions.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, TermsOfUseActivity::class.java))
         }

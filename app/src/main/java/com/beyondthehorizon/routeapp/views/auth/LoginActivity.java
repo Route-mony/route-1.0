@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.MainActivity;
-import com.beyondthehorizon.routeapp.views.settingsactivities.ResetPassword;
+import com.beyondthehorizon.routeapp.views.settingsactivities.ResetPasswordActivity;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ResetPassword.class);
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(intent);
             }
         });
