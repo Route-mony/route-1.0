@@ -68,6 +68,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
+import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener {
     private static final String TAG = "MainActivity";
@@ -319,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.putString("FullName", fname + " " + lname);
                                 editor.putString("ProfileImage", image);
                                 editor.putString(USER_ID, id);
+                                editor.putString(UserName, name);
                                 editor.putString(MyPhoneNumber, phone);
                                 editor.putString(CARDS, cards);
                                 editor.apply();
