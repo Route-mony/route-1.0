@@ -54,6 +54,7 @@ import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.List;
 
+import static com.beyondthehorizon.routeapp.utils.Constants.BALANCE_CHECK;
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.CARDS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
@@ -316,8 +317,11 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                         .placeholder(R.drawable.ic_user)
                                         .into(profile_pic);
                                 user_name.setText(username);
-                                balance_value.setText("KES " + wallet_balance);
-
+                                if (pref.getBoolean(BALANCE_CHECK, false)) {
+                                    balance_value.setText("KES ......");
+                                } else {
+                                    balance_value.setText("KES " + wallet_balance);
+                                }
                                 editor.putString("FullName", fname + " " + lname);
                                 editor.putString("ProfileImage", image);
                                 editor.putString(USER_ID, id);

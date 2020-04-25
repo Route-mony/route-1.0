@@ -65,6 +65,8 @@ public class Constants {
     public static final String RECEIPTS = "RECEIPTS";
     public static final String PROFILE_IMAGES = "PROFILE IMAGES";
 
+    public static final String BALANCE_CHECK = "BALANCE_CHECK";
+
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
                                                                String phone_number, String email) {

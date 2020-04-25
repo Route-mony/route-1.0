@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants.*
@@ -35,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        editor = pref.edit()
         btn_settings.setImageResource(R.drawable.ic_group663_active)
         txt_settings.setTextColor(resources.getColor(R.color.colorButton))
 
@@ -99,14 +101,28 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this@SettingsActivity, DownloadStatementActivity::class.java))
         }
 
-        logOut.setOnClickListener {
-            editor = pref.edit()
-            editor.clear()
+        // Show balalance
+        switch1.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+
+            Log.e("SettingsActivity", isChecked.toString())
+            editor.putBoolean(BALANCE_CHECK, isChecked)
             editor.apply()
-            val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
+            switch1.isChecked=pref.getBoolean(BALANCE_CHECK, false)
+            // do something, the isChecked will be
+// true if the switch is in the On position
+        })
+
+//        if (pref.getBoolean(BALANCE_CHECK, false)){
+            switch1.isChecked=pref.getBoolean(BALANCE_CHECK, false)
+//        }
+
+            logOut.setOnClickListener {
+                editor.clear()
+                editor.apply()
+                val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
 
         //Support
         supportHelp.setOnClickListener {
