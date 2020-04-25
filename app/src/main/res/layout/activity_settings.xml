@@ -137,13 +137,14 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 
-                <ImageView
+                <Switch
+                    android:id="@+id/switch1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:checked="false"
                     android:padding="5dp"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/ic_chevron_right" />
+                    android:theme="@style/SCBSwitch" />
             </LinearLayout>
 
             <View

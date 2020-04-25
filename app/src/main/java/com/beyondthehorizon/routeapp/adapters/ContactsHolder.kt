@@ -53,7 +53,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
                 editor.putString("walletAccountNumber", value.accountNumber)
                 editor.apply()
                 intent.putExtra(PHONE_NUMBER, value.contact)
-                context.startActivity(intent)
+//                context.startActivity(intent)
             } catch (ex: Exception) {
                 Log.d("TAG", ex.message)
             }

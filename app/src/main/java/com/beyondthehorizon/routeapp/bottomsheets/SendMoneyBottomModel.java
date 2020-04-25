@@ -1,9 +1,12 @@
 package com.beyondthehorizon.routeapp.bottomsheets;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.FundAmountActivity;
+import com.beyondthehorizon.routeapp.views.FundRequestedActivity;
 import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +44,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_BANK;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
+import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 
 public class SendMoneyBottomModel extends BottomSheetDialogFragment {
     private SendMoneyBottomSheetListener mListener;
@@ -77,11 +85,16 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         toMobileMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                parentSend.setVisibility(View.GONE);
-                bank.setVisibility(View.GONE);
-                mobile.setVisibility(View.VISIBLE);
+//                parentSend.setVisibility(View.GONE);
+//                bank.setVisibility(View.GONE);
+//                mobile.setVisibility(View.VISIBLE);
 //                showSendMobileMoneyDialog();
+                Intent intent = new Intent(getActivity(), RequestFundActivity.class);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
+                editor.apply();
+                startActivity(intent);
+                dismiss();
             }
         });
 
@@ -135,6 +148,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         /**SEND TO BANK*/
 
         final EditText accountNumber = v.findViewById(R.id.accountNumber);
+        final EditText amount = v.findViewById(R.id.amount);
         Button bankButton = v.findViewById(R.id.bankButton);
 //        final Spinner chooseBank = v.findViewById(R.id.chooseBank);
         final AutoCompleteTextView findBank = v.findViewById(R.id.findBank);
@@ -174,10 +188,16 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     findBank.requestFocus();
                     return;
                 }
+                if (amount.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "Add Amount", Toast.LENGTH_LONG).show();
+                    amount.setError("Add Amount");
+                    amount.requestFocus();
+                    return;
+                }
 //                if (chooseBank.getSelectedItemPosition() == 0) {
 //                    Toast.makeText(getActivity(), "Choose a bank", Toast.LENGTH_LONG).show();
 //                    return;
-//                }
+//                }amount
                 Intent intent = new Intent(getActivity(), FundAmountActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_BANK);
@@ -185,7 +205,62 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
 //                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
                 editor.putString("chosenBank", findBank.getText().toString().trim());
                 editor.apply();
-                startActivity(intent);
+//                sendMoney(getActivity(), accountNumber, amount, pin)
+
+                ViewGroup viewGroup = getActivity().findViewById(android.R.id.content);
+
+                //then we will inflate the custom alert dialog xml that we created
+                final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
+                //Now we need an AlertDialog.Builder object
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                //setting the view of the builder to our custom view that we already inflated
+                builder.setView(dialogView);
+                //finally creating the alert dialog and displaying it
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
+                final EditText enterPin = dialogView.findViewById(R.id.enterPin);
+//                // val pin: String = enterPin.text.toString()
+//                var account = ""
+//                var provider = ""
+
+                dialogButtonPin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String pin = enterPin.getText().toString();
+                        if (pin.isEmpty()) {
+                            Toast.makeText(getActivity(), "Enter pin", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
+
+                        final ProgressDialog progressBar = new ProgressDialog(getActivity());
+                        progressBar.setMessage("Please Wait...");
+                        progressBar.show();
+                        sendMoney(getActivity(), accountNumber.getText().toString(), amount.getText().toString(), pin, token, findBank.getText().toString().trim(), "Payment")
+                                .setCallback(new FutureCallback<JsonObject>() {
+                                    @Override
+                                    public void onCompleted(Exception e, JsonObject result) {
+                                        Log.e("FundAmountActivity", result.toString());
+                                        progressBar.dismiss();
+                                        if (result.has("errors")) {
+                                            Toast.makeText(getActivity(),
+                                                    result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                                        } else {
+                                            editor.putString("Amount", amount.getText().toString());
+                                            editor.apply();
+                                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                            Intent intent = new Intent(getActivity(), FundRequestedActivity.class);
+                                            intent.putExtra("Message", message);
+                                            startActivity(intent);
+                                            alertDialog.dismiss();
+                                            dismiss();
+                                        }
+                                    }
+                                });
+                    }
+                });
             }
         });
         return v;
