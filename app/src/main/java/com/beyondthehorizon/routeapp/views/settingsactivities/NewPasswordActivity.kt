@@ -23,17 +23,17 @@ class NewPasswordActivity : AppCompatActivity() {
         tokenIntent = getIntent()
         val password_regex: Regex = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!\-_?&])(?=\S+$).{8,}""".toRegex()
 
-        binding.btnReset.setOnClickListener {
+        binding.next.setOnClickListener {
             try {
                 var newPassword = binding.password.text.toString()
-                var cPassword = binding.confirmPassword.text.toString()
+                var cPassword = binding.cpassword.text.toString()
 
                 if (!password_regex.matches(newPassword)) {
                     binding.password.setError("Please enter a valid password");
                     binding.password.requestFocus();
                 } else if (!password_regex.matches(newPassword)) {
-                    binding.confirmPassword.setError("Please enter a valid password");
-                    binding.confirmPassword.requestFocus();
+                    binding.cpassword.setError("Please enter a valid password");
+                    binding.cpassword.requestFocus();
                 } else if (newPassword.compareTo(cPassword) == 0) {
                     var intent = Intent(this, FundRequestedActivity::class.java)
                     val token = "Bearer ${tokenIntent.getStringExtra("Token")}"
@@ -52,16 +52,16 @@ class NewPasswordActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    binding.confirmPassword.setError("Your password doesn't match");
-                    binding.confirmPassword.requestFocus();
+                    binding.cpassword.setError("Your password doesn't match");
+                    binding.cpassword.requestFocus();
                 }
             } catch (ex: Exception) {
                 Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
             }
         }
-    }
 
-    override fun onBackPressed() {
-        startActivity(Intent(this@NewPasswordActivity, OtpVerificationActivity::class.java))
+        binding.back.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

@@ -32,6 +32,10 @@ class SetSecurityInfo : AppCompatActivity() {
         setContentView(R.layout.activity_set_security_info)
         editor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+
+        password.setOnClickListener{
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
     }
     fun inputKeyed(view: View) {
         when (view.id) {

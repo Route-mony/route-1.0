@@ -19,7 +19,9 @@ class PasswordAndPinActivity : AppCompatActivity() {
         changePassword.setOnClickListener {
             startActivity(Intent(this@PasswordAndPinActivity, ChangePasswordActivity::class.java))
         }
-
+        changePin.setOnClickListener {
+            startActivity(Intent(this@PasswordAndPinActivity, ChangePinActivity::class.java))
+        }
         btn_home.setOnClickListener {
             val intent = Intent(this@PasswordAndPinActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
