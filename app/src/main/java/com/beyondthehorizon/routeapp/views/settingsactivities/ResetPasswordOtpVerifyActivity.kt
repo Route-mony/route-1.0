@@ -26,7 +26,7 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_otp_verify)
-        routeOTP = binding.otp.text.toString();
+        routeOTP = binding.otpCode.text.toString();
         otpIntent = getIntent()
         SMSListener().bindListener(object : OTPListener {
             override fun onOTPReceived(extractedOTP: String) {
@@ -35,9 +35,12 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
             }
         })
 
-        binding.btnVerify.setOnClickListener {
-            val otp = binding.otp.text.toString()
+        binding.next.setOnClickListener {
+            val otp = binding.otpCode.text.toString()
             verifyOTP(otp);
+        }
+        binding.back.setOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -63,7 +66,7 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                binding.otp.setError("OTP is invalid")
+                binding.otpCode.setError("OTP is invalid")
             }
         } catch (ex: Exception) {
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
@@ -72,10 +75,6 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
 
     fun getOTP(): String {
         return routeOTP;
-    }
-
-    override fun onBackPressed() {
-        startActivity(Intent(this@ResetPasswordOtpVerifyActivity, ResetPasswordActivity::class.java))
     }
 
     override fun onDestroy() {

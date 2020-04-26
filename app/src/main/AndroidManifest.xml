@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize">
-        <activity android:name=".views.settingsactivities.NewPasswordActivity"></activity>
+        <activity android:name=".views.settingsactivities.ChangePinActivity"></activity>
+        <activity android:name=".views.settingsactivities.NewPasswordActivity" />
         <activity android:name=".views.settingsactivities.ResetPasswordOtpVerifyActivity" />
         <activity android:name=".views.settingsactivities.ResetPasswordActivity" />
         <activity

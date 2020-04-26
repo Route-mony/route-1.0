@@ -60,6 +60,7 @@ public class Constants {
     public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
     public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
+    public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
 
     //firebase images
     public static final String RECEIPTS = "RECEIPTS";
@@ -407,6 +408,19 @@ public class Constants {
         json.addProperty("new_password", new_password);
         json.addProperty("previous_password", old_password);
 
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //PIN CHANGE
+    public static ResponseFuture<JsonObject> changePin(Context context, String new_pin, String token) {
+        String SERVER_URL = BASE_URL + "users/pin";
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", new_pin);
         return Ion.with(context)
                 .load("PATCH", SERVER_URL)
                 .addHeader("Content-Type", "application/json")

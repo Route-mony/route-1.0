@@ -24,7 +24,7 @@ class ResetPasswordActivity : AppCompatActivity() {
 
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECEIVE_SMS), REQUEST_CODE_READ_SMS)
 
-        binding.btnReset.setOnClickListener {
+        binding.next.setOnClickListener {
             try {
                 val email = binding.email.text.toString()
                 if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -48,8 +48,8 @@ class ResetPasswordActivity : AppCompatActivity() {
                 Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
             }
         }
-    }
-    override fun onBackPressed() {
-        startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
+        binding.back.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

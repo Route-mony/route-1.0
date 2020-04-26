@@ -50,24 +50,18 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
     private SendMoneyBottomSheetListener mListener;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.custom_send_money_alert_dialog_layout, container, false);
         pref = getActivity().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
-
         final LinearLayout parentSend = v.findViewById(R.id.sendLayout);
         final LinearLayout bank = v.findViewById(R.id.bankLayout);
         final LinearLayout mobile = v.findViewById(R.id.mobileLayout);
-
-
         LinearLayout toRoute = v.findViewById(R.id.toRoute);
         LinearLayout toMobileMoney = v.findViewById(R.id.toMobileMoney);
         LinearLayout toBank = v.findViewById(R.id.toBank);
-
-
         //SEND MONEY TO ROUTE
         toRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +74,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-
         //SEND MONEY TO MOBILE MONEY
         toMobileMoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +90,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
-
         //SEND MONEY TO BANK
         toBank.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +100,10 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
 //                showSendMoneyToBankDialog();
             }
         });
-
         //OPEN CONTACTS TO SEND MOBILE MONEY
         final EditText mobileNumber = v.findViewById(R.id.mobileNumber);
         Button mobileButton = v.findViewById(R.id.mobileButton);
         ImageView imgSearch = v.findViewById(R.id.imgSearch);
-
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +114,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 startActivity(intent);
             }
         });
-
         //SEND MONEY TO MOBILE MONEY
         /**SEND MONEY TO MOBILE MONEY*/
         mobileButton.setOnClickListener(new View.OnClickListener() {
@@ -138,22 +127,18 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
                 editor.putString(PHONE_NUMBER, mobileNumber.getText().toString());
-
                 intent.putExtra(PHONE_NUMBER, mobileNumber.getText().toString());
                 editor.apply();
                 startActivity(intent);
             }
         });
-
         /**SEND TO BANK*/
-
         final EditText accountNumber = v.findViewById(R.id.accountNumber);
         final EditText amount = v.findViewById(R.id.amount);
         Button bankButton = v.findViewById(R.id.bankButton);
 //        final Spinner chooseBank = v.findViewById(R.id.chooseBank);
         final AutoCompleteTextView findBank = v.findViewById(R.id.findBank);
         ArrayList<String> list = new ArrayList<>();
-
         try {
             JSONArray jsonArray = new JSONArray(pref.getString(BANK_PROVIDERS, ""));
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -164,14 +149,12 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     R.layout.custom_list_item, R.id.text_view_list_item, list);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             findBank.setAdapter(dataAdapter);
-
         } catch (JSONException ex) {
             ex.printStackTrace();
             Toast.makeText(getActivity(),
                     "Error Loading and try again", Toast.LENGTH_LONG).show();
             list.add("Error adding roles");
         }
-
         //SEND MONEY TO BANK
         bankButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,9 +189,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 editor.putString("chosenBank", findBank.getText().toString().trim());
                 editor.apply();
 //                sendMoney(getActivity(), accountNumber, amount, pin)
-
                 ViewGroup viewGroup = getActivity().findViewById(android.R.id.content);
-
                 //then we will inflate the custom alert dialog xml that we created
                 final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
                 //Now we need an AlertDialog.Builder object
@@ -218,13 +199,11 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                 //finally creating the alert dialog and displaying it
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-
                 Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
                 final EditText enterPin = dialogView.findViewById(R.id.enterPin);
 //                // val pin: String = enterPin.text.toString()
 //                var account = ""
 //                var provider = ""
-
                 dialogButtonPin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -234,7 +213,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                             return;
                         }
                         String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
-
                         final ProgressDialog progressBar = new ProgressDialog(getActivity());
                         progressBar.setMessage("Please Wait...");
                         progressBar.show();
@@ -265,11 +243,9 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         });
         return v;
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         try {
             mListener = (SendMoneyBottomSheetListener) context;
         } catch (ClassCastException e) {
@@ -277,7 +253,6 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     + " must implement BottomSheetListener");
         }
     }
-
     public interface SendMoneyBottomSheetListener {
         void onButtonClicked(String text);
     }

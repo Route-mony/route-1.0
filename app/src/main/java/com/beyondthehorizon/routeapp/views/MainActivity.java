@@ -67,7 +67,6 @@ import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETE
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
-import static com.beyondthehorizon.routeapp.utils.Constants.UNIQUE_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             @Override
             public void onClick(View v) {
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, REQUEST_MONEY);
                 editor.apply();
                 startActivity(intent);
             }

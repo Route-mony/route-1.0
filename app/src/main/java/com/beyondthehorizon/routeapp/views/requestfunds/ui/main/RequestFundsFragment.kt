@@ -3,7 +3,6 @@ package com.beyondthehorizon.routeapp.views.requestfunds.ui.main
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -28,14 +27,12 @@ import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity
-import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
-import java.lang.Exception
 import java.security.SecureRandom
 
 
@@ -45,6 +42,7 @@ import java.security.SecureRandom
 class RequestFundsFragment : Fragment() {
     private var contacts: MutableList<Contact> = mutableListOf()
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
+    private var routeContactMap: MutableMap<String, Contact> = mutableMapOf()
     private lateinit var prefs: SharedPreferences
     private lateinit var searchView: SearchView
     private lateinit var parentIntent: Intent
@@ -391,7 +389,12 @@ class RequestFundsFragment : Fragment() {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
             Constants.loadUserContacts(activity!!, token).setCallback { e, result ->
                 if (result != null) {
-                    mapContactsToList(result.getAsJsonArray("rows"))
+                    if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE) {
+                        mapRouteContactsToList(result.getAsJsonArray("rows"))
+                    } else {
+                        mapContactsToList(result.getAsJsonArray("rows"))
+                    }
+
                 }
             }
         } catch (e: Exception) {
@@ -423,6 +426,44 @@ class RequestFundsFragment : Fragment() {
         }
 
         contacts = contactMap.values.toMutableList()
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+        contactsAdapater = ContactsAdapater(activity!!, contacts)
+        recyclerView.adapter = contactsAdapater
+    }
+
+    private fun mapRouteContactsToList(result: JsonArray) {
+        loadPhoneContacts()
+
+        if (result != null) {
+            for (item: JsonElement in result) {
+                var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
+                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
+
+//                Log.e("RequestFundsActivity", item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString())
+
+                if (contactMap.keys.contains(phone)) {
+                    var id = item.asJsonObject.get("id").asString
+                    var avatar = R.drawable.group416
+                    contactMap.getValue(phone).id = id
+                    contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
+                    contactMap.getValue(phone).avatar = avatar
+                    contactMap.getValue(phone).accountNumber = accountNumber
+
+                    routeContactMap.put(
+                            phone,
+                            Contact(id,
+                                    contactMap.getValue(phone).name,
+                                    item.asJsonObject.get("phone_number").asString,
+                                    avatar,
+                                    accountNumber))
+                }
+            }
+        } else {
+            Log.d("ContactResponse", "No contacts registered on route")
+        }
+
+        contacts = routeContactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
         contactsAdapater = ContactsAdapater(activity!!, contacts)

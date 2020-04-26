@@ -7,6 +7,7 @@
     <string name="lbl_user_name">username</string>
     <string name="lbl_last_name">Last name</string>
     <string name="lbl_email">Email</string>
+    <string name="lbl_otp">OTP</string>
     <string name="lbl_phone">Phone number</string>
     <string name="lbl_id_number">ID/PP number</string>
     <string name="lbl_password">Password</string>
@@ -82,6 +83,10 @@
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
+    <string name="change_pin">Change Pin</string>
+    <string name="confirm_new_pin">Confirm New Pin</string>
+    <string name="new_pin">New Pin</string>
+    <string name="current_pin">Current Pin</string>
     <string name="reset_your_transaction_pin">Reset your transaction pin</string>
     <string name="invite_friend">Invite a friend</string>
     <string name="get_cash_gifts">Get cash gifts</string>
