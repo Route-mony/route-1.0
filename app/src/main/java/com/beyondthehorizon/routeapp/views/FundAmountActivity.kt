@@ -7,12 +7,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
+import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -131,33 +133,45 @@ class FundAmountActivity : AppCompatActivity() {
                 binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
             }
         }
+        binding.bulkRequest.setOnClickListener {
+            startActivity(Intent(this, BulkRequestActivity::class.java))
+        }
         try {
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
+                binding.requestLayout.visibility = View.VISIBLE
                 username = prefs.getString("Username", "").toString()
-                binding.requestTitle.text = "Request $username"
+                binding.requestTitle.text = "$username"
+                binding.requestType.text = "Request : "
+
             } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                 if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0) {
                     phone = parentIntent.getStringExtra(PHONE_NUMBER)
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = "Send To ${phone}"
+                    binding.requestTitle.text = " ${phone}"
+                    binding.requestType.text = "Send To : "
 
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                     username = prefs.getString("Username", "").toString()
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = "Send To ${username}"
+                    binding.requestTitle.text = "${username}"
+                    binding.requestType.text = "Send To : "
 
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0) {
                     username = prefs.getString("chosenBank", "").toString() + "\nAccount No: " + prefs.getString("bankAcNumber", "").toString()
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = "Send To ${username}"
+                    binding.requestTitle.text = "${username}"
+                    binding.requestType.text = "Send To : "
 
                 }
             } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
                 binding.btnRequest.text = "PAY"
                 binding.requestTitle.text = "Enter Amount to Pay"
+
+                binding.requestType.visibility = View.GONE
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER)
-                binding.requestTitle.text = "Pay From ${phone}"
+                binding.requestTitle.text = "${phone}"
+                binding.requestType.text = "Pay From : "
                 binding.btnRequest.text = "PAY"
             }
         } catch (ex: Exception) {
@@ -197,7 +211,24 @@ class FundAmountActivity : AppCompatActivity() {
                 else if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                     editor.putString("Amount", amount)
                     editor.apply()
-                    startActivity(childIntent)
+//                    startActivity(childIntent)
+                    if (binding.requestNarration.text.toString().trim().isEmpty()) {
+                        Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
+                        return@setOnClickListener
+                    }
+                    val userId = prefs.getString("Id", "").toString()
+                    val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+                    val intent = Intent(this, FundRequestedActivity::class.java)
+                    requestFund(this, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { e, result ->
+                        if (result.get("data") != null) {
+                            val message = result.get("data").asJsonObject.get("message").asString
+                            intent.putExtra("Message", message)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "User not registered or haven't confirmed their email", Toast.LENGTH_LONG).show();
+                        }
+                    }
                 } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                     showSendMoneyDialog()
                 } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0) {

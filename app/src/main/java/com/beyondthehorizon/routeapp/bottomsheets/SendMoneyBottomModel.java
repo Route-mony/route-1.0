@@ -78,16 +78,10 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         toMobileMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                parentSend.setVisibility(View.GONE);
-//                bank.setVisibility(View.GONE);
-//                mobile.setVisibility(View.VISIBLE);
+                parentSend.setVisibility(View.GONE);
+                bank.setVisibility(View.GONE);
+                mobile.setVisibility(View.VISIBLE);
 //                showSendMobileMoneyDialog();
-                Intent intent = new Intent(getActivity(), RequestFundActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
-                editor.apply();
-                startActivity(intent);
-                dismiss();
             }
         });
         //SEND MONEY TO BANK
