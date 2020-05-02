@@ -28,8 +28,12 @@ import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
 import kotlinx.android.synthetic.main.sent_transactions.view.*
 
-class BulkyRequestAdapter(private val context: Context) :
+class BulkyRequestAdapter(private val context: Context, val removeOnClick: (Int) -> Unit) :
         RecyclerView.Adapter<BulkyRequestAdapter.ViewHolder>() {
+
+    interface BulkyInterface {
+        fun updateItemRmoved()
+    }
 
     private var listOfSentTransactions = ArrayList<BulkyRequestModel>()
     private var filterListOfSentTransactions = ArrayList<BulkyRequestModel>()
@@ -53,7 +57,7 @@ class BulkyRequestAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bulkyRequestModel: BulkyRequestModel = listOfSentTransactions[position]
-        holder.bind(bulkyRequestModel)
+        holder.bind(bulkyRequestModel, position)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -63,6 +67,7 @@ class BulkyRequestAdapter(private val context: Context) :
         private val reason = view.reqReason!!
         private val quantity = view.reqQuantity!!
         private val amountTxt = view.reqAmount!!
+        private val closeBtn = view.remove!!
 
         private var bulkyRequestModel: BulkyRequestModel? = null
 
@@ -70,22 +75,36 @@ class BulkyRequestAdapter(private val context: Context) :
                 context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
         init {
-            view.setOnClickListener {
-                val editor = sharedPref.edit()
-                val gson = Gson()
-                val personString = gson.toJson(bulkyRequestModel)
-                editor.putString(TRANSACTION_DETAILS, personString)
-                editor.apply()
-                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
+//            closeBtn.setOnClickListener {
+////                val editor = sharedPref.edit()
+////                val gson = Gson()
+////                val personString = gson.toJson(bulkyRequestModel)
+////                editor.putString(TRANSACTION_DETAILS, personString)
+////                editor.apply()
+////                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
 //                Toast.makeText(context, "Coming soon", Toast.LENGTH_LONG).show()
-            }
+//            }
         }
 
-        fun bind(invite: BulkyRequestModel) {
+        fun bind(invite: BulkyRequestModel, position: Int) {
             reason.text = invite.reason
             quantity.text = invite.quantity
             amountTxt.text = invite.amount
             bulkyRequestModel = invite
+            closeBtn.setOnClickListener {
+//                val editor = sharedPref.edit()
+//                val gson = Gson()
+//                val personString = gson.toJson(bulkyRequestModel)
+//                editor.putString(TRANSACTION_DETAILS, personString)
+//                editor.apply()
+//                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
+                if (position != 0) {
+                    listOfSentTransactions.removeAt(position)
+                    setContact(listOfSentTransactions)
+                    removeOnClick(position)
+                    Toast.makeText(context, "Item removed successfully", Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
     }
@@ -94,6 +113,7 @@ class BulkyRequestAdapter(private val context: Context) :
         listOfSentTransactions = patients
         filterListOfSentTransactions = patients
         Log.i("HospitalsAdapter", listOfSentTransactions.size.toString())
+        notifyDataSetChanged()
     }
 
     fun clearList() {
