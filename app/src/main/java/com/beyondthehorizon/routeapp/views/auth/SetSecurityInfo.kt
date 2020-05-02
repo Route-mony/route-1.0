@@ -89,6 +89,11 @@ class SetSecurityInfo : AppCompatActivity() {
                                     pin3 = ""
                                     pin4 = ""
                                     updateScreen("")
+                                    if(e!=null){
+                                        progressBar.dialog.dismiss()
+                                        Log.e("SetSecurityInfo 12356", e.toString())
+                                        return@setCallback
+                                    }
                                     if (result.has("errors")) {
                                         progressBar.dialog.dismiss()
                                         Log.e("SetSecurityInfo", result.get("errors").asString)
