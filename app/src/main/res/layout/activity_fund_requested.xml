@@ -52,19 +52,10 @@
                     app:srcCompat="@drawable/ic_logo" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ScrollView
-                android:id="@+id/confirmation_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/card_main"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/top_nav">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/card_main"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/top_nav">
 
@@ -96,9 +87,9 @@
                         android:id="@+id/btn_done"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="20dp"
                         android:background="@drawable/round_route_button"
                         android:paddingVertical="10dp"
+                        android:layout_marginVertical="30dp"
                         android:paddingHorizontal="20dp"
                         android:layout_marginRight="10dp"
                         android:text="Done"
@@ -113,12 +104,11 @@
                         android:id="@+id/btn_new_request"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="20dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="28dp"
                         android:background="@drawable/round_route_button"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="10dp"
+                        android:layout_marginVertical="30dp"
                         android:text="New Request"
                         android:textAllCaps="false"
                         android:textColor="@color/colorAccent"
@@ -127,7 +117,6 @@
                         app:layout_constraintEnd_toEndOf="@id/txt_request_inform"
                         app:layout_constraintStart_toEndOf="@id/btn_done" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </ScrollView>
             <!--//-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.R
@@ -17,7 +16,8 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_bulk_request.*
 import kotlinx.android.synthetic.main.add_bulk_item_layout.view.*
-import java.util.HashMap
+import java.util.*
+import kotlin.collections.ArrayList
 
 class BulkRequestActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
@@ -102,6 +102,7 @@ class BulkRequestActivity : AppCompatActivity() {
 //                    totalCard.visibility = View.VISIBLE
 //
 //                }
+
             }
         }
         requestButton.setOnClickListener {
@@ -125,8 +126,7 @@ class BulkRequestActivity : AppCompatActivity() {
             to_user_json.addProperty("department", "No department to user")
             to_user_json.addProperty("recipient", prefs.getString("Id", "").toString())
             to_user.put("to_user", to_user_json)
-
-            Constants.bulkRequest(this@BulkRequestActivity, token, from_user, to_user, arrayListJson)
+            Constants.bulkRequest(this@BulkRequestActivity, token, from_user.toString(), to_user.toString(), arrayListJson.toString())
                     .setCallback { e, result ->
                         progressDialog.dismiss()
                         if (e != null) {
