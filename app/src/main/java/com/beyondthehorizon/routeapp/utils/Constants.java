@@ -8,8 +8,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-        public static String BASE_URL = "http://167.172.214.193/api/v1/";
-//    public static String BASE_URL = "http://f61e854b.ngrok.io/api/v1/";
+    public static String BASE_URL = "http://167.172.214.193/api/v1/";
+    //    public static String BASE_URL = "https://4f124057.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
@@ -67,8 +67,10 @@ public class Constants {
     //firebase images
     public static final String RECEIPTS = "RECEIPTS";
     public static final String PROFILE_IMAGES = "PROFILE IMAGES";
-
     public static final String BALANCE_CHECK = "BALANCE_CHECK";
+
+    public static final int RECYCLER_SECTION = 1001;
+    public static final int RECYCLER_HEADER = 1002;
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -162,20 +164,28 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> bulkRequest(Context context, String token, String from_user, String to_user, String items) {
+    public static ResponseFuture<JsonObject> bulkRequest(Context context, String token,
+                                                         String from_designation,
+                                                         String from_department,
+                                                         String from_project_title,
+                                                         String to_designation,
+                                                         String to_department,
+                                                         String to_recipient,
+                                                         String items) {
         String SERVER_URL = BASE_URL + "requests/bulk/create";
 //        HashMap<String, String> payload = new HashMap<>();
 //        payload.put("from_user", from_user);
 //        payload.put("to_user", to_user);
 //        payload.put("items", items);
 
-        JsonObject  json = new JsonObject();
-        json.addProperty("from_user", from_user);
-        json.addProperty("to_user", to_user);
+        JsonObject json = new JsonObject();
+        json.addProperty("from_designation", from_designation);
+        json.addProperty("from_department", from_department);
+        json.addProperty("from_project_title", from_project_title);
+        json.addProperty("to_designation", to_designation);
+        json.addProperty("to_department", to_department);
+        json.addProperty("to_recipient", to_recipient);
         json.addProperty("items", items);
-
-
-        Log.e("BulkRequestActivityRes", json.toString());
 
         return Ion.with(context)
                 .load("POST", SERVER_URL)

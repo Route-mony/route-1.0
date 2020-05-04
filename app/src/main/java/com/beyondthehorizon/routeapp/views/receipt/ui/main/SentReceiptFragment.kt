@@ -56,50 +56,50 @@ class SentReceiptFragment : Fragment() {
                 progressDialog.dismiss()
                 if (result != null) {
 
-                    if (result.get("status").asString.toString().compareTo("success") == 0) {
-
-                        val list = ArrayList<ReceiptModel>()
-                        receiptAdapter.clearList()
-                        if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
-                            return@setCallback
-                        }
-                        for (item: JsonElement in result.get("data").asJsonObject.get("rows").asJsonArray) {
-
-
-//                            val details = item.asJsonObject.get("sender").asString
-                            Log.e("ReceivedReceipt22", item.asJsonObject.get("image").asString)
-
-
-//                        var id = item.asJsonObject.get("id").asString
-                            val fname = item.asJsonObject.get("recipient").asJsonObject.get("first_name").asString
-                            val lname = item.asJsonObject.get("recipient").asJsonObject.get("last_name").asString
-                            val username = item.asJsonObject.get("recipient").asJsonObject.get("username").asString
-                            val email = item.asJsonObject.get("recipient").asJsonObject.get("email").asString
-                            val phone_number = item.asJsonObject.get("recipient").asJsonObject.get("phone_number").asString
-
-                            val receipt_id = item.asJsonObject.get("id").asString
-                            val created_at = item.asJsonObject.get("created_at").asString
-                            val amount_spent = item.asJsonObject.get("amount_spent").asString
-                            val title = item.asJsonObject.get("title").asString
-                            val description = item.asJsonObject.get("description").asString
-                            val status = item.asJsonObject.get("status").asString
-                            val image = item.asJsonObject.get("image").asString
-                            val cancellation_reason = item.asJsonObject.get("cancellation_reason").asString
-                            val transaction_date = item.asJsonObject.get("transaction_date").asString
-
-                            list.add(ReceiptModel(receipt_id, fname, lname,
-                                    username, image, created_at,
-                                    amount_spent, title,
-                                    description, cancellation_reason,
-                                    transaction_date, phone_number, status, email, "sent"))
-                        }
-                        receivedRecycler.apply {
-                            layoutManager = LinearLayoutManager(activity)
-                            adapter = receiptAdapter
-                        }
-                        list.reverse()
-                        receiptAdapter.setContact(list)
-                    }
+//                    if (result.get("status").asString.toString().compareTo("success") == 0) {
+//
+//                        val list = ArrayList<ReceiptModel>()
+//                        receiptAdapter.clearList()
+//                        if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
+//                            return@setCallback
+//                        }
+//                        for (item: JsonElement in result.get("data").asJsonObject.get("rows").asJsonArray) {
+//
+//
+////                            val details = item.asJsonObject.get("sender").asString
+//                            Log.e("ReceivedReceipt22", item.asJsonObject.get("image").asString)
+//
+//
+////                        var id = item.asJsonObject.get("id").asString
+//                            val fname = item.asJsonObject.get("recipient").asJsonObject.get("first_name").asString
+//                            val lname = item.asJsonObject.get("recipient").asJsonObject.get("last_name").asString
+//                            val username = item.asJsonObject.get("recipient").asJsonObject.get("username").asString
+//                            val email = item.asJsonObject.get("recipient").asJsonObject.get("email").asString
+//                            val phone_number = item.asJsonObject.get("recipient").asJsonObject.get("phone_number").asString
+//
+//                            val receipt_id = item.asJsonObject.get("id").asString
+//                            val created_at = item.asJsonObject.get("created_at").asString
+//                            val amount_spent = item.asJsonObject.get("amount_spent").asString
+//                            val title = item.asJsonObject.get("title").asString
+//                            val description = item.asJsonObject.get("description").asString
+//                            val status = item.asJsonObject.get("status").asString
+//                            val image = item.asJsonObject.get("image").asString
+//                            val cancellation_reason = item.asJsonObject.get("cancellation_reason").asString
+//                            val transaction_date = item.asJsonObject.get("transaction_date").asString
+//
+//                            list.add(ReceiptModel(receipt_id, fname, lname,
+//                                    username, image, created_at,
+//                                    amount_spent, title,
+//                                    description, cancellation_reason,
+//                                    transaction_date, phone_number, status, email, "sent"))
+//                        }
+//                        receivedRecycler.apply {
+//                            layoutManager = LinearLayoutManager(activity)
+//                            adapter = receiptAdapter
+//                        }
+//                        list.reverse()
+//                        receiptAdapter.setContact(list)
+//                    }
                 }
                 // Hide swipe to refresh icon animation
                 view.swipe.isRefreshing = false
