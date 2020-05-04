@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.TransactionModel
 import com.beyondthehorizon.routeapp.utils.Constants
-import com.beyondthehorizon.routeapp.utils.Constants.TRANSACTION_DETAILS
+import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -25,21 +25,39 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
+import kotlinx.android.synthetic.main.recycvler_header.view.*
 import kotlinx.android.synthetic.main.sent_transactions.view.*
 
 class TransactionsAdapter(private val context: Context) :
-        RecyclerView.Adapter<TransactionsAdapter.ViewHolder>(), Filterable {
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     private var listOfSentTransactions = ArrayList<TransactionModel>()
     private var filterListOfSentTransactions = ArrayList<TransactionModel>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-                LayoutInflater.from(context).inflate(
-                        R.layout.sent_transactions,
-                        parent,
-                        false
-                )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//        return ViewHolder(
+//                LayoutInflater.from(context).inflate(
+//                        R.layout.sent_transactions,
+//                        parent,
+//                        false
+//                )
+//        )
+
+        var layout = 0
+        val viewHolder: RecyclerView.ViewHolder?
+        when (viewType) {
+            RECYCLER_SECTION -> {
+                layout = R.layout.sent_transactions
+                val chatView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+                viewHolder = ViewHolder(chatView)
+            }
+            RECYCLER_HEADER -> {
+                layout = R.layout.recycvler_header
+                val videoView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+                viewHolder = ShowHeaderHolder(videoView)
+            }
+            else -> viewHolder = null
+        }
+        return viewHolder!!
     }
 
     override fun getItemCount(): Int {
@@ -50,9 +68,34 @@ class TransactionsAdapter(private val context: Context) :
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val transactionModel: TransactionModel = listOfSentTransactions[position]
-        holder.bind(transactionModel)
+//        holder.bind(transactionModel)
+        val viewType = holder.itemViewType
+        when (viewType) {
+            RECYCLER_SECTION -> {
+                val section = transactionModel
+                (holder as ViewHolder).bind(section)
+            }
+            RECYCLER_HEADER -> {
+                val header = transactionModel
+                (holder as ShowHeaderHolder).bind(header)
+            }
+        }
+    }
+
+    inner class ShowHeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        //        private val userNameTextView: TextView
+//        private val TimeTextView: TextView
+        private val recyclerHeader = itemView.recyclerHeader!!
+
+        init {
+        }
+
+        fun bind(invite: TransactionModel) {
+            // Attach values for each item
+            recyclerHeader.text = invite.created_at
+        }
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -102,7 +145,7 @@ class TransactionsAdapter(private val context: Context) :
                     .skipMemoryCache(true)
                     .error(R.drawable.ic_user)
                     .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                    .placeholder(R.drawable.ic_user)
                     .apply(RequestOptions.circleCropTransform())
                     .into(profileImage)
             transactionModel = invite
@@ -118,6 +161,15 @@ class TransactionsAdapter(private val context: Context) :
 
     fun clearList() {
         listOfSentTransactions.clear()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (listOfSentTransactions[position].type.compareTo(RECYCLER_SECTION) == 0) {
+            return RECYCLER_SECTION
+        } else if (listOfSentTransactions[position].type.compareTo(RECYCLER_HEADER) == 0) {
+            return RECYCLER_HEADER
+        }
+        return -1
     }
 
     override fun getFilter(): Filter {

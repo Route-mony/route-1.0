@@ -10,5 +10,6 @@ data class TransactionModel(
         var reference: String,
         var description: String,
         var email: String,
-        var profile_image: String
+        var profile_image: String,
+        var type: Int
 )
