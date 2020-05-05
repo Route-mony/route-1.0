@@ -36,7 +36,7 @@ class BulkRequestActivity : AppCompatActivity() {
                 if (arrayList.size > 1) {
 //                    val newArray = Arrays.copyOfRange(arrayList, 1, arrayList.size - 1);
                     for (bulkyRequestModel: BulkyRequestModel in arrayList.subList(1, arrayList.size)) {
-                        amountTotal += bulkyRequestModel.amount.toInt()
+                        amountTotal += bulkyRequestModel.amount.toInt() * bulkyRequestModel.quantity.toInt()
                     }
                     totals.text = amountTotal.toString()
                     totalCard.visibility = View.VISIBLE
@@ -53,7 +53,7 @@ class BulkRequestActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
         }
-        arrayList.add(BulkyRequestModel("Reason/Item", "Amount", "Quantity"))
+        arrayList.add(BulkyRequestModel("Reason/Item", "Unit Price", "Quantity"))
         usersAdapter.setContact(arrayList)
 
         addFab.setOnClickListener {
@@ -93,7 +93,8 @@ class BulkRequestActivity : AppCompatActivity() {
                 if (arrayList.size > 1) {
 //                    val newArray = Arrays.copyOfRange(arrayList, 1, arrayList.size - 1);
                     for (bulkyRequestModel: BulkyRequestModel in arrayList.subList(1, arrayList.size)) {
-                        amountTotal += bulkyRequestModel.amount.toInt()
+                        amountTotal += bulkyRequestModel.amount.toInt() * bulkyRequestModel.quantity.toInt()
+                        Log.e("NAHAPA", amountTotal.toString())
                     }
                     totals.text = amountTotal.toString()
                     totalCard.visibility = View.VISIBLE
@@ -114,20 +115,6 @@ class BulkRequestActivity : AppCompatActivity() {
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
 
-//            var from_user: HashMap<String, JsonObject> = hashMapOf()
-//            var to_user: HashMap<String, JsonObject> = hashMapOf()
-//            val from_user_json = JsonObject()
-//            from_user_json.addProperty("designation", "NO from user")
-//            from_user_json.addProperty("department", "NO from department")
-//            from_user_json.addProperty("project_title", "NO from project_title")
-//
-//            from_user.put("from_user", from_user_json)
-//
-//            val to_user_json = JsonObject()
-//            to_user_json.addProperty("designation", "NOn3 to user")
-//            to_user_json.addProperty("department", "No department to user")
-//            to_user_json.addProperty("recipient", prefs.getString("Id", "").toString())
-//            to_user.put("to_user", to_user_json)
             Constants.bulkRequest(this@BulkRequestActivity, token, "NO from designation",
                     "NO from department", "NO project title", "NO to designation",
                     "NO to department", prefs.getString("Id", "").toString(), arrayListJson.toString())
@@ -141,10 +128,10 @@ class BulkRequestActivity : AppCompatActivity() {
 //                        val intent = Intent(this@BulkRequestActivity, MainActivity::class.java)
 //                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 //                        startActivity(intent) val message = result.get("data").asJsonObject.get("message").asString
-                            val intent = Intent(this@BulkRequestActivity, FundRequestedActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra("Message", "Request send successfully")
-                            startActivity(intent)
+                        val intent = Intent(this@BulkRequestActivity, FundRequestedActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra("Message", "Request send successfully")
+                        startActivity(intent)
                     }
         }
 
