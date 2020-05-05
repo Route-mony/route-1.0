@@ -52,8 +52,6 @@ class ReceivedFragment : Fragment() {
 
                     Log.e("HERE 13 ", result.toString())
 
-//                    if (result.get("status").asString.toString().compareTo("success") == 0) {
-
                     val list = ArrayList<TransactionModel>()
                     transactionsAdapter.clearList()
                     if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
@@ -70,6 +68,7 @@ class ReceivedFragment : Fragment() {
                                     "paymentType", "balance", "wallet_account",
                                     "reference", "description", "email", "image", RECYCLER_HEADER))
                             val transactionArray = issueObj.getJSONArray(key)
+
                             for (i in 0 until transactionArray.length()) {
                                 val item = transactionArray.getJSONObject(i)
                                 if (item.has("sender")) {
