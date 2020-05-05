@@ -228,13 +228,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
             }
         });
-        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransactionModel airtimeModel = new TransactionModel();
-                airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
-            }
-        });
+
+//        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TransactionModel airtimeModel = new TransactionModel();
+//                airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
+//            }
+//        });
 
         isLoggedIn();
     }

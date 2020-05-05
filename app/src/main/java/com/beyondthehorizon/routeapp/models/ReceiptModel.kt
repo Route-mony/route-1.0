@@ -15,5 +15,6 @@ data class ReceiptModel(
         var phone_number: String,
         var status: String,
         var email: String,
-        var type: String
+        var type: String,
+        var view_type: Int
 )

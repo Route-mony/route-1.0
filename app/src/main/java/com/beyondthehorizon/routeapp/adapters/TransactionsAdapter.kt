@@ -34,14 +34,6 @@ class TransactionsAdapter(private val context: Context) :
     private var listOfSentTransactions = ArrayList<TransactionModel>()
     private var filterListOfSentTransactions = ArrayList<TransactionModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//        return ViewHolder(
-//                LayoutInflater.from(context).inflate(
-//                        R.layout.sent_transactions,
-//                        parent,
-//                        false
-//                )
-//        )
-
         var layout = 0
         val viewHolder: RecyclerView.ViewHolder?
         when (viewType) {
@@ -70,7 +62,7 @@ class TransactionsAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val transactionModel: TransactionModel = listOfSentTransactions[position]
-//        holder.bind(transactionModel)
+
         val viewType = holder.itemViewType
         when (viewType) {
             RECYCLER_SECTION -> {
