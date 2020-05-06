@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
         notifCount = findViewById(R.id.notifCount);
 
-        btn_home.setImageResource(R.drawable.ic_group762_active);
+        btn_home.setImageResource(R.drawable.ic_nav_home);
         txt_home.setTextColor(getResources().getColor(R.color.colorButton));
 
         moveUp = AnimationUtils.loadAnimation(getApplicationContext(),

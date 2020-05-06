@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel.TransactionBottomSheetListener
 import com.beyondthehorizon.routeapp.databinding.ActivityAddMoneyBinding
 import com.beyondthehorizon.routeapp.models.Card
@@ -118,8 +117,6 @@ class AddMoneyActivity : AppCompatActivity(), TransactionBottomSheetListener {
         }
             binding.mobileCard.setOnClickListener {
                 startActivity(Intent(this, MobileActivity::class.java))
-//                val transactionModel = TransactionModel()
-//                transactionModel.show(supportFragmentManager, "Mobile Options")
             }
 
             binding.addCard.setOnClickListener {

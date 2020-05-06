@@ -103,7 +103,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:paddingTop="10dp"
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -118,6 +119,7 @@
                                 android:inputType="textCapSentences|textMultiLine"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="14sp"
+                                android:background="@null"
                                 android:theme="@style/TextLabel2" />
 
                             <ImageView
