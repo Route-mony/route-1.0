@@ -9,68 +9,73 @@
     android:orientation="vertical"
     tools:context=".views.settingsactivities.SettingsActivity">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_arrow_back" />
-
     <LinearLayout
-        android:id="@+id/hd"
+        android:id="@+id/nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/back"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="-6dp"
-        android:orientation="horizontal">
+        android:paddingVertical="20dp">
 
         <ImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="@dimen/image_width"
-            android:layout_height="@dimen/image_height"
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/profile_pic"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:srcCompat="@drawable/ic_arrow_back" />
 
         <LinearLayout
+            android:id="@+id/hd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@+id/back"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
 
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="loading.."
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
+                android:scaleType="fitXY"
+                android:src="@drawable/profile_pic"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/query_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@string/font_family_regular"
-                android:text="View and Edit Profile"
-                android:textColor="@color/colorAccent"
-                android:textSize="12sp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="loading.."
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/profile_pic"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/query_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="View and Edit Profile"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/hd"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/nav"
         android:background="@drawable/card_main">
 
         <LinearLayout

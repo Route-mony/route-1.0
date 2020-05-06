@@ -6,12 +6,13 @@
     android:layout_marginStart="3dp"
     android:layout_marginEnd="3dp"
     android:background="@drawable/bottom_nav_bar"
-    android:padding="6dp">
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="6dp">
 
     <ImageButton
         android:id="@+id/btn_home"
         android:layout_width="0dp"
-        android:layout_height="@dimen/lb_30_sp"
+        android:layout_height="@dimen/lb_24_sp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@id/btn_transactions"
@@ -19,7 +20,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_group762" />
+        app:srcCompat="@drawable/ic_nav_home_gray" />
 
     <TextView
         android:id="@+id/txt_home"
@@ -39,7 +40,7 @@
     <ImageButton
         android:id="@+id/btn_transactions"
         android:layout_width="0dp"
-        android:layout_height="@dimen/lb_30_sp"
+        android:layout_height="@dimen/lb_24_sp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@id/btn_receipt"
@@ -47,7 +48,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/btn_home"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_group660" />
+        app:srcCompat="@drawable/ic_nav_transactions_gray" />
 
     <TextView
         android:id="@+id/txt_transactions"
@@ -67,7 +68,7 @@
     <ImageButton
         android:id="@+id/btn_receipt"
         android:layout_width="0dp"
-        android:layout_height="@dimen/lb_30_sp"
+        android:layout_height="@dimen/lb_24_sp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toStartOf="@id/btn_settings"
@@ -75,7 +76,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/btn_transactions"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_receipts_uactive" />
+        app:srcCompat="@drawable/ic_nav_receipts_gray" />
 
     <TextView
         android:id="@+id/txt_pool"
@@ -95,7 +96,7 @@
     <ImageButton
         android:id="@+id/btn_settings"
         android:layout_width="0dp"
-        android:layout_height="@dimen/lb_30_sp"
+        android:layout_height="@dimen/lb_24_sp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +104,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/btn_receipt"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_group663" />
+        app:srcCompat="@drawable/ic_nav_settings_gray" />
 
     <TextView
         android:id="@+id/txt_settings"

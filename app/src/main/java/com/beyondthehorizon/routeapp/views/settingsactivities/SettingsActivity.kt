@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
 
         pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref.edit()
-        btn_settings.setImageResource(R.drawable.ic_group663_active)
+        btn_settings.setImageResource(R.drawable.ic_nav_settings)
         txt_settings.setTextColor(resources.getColor(R.color.colorButton))
 
         Kommunicate.init(this@SettingsActivity, "ba520ce1b1256908b973b5f89a451913");
