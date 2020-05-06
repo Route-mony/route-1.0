@@ -95,17 +95,17 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
 
         init {
             inviteBtn.setOnClickListener {
-                val shareBody = "Hello checkout this awesome app! Route App"
-//                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
-//                sharingIntent.type = "text/plain"
-//                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
-//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
-//                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
+                val shareBody = "Hello checkout this awesome app! Route App\nLink coming soon"
+                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+                sharingIntent.type = "text/plain"
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+                context.startActivity(Intent.createChooser(sharingIntent, "Invite Friend To Route App"))
 
-                val uri = Uri.parse("smsto:${inviteFriend.phone}")
-                val intent = Intent(Intent.ACTION_SENDTO, uri)
-                intent.putExtra("sms_body", shareBody)
-                context.startActivity(intent)
+//                val uri = Uri.parse("smsto:${inviteFriend.phone}")
+//                val intent = Intent(Intent.ACTION_SENDTO, uri)
+//                intent.putExtra("sms_body", shareBody)
+//                context.startActivity(intent)
 
             }
         }
