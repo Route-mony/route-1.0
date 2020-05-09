@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
+import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
@@ -29,7 +30,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 
 
-class FundAmountActivity : AppCompatActivity() {
+class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
 
     private var username = ""
     private var amount = ""
@@ -230,7 +231,10 @@ class FundAmountActivity : AppCompatActivity() {
                         }
                     }
                 } else if (transactionType.compareTo(SEND_MONEY) == 0) {
-                    showSendMoneyDialog()
+//                    showSendMoneyDialog()
+                    val enterPinBottomSheet = EnterPinBottomSheet()
+                    enterPinBottomSheet.show(supportFragmentManager, "Enter Pin")
+
                 } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
                     var country = parentIntent.getStringExtra(COUNTRY)
                     var cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
@@ -409,5 +413,51 @@ class FundAmountActivity : AppCompatActivity() {
                         }
                     }
         }
+    }
+
+    override fun enterPinDialog(pin: String) {
+        var account = ""
+        var provider = ""
+        when {
+            prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
+//                    account = parentIntent.getStringExtra(PHONE_NUMBER)
+                account = prefs.getString(PHONE_NUMBER, "").toString()
+                provider = "MPESA WALLET"
+            }
+            prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
+                account = prefs.getString("bankAcNumber", "").toString()
+                provider = prefs.getString("chosenBank", "").toString()
+            }
+            prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0 -> {
+                account = prefs.getString("walletAccountNumber", "").toString()
+                provider = "ROUTEWALLET"
+            }
+        }
+
+        Log.e("FundAmountActivity", "$account P $provider")
+        if (account.isEmpty()) {
+            Toast.makeText(this@FundAmountActivity, "User not registered or haven't verified their email", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val progressBar = CustomProgressBar()
+        progressBar.show(this, "Please Wait...")
+        sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
+                .setCallback { e, result ->
+                    Log.e("FundAmountActivity", result.toString())
+                    progressBar.dialog.dismiss()
+                    if (result.has("errors")) {
+                        Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
+                    } else {
+                        editor.putString("Amount", amount)
+                        editor.apply()
+                        val message = result.get("data").asJsonObject.get("message").asString
+                        val intent = Intent(this, FundRequestedActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra("Message", message)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
     }
 }

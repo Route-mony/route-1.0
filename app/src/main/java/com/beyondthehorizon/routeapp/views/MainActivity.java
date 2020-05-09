@@ -26,6 +26,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
@@ -52,6 +53,8 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BALANCE_CHECK;
@@ -70,8 +73,10 @@ import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
+import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 
-public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener, MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener {
+public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
+        MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener, EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -425,90 +430,198 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 });
     }
 
-    @Override
-    public void onButtonClicked(String text) {
-
-    }
 
     @Override
     public void mpesaBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
-        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
 
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setMessage("Please wait");
-        progressDialog.setCanceledOnTouchOutside(false);
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = findViewById(android.R.id.content);
+        editor.putString("amount21", amount);
+        editor.putString("ben_account", ben_account);
+        editor.putString("ben_ref", ben_ref);
+        editor.putString("BottomSheetListener", "mpesaBottomSheetListener");
+        editor.apply();
 
-        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
+        EnterPinBottomSheet enterPinBottomSheet = new EnterPinBottomSheet();
+        enterPinBottomSheet.show(getSupportFragmentManager(), "Mpesa Options");
 
-        final EditText enterPin = dialogView.findViewById(R.id.enterPin);
-        Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-        //finally creating the alert dialog and displaying it
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogAnimation;
-        alertDialog.show();
-
-        dialogButtonPin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (enterPin.getText().toString().trim().isEmpty()) {
-                    enterPin.setError("Enter Pin");
-                    return;
-                }
-                progressDialog.show();
-
-                if (ben_ref.trim().isEmpty()) {
-                    Constants.sendMoney(MainActivity.this,
-                            ben_account, amount, enterPin.getText().toString().trim(), token,
-                            "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result) {
-
-                            progressDialog.dismiss();
-                            if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
-                            } else {
-                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                intent.putExtra("Message", message);
-                                startActivity(intent);
-                                alertDialog.dismiss();
-                            }
-                        }
-                    });
-                } else {
-                    Constants.sendMoneyBeneficiary(MainActivity.this,
-                            ben_account, amount, enterPin.getText().toString().trim(), token,
-                            "MPESA PAYBILL", ben_ref.trim(), "Payment").setCallback(new FutureCallback<JsonObject>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result) {
-                            Log.e(TAG, "onCompleted: " + result);
-
-                            progressDialog.dismiss();
-                            if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
-                            } else {
-                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                intent.putExtra("Message", message);
-                                startActivity(intent);
-                                alertDialog.dismiss();
-                            }
-                        }
-                    });
-                }
-            }
-        });
+//        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+//
+//        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+//        progressDialog.setMessage("Please wait");
+//        progressDialog.setCanceledOnTouchOutside(false);
+//        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+//        ViewGroup viewGroup = findViewById(android.R.id.content);
+//
+//        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
+//
+//        final EditText enterPin = dialogView.findViewById(R.id.enterPin);
+//        Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
+//        //Now we need an AlertDialog.Builder object
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        //setting the view of the builder to our custom view that we already inflated
+//        builder.setView(dialogView);
+//
+//        //finally creating the alert dialog and displaying it
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogAnimation;
+//        alertDialog.show();
+//
+//        dialogButtonPin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (enterPin.getText().toString().trim().isEmpty()) {
+//                    enterPin.setError("Enter Pin");
+//                    return;
+//                }
+//                progressDialog.show();
+//
+//                if (ben_ref.trim().isEmpty()) {
+//                    Constants.sendMoney(MainActivity.this,
+//                            ben_account, amount, enterPin.getText().toString().trim(), token,
+//                            "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
+//                        @Override
+//                        public void onCompleted(Exception e, JsonObject result) {
+//
+//                            progressDialog.dismiss();
+//                            if (result.has("errors")) {
+//                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+//                            } else {
+//                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
+//                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+//                                intent.putExtra("Message", message);
+//                                startActivity(intent);
+//                                alertDialog.dismiss();
+//                            }
+//                        }
+//                    });
+//                } else {
+//                    Constants.sendMoneyBeneficiary(MainActivity.this,
+//                            ben_account, amount, enterPin.getText().toString().trim(), token,
+//                            "MPESA PAYBILL", ben_ref.trim(), "Payment").setCallback(new FutureCallback<JsonObject>() {
+//                        @Override
+//                        public void onCompleted(Exception e, JsonObject result) {
+//                            Log.e(TAG, "onCompleted: " + result);
+//
+//                            progressDialog.dismiss();
+//                            if (result.has("errors")) {
+//                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
+//                            } else {
+//                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
+//                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+//                                intent.putExtra("Message", message);
+//                                startActivity(intent);
+//                                alertDialog.dismiss();
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        });
     }
 
     @Override
     public void transactionBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
         final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+    }
+
+    @Override
+    public void enterPinDialog(@NotNull String pin) {
+
+        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+//        editor.putString("mpesaBottomSheetListener", "mpesaBottomSheetListener");
+
+        String ben_ref = pref.getString("ben_ref", "");
+        String ben_account = pref.getString("ben_account", "");
+        final String amount = pref.getString("amount21", "");
+
+        String transactionType = pref.getString("BottomSheetListener", "");
+
+        Log.e(TAG, "enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
+
+        if (transactionType.compareTo("mpesaBottomSheetListener") == 0) {
+            if (ben_ref.trim().isEmpty()) {
+                Constants.sendMoney(MainActivity.this,
+                        ben_account, amount, pin, token,
+                        "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+
+                        progressDialog.dismiss();
+                        if (result.has("errors")) {
+                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+                        } else {
+                            editor.remove("ben_ref");
+                            editor.apply();
+                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                            Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                            intent.putExtra("Message", message);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            } else {
+                Constants.sendMoneyBeneficiary(MainActivity.this,
+                        ben_account, amount, pin, token,
+                        "MPESA PAYBILL", ben_ref.trim(), "Payment")
+                        .setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
+                                Log.e(TAG, "onCompleted: " + result);
+
+                                progressDialog.dismiss();
+                                if (result.has("errors")) {
+                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
+                                } else {
+                                    editor.remove("ben_ref");
+                                    editor.apply();
+                                    String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                    Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                    intent.putExtra("Message", message);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+            }
+        } else if (transactionType.compareTo("SendMoneyBottomModel") == 0) {
+
+            String bankName1 = pref.getString("bankName1", "");
+            String accountNumber = pref.getString("accountNumber1", "");
+            final String amountt = pref.getString("amount211", "");
+
+            sendMoney(MainActivity.this, accountNumber, amountt, pin, token, bankName1, "Payment")
+                    .setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            Log.e("FundAmountActivity", result.toString());
+                            progressDialog.dismiss();
+                            if (result.has("errors")) {
+                                Toast.makeText(MainActivity.this,
+                                        result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                            } else {
+                                editor.putString("Amount", amountt);
+                                editor.apply();
+                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                intent.putExtra("Message", message);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onBankBottomSheetListener(String amount, String accountNumber, String bankName) {
+        editor.putString("amount211", amount);
+        editor.putString("accountNumber1", accountNumber);
+        editor.putString("bankName1", bankName);
+        editor.putString("BottomSheetListener", "SendMoneyBottomModel");
+        editor.apply();
+
+        EnterPinBottomSheet enterPinBottomSheet = new EnterPinBottomSheet();
+        enterPinBottomSheet.show(getSupportFragmentManager(), "Mpesa Options");
     }
 }

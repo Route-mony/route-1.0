@@ -50,6 +50,7 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
     private SendMoneyBottomSheetListener mListener;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -153,19 +154,19 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
         bankButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (accountNumber.getText().toString().isEmpty()) {
+                if (accountNumber.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getActivity(), "Enter a account number", Toast.LENGTH_LONG).show();
                     accountNumber.setError("Enter a valid account number");
                     accountNumber.requestFocus();
                     return;
                 }
-                if (findBank.getText().toString().isEmpty()) {
+                if (findBank.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getActivity(), "Select bank", Toast.LENGTH_LONG).show();
                     findBank.setError("Select bank");
                     findBank.requestFocus();
                     return;
                 }
-                if (amount.getText().toString().isEmpty()) {
+                if (amount.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getActivity(), "Add Amount", Toast.LENGTH_LONG).show();
                     amount.setError("Add Amount");
                     amount.requestFocus();
@@ -182,61 +183,67 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
 //                editor.putString("chosenBank", chooseBank.getSelectedItem().toString());
                 editor.putString("chosenBank", findBank.getText().toString().trim());
                 editor.apply();
+
+
+                mListener.onBankBottomSheetListener(amount.getText().toString().trim(), accountNumber.getText().toString().trim(),
+                        findBank.getText().toString().trim());
+                dismiss();
 //                sendMoney(getActivity(), accountNumber, amount, pin)
-                ViewGroup viewGroup = getActivity().findViewById(android.R.id.content);
-                //then we will inflate the custom alert dialog xml that we created
-                final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
-                //Now we need an AlertDialog.Builder object
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                //setting the view of the builder to our custom view that we already inflated
-                builder.setView(dialogView);
-                //finally creating the alert dialog and displaying it
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
-                final EditText enterPin = dialogView.findViewById(R.id.enterPin);
-//                // val pin: String = enterPin.text.toString()
-//                var account = ""
-//                var provider = ""
-                dialogButtonPin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String pin = enterPin.getText().toString();
-                        if (pin.isEmpty()) {
-                            Toast.makeText(getActivity(), "Enter pin", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
-                        final ProgressDialog progressBar = new ProgressDialog(getActivity());
-                        progressBar.setMessage("Please Wait...");
-                        progressBar.show();
-                        sendMoney(getActivity(), accountNumber.getText().toString(), amount.getText().toString(), pin, token, findBank.getText().toString().trim(), "Payment")
-                                .setCallback(new FutureCallback<JsonObject>() {
-                                    @Override
-                                    public void onCompleted(Exception e, JsonObject result) {
-                                        Log.e("FundAmountActivity", result.toString());
-                                        progressBar.dismiss();
-                                        if (result.has("errors")) {
-                                            Toast.makeText(getActivity(),
-                                                    result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
-                                        } else {
-                                            editor.putString("Amount", amount.getText().toString());
-                                            editor.apply();
-                                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                            Intent intent = new Intent(getActivity(), FundRequestedActivity.class);
-                                            intent.putExtra("Message", message);
-                                            startActivity(intent);
-                                            alertDialog.dismiss();
-                                            dismiss();
-                                        }
-                                    }
-                                });
-                    }
-                });
+//                ViewGroup viewGroup = getActivity().findViewById(android.R.id.content);
+//                //then we will inflate the custom alert dialog xml that we created
+//                final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false);
+//                //Now we need an AlertDialog.Builder object
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                //setting the view of the builder to our custom view that we already inflated
+//                builder.setView(dialogView);
+//                //finally creating the alert dialog and displaying it
+//                final AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//                Button dialogButtonPin = dialogView.findViewById(R.id.dialogButtonPin);
+//                final EditText enterPin = dialogView.findViewById(R.id.enterPin);
+////                // val pin: String = enterPin.text.toString()
+////                var account = ""
+////                var provider = ""
+//                dialogButtonPin.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String pin = enterPin.getText().toString();
+//                        if (pin.isEmpty()) {
+//                            Toast.makeText(getActivity(), "Enter pin", Toast.LENGTH_LONG).show();
+//                            return;
+//                        }
+//                        String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
+//                        final ProgressDialog progressBar = new ProgressDialog(getActivity());
+//                        progressBar.setMessage("Please Wait...");
+//                        progressBar.show();
+//                        sendMoney(getActivity(), accountNumber.getText().toString(), amount.getText().toString(), pin, token, findBank.getText().toString().trim(), "Payment")
+//                                .setCallback(new FutureCallback<JsonObject>() {
+//                                    @Override
+//                                    public void onCompleted(Exception e, JsonObject result) {
+//                                        Log.e("FundAmountActivity", result.toString());
+//                                        progressBar.dismiss();
+//                                        if (result.has("errors")) {
+//                                            Toast.makeText(getActivity(),
+//                                                    result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+//                                        } else {
+//                                            editor.putString("Amount", amount.getText().toString());
+//                                            editor.apply();
+//                                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
+//                                            Intent intent = new Intent(getActivity(), FundRequestedActivity.class);
+//                                            intent.putExtra("Message", message);
+//                                            startActivity(intent);
+//                                            alertDialog.dismiss();
+//                                            dismiss();
+//                                        }
+//                                    }
+//                                });
+//                    }
+//                });
             }
         });
         return v;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -247,7 +254,8 @@ public class SendMoneyBottomModel extends BottomSheetDialogFragment {
                     + " must implement BottomSheetListener");
         }
     }
+
     public interface SendMoneyBottomSheetListener {
-        void onButtonClicked(String text);
+        void onBankBottomSheetListener(String amount, String accountNumber, String bankName);
     }
 }
