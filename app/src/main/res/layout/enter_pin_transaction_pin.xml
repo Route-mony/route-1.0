@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RL3"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#90000000"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/boxbg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
-        android:padding="40dp">
+        android:padding="20dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -22,25 +25,29 @@
             android:gravity="center"
             android:text="Enter Your Pin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#fff"
+            android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:hint="Enter your pin"
-            android:textColorHint="#33FFFFFF"
+            android:theme="@style/TextLabel"
             app:passwordToggleEnabled="true">
 
             <EditText
                 android:id="@+id/enterPin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="8dp"
                 android:inputType="numberPassword"
                 android:maxLength="4"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorPrimaryLight"
+                android:textColorHint="#33FFFFFF"
+                android:textSize="14sp"
+                android:theme="@style/AppTheme.AppTheme2"
+                app:passwordToggleEnabled="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -49,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginRight="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/round_route_button"
             android:onClick="submitPin"
             android:text=" Ok "
             android:textColor="#fff" />

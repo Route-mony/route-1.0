@@ -86,16 +86,16 @@
                                 android:id="@+id/requestType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="Request : " />
+                                android:text="Request : "
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/request_title"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorPrimaryDark" />
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -104,22 +104,23 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingTop="10dp"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="For : " />
+                                android:text="For : "
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/requestNarration"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:focusable="true"
                                 android:inputType="textCapSentences|textMultiLine"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="14sp"
-                                android:background="@null"
                                 android:theme="@style/TextLabel2" />
 
                             <ImageView
