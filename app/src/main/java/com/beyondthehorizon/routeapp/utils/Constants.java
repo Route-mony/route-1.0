@@ -1,7 +1,6 @@
 package com.beyondthehorizon.routeapp.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
@@ -9,7 +8,6 @@ import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
     public static String BASE_URL = "http://167.172.214.193/api/v1/";
-    //    public static String BASE_URL = "https://4f124057.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
@@ -196,8 +194,7 @@ public class Constants {
     }
 
     public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
-        String SERVER_URL = BASE_URL + "requests/?request_option=" + option;
-
+        String SERVER_URL = BASE_URL + "requests/?limit=500&request_option=" + option;
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
@@ -500,6 +497,17 @@ public class Constants {
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET ADVERTS
+    public static ResponseFuture<JsonObject> getAdverts(Context context, String token) {
+
+        String SERVER_URL = BASE_URL + "advert";
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
                 .asJsonObject();
     }
 }
