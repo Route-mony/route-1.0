@@ -5,8 +5,16 @@
     android:background="@drawable/gradient_drawable"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="25dp">
-
+    android:paddingHorizontal="25dp">
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/request"
+        android:layout_gravity="center"
+        />
     <TextView
         android:id="@+id/ioTitle"
         android:layout_width="match_parent"

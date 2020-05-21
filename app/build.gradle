@@ -94,6 +94,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+//    Dependency for gif image
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {
