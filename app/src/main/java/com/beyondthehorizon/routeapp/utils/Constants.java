@@ -501,13 +501,12 @@ public class Constants {
     }
 
     //GET ADVERTS
-    public static ResponseFuture<JsonObject> getAdverts(Context context, String token) {
+    public static ResponseFuture<JsonObject> getAdverts(Context context) {
 
-        String SERVER_URL = BASE_URL + "advert";
+        String SERVER_URL = BASE_URL + "advert/list/all";
         return Ion.with(context)
                 .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
-                .setHeader("Authorization", token)
                 .asJsonObject();
     }
 }

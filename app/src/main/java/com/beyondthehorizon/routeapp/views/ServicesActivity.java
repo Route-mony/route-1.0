@@ -1,7 +1,9 @@
 package com.beyondthehorizon.routeapp.views;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +36,7 @@ public class ServicesActivity extends AppCompatActivity {
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0);
         try {
             String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
-            Constants.getAdverts(this, token)
+            Constants.getAdverts(this)
                     .setCallback(new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
@@ -43,13 +45,15 @@ public class ServicesActivity extends AppCompatActivity {
                                 if (result.has("data")) {
                                     JsonArray data = result.get("data").getAsJsonObject().get("rows").getAsJsonArray();
                                     int res = data.size();
-                                    for (int i = 0; i < result.size(); i++) {
+                                    for (int i = 0; i < res; i++) {
+                                        String icon = data.get(i).getAsJsonObject().get("content_url").getAsString();
                                         String title = data.get(i).getAsJsonObject().get("title").getAsString();
                                         String description = data.get(i).getAsJsonObject().get("description").getAsString();
-                                        adverts.add(new Adverts(title, description));
+                                        adverts.add(new Adverts(Uri.parse(icon), title, description));
                                     }
                                 } else {
-                                    adverts.add(new Adverts("Welcome to Route", "Adverts coming soon on this screen, please login or signup to enjoy our services."));
+                                    Uri icon = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + R.drawable.request);
+                                    adverts.add(new Adverts(icon,"Welcome to Route", "Adverts coming soon on this screen, please login or signup to enjoy our services."));
                                 }
                             } catch (Exception ex) {
                                 Log.d("ADVERTSERROR", ex.getMessage());
