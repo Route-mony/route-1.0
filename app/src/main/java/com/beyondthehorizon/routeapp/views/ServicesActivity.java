@@ -53,24 +53,21 @@ public class ServicesActivity extends AppCompatActivity {
                                     }
                                 } else {
                                     Uri icon = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + R.drawable.request);
-                                    adverts.add(new Adverts(icon,"Welcome to Route", "Adverts coming soon on this screen, please login or signup to enjoy our services."));
+                                    adverts.add(new Adverts(icon, "Welcome to Route", "Adverts coming soon on this screen, please login or signup to enjoy our services."));
                                 }
                             } catch (Exception ex) {
                                 Log.d("ADVERTSERROR", ex.getMessage());
                             }
 
-
                             CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
                             cardSliderViewPager.setAdapter(new
-
-                                    SliderAdapter(adverts));
+                                    SliderAdapter(getApplicationContext(), adverts));
                         }
                     });
         } catch (
                 Exception ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void signUP(View view) {

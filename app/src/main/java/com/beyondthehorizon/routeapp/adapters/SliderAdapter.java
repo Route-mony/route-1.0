@@ -1,27 +1,23 @@
 package com.beyondthehorizon.routeapp.adapters;
 
-import android.content.ContentResolver;
-import android.net.Uri;
+import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.models.Adverts;
+import com.bumptech.glide.Glide;
 import com.github.islamkhsh.CardSliderAdapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import pl.droidsonroids.gif.GifDrawable;
-
 public class SliderAdapter extends CardSliderAdapter<Adverts> {
-
-    public SliderAdapter(ArrayList<Adverts> movies) {
+    Context context;
+    public SliderAdapter(Context context, ArrayList<Adverts> movies) {
         super(movies);
+        this.context = context;
     }
 
     @Override
@@ -31,19 +27,8 @@ public class SliderAdapter extends CardSliderAdapter<Adverts> {
         ImageView imageView = itemContentView.findViewById(R.id.icon);
         TextView title = itemContentView.findViewById(R.id.ioTitle);
         TextView desc = itemContentView.findViewById(R.id.ioDesc);
-
-        ContentResolver contentResolver = new ContentResolver(null) {
-            @Nullable
-            @Override
-            public String[] getStreamTypes(@NonNull Uri url, @NonNull String mimeTypeFilter) {
-                return super.getStreamTypes(url, mimeTypeFilter);
-            }
-        };
-        try {
-            GifDrawable gifFromUri = new GifDrawable( contentResolver, item.getIcon_url() );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Log.d("Image", item.getIcon_url().toString());
+        Glide.with(context).asGif().load(item.getIcon_url()).into(imageView);
         title.setText(item.getTitle());
         desc.setText(item.getDescription());
 

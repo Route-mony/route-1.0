@@ -7,7 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.models.Contact
-import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER
+import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_contact.view.*
@@ -31,21 +32,6 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
         itemView.setOnClickListener {
             try {
                 prefs = context.getSharedPreferences(REG_APP_PREFERENCES, 0)
-//                requestType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString();
-//                if (requestType.compareTo(MOBILE_TRANSACTION) == 0) {
-//                    editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
-////                    editor.putString(MOBILE_TRANSACTION, "")
-//                    editor.apply()
-//                } else if(requestType.compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0){
-//                    editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY)
-//                    editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY)
-////                    editor.putString(SEND_MONEY_TO_MOBILE_MONEY, "")
-//                    editor.apply()
-//                }
-//                else{
-//                    editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY)
-//                    editor.apply()
-//                }
                 editor.putString("Id", value.id)
                 editor.putString("Username", value.name)
                 editor.putString(PHONE_NUMBER, value.contact)
