@@ -417,7 +417,7 @@
                                 android:background="@drawable/service_buttons"
                                 android:padding="16dp"
                                 android:scaleType="fitXY"
-                                app:srcCompat="@drawable/ic_airtime_greyed" />
+                                app:srcCompat="@drawable/ic_airtime"/>
 
                             <TextView
                                 android:id="@+id/txt_request24"
@@ -428,7 +428,7 @@
                                 android:fontFamily="@font/rout_book"
                                 android:text="Airtime"
                                 android:textAlignment="center"
-                                android:textColor="#BBB9B9"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="10dp" />
                         </LinearLayout>
 

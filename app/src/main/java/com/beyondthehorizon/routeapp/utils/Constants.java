@@ -59,6 +59,7 @@ public class Constants {
     public static final String OLD_CARD = "OLD_CARD";
     public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
+    public static final String BUY_AIRTIME_ACTIVITY = "BUY_AIRTIME_ACTIVITY";
     public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
     public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
 

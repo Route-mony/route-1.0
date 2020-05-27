@@ -23,6 +23,7 @@ import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
+import kotlinx.android.synthetic.main.activity_fund_amount.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 import java.security.SecureRandom
@@ -74,7 +75,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
-        parentIntent = getIntent()
+        parentIntent = intent
         childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
 //        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
         transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
@@ -175,8 +176,14 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 binding.requestType.text = "Pay From : "
                 binding.btnRequest.text = "PAY"
             }
+            else if(transactionType.compareTo(BUY_AIRTIME) == 0){
+                phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                request_title.text = phone
+                requestType.text = "Buy For: "
+                btn_request.text = "Buy Airtime"
+            }
         } catch (ex: Exception) {
-            Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
+            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
         binding.btnRequest.setOnClickListener {
             val lower = 100000000
@@ -203,7 +210,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 customer.setEmail(customerEmail)
 
                 if (binding.txtAmount.text.isNullOrEmpty()) {
-                    Toast.makeText(this, "Please enter amount to request", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
                 } else if (amount.toInt() <= 0) {
                     Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_LONG).show()
                 }
@@ -330,8 +337,26 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
+                else if(transactionType.compareTo(BUY_AIRTIME) == 0){
+                    try {
+                        val intent = Intent(this, FundRequestedActivity::class.java)
+                        var phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                        //TODO: Call the api to purchase airtime with the required parameters
+
+                        //Dummy setup
+                        var transactionMessage = "You have successfully purchased Ksh. ${amount} of airtime for ${phone}"
+                        intent.putExtra("Message", transactionMessage)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)
+                        startActivity(intent)
+                    }
+                    catch (ex:Exception){
+                        Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                    }
+
+                }
             } catch (ex: Exception) {
-                Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
+                Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
             }
             binding.arrowBack.setOnClickListener {
                 onBackPressed()

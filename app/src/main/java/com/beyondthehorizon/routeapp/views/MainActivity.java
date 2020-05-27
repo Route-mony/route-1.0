@@ -1,18 +1,14 @@
 package com.beyondthehorizon.routeapp.views;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +22,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
@@ -234,13 +231,15 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             }
         });
 
-//        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
+                airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
 //                TransactionModel airtimeModel = new TransactionModel();
 //                airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
-//            }
-//        });
+            }
+        });
 
         isLoggedIn();
     }
