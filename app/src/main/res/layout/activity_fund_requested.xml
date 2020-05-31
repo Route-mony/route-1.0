@@ -52,24 +52,43 @@
                     app:srcCompat="@drawable/ic_logo" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@drawable/card_main"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/top_nav">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/card_main"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/top_nav">
 
-                    <ImageView
-                        android:id="@+id/img_confirm"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginBottom="100dp"
-                        app:layout_constraintBottom_toTopOf="@id/btn_done"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_img_transaction_complete" />
+                <ImageView
+                    android:id="@+id/img_confirm"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginBottom="100dp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_done"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_img_transaction_complete" />
+
+                <LinearLayout
+                    android:id="@+id/txt_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="15dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_confirm">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rout_bold"
+                        android:text="Successfull"
+                        android:textAlignment="center"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/txt_request_inform"
@@ -83,41 +102,42 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/img_confirm" />
 
+                </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_done"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/round_route_button"
-                        android:paddingVertical="10dp"
-                        android:layout_marginVertical="30dp"
-                        android:paddingHorizontal="20dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Done"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/btn_new_request"
-                        app:layout_constraintStart_toStartOf="@id/txt_request_inform" />
+                <Button
+                    android:id="@+id/btn_done"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/round_route_button"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:text="Done"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_new_request"
+                    app:layout_constraintStart_toStartOf="@id/txt_layout" />
 
-                    <Button
-                        android:id="@+id/btn_new_request"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/round_route_button"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="10dp"
-                        android:layout_marginVertical="30dp"
-                        android:text="New Request"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/txt_request_inform"
-                        app:layout_constraintStart_toEndOf="@id/btn_done" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/btn_new_request"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/round_route_button"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:text="New Request"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/txt_layout"
+                    app:layout_constraintStart_toEndOf="@id/btn_done" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <!--//-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 

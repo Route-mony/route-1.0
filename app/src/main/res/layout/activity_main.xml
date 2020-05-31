@@ -377,6 +377,7 @@
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
                                 android:padding="16dp"
                                 android:scaleType="fitXY"
                                 app:srcCompat="@drawable/ic_send_to_many_greyed" />
@@ -386,11 +387,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-
                                 android:fontFamily="@font/rout_book"
                                 android:text="Send To Many"
                                 android:textAlignment="center"
-                                android:textColor="#BBB9B9"
                                 android:textSize="10dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -415,9 +414,10 @@
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
                                 android:padding="16dp"
                                 android:scaleType="fitXY"
-                                app:srcCompat="@drawable/ic_airtime"/>
+                                app:srcCompat="@drawable/ic_airtime" />
 
                             <TextView
                                 android:id="@+id/txt_request24"

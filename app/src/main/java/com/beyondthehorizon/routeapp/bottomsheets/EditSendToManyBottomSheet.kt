@@ -1,27 +1,22 @@
 package com.beyondthehorizon.routeapp.bottomsheets
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.BulkyRequestModel
+import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.utils.Constants
-import com.beyondthehorizon.routeapp.utils.Constants.*
-import com.beyondthehorizon.routeapp.views.FundAmountActivity
-import com.beyondthehorizon.routeapp.views.RequestFundsActivity
-import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.add_bulk_item_layout.view.*
-import kotlinx.android.synthetic.main.add_bulk_item_layout.view.dialogAddBtn
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.edit_sendtomany_item_layout.view.*
 
 class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
@@ -33,6 +28,37 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
         pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
+        val gson = Gson()
+        val personData = arguments?.getString("personData")
+        val itemPosition = arguments?.getString("itemPosition")
+        val editPersonData = gson.fromJson(personData, MultiContactModel::class.java)
+
+        v.username.text = editPersonData.username
+        v.contact.text = editPersonData.phone_number
+        var requestOptions = RequestOptions()
+        requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
+
+        if (editPersonData.is_route) {
+            Glide.with(context!!)
+                    .load(editPersonData.image)
+                    .centerCrop()
+                    .error(R.drawable.group416)
+                    .placeholder(R.drawable.group416)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .apply(requestOptions)
+                    .into(v.profile_image)
+        } else {
+            Glide.with(context!!)
+                    .load(editPersonData.image)
+                    .centerCrop()
+                    .error(R.drawable.default_avatar)
+                    .placeholder(R.drawable.default_avatar)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .apply(requestOptions)
+                    .into(v.profile_image)
+        }
         //login button click of custom layout
         v.dialogAddBtn.setOnClickListener {
             //dismiss dialog
@@ -55,7 +81,14 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
 //            arrayList.add(BulkyRequestModel(name, amount, quantity))
 //            arrayListJson.add(item.toString())
 
-//            mListener.editSendToManyItem(arrayList, arrayListJson)
+            mListener.editSendToManyItem(MultiContactModel(
+                    editPersonData.username,
+                    editPersonData.phone_number,
+                    editPersonData.image,
+                    addAmount,
+                    editPersonData.is_route,
+                    editPersonData.is_selected
+            ), itemPosition!!.toInt())
             dismiss()
 //            if (arrayList.size > 1) {
 ////                    val newArray = Arrays.copyOfRange(arrayList, 1, arrayList.size - 1);
@@ -88,7 +121,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
     }
 
     interface EditSendToManyBottomSheetListener {
-        fun editSendToManyItem(arrayList: ArrayList<BulkyRequestModel>, arrayListJson2: ArrayList<String>)
+        fun editSendToManyItem(updatedItem: MultiContactModel, position: Int)
     }
 
     companion object {
