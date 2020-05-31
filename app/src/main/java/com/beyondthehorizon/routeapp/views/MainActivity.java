@@ -26,6 +26,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
+import com.beyondthehorizon.routeapp.bottomsheets.SendToManyModel;
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
 import com.beyondthehorizon.routeapp.databases.NotificationCount;
 import com.beyondthehorizon.routeapp.utils.Constants;
@@ -73,14 +74,15 @@ import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
-        MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener, EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
+        MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener,
+        EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, SendToManyModel.SendToManyBottomSheetListener {
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-    private ImageButton btn_request34, btn_fav2, btn_fav3,
+    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many,
             btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 //        btn_request_fund = findViewById(R.id.btn_request);
         btn_notifications = findViewById(R.id.notifications);
         btn_buy_airtime = findViewById(R.id.btn_request24);
+        btn_send_to_many = findViewById(R.id.btn_request4);
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
         notifCount = findViewById(R.id.notifCount);
 
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
             }
         });
+
         btn_fav2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,6 +232,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 //                viewMpesaPaymentOption();
                 MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
                 mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
+            }
+        });
+
+        btn_send_to_many.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendToManyModel sendToManyModel = new SendToManyModel();
+                sendToManyModel.show(getSupportFragmentManager(), "Send To Many");
             }
         });
 
@@ -351,11 +363,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                             }
                         } else {
-                            Snackbar snackbar = Snackbar
-                                    .make(RL1, "Unable to load data ", Snackbar.LENGTH_LONG);
+                            final Snackbar snackbar = Snackbar
+                                    .make(RL1, "Unable to load data ", Snackbar.LENGTH_INDEFINITE);
                             snackbar.setAction("Try again", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    snackbar.dismiss();
                                     if (pref.getString(USER_TOKEN, "").isEmpty()) {
                                         editor.putString(LOGGED_IN, "false");
                                         editor.apply();
@@ -623,4 +636,5 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         EnterPinBottomSheet enterPinBottomSheet = new EnterPinBottomSheet();
         enterPinBottomSheet.show(getSupportFragmentManager(), "Mpesa Options");
     }
+
 }

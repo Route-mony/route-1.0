@@ -67,6 +67,8 @@
     <string name="ok">OK</string>
     <string name="del">del</string>
 
+    <string name="group_name">Group Name e.g Fundis Per Diem</string>
+
     <string name="fill_in">Please fill in all fields</string>
     <string name="pin_request">Please Set Your Security PIN</string>
     <string name="pin_request_verify">Confirm Your Security PIN</string>
@@ -98,4 +100,5 @@
     <string name="title_activity_receipt">ReceiptActivity</string>
     <string name="title_activity_request_fund">RequestFundActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_multi_contacts">MultiContactsActivity</string>
 </resources>

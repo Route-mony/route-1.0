@@ -47,7 +47,7 @@
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-<!--        <item name="android:windowIsFloating">false</item>-->
+        <!--        <item name="android:windowIsFloating">false</item>-->
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
@@ -68,6 +68,7 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
+
     <style name="TextLabel2" parent="TextAppearance.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/colorPrimary</item>

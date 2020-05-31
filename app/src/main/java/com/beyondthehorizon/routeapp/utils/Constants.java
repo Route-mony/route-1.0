@@ -8,6 +8,7 @@ import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
     public static String BASE_URL = "http://167.172.214.193/api/v1/";
+    //    public static String BASE_URL = "https://f414c9323dd1.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
@@ -62,6 +63,12 @@ public class Constants {
     public static final String BUY_AIRTIME_ACTIVITY = "BUY_AIRTIME_ACTIVITY";
     public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
     public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
+
+    public static final String MY_ROUTE_CONTACTS = "MY_ROUTE_CONTACTS";
+    public static final String MY_ROUTE_CONTACTS_NEW = "MY_ROUTE_CONTACTS_NEW";
+    public static final String MY_ALL_ROUTE_CONTACTS = "MY_ALL_ROUTE_CONTACTS";
+    public static final String MY_ALL_CONTACTS_NEW = "MY_ALL_CONTACTS_NEW";
+    public static final String MY_MULTI_CHOICE_SELECTED_CONTACTS = "MY_MULTI_CHOICE_SELECTED_CONTACTS";
 
     //firebase images
     public static final String RECEIPTS = "RECEIPTS";
@@ -163,6 +170,7 @@ public class Constants {
                 .asJsonObject();
     }
 
+    //BULK REQUEST
     public static ResponseFuture<JsonObject> bulkRequest(Context context, String token,
                                                          String from_designation,
                                                          String from_department,
@@ -172,11 +180,6 @@ public class Constants {
                                                          String to_recipient,
                                                          String items) {
         String SERVER_URL = BASE_URL + "requests/bulk/create";
-//        HashMap<String, String> payload = new HashMap<>();
-//        payload.put("from_user", from_user);
-//        payload.put("to_user", to_user);
-//        payload.put("items", items);
-
         JsonObject json = new JsonObject();
         json.addProperty("from_designation", from_designation);
         json.addProperty("from_department", from_department);
@@ -508,6 +511,21 @@ public class Constants {
         return Ion.with(context)
                 .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
+                .asJsonObject();
+    }
+
+    //REGISTERED ROUTE CONTACTS REQUEST
+    public static ResponseFuture<JsonObject> getRegisteredRouteContacts(Context context, String token,
+                                                                        String myContactsList) {
+        String SERVER_URL = BASE_URL + "users/contacts";
+        JsonObject json = new JsonObject();
+        json.addProperty("contacts", myContactsList);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
                 .asJsonObject();
     }
 }
