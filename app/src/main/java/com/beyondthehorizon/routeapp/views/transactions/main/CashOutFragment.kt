@@ -51,9 +51,6 @@ class CashOutFragment : Fragment() {
                 if (result != null) {
 
                     Log.e("HERE 11 ", result.toString())
-////                    Log.e("HERE", result.get("data").asJsonObject.get("rows").asJsonArray.toString())
-////
-//                    if (result.get("status").asString.toString().compareTo("success") == 0) {
                     if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
                         return@setCallback
                     }
