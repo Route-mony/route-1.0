@@ -59,15 +59,62 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
-                android:elevation="7dp"
+                android:elevation="3dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="7dp">
+                app:cardElevation="3dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/bulkRequestRecycler"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp" />
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/reqName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="10dp"
+                            android:text="Name"
+                            android:textColor="@color/colorButton"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/reqAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Amount"
+                            android:textColor="@color/colorButton"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:id="@+id/remove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/line73" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/bulkRequestRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/send_many_item" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -79,7 +126,7 @@
                 android:layout_marginEnd="10dp"
                 android:elevation="7dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="7dp">
+                app:cardElevation="4dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -98,11 +145,11 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/requestButton"
+                        android:id="@+id/totalAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="ksh 9,000"
+                        android:text="ksh 0.00"
                         android:textColor="#62737D"
                         android:textStyle="bold" />
                 </RelativeLayout>
