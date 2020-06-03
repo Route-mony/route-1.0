@@ -38,6 +38,8 @@ public class Constants {
     public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY";
     public static final String REQUEST_MONEY = "REQUEST_MONEY";
     public static final String SEND_MONEY = "SEND_MONEY";
+    public static final String SPLIT_BILL = "SPLIT_BILL";
+    public static final String BILL_AMOUNT = "BILL_AMOUNT";
     public static final String SEND_MONEY_TO_ROUTE = "SEND_MONEY_TO_ROUTE";
     public static final String SEND_MONEY_TO_MOBILE_MONEY = "SEND_MONEY_TO_MOBILE_MONEY";
     public static final String SEND_MONEY_TO_BANK = "SEND_MONEY_TO_BANK";
