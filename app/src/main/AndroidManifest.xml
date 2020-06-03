@@ -19,6 +19,8 @@
             android:name=".views.multicontactschoice.MultiContactsActivity"
             android:label="@string/title_activity_multi_contacts"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".views.split.bill.NewSplitBillActivity"></activity>
+        <activity android:name=".views.split.bill.SplitBillActivity" />
         <activity android:name=".views.BulkRequestActivity" />
         <activity android:name=".views.settingsactivities.ChangePinActivity" />
         <activity android:name=".views.settingsactivities.NewPasswordActivity" />
@@ -119,6 +121,9 @@
         <meta-data
             android:name="interswitch-kenya-limited.mobpay.exponent"
             android:value="010001" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <service android:name=".utils.MyFirebaseMessagingService">
             <intent-filter>

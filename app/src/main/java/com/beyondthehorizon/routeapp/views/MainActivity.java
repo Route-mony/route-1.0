@@ -37,6 +37,7 @@ import com.beyondthehorizon.routeapp.views.notifications.NotificationsActivity;
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity;
 import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity;
+import com.beyondthehorizon.routeapp.views.split.bill.SplitBillActivity;
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -82,8 +83,13 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
+<<<<<<< HEAD
     private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many,
             btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
+=======
+    private ImageButton btn_request34, btn_fav2, btn_fav3,
+            btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
+>>>>>>> Implement split bill
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
@@ -107,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_receipts = findViewById(R.id.btn_receipt);
         btn_settings = findViewById(R.id.btn_settings);
         btn_request2 = findViewById(R.id.btn_request2);
+        btn_request3 = findViewById(R.id.btn_request3);
         btn_request34 = findViewById(R.id.btn_request34);
         user_name = findViewById(R.id.user_name);
         query_text = findViewById(R.id.query_text);
@@ -243,6 +250,13 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             }
         });
 
+        btn_request3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SplitBillActivity.class);
+                startActivity(intent);
+            }
+        });
         btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

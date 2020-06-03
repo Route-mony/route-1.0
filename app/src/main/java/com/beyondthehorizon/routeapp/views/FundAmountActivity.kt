@@ -20,6 +20,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.split.bill.NewSplitBillActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
@@ -175,12 +176,14 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 binding.requestTitle.text = "${phone}"
                 binding.requestType.text = "Pay From : "
                 binding.btnRequest.text = "PAY"
-            }
-            else if(transactionType.compareTo(BUY_AIRTIME) == 0){
+            } else if (transactionType.compareTo(BUY_AIRTIME) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER)
                 request_title.text = phone
                 requestType.text = "Buy For: "
                 btn_request.text = "Buy Airtime"
+            } else if (transactionType.compareTo(SPLIT_BILL) == 0) {
+                requestType.text = "Enter bill amount "
+                btn_request.text = "Continue"
             }
         } catch (ex: Exception) {
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
@@ -336,8 +339,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     } catch (e: Exception) {
                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
-                }
-                else if(transactionType.compareTo(BUY_AIRTIME) == 0){
+                } else if (transactionType.compareTo(BUY_AIRTIME) == 0) {
                     try {
                         val intent = Intent(this, FundRequestedActivity::class.java)
                         var phone = parentIntent.getStringExtra(PHONE_NUMBER)
@@ -349,11 +351,17 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)
                         startActivity(intent)
-                    }
-                    catch (ex:Exception){
+                    } catch (ex: Exception) {
                         Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
                     }
-
+                } else if (transactionType.compareTo(SPLIT_BILL) == 0) {
+                    try {
+                        val intent = Intent(this, NewSplitBillActivity::class.java)
+                        intent.putExtra(BILL_AMOUNT, BILL_AMOUNT)
+                        startActivity(intent)
+                    } catch (ex: Exception) {
+                        Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                    }
                 }
             } catch (ex: Exception) {
                 Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()

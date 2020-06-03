@@ -446,18 +446,17 @@
                                 android:background="@drawable/service_buttons"
                                 android:padding="16dp"
                                 android:scaleType="fitXY"
-                                app:srcCompat="@drawable/ic_split_bill_greyed" />
+                                app:srcCompat="@drawable/ic_split_bill" />
 
                             <TextView
                                 android:id="@+id/txt_request3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-
                                 android:fontFamily="@font/rout_book"
                                 android:text="Split Bill"
                                 android:textAlignment="center"
-                                android:textColor="#BBB9B9"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="10dp" />
                         </LinearLayout>
 
