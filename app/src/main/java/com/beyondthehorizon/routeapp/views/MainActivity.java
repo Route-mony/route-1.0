@@ -83,13 +83,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-<<<<<<< HEAD
-    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many,
-            btn_request2, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
-=======
-    private ImageButton btn_request34, btn_fav2, btn_fav3,
-            btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
->>>>>>> Implement split bill
+    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many,btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;

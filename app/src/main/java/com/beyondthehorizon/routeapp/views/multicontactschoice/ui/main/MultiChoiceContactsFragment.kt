@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,7 +99,6 @@ class MultiChoiceContactsFragment : Fragment() {
                         recyclerView.setHasFixedSize(true)
                         contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
                         recyclerView.adapter = contactsAdapater
-                        progressBar.dialog.dismiss()
                     } else {
                         //CHECK IF WE HAVE CACHED ANY ROUTE CONTACTS FROM DB BEFORE IF NOT LOAD CONTACTS FROM BACKEND
                         loadRegisteredContacts()
@@ -131,6 +129,7 @@ class MultiChoiceContactsFragment : Fragment() {
         } catch (e: Exception) {
             Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
         }
+        progressBar.dialog.dismiss()
 
 //        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 //            override fun onQueryTextChange(newText: String): Boolean {
@@ -228,6 +227,7 @@ class MultiChoiceContactsFragment : Fragment() {
                 val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
                 myContactsList.add(MultiContactModel(
+                        "",
                         name,
                         phoneNumber,
                         "",
@@ -269,6 +269,7 @@ class MultiChoiceContactsFragment : Fragment() {
 
                             if (issueObj.getBoolean("is_route")) {
                                 contacts.add(MultiContactModel(
+                                        issueObj.get("id").toString(),
                                         issueObj.get("username").toString(),
                                         issueObj.get("phone_number").toString(),
                                         issueObj.get("image").toString(),
