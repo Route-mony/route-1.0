@@ -38,6 +38,8 @@
 
     <string name="send_cash"><![CDATA[<b><font color=#FF0000>-</font></b>]]></string>
     <string name="pay_bill">Pay Bill </string>
+    <string name="split_bill">Split Bill </string>
+    <string name="new_split_bill_activity">NewSplitBillActivity </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
     <string name="buy_goods">Buy Goods </string>

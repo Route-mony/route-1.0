@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.models.BulkyRequestModel
 import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.bumptech.glide.Glide
@@ -82,6 +81,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
 //            arrayListJson.add(item.toString())
 
             mListener.editSendToManyItem(MultiContactModel(
+                    editPersonData.id,
                     editPersonData.username,
                     editPersonData.phone_number,
                     editPersonData.image,

@@ -18,9 +18,9 @@ import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
-import com.beyondthehorizon.routeapp.views.split.bill.NewSplitBillActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
@@ -356,8 +356,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     }
                 } else if (transactionType.compareTo(SPLIT_BILL) == 0) {
                     try {
-                        val intent = Intent(this, NewSplitBillActivity::class.java)
-                        intent.putExtra(BILL_AMOUNT, BILL_AMOUNT)
+                        val intent = Intent(this, MultiContactsActivity::class.java)
+                        editor.putString(BILL_AMOUNT, amount)
+                        editor.apply()
                         startActivity(intent)
                     } catch (ex: Exception) {
                         Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()

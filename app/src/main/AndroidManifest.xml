@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize">
-        <activity android:name=".views.multicontactschoice.ui.main.SendToManyActivity"></activity>
+        <activity android:name=".views.split.bill.SplitBillsDetailsActivity"/>
+        <activity android:name=".views.multicontactschoice.ui.main.SendToManyActivity" />
         <activity
             android:name=".views.multicontactschoice.MultiContactsActivity"
             android:label="@string/title_activity_multi_contacts"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.split.bill.NewSplitBillActivity"></activity>
         <activity android:name=".views.split.bill.SplitBillActivity" />
         <activity android:name=".views.BulkRequestActivity" />
         <activity android:name=".views.settingsactivities.ChangePinActivity" />
@@ -66,7 +66,6 @@
         <activity
             android:name=".views.settingsactivities.SettingsActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".views.MpesaActivity" />
         <activity android:name=".views.MobileActivity" />
         <activity android:name=".views.CardActivity" />
         <activity android:name=".views.AddMoneyActivity" />

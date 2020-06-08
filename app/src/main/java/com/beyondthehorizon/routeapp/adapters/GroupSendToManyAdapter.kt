@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filterable
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.bottomsheets.EditSendToManyBottomSheet
 import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.google.gson.Gson
@@ -57,6 +55,7 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
         //        private val patientDoctor = view.p_doctor!!
         private val reqName = view.reqName!!
         private val reqAmount = view.reqAmount!!
+        private val reqNumber = view.reqNumber
         private val closeBtn = view.remove!!
 
         private var bulkyRequestModel: MultiContactModel? = null
@@ -77,7 +76,14 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
         fun bind(invite: MultiContactModel, position: Int) {
             reqAmount.text = NumberFormat.getNumberInstance(Locale.getDefault()).format(invite.amount.toInt())
             reqName.text = invite.username
+            reqNumber.text = invite.phone_number
             bulkyRequestModel = invite
+
+            var appContext = context.javaClass.simpleName;
+            when (appContext) {
+                "SplitBillsDetailsActivity" ->  reqNumber.visibility = View.VISIBLE
+            }
+
             pst = position
             closeBtn.setOnClickListener {
 //                val editor = sharedPref.edit()
@@ -94,7 +100,6 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
                 }
             }
         }
-
     }
 
     fun setContact(patients: ArrayList<MultiContactModel>) {

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.beyondthehorizon.routeapp.utils.Constants.MY_MULTI_CHOICE_SELECTED_CONTACTS;
 
 public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoiceContactsAdapter.ContactHolder> {
 
@@ -221,6 +218,7 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
                 itemStateArray.put(adapterPosition, true);
                 rowLayout.setBackgroundColor(Color.parseColor("#D5D9DB"));
                 chosenContacts.add(new MultiContactModel(
+                        list.get(adapterPosition).getId(),
                         list.get(adapterPosition).getUsername(),
                         list.get(adapterPosition).getPhone_number(),
                         list.get(adapterPosition).getImage(),
@@ -234,6 +232,7 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
                 itemStateArray.put(adapterPosition, false);
                 rowLayout.setBackgroundColor(Color.parseColor("#EDEEF0"));
                 chosenContacts.remove(new MultiContactModel(
+                        list.get(adapterPosition).getId(),
                         list.get(adapterPosition).getUsername(),
                         list.get(adapterPosition).getPhone_number(),
                         list.get(adapterPosition).getImage(),

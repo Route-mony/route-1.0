@@ -1,4 +1,4 @@
-package com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main
+package com.beyondthehorizon.routeapp.views.split.bill
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,27 +16,32 @@ import com.beyondthehorizon.routeapp.utils.Constants.MY_MULTI_CHOICE_SELECTED_CO
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.activity_send_to_many.*
+import kotlinx.android.synthetic.main.activity_split_bills_details.*
 import java.lang.reflect.Type
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSendToManyBottomSheetListener, GroupSendToManyAdapter.SendToManyInterface {
+class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSendToManyBottomSheetListener, GroupSendToManyAdapter.SendToManyInterface {
 
     var arrayList = ArrayList<MultiContactModel>()
     val arrayListJson = ArrayList<String>()
     lateinit var usersAdapter: GroupSendToManyAdapter
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var prefs: SharedPreferences
+    private lateinit var format: NumberFormat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_send_to_many)
+        setContentView(R.layout.activity_split_bills_details)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
+        var amount = prefs.getString(Constants.BILL_AMOUNT, "")?.let { Integer.parseInt(it) }
+        format = DecimalFormat("#,###")
+        split_amount.text = "Split: ${format.format(amount)}"
 
-        bankButton.setOnClickListener {
-            val message = "You have successfully send ${totalAmount.text.toString()} to them.(sample reply)"
+        btnSend.setOnClickListener {
+            val message = "You have successfully send ${total_amount.text.toString()} to them.(sample reply)"
             val intent = Intent(this, FundRequestedActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("Message", message)
@@ -64,7 +69,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
             }
         }
 //
-        bulkRequestRecycler.apply {
+        bill_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
         }
@@ -95,7 +100,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         for (multiContactModel: MultiContactModel in arrayList) {
             amountTotal += multiContactModel.amount.toInt()
         }
-        totalAmount.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
+        total_amount.text = "Total: ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
     }
 
     override fun updateItem(item: String, itemPosition: String) {
