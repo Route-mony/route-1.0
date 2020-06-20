@@ -10,37 +10,42 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.ReceiptDetailsBottomModel
-import com.beyondthehorizon.routeapp.models.ReceiptModel
+import com.beyondthehorizon.routeapp.models.MultiContactModel
+import com.beyondthehorizon.routeapp.models.SavedGroupItem
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main.SendToManyActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
 import kotlinx.android.synthetic.main.receipt_item.view.*
 import kotlinx.android.synthetic.main.recycvler_header.view.*
+import kotlinx.android.synthetic.main.saved_group_item.view.*
 import kotlinx.android.synthetic.main.sent_transactions.view.*
+import org.json.JSONArray
+import java.lang.reflect.Type
 
-class ReceiptAdapter(private val context: Context,
-                     private val receipt_type: String) :
+class SavedGroupsAdapter(private val context: Context) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    lateinit var listener: ReceiptInterface
-    private var listOfSentTransactions = ArrayList<ReceiptModel>()
-    private var filterListOfSentTransactions = ArrayList<ReceiptModel>()
+    private var listOfSentTransactions = ArrayList<SavedGroupItem>()
+    private var filterListOfSentTransactions = ArrayList<SavedGroupItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var layout = 0
         val viewHolder: RecyclerView.ViewHolder?
         when (viewType) {
             RECYCLER_SECTION -> {
-                layout = R.layout.receipt_item
+                layout = R.layout.saved_group_item
                 val chatView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
                 viewHolder = ViewHolder(chatView)
             }
@@ -63,7 +68,7 @@ class ReceiptAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val transactionModel: ReceiptModel = listOfSentTransactions[position]
+        val transactionModel: SavedGroupItem = listOfSentTransactions[position]
 
         val viewType = holder.itemViewType
         when (viewType) {
@@ -85,9 +90,9 @@ class ReceiptAdapter(private val context: Context,
         init {
         }
 
-        fun bind(invite: ReceiptModel) {
+        fun bind(invite: SavedGroupItem) {
             // Attach values for each item
-            recyclerHeader.text = invite.receipt_id
+            recyclerHeader.text = invite.recipients
         }
     }
 
@@ -95,14 +100,13 @@ class ReceiptAdapter(private val context: Context,
         // Holds the TextView that will add each animal to
 
         //        private val patientDoctor = view.p_doctor!!
-        private val receipt_date = view.receipt_date!!
-        private val receipt_name = view.receipt_name!!
-        private val receipt_amount = view.receipt_amount!!
-        private val receipt_desc = view.receipt_desc!!
-        private val receipt_image = view.receipt_image!!
-        private val receipt_status = view.receipt_status!!
+        private val group_name = view.group_name!!
+        private val group_status = view.group_status!!
+        private val group_amount = view.group_amount!!
+        private val imag1 = view.imag1!!
+        private val imag2 = view.imag2!!
 
-        private var receiptModel: ReceiptModel? = null
+        private var receiptModel: SavedGroupItem? = null
 
         var sharedPref: SharedPreferences =
                 context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
@@ -110,44 +114,43 @@ class ReceiptAdapter(private val context: Context,
         init {
             view.setOnClickListener {
                 val editor = sharedPref.edit()
-
-                val gson = Gson()
-                val personString = gson.toJson(receiptModel)
-                editor.putString(VISITING_HISTORY_PROFILE, personString)
-                editor.putString(TRANS_TYPE, receipt_type)
+                editor.putString(GROUP_IS_SAVED, "YES").apply()
+                editor.putString(MY_MULTI_CHOICE_SELECTED_CONTACTS, receiptModel!!.recipients)
                 editor.apply()
-                listener = context as ReceiptActivity
-                listener.onReceiptClicked(personString, receipt_type)
+                val intent = Intent(context, SendToManyActivity::class.java)
+                context.startActivity(intent)
+//                listener = context as ReceiptActivity
+//                listener.onReceiptClicked(personString, receipt_type)
 
             }
         }
 
-        fun bind(invite: ReceiptModel) {
-            receipt_date.text = invite.transaction_date
-            receipt_name.text = invite.title
-            receipt_desc.text = invite.description
-            receipt_amount.text = "Ksh ${invite.amount_spent}"
-            if (invite.status.contains("ok")) {
-                receipt_status.text = "Status: Approved"
-            } else {
-                receipt_status.text = "Status: ${invite.status}"
-            }
+        fun bind(invite: SavedGroupItem) {
+            group_name.text = invite.group_name
+            group_status.text = invite.status
+//            group_amount.text = invite.total_amount
+            group_amount.text = "Ksh ${invite.total_amount}"
+//            if (invite.status.contains("ok")) {
+//                receipt_status.text = "Status: Approved"
+//            } else {
+//                receipt_status.text = "Status: ${invite.status}"
+//            }
             receiptModel = invite
-            val img = invite.image
+//            val img = invite.image
 
-            Glide.with(context)
-                    .load(invite.image)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .placeholder(R.color.input_back)
-                    .into(receipt_image)
+//            Glide.with(context)
+//                    .load(invite.image)
+//                    .centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .skipMemoryCache(true)
+//                    .placeholder(R.color.input_back)
+//                    .into(receipt_image)
 
         }
 
     }
 
-    fun setContact(patients: ArrayList<ReceiptModel>) {
+    fun setContact(patients: ArrayList<SavedGroupItem>) {
         listOfSentTransactions = patients
         filterListOfSentTransactions = patients
 //        Log.i("HospitalsAdapter", listOfSentTransactions.size.toString())
@@ -173,16 +176,15 @@ class ReceiptAdapter(private val context: Context,
     private val filteredProvidersList = object : Filter() {
 
         override fun performFiltering(charSequence: CharSequence?): FilterResults {
-            var filteredList = java.util.ArrayList<ReceiptModel>()
+            var filteredList = java.util.ArrayList<SavedGroupItem>()
 
             if (charSequence == null || charSequence.isEmpty()) {
                 filteredList = filterListOfSentTransactions
             } else {
                 val filterPattern = charSequence.toString().toLowerCase().trim { it <= ' ' }
                 for (item in filterListOfSentTransactions) {
-                    if (item.first_name.toLowerCase().contains(filterPattern) ||
-                            item.last_name.toLowerCase().contains(filterPattern) ||
-                            item.username.toLowerCase().contains(filterPattern)
+                    if (item.group_name.toLowerCase().contains(filterPattern) ||
+                            item.total_amount.toLowerCase().contains(filterPattern)
                     ) {
                         filteredList.add(item)
                     }
@@ -194,12 +196,9 @@ class ReceiptAdapter(private val context: Context,
         }
 
         override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-            listOfSentTransactions = filterResults.values as java.util.ArrayList<ReceiptModel>
+            listOfSentTransactions = filterResults.values as java.util.ArrayList<SavedGroupItem>
             notifyDataSetChanged()
         }
     }
 
-    interface ReceiptInterface {
-        fun onReceiptClicked(receipt: String, receipt_type: String)
-    }
 }

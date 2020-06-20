@@ -7,11 +7,12 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-    public static String BASE_URL = "http://167.172.214.193/api/v1/";
-    //    public static String BASE_URL = "https://f414c9323dd1.ngrok.io/api/v1/";
+            public static String BASE_URL = "http://167.172.214.193/api/v1/";
+//    public static String BASE_URL = "https://5a7649a7b164.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
+    public static String GROUP_ITEM = "GROUP_ITEM";
     public static String TRANS_TYPE = "TRANS_TYPE";
     public static String TRANSACTION_DETAILS = "TRANSACTION_DETAILS";
     public static String SHARE_RECEIPT_TO_ID = "SHARE_RECEIPT_TO_ID";
@@ -76,6 +77,7 @@ public class Constants {
     public static final String RECEIPTS = "RECEIPTS";
     public static final String PROFILE_IMAGES = "PROFILE IMAGES";
     public static final String BALANCE_CHECK = "BALANCE_CHECK";
+    public static final String GROUP_IS_SAVED = "GROUP_IS_SAVED";
 
     public static final int RECYCLER_SECTION = 1001;
     public static final int RECYCLER_HEADER = 1002;
@@ -525,6 +527,61 @@ public class Constants {
 
         return Ion.with(context)
                 .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //SEND TO MANY REQUEST
+    public static ResponseFuture<JsonObject> sendToMany(Context context,
+                                                        String pin,
+                                                        String provider,
+                                                        String narration,
+                                                        String token,
+                                                        String sendToManyList) {
+        String SERVER_URL = BASE_URL + "wallets/send/many";
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", pin);
+        json.addProperty("provider", provider);
+        json.addProperty("narration", narration);
+        json.addProperty("recipients", sendToManyList);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //SEND TO MANY REQUEST
+    public static ResponseFuture<JsonObject> saveSendToManyGroup(Context context,
+                                                                 String token,
+                                                                 String sendToManyList,
+                                                                 String groupName) {
+        String SERVER_URL = BASE_URL + "wallets/send/many/recipients";
+        JsonObject json = new JsonObject();
+        json.addProperty("recipients", sendToManyList);
+        json.addProperty("group_name", groupName);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET TO MANY REQUEST
+    public static ResponseFuture<JsonObject> getSendToManyGroup(Context context,
+                                                                String token) {
+        String SERVER_URL = BASE_URL + "wallets/send/many/recipients/retrieve";
+        JsonObject json = new JsonObject();
+//        json.addProperty("recipients", sendToManyList);
+
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)

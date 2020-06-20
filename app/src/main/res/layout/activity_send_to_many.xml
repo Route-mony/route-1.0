@@ -157,7 +157,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/bankButton"
+                android:id="@+id/submitButton"
                 android:layout_width="139dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
