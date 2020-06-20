@@ -257,14 +257,13 @@ class MultiChoiceContactsFragment : Fragment() {
                 }
                 if (result != null) {
 //              TODO : FILTER FOR REGISTER CONTACTS AND STORE IN MY_ROUTE_CONTACTS_NEW, THE REST STORE IN MY_ALL_ROUTE_CONTACTS_NEW
-
+                    Timber.e("CHECKPROVIDER %s", result)
                     if (result.getAsJsonObject("data").get("contacts").asJsonArray.size() == 0) {
                         return@setCallback
                     }
 
                     val gsonn = Gson()
                     val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
-                    Timber.e("CHECKPROVIDER %s", jsonn)
                     if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                         for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
                             val issueObj = JSONObject(item.toString())

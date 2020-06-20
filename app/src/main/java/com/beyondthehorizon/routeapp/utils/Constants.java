@@ -7,8 +7,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-//            public static String BASE_URL = "http://167.172.214.193/api/v1/";
-    public static String BASE_URL = "https://2937bfc926c8.ngrok.io/api/v1/";
+            public static String BASE_URL = "http://167.172.214.193/api/v1/";
+//    public static String BASE_URL = "https://7d2dc56a605a.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
