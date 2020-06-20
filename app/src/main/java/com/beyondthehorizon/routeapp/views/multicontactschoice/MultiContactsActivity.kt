@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_multi_contacts.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class MultiContactsActivity : AppCompatActivity() {
-    private lateinit var prefs:SharedPreferences
+    private lateinit var prefs: SharedPreferences
     private lateinit var activity: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +58,12 @@ class MultiContactsActivity : AppCompatActivity() {
             finish()
         }
         chooseContacts.setOnClickListener {
-            activity = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY,"").toString()
-            if(activity.compareTo(SEND_MONEY) == 0){
+            activity = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
+            prefs.edit().putString(GROUP_IS_SAVED, "NO").apply()
+            if (activity.compareTo(SEND_MONEY) == 0) {
                 val intent = Intent(this@MultiContactsActivity, SendToManyActivity::class.java)
                 startActivity(intent)
-            }
-            else if(activity.compareTo(SPLIT_BILL) == 0){
+            } else if (activity.compareTo(SPLIT_BILL) == 0) {
                 val intent = Intent(this@MultiContactsActivity, SplitBillsDetailsActivity::class.java)
                 startActivity(intent)
             }

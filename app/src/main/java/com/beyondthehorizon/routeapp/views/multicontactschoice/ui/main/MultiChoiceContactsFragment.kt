@@ -34,6 +34,7 @@ import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_request_funds.*
 import org.json.JSONObject
+import timber.log.Timber
 import java.lang.reflect.Type
 
 
@@ -256,13 +257,14 @@ class MultiChoiceContactsFragment : Fragment() {
                 }
                 if (result != null) {
 //              TODO : FILTER FOR REGISTER CONTACTS AND STORE IN MY_ROUTE_CONTACTS_NEW, THE REST STORE IN MY_ALL_ROUTE_CONTACTS_NEW
-
+                    Timber.e("CHECKPROVIDER %s", result)
                     if (result.getAsJsonObject("data").get("contacts").asJsonArray.size() == 0) {
                         return@setCallback
                     }
 
                     val gsonn = Gson()
                     val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
+
                     if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                         for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
                             val issueObj = JSONObject(item.toString())

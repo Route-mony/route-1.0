@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.views.FundAmountActivity;
 import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity;
+import com.beyondthehorizon.routeapp.views.multicontactschoice.SendToManyGroupsActivity;
 import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -61,7 +62,7 @@ public class SendToManyModel extends BottomSheetDialogFragment {
         toRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MultiContactsActivity.class);
+                Intent intent = new Intent(getActivity(), SendToManyGroupsActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
                 editor.apply();
@@ -74,7 +75,7 @@ public class SendToManyModel extends BottomSheetDialogFragment {
         toMobileMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MultiContactsActivity.class);
+                Intent intent = new Intent(getActivity(), SendToManyGroupsActivity.class);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_MOBILE_MONEY);
                 editor.apply();
