@@ -132,28 +132,18 @@ class MultiChoiceContactsFragment : Fragment() {
         }
         progressBar.dialog.dismiss()
 
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                var pattern = newText.toLowerCase().toRegex()
-////                val filteredArticleList: List<MultiContactModel> = contacts.stream().filter({ article -> article.getDesArt().contains(pattern) }).collect(Collectors.toList())
-//                try {
-////                    var filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }
-////                    var adapter = MultiChoiceContactsAdapter(activity!!, filteredContacts.toMutableList())
-////                    recyclerView.layoutManager = linearLayoutManager
-////                    recyclerView.setHasFixedSize(true)
-////                    contactsAdapater = ContactsAdapater(activity!!, filteredContacts.toMutableList())
-////                    recyclerView.adapter = adapter
-//                } catch (ex: Exception) {
-//                    Toast.makeText(activity!!, ex.message, Toast.LENGTH_LONG).show()
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextSubmit(query: String): Boolean {
-//                return false
-//            }
-//        })
+        binding.contactSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String): Boolean {
+//                if (!newText.toLowerCase().trim().isEmpty()) {
+                contactsAdapater.getFilter().filter(newText)
+//                }
+                return false
+            }
+        })
         binding.swipeRefresh.setOnRefreshListener {
             loadRegisteredContacts()
         }

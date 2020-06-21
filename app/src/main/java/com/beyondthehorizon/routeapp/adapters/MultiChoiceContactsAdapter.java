@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,10 +31,11 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoiceContactsAdapter.ContactHolder> {
+public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoiceContactsAdapter.ContactHolder> implements Filterable {
 
     Context context;
     List<MultiContactModel> list;
+    List<MultiContactModel> filteredVisitorArrayList;
     List<MultiContactModel> chosenContacts = new ArrayList<>();
     SharedPreferences prefs;
     SparseBooleanArray itemStateArray = new SparseBooleanArray();
@@ -40,6 +43,7 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
     public MultiChoiceContactsAdapter(Context context, List<MultiContactModel> list) {
         this.context = context;
         this.list = list;
+        this.filteredVisitorArrayList = list;
         prefs = context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0);
         itemStateArray.clear();
     }
@@ -145,6 +149,42 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
         return list.size();
     }
 
+
+    @Override
+    public Filter getFilter() {
+        return filteredProvidersList;
+    }
+
+    private Filter filteredProvidersList = new Filter() {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<MultiContactModel> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList = filteredVisitorArrayList;
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+                for (MultiContactModel item : filteredVisitorArrayList) {
+                    if (item.getUsername().toLowerCase().contains(filterPattern) ||
+                            item.getAmount().toLowerCase().contains(filterPattern) ||
+                            item.getPhone_number().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            list = (ArrayList<MultiContactModel>) filterResults.values;
+            notifyDataSetChanged();
+        }
+    };
+
     public class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView username, single_contact;
@@ -211,7 +251,7 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
 
-            Log.e("AMADEADMAN", "bind: " + adapterPosition);
+//            Log.e("AMADEADMAN", "bind: " + adapterPosition);
 
             if (!itemStateArray.get(adapterPosition, false)) {
                 checkBox.setChecked(true);

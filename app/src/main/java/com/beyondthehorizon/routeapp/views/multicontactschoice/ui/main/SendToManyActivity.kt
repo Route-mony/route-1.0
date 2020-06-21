@@ -63,6 +63,9 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                 , "Quantity", "Quantity", "Amount", is_route = false, is_selected = false))
         usersAdapter.setContact(arrayList)
 
+        back.setOnClickListener {
+            onBackPressed()
+        }
         sendToManyFunction()
     }
 
@@ -123,7 +126,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                     progressDialog.dismiss()
                     Timber.e("HAPA Error%s", " $e  res $result")
                     if (result["status"].toString().contains("failed")) {
-                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, result["errors"].toString(), Toast.LENGTH_LONG).show()
                     } else
                         if (result["status"].toString().contains("success")) {
                             val messagetxt = result["data"].asJsonObject.get("message").asString
