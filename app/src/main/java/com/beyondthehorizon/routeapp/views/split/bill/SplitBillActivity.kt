@@ -17,7 +17,7 @@ class SplitBillActivity : AppCompatActivity() {
         setContentView(R.layout.activity_split_bill)
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
 
-        new_split_bill_btn.setOnClickListener{
+        rlNewSplitBill.setOnClickListener{
             var intent: Intent = Intent(this, FundAmountActivity::class.java)
             editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SPLIT_BILL)
             editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE)

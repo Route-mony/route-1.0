@@ -30,7 +30,7 @@
                 android:paddingVertical="2dp"
                 android:textColor="@color/colorPrimary"
                 android:maxLines="1"
-                android:textStyle="bold" />
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/reqNumber"
@@ -39,8 +39,7 @@
                 android:fontFamily="@font/rout_medium"
                 android:paddingVertical="2dp"
                 android:textColor="@color/colorPrimary"
-                android:visibility="gone"
-                android:textSize="16sp" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,8 +55,7 @@
                 android:fontFamily="@font/rout_medium"
                 android:layout_weight=".7"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimary"/>
 
             <ImageView
                 android:id="@+id/remove"

@@ -37,8 +37,10 @@
     <string name="cpass">Confirm Password</string>
 
     <string name="send_cash"><![CDATA[<b><font color=#FF0000>-</font></b>]]></string>
+    <string name="bill">Bill</string>
     <string name="pay_bill">Pay Bill </string>
     <string name="split_bill">Split Bill </string>
+    <string name="split_bill_with">Split Bill With</string>
     <string name="new_split_bill_activity">NewSplitBillActivity </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
@@ -103,4 +105,8 @@
     <string name="title_activity_request_fund">RequestFundActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_multi_contacts">MultiContactsActivity</string>
+    <string name="total">Total</string>
+    <string name="kes_0">Kes 0</string>
+    <string name="split_bills">Split Bills</string>
+    <string name="new_split_bill">New Split Bill</string>
 </resources>

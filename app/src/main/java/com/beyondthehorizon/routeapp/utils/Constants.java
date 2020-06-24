@@ -7,8 +7,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-            public static String BASE_URL = "http://167.172.214.193/api/v1/";
-//    public static String BASE_URL = "https://5a7649a7b164.ngrok.io/api/v1/";
+//            public static String BASE_URL = "http://167.172.214.193/api/v1/";
+    public static String BASE_URL = "https://2937bfc926c8.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
@@ -81,6 +81,7 @@ public class Constants {
 
     public static final int RECYCLER_SECTION = 1001;
     public static final int RECYCLER_HEADER = 1002;
+    public static final String TAG = "TAG";
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -578,13 +579,26 @@ public class Constants {
                                                                 String token) {
         String SERVER_URL = BASE_URL + "wallets/send/many/recipients/retrieve";
         JsonObject json = new JsonObject();
-//        json.addProperty("recipients", sendToManyList);
+        // json.addProperty("recipients", sendToManyList);
 
         return Ion.with(context)
                 .load("GET", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    public static ResponseFuture<JsonObject> splitBill(Context context, String recipients, String reason, String token){
+        String SERVER_URL = BASE_URL + "requests/split-bill/create";
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("recipients", recipients);
+        jsonObject.addProperty("reason",reason);
+        return  Ion.with(context)
+                .load("POST",SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(jsonObject)
                 .asJsonObject();
     }
 }

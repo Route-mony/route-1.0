@@ -31,7 +31,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
         val personData = arguments?.getString("personData")
         val itemPosition = arguments?.getString("itemPosition")
         val editPersonData = gson.fromJson(personData, MultiContactModel::class.java)
-
+        v.tvEditSendToManyTitle.text = arguments?.getString("title")
         v.username.text = editPersonData.username
         v.contact.text = editPersonData.phone_number
         var requestOptions = RequestOptions()

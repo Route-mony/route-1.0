@@ -4,11 +4,9 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.R
@@ -21,11 +19,8 @@ import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
-import kotlinx.android.synthetic.main.activity_confirm_pin.view.dialogButtonOK
 import kotlinx.android.synthetic.main.activity_send_to_many.*
 import kotlinx.android.synthetic.main.group_name_item.view.*
-import timber.log.Timber
 import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.util.*
@@ -98,6 +93,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         val bundle = Bundle()
         bundle.putString("personData", item)
         bundle.putString("itemPosition", itemPosition)
+        bundle.putString("title","Edit Beneficiary ")
         editSendToManyBottomSheet.arguments = bundle
         editSendToManyBottomSheet.show(supportFragmentManager, "Edit Contact");
     }
@@ -136,7 +132,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                                 return@setCallback
                             }
                             val mDialogView = LayoutInflater.from(this).inflate(R.layout.group_name_item, null)
-                            val mBuilder = AlertDialog.Builder(this)
+                            val mBuilder = androidx.appcompat.app.AlertDialog.Builder(this)
                                     .setView(mDialogView)
 
                             //show dialog
