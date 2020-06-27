@@ -9,16 +9,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="Today"
+            android:text="@string/today"
             android:inputType="textCapSentences"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorPrimaryLight"
+            />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/newGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="20dp"
         app:cardElevation="810dp"

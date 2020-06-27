@@ -43,6 +43,7 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
         var amount = prefs.getString(BILL_AMOUNT, "").toString().toDouble()
         format = DecimalFormat("#,###")
         tvBillAmount.text = "Kes ${format.format(amount)}"
+
         val isExistingGroup = prefs.getBoolean(EXISTING_GROUP, FALSE)
         token = "Bearer " + prefs.getString(USER_TOKEN, "")
         val gson = Gson()
@@ -126,6 +127,7 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
 //                    tvGroup.isEnabled = false
                     amountTotal = data.get("total_requested").asDouble
                     tvBillTotal.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
+                    tvBillAmount.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
                     arrayList.clear()
                     for (item in bill) {
                         val recipient = item.asJsonObject.get("recipient").asJsonObject

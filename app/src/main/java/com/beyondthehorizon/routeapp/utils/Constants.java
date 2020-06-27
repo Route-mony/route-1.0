@@ -204,15 +204,6 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
-        String SERVER_URL = BASE_URL + "requests/?limit=500&request_option=" + option;
-        return Ion.with(context)
-                .load("POST", SERVER_URL)
-                .addHeader("Content-Type", "application/json")
-                .setHeader("Authorization", token)
-                .setJsonObjectBody(json)
-                .asJsonObject();
-    }
 
     public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
         String SERVER_URL = BASE_URL + "requests/?limit=500&request_option=" + option;
