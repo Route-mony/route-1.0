@@ -79,8 +79,20 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
             reqName.text = invite.username
             reqNumber.text = invite.phone_number
             bulkyRequestModel = invite
+
+            var appContext = context.javaClass.simpleName;
+            when (appContext) {
+                "SplitBillsDetailsActivity" ->  reqNumber.visibility = View.VISIBLE
+            }
+
             pst = position
             closeBtn.setOnClickListener {
+//                val editor = sharedPref.edit()
+//                val gson = Gson()
+//                val personString = gson.toJson(bulkyRequestModel)
+//                editor.putString(TRANSACTION_DETAILS, personString)
+//                editor.apply()
+//                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
                 if (position != 0) {
                     listOfSentTransactions.removeAt(position)
                     setContact(listOfSentTransactions)

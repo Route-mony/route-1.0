@@ -8,14 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
+import com.beyondthehorizon.routeapp.bottomsheets.ReceiptDetailsBottomModel
+import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.models.SavedGroupItem
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main.SendToManyActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
+import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
+import kotlinx.android.synthetic.main.receipt_item.view.*
 import kotlinx.android.synthetic.main.recycvler_header.view.*
 import kotlinx.android.synthetic.main.saved_group_item.view.*
+import kotlinx.android.synthetic.main.sent_transactions.view.*
+import org.json.JSONArray
+import java.lang.reflect.Type
 
 class SavedGroupsAdapter(private val context: Context) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
