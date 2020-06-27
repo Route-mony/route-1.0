@@ -74,24 +74,22 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
         }
 
         fun bind(invite: MultiContactModel, position: Int) {
+            try{
             reqAmount.text = NumberFormat.getNumberInstance(Locale.getDefault()).format(invite.amount.toInt())
             reqName.text = invite.username
             reqNumber.text = invite.phone_number
             bulkyRequestModel = invite
             pst = position
             closeBtn.setOnClickListener {
-//                val editor = sharedPref.edit()
-//                val gson = Gson()
-//                val personString = gson.toJson(bulkyRequestModel)
-//                editor.putString(TRANSACTION_DETAILS, personString)
-//                editor.apply()
-//                context.startActivity(Intent(context, TransactionDetailsActivity::class.java))
                 if (position != 0) {
                     listOfSentTransactions.removeAt(position)
                     setContact(listOfSentTransactions)
                     removeOnClick(position)
                     Toast.makeText(context, "Item removed successfully", Toast.LENGTH_LONG).show()
                 }
+            }}
+            catch (ex:Exception){
+                Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
             }
         }
     }

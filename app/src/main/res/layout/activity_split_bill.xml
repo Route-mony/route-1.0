@@ -27,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:onClick="prevPage"
                 app:layout_constraintBottom_toBottomOf="@id/logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/logo"
@@ -97,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginVertical="10dp"
                 android:text="@string/split_bills"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorButton" />
@@ -105,7 +105,8 @@
                 android:id="@+id/groupsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                tools:listitem="@layout/saved_group_item"/>
         </LinearLayout>
     </LinearLayout>
 </layout>

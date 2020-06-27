@@ -7,8 +7,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-            public static String BASE_URL = "http://167.172.214.193/api/v1/";
-//    public static String BASE_URL = "https://7d2dc56a605a.ngrok.io/api/v1/";
+    public static String BASE_URL = "http://167.172.214.193/api/v1/";
+    //    public static String BASE_URL = "https://7d2dc56a605a.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
@@ -78,6 +78,8 @@ public class Constants {
     public static final String PROFILE_IMAGES = "PROFILE IMAGES";
     public static final String BALANCE_CHECK = "BALANCE_CHECK";
     public static final String GROUP_IS_SAVED = "GROUP_IS_SAVED";
+    public static final String GROUP_ID = "GROUP_NAME";
+    public static final String EXISTING_GROUP = "EXISTING_GROUP";
 
     public static final int RECYCLER_SECTION = 1001;
     public static final int RECYCLER_HEADER = 1002;
@@ -589,16 +591,42 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> splitBill(Context context, String recipients, String reason, String token){
+    //CREATE SPLIT BILL
+    public static ResponseFuture<JsonObject> splitBill(Context context, String recipients, String reason, String token) {
         String SERVER_URL = BASE_URL + "requests/split-bill/create";
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("recipients", recipients);
-        jsonObject.addProperty("reason",reason);
-        return  Ion.with(context)
-                .load("POST",SERVER_URL)
+        jsonObject.addProperty("reason", reason);
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
                 .setJsonObjectBody(jsonObject)
                 .asJsonObject();
     }
+
+    //GET SPLIT BILLS
+    public static ResponseFuture<JsonObject> getSplitBillGroups(Context context, String type, String token) {
+        String SERVER_URL = BASE_URL + "requests/split-bill/list?request_option=" + type;
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET SPLIT BILL BY ID
+    public static ResponseFuture<JsonObject> getSplitBill(Context context, String id, String token) {
+        String SERVER_URL = BASE_URL + "requests/split-bill/"+id;
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
 }
