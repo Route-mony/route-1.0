@@ -110,4 +110,5 @@
     <string name="split_bills">Split Bills</string>
     <string name="new_split_bill">New Split Bill</string>
     <string name="today">Today</string>
+    <string name="verify_email">Verify your email!</string>
 </resources>

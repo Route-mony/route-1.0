@@ -362,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                                 if (!email_verified) {
                                     verify_email.setVisibility(View.VISIBLE);
+                                    verify_email.setText(R.string.verify_email);
                                 } else {
                                     verify_email.setVisibility(View.GONE);
                                 }
