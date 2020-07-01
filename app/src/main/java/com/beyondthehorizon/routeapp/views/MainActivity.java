@@ -376,7 +376,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 if (is_pin_set.contains("False")) {
                                     setPin();
                                 }
-
                             }
                         } else {
                             final Snackbar snackbar = Snackbar
