@@ -12,7 +12,7 @@ import com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main.FavoriteM
 import com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main.MultiChoiceContactsFragment
 import com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main.SendToManyActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
-import com.beyondthehorizon.routeapp.views.receipt.ui.main.RequestFundSectionsPagerAdapter
+import com.beyondthehorizon.routeapp.views.requestfunds.ui.main.RequestFundSectionsPagerAdapter
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.split.bill.SplitBillsDetailsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity

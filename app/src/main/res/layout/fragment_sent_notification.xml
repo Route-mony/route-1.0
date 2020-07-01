@@ -16,6 +16,7 @@
         tools:context=".views.NotificationActivity">
 
         <androidx.recyclerview.widget.RecyclerView
+            tools:listitem="@layout/row_notification"
             android:id="@+id/notifications_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

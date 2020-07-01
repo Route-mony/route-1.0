@@ -1,11 +1,9 @@
-package com.beyondthehorizon.routeapp.views.receipt.ui.main
+package com.beyondthehorizon.routeapp.views.requestfunds.ui.main
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import java.util.ArrayList
+import java.util.*
 
 
 class RequestFundSectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {

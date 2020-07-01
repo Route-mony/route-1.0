@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -86,6 +87,11 @@ class ApproveRequestActivity : AppCompatActivity() {
             binding.statusIcon.setImageResource(statusIcon)
 
             binding.status.setTextColor(Color.parseColor(color[statusIcon]))
+
+            if(status != "Pending"){
+                binding.btnApprove.visibility = View.GONE
+                binding.btnReject.visibility = View.GONE
+            }
 
         } catch (ex: Exception) {
             Log.d("TAG", ex.message)

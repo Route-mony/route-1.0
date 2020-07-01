@@ -2,14 +2,14 @@ package com.beyondthehorizon.routeapp.views.notifications
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.notifications.ui.main.ReceivedNotificationFragment
 import com.beyondthehorizon.routeapp.views.notifications.ui.main.SentNotificationFragment
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
-import com.beyondthehorizon.routeapp.views.receipt.ui.main.RequestFundSectionsPagerAdapter
+import com.beyondthehorizon.routeapp.views.requestfunds.ui.main.RequestFundSectionsPagerAdapter
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_request_fund.*
