@@ -28,6 +28,7 @@ class MobileActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+
         btn_transactions.setOnClickListener {
             val intent = Intent(this@MobileActivity, TransactionsActivity::class.java)
             startActivity(intent)
