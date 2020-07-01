@@ -13,45 +13,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Send payment to :"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:text="Send money "
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp">
 
             <LinearLayout
                 android:id="@+id/toRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/group416" />
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    app:srcCompat="@drawable/ic_route_it" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="2"
                     android:text="Route"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -63,6 +67,12 @@
                     app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0.5dp"-->
+            <!--                android:layout_margin="3dp"-->
+            <!--                android:background="@color/colorPrimaryLight" />-->
+
             <LinearLayout
                 android:id="@+id/toMobileMoney"
                 android:layout_width="match_parent"
@@ -70,15 +80,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/group791" />
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    app:srcCompat="@drawable/ic_mobile_money" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="2"
                     android:text="Mobile Money"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -90,6 +100,12 @@
                     app:srcCompat="@drawable/ic_chevron_right" />
             </LinearLayout>
 
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="0.5dp"-->
+            <!--                android:layout_margin="3dp"-->
+            <!--                android:background="@color/colorPrimaryLight" />-->
+
             <LinearLayout
                 android:id="@+id/toBank"
                 android:layout_width="match_parent"
@@ -97,15 +113,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/group790" />
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    app:srcCompat="@drawable/ic_bank" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="2"
                     android:text="Bank"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -127,21 +143,28 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/enter_mobile_number"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <RelativeLayout
             android:id="@+id/rlSearch"
@@ -195,28 +218,34 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <View
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boxbg" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/enter_bank_account"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton"
             android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryLight" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0.5dp"-->
+        <!--            android:background="@color/colorPrimaryLight" />-->
 
         <RelativeLayout
             android:id="@+id/bankR1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp">
 
@@ -228,9 +257,9 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/lb_50_sp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/group524" />
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    app:srcCompat="@drawable/ic_credit_card_2" />
 
                 <EditText
                     android:id="@+id/accountNumber"
@@ -253,17 +282,59 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/lb_50_sp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:src="@drawable/group790" />
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_bank" />
 
-                <Spinner
-                    android:id="@+id/chooseBank"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center_vertical" />
+                    android:layout_marginTop="30dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/findBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionHint="Select a Bank"
+                        android:completionThreshold="1"
+                        android:dropDownAnchor="@id/text_view_countries"
+                        android:hint="Select Bank"
+                        android:inputType="textCapCharacters" />
+
+                    <TextView
+                        android:id="@+id/text_view_countries"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_height"
+                    app:srcCompat="@drawable/ic_credit_card_2" />
+
+                <EditText
+                    android:id="@+id/amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:hint="Amount eg 500"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:textColor="#000"
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
         </RelativeLayout>
 

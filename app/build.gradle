@@ -73,7 +73,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
     implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
-
+    //kommunicate
+    implementation 'io.kommunicate.sdk:kommunicateui:1.9.6'
     //NETWORK CALL
     implementation 'com.koushikdutta.ion:ion:2.2.1'
 
@@ -93,6 +94,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Dependency for gif image
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

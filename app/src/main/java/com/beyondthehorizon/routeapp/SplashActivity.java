@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.beyondthehorizon.routeapp.views.MainActivity;
-import com.beyondthehorizon.routeapp.views.NotificationActivity;
 import com.beyondthehorizon.routeapp.views.ServicesActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetSecurityInfo;
 import com.firebase.ui.auth.AuthUI;
@@ -28,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
 
     private SharedPreferences pref;
+    private ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,15 @@ public class SplashActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        logo = findViewById(R.id.logo);
 
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         final String isLoggedIn = pref.getString(LOGGED_IN, "false");
+        Animation animFadeIn, animFadeOut;
+        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+        logo.startAnimation(animFadeOut);
+        logo.startAnimation(animFadeIn);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -52,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }, 500);
+        }, 3000);
     }
 
     void checkPhoneAuth() {

@@ -14,8 +14,13 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityApproveRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER
+import com.beyondthehorizon.routeapp.views.notifications.NotificationsActivity
+import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
+import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
+import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
+import kotlinx.android.synthetic.main.nav_bar_layout.*
 import kotlinx.android.synthetic.main.row_notification.view.*
 import java.lang.Exception
 
@@ -29,6 +34,29 @@ class ApproveRequestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_approve_request)
+
+        btn_home.setOnClickListener {
+            val intent = Intent(this@ApproveRequestActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+        btn_transactions.setOnClickListener {
+            val intent = Intent(this@ApproveRequestActivity, TransactionsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        btn_receipt.setOnClickListener {
+            val intent = Intent(this@ApproveRequestActivity, ReceiptActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        btn_settings.setOnClickListener {
+            val intent = Intent(this@ApproveRequestActivity, SettingsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         pref = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         oldIntent = getIntent()
 
@@ -167,7 +195,7 @@ class ApproveRequestActivity : AppCompatActivity() {
         }
 
         binding.arrowBack.setOnClickListener {
-            startActivity(Intent(applicationContext, NotificationActivity::class.java))
+            startActivity(Intent(applicationContext, NotificationsActivity::class.java))
         }
     }
 }

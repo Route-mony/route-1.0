@@ -5,7 +5,7 @@
     android:id="@+id/RL1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F0EFEF"
+    android:background="@drawable/card_main"
     android:fillViewport="true">
 
     <LinearLayout
@@ -18,21 +18,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp">
 
             <ImageView
                 android:id="@+id/profile_pic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
                 android:scaleType="fitXY"
-                android:src="@drawable/profile_pic"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -40,10 +43,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@string/font_family_medium"
+                    android:fontFamily="@font/rout_bold"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textSize="18dp"
                     app:layout_constraintLeft_toRightOf="@id/profile_pic"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,11 +54,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@string/font_family_regular"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/rout_light"
                     android:text="What would you like to do today?"
                     android:textColor="@color/colorAccent"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:id="@+id/verify_email"
@@ -67,7 +69,8 @@
                     android:background="@drawable/email_valid_background"
                     android:padding="3dp"
                     android:textColor="@color/colorAccent"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <RelativeLayout
@@ -79,18 +82,19 @@
                     android:id="@+id/notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/group707" />
+                    app:srcCompat="@drawable/ic_notification_icon" />
 
                 <TextView
+                    android:id="@+id/notifCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-8dp"
                     android:layout_toEndOf="@+id/notifications"
                     android:background="@drawable/notification_circle"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:textColor="#fff"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -114,7 +118,7 @@
                     android:id="@+id/balance_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@string/font_family_medium"
+                    android:fontFamily="@font/rout_light"
                     android:text="Route Balance"
                     android:textColor="@color/colorAccent"
                     android:textSize="10sp"
@@ -125,8 +129,9 @@
                     android:id="@+id/balance_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@string/font_family_light"
+                    android:fontFamily="@font/rout_bold"
                     android:text="KES 0"
+
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -135,12 +140,14 @@
 
                 <Button
                     android:id="@+id/add_money_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="38dp"
                     android:background="@drawable/route_button"
+                    android:fontFamily="@font/rout_book"
                     android:padding="3dp"
                     android:text=" + ADD MONEY "
                     android:textColor="@color/colorAccent"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -161,16 +168,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="32dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/rout_bold"
                         android:text="Quick access"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/colorAccent"
+                        android:textSize="12dp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -180,8 +188,9 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:paddingStart="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="20dp">
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="3dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -192,22 +201,24 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav1"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group779" />
+                            android:padding="13dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_request" />
 
                         <TextView
                             android:id="@+id/txt_fav1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:fontFamily="@string/font_family_medium"
+                            android:fontFamily="@font/rout_book"
                             android:text="Request"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -219,22 +230,24 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav2"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group492" />
+                            android:padding="15dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_route_it_it" />
 
                         <TextView
                             android:id="@+id/txt_fav2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:fontFamily="@string/font_family_medium"
+                            android:fontFamily="@font/rout_book"
                             android:text="Route it"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -246,22 +259,24 @@
 
                         <ImageButton
                             android:id="@+id/btn_fav3"
-                            android:layout_width="@dimen/item_round_size"
-                            android:layout_height="@dimen/item_round_size"
+                            android:layout_width="@dimen/item_top_round_size"
+                            android:layout_height="@dimen/item_top_round_size"
                             android:background="@drawable/service_buttons"
                             android:elevation="3dp"
-                            app:srcCompat="@drawable/ic_group492" />
+                            android:padding="13dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_receipts" />
 
                         <TextView
                             android:id="@+id/txt_fav3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:fontFamily="@string/font_family_medium"
+                            android:fontFamily="@font/rout_book"
                             android:text="Receipts"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -276,75 +291,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="32dp"
-                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/rout_bold"
                             android:text="Services"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textSize="12dp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:padding="20dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
-                                android:id="@+id/btn_request"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
-                                app:srcCompat="@drawable/ic_group779" />
-
-                            <TextView
-                                android:id="@+id/txt_request"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Request"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
-                                android:id="@+id/btn_request2"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:elevation="3dp"
-                                app:srcCompat="@drawable/ic_group491" />
-
-                            <TextView
-                                android:id="@+id/txt_request2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Paybill"
-                                android:textAlignment="center"
-                                android:textSize="12sp" />
-                        </LinearLayout>
+                        android:layout_margin="20dp"
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -362,14 +327,70 @@
                                 app:srcCompat="@drawable/ic_group492" />
 
                             <TextView
+                                android:id="@+id/txt_request"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:fontFamily="@font/rout_book"
+                                android:text="Send"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="10dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/btn_request2"
+                                android:layout_width="@dimen/item_round_size"
+                                android:layout_height="@dimen/item_round_size"
+                                android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
+                                android:textColor="@color/colorPrimary"
+                                app:srcCompat="@drawable/ic_group491" />
+
+                            <TextView
+                                android:id="@+id/txt_request2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:fontFamily="@font/rout_book"
+                                android:text="Paybill"
+                                android:textAlignment="center"
+                                android:textSize="10dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/btn_request4"
+                                android:layout_width="@dimen/item_round_size"
+                                android:layout_height="@dimen/item_round_size"
+                                android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_send_to_many_greyed" />
+
+                            <TextView
                                 android:id="@+id/txt_request34"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Send"
+                                android:fontFamily="@font/rout_book"
+                                android:text="Send To Many"
                                 android:textAlignment="center"
-                                android:textSize="12sp" />
+                                android:textSize="10dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -389,49 +410,26 @@
                             android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request4"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-                                app:srcCompat="@drawable/ic_group776" />
-
-                            <TextView
-                                android:id="@+id/txt_request32"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Send To Many"
-                                android:textAlignment="center"
-                                android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
                                 android:id="@+id/btn_request24"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group777" />
+                                android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_airtime" />
 
                             <TextView
                                 android:id="@+id/txt_request24"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
+
+                                android:fontFamily="@font/rout_book"
                                 android:text="Airtime"
                                 android:textAlignment="center"
-                                android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="10dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -445,30 +443,22 @@
                                 android:id="@+id/btn_request3"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group778" />
+                                android:background="@drawable/service_buttons"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_split_bill" />
 
                             <TextView
                                 android:id="@+id/txt_request3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
+                                android:fontFamily="@font/rout_book"
                                 android:text="Split Bill"
                                 android:textAlignment="center"
-                                android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="10dp" />
                         </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -481,21 +471,33 @@
                                 android:id="@+id/btn_request54"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_faded_buttons"
-
-                                app:srcCompat="@drawable/ic_group782" />
+                                android:background="@drawable/service_buttons"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_utilities_greyed" />
 
                             <TextView
                                 android:id="@+id/txt_request35"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-                                android:fontFamily="@string/font_family_medium"
-                                android:text="Receipts"
+
+                                android:fontFamily="@font/rout_book"
+                                android:text="Utilities"
                                 android:textAlignment="center"
                                 android:textColor="#BBB9B9"
-                                android:textSize="12sp" />
+                                android:textSize="10dp" />
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
 
                         <LinearLayout
                             android:layout_width="0dp"

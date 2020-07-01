@@ -5,6 +5,8 @@
     android:id="@+id/R11"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginRight="-8dp"
+    android:layout_marginBottom="-8dp"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".views.auth.LoginActivity">
@@ -43,12 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
-                android:fontFamily="@string/main_font_style"
+                android:fontFamily="@font/rout_bold"
                 android:padding="10dp"
                 android:text="Forgot Password? "
                 android:textColor="@color/colorAccent"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
@@ -57,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@string/main_font_style"
+            android:fontFamily="@font/rout_bold"
             android:text="Log in"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
@@ -69,10 +70,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:fontFamily="@font/rout_medium"
+            android:paddingLeft="3dp"
             android:text="@string/lbl_email"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/user_name" />
 
         <EditText
@@ -83,7 +87,6 @@
             android:backgroundTint="@color/colorAccent"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:paddingLeft="0dp"
             android:textColor="@color/colorAccent"
             android:textColorHint="#33FFFFFF"
             android:textSize="14sp"
@@ -94,6 +97,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:fontFamily="@font/rout_medium"
+            android:paddingLeft="3dp"
             android:text="@string/lbl_password"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
@@ -113,7 +118,6 @@
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorAccent"
                 android:inputType="textPassword"
-                android:paddingLeft="0dp"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="#33FFFFFF"
                 android:textSize="14sp"
@@ -132,7 +136,6 @@
             app:srcCompat="@drawable/ic_chevron_right" />
 
     </LinearLayout>
-
 
     <ImageView
         android:id="@+id/globe"

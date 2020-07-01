@@ -7,10 +7,12 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
 public class Constants {
-    public static String BASE_URL = "http://167.172.214.193/api/v1/";
+    public static String BASE_URL = "https://route-api.com/api/v1/";
+    //    public static String BASE_URL = "https://7d2dc56a605a.ngrok.io/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
     public static String REG_APP_PREFERENCES = "profilePref";
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
+    public static String GROUP_ITEM = "GROUP_ITEM";
     public static String TRANS_TYPE = "TRANS_TYPE";
     public static String TRANSACTION_DETAILS = "TRANSACTION_DETAILS";
     public static String SHARE_RECEIPT_TO_ID = "SHARE_RECEIPT_TO_ID";
@@ -27,6 +29,7 @@ public class Constants {
     public static final String ID_NUMBER = "ID_NUMBER";
     public static final String USER_EMAIL = "EMAIL";
     public static final String USER_ID = "USER_ID";
+    public static final String UNIQUE_ID = "UNIQUE_ID";
 
     public static final String MyPhoneNumber = "MyPhoneNumber";
     public static final String USER_PASSWORD = "USER_PASSWORD";
@@ -36,6 +39,8 @@ public class Constants {
     public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY";
     public static final String REQUEST_MONEY = "REQUEST_MONEY";
     public static final String SEND_MONEY = "SEND_MONEY";
+    public static final String SPLIT_BILL = "SPLIT_BILL";
+    public static final String BILL_AMOUNT = "BILL_AMOUNT";
     public static final String SEND_MONEY_TO_ROUTE = "SEND_MONEY_TO_ROUTE";
     public static final String SEND_MONEY_TO_MOBILE_MONEY = "SEND_MONEY_TO_MOBILE_MONEY";
     public static final String SEND_MONEY_TO_BANK = "SEND_MONEY_TO_BANK";
@@ -58,6 +63,27 @@ public class Constants {
     public static final String OLD_CARD = "OLD_CARD";
     public static final String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     public static final String ADD_MONEY_ACTIVITY = "ADD_MONEY_ACTIVITY";
+    public static final String BUY_AIRTIME_ACTIVITY = "BUY_AIRTIME_ACTIVITY";
+    public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
+    public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
+
+    public static final String MY_ROUTE_CONTACTS = "MY_ROUTE_CONTACTS";
+    public static final String MY_ROUTE_CONTACTS_NEW = "MY_ROUTE_CONTACTS_NEW";
+    public static final String MY_ALL_ROUTE_CONTACTS = "MY_ALL_ROUTE_CONTACTS";
+    public static final String MY_ALL_CONTACTS_NEW = "MY_ALL_CONTACTS_NEW";
+    public static final String MY_MULTI_CHOICE_SELECTED_CONTACTS = "MY_MULTI_CHOICE_SELECTED_CONTACTS";
+
+    //firebase images
+    public static final String RECEIPTS = "RECEIPTS";
+    public static final String PROFILE_IMAGES = "PROFILE IMAGES";
+    public static final String BALANCE_CHECK = "BALANCE_CHECK";
+    public static final String GROUP_IS_SAVED = "GROUP_IS_SAVED";
+    public static final String GROUP_ID = "GROUP_NAME";
+    public static final String EXISTING_GROUP = "EXISTING_GROUP";
+
+    public static final int RECYCLER_SECTION = 1001;
+    public static final int RECYCLER_HEADER = 1002;
+    public static final String TAG = "TAG";
 
     public static ResponseFuture<JsonObject> sendSignInRequest(Context context, String first_name, String last_name,
                                                                String surname, String username, String password, String id_number,
@@ -151,9 +177,36 @@ public class Constants {
                 .asJsonObject();
     }
 
-    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
-        String SERVER_URL = BASE_URL + "requests/?request_option=" + option;
+    //BULK REQUEST
+    public static ResponseFuture<JsonObject> bulkRequest(Context context, String token,
+                                                         String from_designation,
+                                                         String from_department,
+                                                         String from_project_title,
+                                                         String to_designation,
+                                                         String to_department,
+                                                         String to_recipient,
+                                                         String items) {
+        String SERVER_URL = BASE_URL + "requests/bulk/create";
+        JsonObject json = new JsonObject();
+        json.addProperty("from_designation", from_designation);
+        json.addProperty("from_department", from_department);
+        json.addProperty("from_project_title", from_project_title);
+        json.addProperty("to_designation", to_designation);
+        json.addProperty("to_department", to_department);
+        json.addProperty("to_recipient", to_recipient);
+        json.addProperty("items", items);
 
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+
+    public static ResponseFuture<JsonObject> getFundRequests(Context context, String option, String token) {
+        String SERVER_URL = BASE_URL + "requests/?limit=500&request_option=" + option;
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
@@ -287,6 +340,20 @@ public class Constants {
                 .asJsonObject();
     }
 
+    //UPDATE USER PROFILE IMAGE
+    public static ResponseFuture<JsonObject> updateUserProfileImage(Context context, String token,
+                                                                    String image) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("image", image);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
     //GET STATEMENT
     public static ResponseFuture<JsonObject> getUserStatement(Context context, String token, String transaction_type) {
 
@@ -377,4 +444,190 @@ public class Constants {
                 .setJsonObjectBody(json)
                 .asJsonObject();
     }
+
+    //PASSWORD CHANGE
+    public static ResponseFuture<JsonObject> changePassword(Context context, String new_password, String old_password, String token) {
+        String SERVER_URL = BASE_URL + "users/password-change";
+        JsonObject json = new JsonObject();
+        json.addProperty("new_password", new_password);
+        json.addProperty("previous_password", old_password);
+
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //PIN CHANGE
+    public static ResponseFuture<JsonObject> changePin(Context context, String new_pin, String token) {
+        String SERVER_URL = BASE_URL + "users/pin";
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", new_pin);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //RESET PASSWORD
+    public static ResponseFuture<JsonObject> resetPassword(Context context, String email) {
+        String SERVER_URL = BASE_URL + "users/password-reset-otp";
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //OTP VERIFY
+    public static ResponseFuture<JsonObject> otpVerify(Context context, String email, String otp) {
+        String SERVER_URL = BASE_URL + "users/password-otp-verify";
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        json.addProperty("one_time_password", otp);
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //UPDATE PASSWORD
+    public static ResponseFuture<JsonObject> updatePassword(Context context, String password,
+                                                            String token) {
+        String SERVER_URL = BASE_URL + "users/profile";
+        JsonObject json = new JsonObject();
+        json.addProperty("password", password);
+        return Ion.with(context)
+                .load("PATCH", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET ADVERTS
+    public static ResponseFuture<JsonObject> getAdverts(Context context) {
+
+        String SERVER_URL = BASE_URL + "advert/list/all";
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .asJsonObject();
+    }
+
+    //REGISTERED ROUTE CONTACTS REQUEST
+    public static ResponseFuture<JsonObject> getRegisteredRouteContacts(Context context, String token,
+                                                                        String myContactsList) {
+        String SERVER_URL = BASE_URL + "users/contacts";
+        JsonObject json = new JsonObject();
+        json.addProperty("contacts", myContactsList);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //SEND TO MANY REQUEST
+    public static ResponseFuture<JsonObject> sendToMany(Context context,
+                                                        String pin,
+                                                        String provider,
+                                                        String narration,
+                                                        String token,
+                                                        String sendToManyList) {
+        String SERVER_URL = BASE_URL + "wallets/send/many";
+        JsonObject json = new JsonObject();
+        json.addProperty("pin", pin);
+        json.addProperty("provider", provider);
+        json.addProperty("narration", narration);
+        json.addProperty("recipients", sendToManyList);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //SEND TO MANY REQUEST
+    public static ResponseFuture<JsonObject> saveSendToManyGroup(Context context,
+                                                                 String token,
+                                                                 String sendToManyList,
+                                                                 String groupName) {
+        String SERVER_URL = BASE_URL + "wallets/send/many/recipients";
+        JsonObject json = new JsonObject();
+        json.addProperty("recipients", sendToManyList);
+        json.addProperty("group_name", groupName);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET TO MANY REQUEST
+    public static ResponseFuture<JsonObject> getSendToManyGroup(Context context,
+                                                                String token) {
+        String SERVER_URL = BASE_URL + "wallets/send/many/recipients/retrieve";
+        JsonObject json = new JsonObject();
+        // json.addProperty("recipients", sendToManyList);
+
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //CREATE SPLIT BILL
+    public static ResponseFuture<JsonObject> splitBill(Context context, String recipients, String reason, String token) {
+        String SERVER_URL = BASE_URL + "requests/split-bill/create";
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("recipients", recipients);
+        jsonObject.addProperty("reason", reason);
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(jsonObject)
+                .asJsonObject();
+    }
+
+    //GET SPLIT BILLS
+    public static ResponseFuture<JsonObject> getSplitBillGroups(Context context, String type, String token) {
+        String SERVER_URL = BASE_URL + "requests/split-bill/list?request_option=" + type;
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //GET SPLIT BILL BY ID
+    public static ResponseFuture<JsonObject> getSplitBill(Context context, String id, String token) {
+        String SERVER_URL = BASE_URL + "requests/split-bill/"+id;
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
 }

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">RouteApp</string>
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
@@ -7,6 +7,7 @@
     <string name="lbl_user_name">username</string>
     <string name="lbl_last_name">Last name</string>
     <string name="lbl_email">Email</string>
+    <string name="lbl_otp">OTP</string>
     <string name="lbl_phone">Phone number</string>
     <string name="lbl_id_number">ID/PP number</string>
     <string name="lbl_password">Password</string>
@@ -35,14 +36,19 @@
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
 
-    <string name="pay_bill">Pay Bill : </string>
+    <string name="send_cash"><![CDATA[<b><font color=#FF0000>-</font></b>]]></string>
+    <string name="bill">Bill</string>
+    <string name="pay_bill">Pay Bill </string>
+    <string name="split_bill">Split Bill </string>
+    <string name="split_bill_with">Split Bill With</string>
+    <string name="new_split_bill_activity">NewSplitBillActivity </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
-    <string name="buy_goods">Buy Goods : </string>
-    <string name="enter_business_number">Enter Business Number : </string>
-    <string name="enter_account_number">Enter Account Number : </string>
-    <string name="enter_mobile_number">Enter Mobile Number : </string>
-    <string name="enter_bank_account">Enter Bank Account :</string>
+    <string name="buy_goods">Buy Goods </string>
+    <string name="enter_business_number">Enter Business Number </string>
+    <string name="enter_account_number">Enter Account Number </string>
+    <string name="enter_mobile_number">Enter Mobile Number </string>
+    <string name="enter_bank_account">Enter Bank Account </string>
 
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -65,6 +71,8 @@
     <string name="ok">OK</string>
     <string name="del">del</string>
 
+    <string name="group_name">Group Name e.g Fundis Per Diem</string>
+
     <string name="fill_in">Please fill in all fields</string>
     <string name="pin_request">Please Set Your Security PIN</string>
     <string name="pin_request_verify">Confirm Your Security PIN</string>
@@ -75,11 +83,16 @@
         \n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.\n\nSections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
     </string>
     <string name="terms_of_service">Terms Of Service</string>
+    <string name="period_of_service">Choose Period</string>
     <string name="pass_and_pin">Password and PIN</string>
     <string name="change_password">Change Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
+    <string name="change_pin">Change Pin</string>
+    <string name="confirm_new_pin">Confirm New Pin</string>
+    <string name="new_pin">New Pin</string>
+    <string name="current_pin">Current Pin</string>
     <string name="reset_your_transaction_pin">Reset your transaction pin</string>
     <string name="invite_friend">Invite a friend</string>
     <string name="get_cash_gifts">Get cash gifts</string>
@@ -89,5 +102,13 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="title_activity_receipt">ReceiptActivity</string>
-
+    <string name="title_activity_request_fund">RequestFundActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_multi_contacts">MultiContactsActivity</string>
+    <string name="total">Total</string>
+    <string name="kes_0">Kes 0</string>
+    <string name="split_bills">Split Bills</string>
+    <string name="new_split_bill">New Split Bill</string>
+    <string name="today">Today</string>
+    <string name="verify_email">Verify your email!</string>
 </resources>

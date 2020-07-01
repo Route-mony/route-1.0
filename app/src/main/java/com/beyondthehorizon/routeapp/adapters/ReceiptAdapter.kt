@@ -15,33 +15,43 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.ReceiptDetailsBottomModel
 import com.beyondthehorizon.routeapp.models.ReceiptModel
 import com.beyondthehorizon.routeapp.utils.Constants
-import com.beyondthehorizon.routeapp.utils.Constants.TRANS_TYPE
-import com.beyondthehorizon.routeapp.utils.Constants.VISITING_HISTORY_PROFILE
+import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionDetailsActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.userName
 import kotlinx.android.synthetic.main.receipt_item.view.*
+import kotlinx.android.synthetic.main.recycvler_header.view.*
 import kotlinx.android.synthetic.main.sent_transactions.view.*
 
 class ReceiptAdapter(private val context: Context,
                      private val receipt_type: String) :
-        RecyclerView.Adapter<ReceiptAdapter.ViewHolder>(), Filterable {
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     lateinit var listener: ReceiptInterface
     private var listOfSentTransactions = ArrayList<ReceiptModel>()
     private var filterListOfSentTransactions = ArrayList<ReceiptModel>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-                LayoutInflater.from(context).inflate(
-                        R.layout.receipt_item,
-                        parent,
-                        false
-                )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        var layout = 0
+        val viewHolder: RecyclerView.ViewHolder?
+        when (viewType) {
+            RECYCLER_SECTION -> {
+                layout = R.layout.receipt_item
+                val chatView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+                viewHolder = ViewHolder(chatView)
+            }
+            RECYCLER_HEADER -> {
+                layout = R.layout.recycvler_header
+                val videoView = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+                viewHolder = ShowHeaderHolder(videoView)
+            }
+            else -> viewHolder = null
+        }
+        return viewHolder!!
     }
 
     override fun getItemCount(): Int {
@@ -52,9 +62,33 @@ class ReceiptAdapter(private val context: Context,
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val transactionModel: ReceiptModel = listOfSentTransactions[position]
-        holder.bind(transactionModel)
+
+        val viewType = holder.itemViewType
+        when (viewType) {
+            RECYCLER_SECTION -> {
+                val section = transactionModel
+                (holder as ViewHolder).bind(section)
+            }
+            RECYCLER_HEADER -> {
+                val header = transactionModel
+                (holder as ShowHeaderHolder).bind(header)
+            }
+        }
+    }
+
+    inner class ShowHeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val recyclerHeader = itemView.recyclerHeader!!
+
+        init {
+        }
+
+        fun bind(invite: ReceiptModel) {
+            // Attach values for each item
+            recyclerHeader.text = invite.receipt_id
+        }
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -89,7 +123,7 @@ class ReceiptAdapter(private val context: Context,
         }
 
         fun bind(invite: ReceiptModel) {
-            receipt_date.text = invite.created_at
+            receipt_date.text = invite.transaction_date
             receipt_name.text = invite.title
             receipt_desc.text = invite.description
             receipt_amount.text = "Ksh ${invite.amount_spent}"
@@ -104,6 +138,8 @@ class ReceiptAdapter(private val context: Context,
             Glide.with(context)
                     .load(invite.image)
                     .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.color.input_back)
                     .into(receipt_image)
 
@@ -119,6 +155,15 @@ class ReceiptAdapter(private val context: Context,
 
     fun clearList() {
         listOfSentTransactions.clear()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (listOfSentTransactions[position].view_type.compareTo(RECYCLER_SECTION) == 0) {
+            return RECYCLER_SECTION
+        } else if (listOfSentTransactions[position].view_type.compareTo(RECYCLER_HEADER) == 0) {
+            return RECYCLER_HEADER
+        }
+        return -1
     }
 
     override fun getFilter(): Filter {

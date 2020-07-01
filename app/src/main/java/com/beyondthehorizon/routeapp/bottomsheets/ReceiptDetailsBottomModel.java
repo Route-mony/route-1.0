@@ -27,6 +27,7 @@ import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.FundAmountActivity;
 import com.beyondthehorizon.routeapp.views.RequestFundsActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -54,6 +55,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private LinearLayout attachment;
+    private View L1;
 
     @Nullable
     @Override
@@ -65,6 +67,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         TextView title = v.findViewById(R.id.title);
         TextView title1 = v.findViewById(R.id.title1);
         attachment = v.findViewById(R.id.attachment);
+        L1 = v.findViewById(R.id.L1);
         TextView receipt_date = v.findViewById(R.id.receipt_date);
         TextView receipt_amount = v.findViewById(R.id.receipt_amount);
         TextView receipt_desc = v.findViewById(R.id.receipt_desc);
@@ -73,6 +76,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         final Button btnOk = v.findViewById(R.id.btnOk);
         TextView receipt_status = v.findViewById(R.id.receipt_status);
         final ImageView receipt_image = v.findViewById(R.id.receipt_image);
+        LinearLayout buttonsLayout = v.findViewById(R.id.buttonsLayout);
 
         Gson gson = new Gson();
         final ReceiptModel receiptModel = gson.fromJson(pref.getString(Constants.VISITING_HISTORY_PROFILE, ""),
@@ -82,10 +86,14 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         if (img.trim().isEmpty()) {
             receipt_image.setVisibility(View.GONE);
             attachment.setVisibility(View.GONE);
+            L1.setVisibility(View.GONE);
         } else {
             receipt_attach.setText("Image Attached");
         }
 
+        if (receiptModel.getType().contains("sent")) {
+            buttonsLayout.setVisibility(View.GONE);
+        }
         attachment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +113,8 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 Glide.with(getActivity())
                         .load(receiptModel.getImage())
                         .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .placeholder(R.color.input_back)
                         .into(myImage11);
 
@@ -135,12 +145,12 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                 btnOk.setText("Ok");
                 btnCancel.setVisibility(View.GONE);
             } else {
-                btnCancel.setText("Delete");
+                btnCancel.setText("Reject");
                 btnOk.setText("Approve");
             }
         } else if (pref.getString(Constants.TRANS_TYPE, "").compareTo("SentReceiptFragment") == 0) {
-            btnCancel.setText("Delete");
-            btnOk.setText("Ok");
+            btnCancel.setText("Reject");
+            btnOk.setText("Approve");
         }
 
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +184,7 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnCancel.getText().toString().contains("Delete" +
+                if (btnCancel.getText().toString().contains("Reject" +
                         "")) {
 
                     if (receiptModel.getStatus().compareTo("pending") != 0) {
@@ -219,9 +229,10 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                     .setCallback(new FutureCallback<JsonObject>() {
                                         @Override
                                         public void onCompleted(Exception e, JsonObject result) {
+//                                            Log.e(TAG, "onCompleted: "+result.toString() );
                                             progressDialog.dismiss();
                                             if (result.get("status").getAsString().contains("success")) {
-                                                Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_LONG).show();
                                                 alertDialog.dismiss();
                                                 dismiss();
                                             } else {

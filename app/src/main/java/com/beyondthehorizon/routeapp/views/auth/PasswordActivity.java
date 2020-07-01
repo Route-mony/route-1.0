@@ -1,7 +1,5 @@
 package com.beyondthehorizon.routeapp.views.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.views.SignupVerifiedActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.views.SignupVerifiedActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -125,6 +125,9 @@ public class PasswordActivity extends AppCompatActivity {
                                     theError += "\nId number already exist.";
                                 } else if (result.get("errors").toString().contains("phone_number")) {
                                     theError += "\nPhone number already exist.";
+
+                                } else if (result.get("errors").toString().contains("surname")) {
+                                    theError += "\nInvalid surname e.g avoid using special characters or numbers";
                                 }
                                 Snackbar snackbar = Snackbar
                                         .make(R11, theError, Snackbar.LENGTH_LONG);
