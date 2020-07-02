@@ -51,7 +51,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="@string/group_name"/>
+                android:hint="@string/group_name" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -66,8 +66,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                         android:id="@+id/bulkRequestRecycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/send_many_item"/>
+                        tools:listitem="@layout/send_many_item" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -177,5 +177,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_add_bulky" />
 </RelativeLayout>

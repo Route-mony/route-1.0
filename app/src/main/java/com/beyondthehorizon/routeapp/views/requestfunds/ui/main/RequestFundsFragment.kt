@@ -411,7 +411,7 @@ class RequestFundsFragment : Fragment() {
         InternetCheck(object : InternetCheck.Consumer {
             override fun accept(internet: Boolean?) {
 
-                if (!(internet!!)) {
+                if (!internet!!) {
                     progressBar.dialog.dismiss()
                     // Initialize a new instance of
                     val builder = AlertDialog.Builder(requireContext())
@@ -438,7 +438,9 @@ class RequestFundsFragment : Fragment() {
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
             Constants.loadUserContacts(activity!!, token).setCallback { e, result ->
+
                 if (result != null) {
+                    progressBar.dialog.dismiss()
                     if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
                             || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
 
@@ -475,6 +477,9 @@ class RequestFundsFragment : Fragment() {
                         }
                     }
 
+                } else {
+                    progressBar.dialog.dismiss()
+                    Toast.makeText(activity!!, "Error Loading contacts", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: Exception) {
@@ -522,9 +527,9 @@ class RequestFundsFragment : Fragment() {
     private fun mapRouteContactsToList(result: JsonArray) {
         loadPhoneContacts()
 
+        progressBar.dialog.dismiss()
         if (result != null) {
 
-            progressBar.dialog.dismiss()
             for (item: JsonElement in result) {
                 var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
                 var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
@@ -549,8 +554,12 @@ class RequestFundsFragment : Fragment() {
                 }
             }
         } else {
+
+            progressBar.dialog.dismiss()
             Log.d("ContactResponse", "No contacts registered on route")
         }
+
+        progressBar.dialog.dismiss()
         contacts = routeContactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)

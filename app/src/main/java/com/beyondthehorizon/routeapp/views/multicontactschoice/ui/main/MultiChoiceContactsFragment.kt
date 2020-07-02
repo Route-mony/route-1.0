@@ -1,6 +1,7 @@
 package com.beyondthehorizon.routeapp.views.multicontactschoice.ui.main
 
 import android.Manifest
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -60,7 +61,7 @@ class MultiChoiceContactsFragment : Fragment() {
     private lateinit var mobileNumber: String
     private var REQUEST_READ_CONTACTS = 79
     private lateinit var token: String
-    val progressBar = CustomProgressBar()
+    lateinit var progressBar: ProgressDialog
 
     //    private lateinit var context: Context
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +77,8 @@ class MultiChoiceContactsFragment : Fragment() {
         editor = prefs.edit()
         parentIntent = activity!!.intent
         childIntent = Intent(activity!!, ConfirmFundRequestActivity::class.java)
-        progressBar.show(activity!!, "Loading contact...")
+        progressBar = ProgressDialog(activity)
+        progressBar.setMessage("Loading contact...")
 
         var transactionMessage = ""
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
@@ -96,6 +98,7 @@ class MultiChoiceContactsFragment : Fragment() {
                         val string = prefs.getString(MY_ROUTE_CONTACTS_NEW, "")
                         val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
                         contacts = gson.fromJson(string, type)
+                        progressBar.dismiss()
                         recyclerView.layoutManager = linearLayoutManager
                         recyclerView.setHasFixedSize(true)
                         contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
@@ -117,7 +120,7 @@ class MultiChoiceContactsFragment : Fragment() {
                         recyclerView.setHasFixedSize(true)
                         contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
                         recyclerView.adapter = contactsAdapater
-                        progressBar.dialog.dismiss()
+                        progressBar.dismiss()
                     } else {
                         //CHECK IF WE HAVE CACHED ANY  CONTACTS FROM DB BEFORE IF NOT LOAD CONTACTS FROM BACKEND
                         loadRegisteredContacts()
@@ -130,7 +133,6 @@ class MultiChoiceContactsFragment : Fragment() {
         } catch (e: Exception) {
             Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
         }
-        progressBar.dialog.dismiss()
 
         binding.contactSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -187,7 +189,7 @@ class MultiChoiceContactsFragment : Fragment() {
                 override fun accept(internet: Boolean?) {
 
                     if (!(internet!!)) {
-                        progressBar.dialog.dismiss()
+                        progressBar.dismiss()
                         // Initialize a new instance of
                         val builder = AlertDialog.Builder(requireContext())
                         builder.setTitle("No Connection")
@@ -233,7 +235,7 @@ class MultiChoiceContactsFragment : Fragment() {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
             Constants.getRegisteredRouteContacts(activity!!, token, json).setCallback { e, result ->
-                progressBar.dialog.dismiss()
+                progressBar.dismiss()
                 binding.swipeRefresh.isRefreshing = false
                 if (e != null) {
                     val snackbar = Snackbar
@@ -254,6 +256,8 @@ class MultiChoiceContactsFragment : Fragment() {
 
                     val gsonn = Gson()
                     val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
+                    editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
+                    editor.apply()
                     if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                         for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
                             val issueObj = JSONObject(item.toString())

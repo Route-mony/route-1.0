@@ -86,7 +86,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rout_bold"
-                        android:text="Successfull"
+                        android:text="Successful"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -130,7 +130,7 @@
                     android:background="@drawable/round_route_button"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp"
-                    android:text="New Request"
+                    android:text="Send Again"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
