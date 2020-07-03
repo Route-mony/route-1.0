@@ -7,10 +7,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
+import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityApproveRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER
@@ -22,14 +24,21 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 import kotlinx.android.synthetic.main.row_notification.view.*
-import java.lang.Exception
 
-class ApproveRequestActivity : AppCompatActivity() {
+class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
     private lateinit var binding: ActivityApproveRequestBinding
-    private lateinit var confirmationPin: String
     private lateinit var cancellation_reason: String
     private lateinit var pref: SharedPreferences
     private lateinit var oldIntent: Intent
+    private lateinit var id: String
+    private lateinit var currentUserId: String
+    private lateinit var username: String
+    private lateinit var phone: String
+    private lateinit var reason: String
+    private lateinit var amount: String
+    private lateinit var status: String
+    private lateinit var provider: String
+    private lateinit var cancellationStatus: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,17 +69,17 @@ class ApproveRequestActivity : AppCompatActivity() {
         pref = applicationContext.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         oldIntent = getIntent()
 
-        var intent = Intent(this, RequestConfirmedActivity::class.java)
-        var id = oldIntent.getStringExtra("Id")
-        var currentUserId = pref.getString(ID_NUMBER, "")
-        var username = oldIntent.getStringExtra("Username")
-        var phone = oldIntent.getStringExtra("Phone")
-        var reason = oldIntent.getStringExtra("Reason")
-        var amount = oldIntent.getStringExtra("Amount")
-        var status = oldIntent.getStringExtra("Status")
+        intent = Intent(this, RequestConfirmedActivity::class.java)
+        id = oldIntent.getStringExtra("Id")!!
+        currentUserId = pref.getString(ID_NUMBER, "").toString()
+        username = oldIntent.getStringExtra("Username")!!
+        phone = oldIntent.getStringExtra("Phone")!!
+        reason = oldIntent.getStringExtra("Reason")!!
+        amount = oldIntent.getStringExtra("Amount")!!
+        status = oldIntent.getStringExtra("Status")!!
         var statusIcon = oldIntent.getIntExtra("StatusIcon", R.drawable.ic_pending)
-        var provider = "ROUTEWALLET"
-        var cancellationStatus = "CANCELLED"
+        provider = "ROUTEWALLET"
+        cancellationStatus = "CANCELLED"
         var color = mapOf(
                 R.drawable.ic_approved to "#16AA05",
                 R.drawable.ic_rejected to "#AA4204",
@@ -85,6 +94,11 @@ class ApproveRequestActivity : AppCompatActivity() {
             binding.status.text = status
             binding.statusIcon.setImageResource(statusIcon)
 
+            if (status != "Pending") {
+                binding.btnReject.visibility = View.GONE
+                binding.btnApprove.visibility = View.GONE
+            }
+
             binding.status.setTextColor(Color.parseColor(color[statusIcon]))
 
         } catch (ex: Exception) {
@@ -92,58 +106,8 @@ class ApproveRequestActivity : AppCompatActivity() {
         }
 
         binding.btnApprove.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.activity_confirm_pin, null)
-            val mBuilder = AlertDialog.Builder(this)
-                    .setView(mDialogView)
-                    .setTitle("Confirm your secret PIN")
-
-            //show dialog
-            val mAlertDialog = mBuilder.show()
-            mAlertDialog.setCancelable(false)
-
-            mDialogView.dialogButtonOK.setOnClickListener {
-
-                //get pin text from EditTexts of custom layout and set if to main layout
-                confirmationPin = mDialogView.pin.text.toString().trim()
-
-                if (mDialogView.pin.text.isEmpty()) {
-                    mDialogView.pin.error = "Enter PIN"
-                    mDialogView.pin.requestFocus()
-                } else {
-                    //dismiss dialog
-                    mAlertDialog.dismiss()
-                    try {
-                        val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
-                        val progressDialog = ProgressDialog(this@ApproveRequestActivity)
-                        progressDialog.setMessage("please wait...")
-                        progressDialog.setCanceledOnTouchOutside(false)
-                        progressDialog.show()
-                        Constants.verifyPin(this, confirmationPin, token).setCallback { e, result ->
-                            if (result != null) {
-                                if (result.asJsonObject.get("status").asString == "success") {
-                                    Constants.approveFundRequests(this, id, confirmationPin, reason, provider, token).setCallback { e, result ->
-                                        progressDialog.dismiss()
-                                        if (result != null) {
-                                            if (result.asJsonObject.get("status").asString == "success") {
-                                                intent.putExtra("Message", "Your approval for $username request of Ksh. $amount for $reason is being processed. You will be notified after the processing is done.")
-                                                startActivity(intent)
-                                            } else {
-                                                Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
-                                            }
-                                        } else {
-                                            Snackbar.make(binding.notificationsView, "Unable to process your request, please try again later", Snackbar.LENGTH_LONG).show()
-                                        }
-                                    }
-                                } else {
-                                    Snackbar.make(binding.notificationsView, "Incorrect pin provided", Snackbar.LENGTH_LONG).show()
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.d("TAG", e.message)
-                    }
-                }
-            }
+            val enterPinBottomSheet = EnterPinBottomSheet()
+            enterPinBottomSheet.show(supportFragmentManager, "Approve Request")
         }
 
         binding.btnReject.setOnClickListener {
@@ -196,6 +160,39 @@ class ApproveRequestActivity : AppCompatActivity() {
 
         binding.arrowBack.setOnClickListener {
             startActivity(Intent(applicationContext, NotificationsActivity::class.java))
+        }
+    }
+
+    override fun enterPinDialog(pin: String) {
+        try {
+            val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
+            val progressDialog = ProgressDialog(this@ApproveRequestActivity)
+            progressDialog.setMessage("please wait...")
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+            Constants.verifyPin(this, pin, token).setCallback { e, result ->
+                progressDialog.dismiss()
+                if (result != null) {
+                    if (result.asJsonObject.get("status").asString == "success") {
+                        Constants.approveFundRequests(this, id, pin, reason, provider, token).setCallback { e, result ->
+                            if (result != null) {
+                                if (result.asJsonObject.get("status").asString == "success") {
+                                    intent.putExtra("Message", "Your approval for $username request of Ksh. $amount for $reason is being processed. You will be notified after the processing is done.")
+                                    startActivity(intent)
+                                } else {
+                                    Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
+                                }
+                            } else {
+                                Snackbar.make(binding.notificationsView, "Unable to process your request, please try again later", Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                    } else {
+                        Snackbar.make(binding.notificationsView, "Incorrect pin provided", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("TAG", e.message)
         }
     }
 }

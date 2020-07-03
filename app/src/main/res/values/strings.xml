@@ -111,4 +111,6 @@
     <string name="new_split_bill">New Split Bill</string>
     <string name="today">Today</string>
     <string name="verify_email">Verify your email!</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_pin">Enter pin</string>
 </resources>

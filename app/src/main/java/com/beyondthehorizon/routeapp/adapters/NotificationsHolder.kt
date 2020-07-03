@@ -2,20 +2,14 @@ package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER
-import com.beyondthehorizon.routeapp.views.FundAmountActivity
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.row_contact.view.*
-import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.ApproveRequestActivity
 import com.beyondthehorizon.routeapp.views.RequestReminderActivity
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 
@@ -70,6 +64,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 intent.putExtra("Amount", amount)
                 intent.putExtra("Status", status)
                 intent.putExtra("StatusIcon", statusIcon)
+                intent.putExtra("Phone", phone)
                 context.startActivity(intent)
             }
             catch (ex: Exception){

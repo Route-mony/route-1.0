@@ -7,36 +7,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.routeapp.R;
-import com.beyondthehorizon.routeapp.views.FundAmountActivity;
-import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity;
 import com.beyondthehorizon.routeapp.views.multicontactschoice.SendToManyGroupsActivity;
-import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
-import static com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_BANK;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
 import static com.beyondthehorizon.routeapp.utils.Constants.SEND_MONEY_TO_ROUTE;
 

@@ -3,9 +3,10 @@ package com.beyondthehorizon.routeapp.views
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityRequestReminderBinding
@@ -14,7 +15,6 @@ import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import java.lang.Exception
 
 class RequestReminderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestReminderBinding
@@ -73,6 +73,11 @@ class RequestReminderActivity : AppCompatActivity() {
             binding.statusIcon.setImageResource(statusIcon)
 
             binding.status.setTextColor(Color.parseColor(color[statusIcon]))
+
+            if (status != "Pending") {
+                binding.requestTitle.text = "Request"
+                binding.btnRemind.visibility = View.GONE
+            }
 
         } catch (ex: Exception) {
             Log.d("TAG", ex.message)

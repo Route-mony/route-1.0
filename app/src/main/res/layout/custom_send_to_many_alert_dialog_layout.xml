@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!--  SEND PAYMENT  /-->
-    <LinearLayout
+    <!--  SEND PAYMENT  /-->    <LinearLayout
         android:id="@+id/sendLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
