@@ -113,4 +113,6 @@
     <string name="verify_email">Verify your email!</string>
     <string name="confirm">Confirm</string>
     <string name="enter_pin">Enter pin</string>
+    <string name="enter_reason">Enter reason</string>
+    <string name="enter_your_reason">Enter your reason</string>
 </resources>

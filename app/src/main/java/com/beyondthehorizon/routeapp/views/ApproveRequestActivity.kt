@@ -6,13 +6,12 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
+import com.beyondthehorizon.routeapp.bottomsheets.EnterReasonBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityApproveRequestBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER
@@ -21,13 +20,10 @@ import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import kotlinx.android.synthetic.main.row_notification.view.*
 
-class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
+class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, EnterReasonBottomSheet.EnterReasonBottomSheetListener {
     private lateinit var binding: ActivityApproveRequestBinding
-    private lateinit var cancellation_reason: String
     private lateinit var pref: SharedPreferences
     private lateinit var oldIntent: Intent
     private lateinit var id: String
@@ -39,10 +35,13 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
     private lateinit var status: String
     private lateinit var provider: String
     private lateinit var cancellationStatus: String
+    private lateinit var progressDialog: ProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_approve_request)
+        progressDialog = ProgressDialog(this)
 
         btn_home.setOnClickListener {
             val intent = Intent(this@ApproveRequestActivity, MainActivity::class.java)
@@ -111,51 +110,8 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
         }
 
         binding.btnReject.setOnClickListener {
-            try {
-                val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
-                val progressDialog = ProgressDialog(this@ApproveRequestActivity)
-                val mDialogView = LayoutInflater.from(this).inflate(R.layout.custom_input_message, null)
-                val mBuilder = AlertDialog.Builder(this)
-                        .setView(mDialogView)
-                        .setTitle("Enter Reason")
-
-                //show dialog
-                val mAlertDialog = mBuilder.show()
-                mAlertDialog.setCancelable(false)
-
-                mDialogView.dialogButtonOK.setOnClickListener {
-
-                    //get reason for rejecting fund request
-                    cancellation_reason = mDialogView.message.text.toString().trim()
-
-                    if (mDialogView.message.text.isEmpty()) {
-                        mDialogView.message.error = "Enter reason"
-                        mDialogView.message.requestFocus()
-                    } else {
-                        //dismiss dialog
-                        mAlertDialog.dismiss()
-                        progressDialog.setMessage("please wait...")
-                        progressDialog.setCanceledOnTouchOutside(false)
-                        progressDialog.show()
-                        Constants.rejectFundRequests(this, id, currentUserId, cancellationStatus, cancellation_reason, token).setCallback { e, result ->
-                            progressDialog.dismiss()
-                            if (result != null) {
-                                if (result.asJsonObject.get("status").asString == "success") {
-                                    intent.putExtra("Message", "You have rejected $username request of Ksh. $amount for $reason")
-                                    startActivity(intent)
-                                } else {
-                                    Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
-                                }
-                            } else {
-                                Snackbar.make(binding.notificationsView, "An error has occurred, please try again later", Snackbar.LENGTH_LONG).show()
-                            }
-
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("TAG", e.message)
-            }
+            val enterReasonBottomSheet = EnterReasonBottomSheet()
+            enterReasonBottomSheet.show(supportFragmentManager, "Reject Reason")
         }
 
         binding.arrowBack.setOnClickListener {
@@ -166,7 +122,6 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
     override fun enterPinDialog(pin: String) {
         try {
             val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
-            val progressDialog = ProgressDialog(this@ApproveRequestActivity)
             progressDialog.setMessage("please wait...")
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
@@ -190,6 +145,29 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                         Snackbar.make(binding.notificationsView, "Incorrect pin provided", Snackbar.LENGTH_LONG).show()
                     }
                 }
+            }
+        } catch (e: Exception) {
+            Log.d("TAG", e.message)
+        }
+    }
+
+    override fun enterReasonDialog(reason: String) {
+        try {
+            val token = "Bearer " + pref.getString(Constants.USER_TOKEN, "")
+            progressDialog.show()
+            Constants.rejectFundRequests(this, id, currentUserId, cancellationStatus, reason, token).setCallback { e, result ->
+                progressDialog.dismiss()
+                if (result != null) {
+                    if (result.asJsonObject.get("status").asString == "success") {
+                        intent.putExtra("Message", "You have rejected $username request of Ksh. $amount for $reason")
+                        startActivity(intent)
+                    } else {
+                        Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
+                    }
+                } else {
+                    Snackbar.make(binding.notificationsView, "An error has occurred, please try again later", Snackbar.LENGTH_LONG).show()
+                }
+
             }
         } catch (e: Exception) {
             Log.d("TAG", e.message)

@@ -108,7 +108,7 @@ class RequestFundsFragment : Fragment() {
             } else {
                 requestPermission();
             }
-
+            progressBar.dialog.dismiss()
         } catch (e: Exception) {
             Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
         }
@@ -126,6 +126,7 @@ class RequestFundsFragment : Fragment() {
                 } catch (ex: Exception) {
                     Toast.makeText(activity!!, ex.message, Toast.LENGTH_LONG).show()
                 }
+                progressBar.dialog.dismiss()
                 return false
             }
 
@@ -142,6 +143,7 @@ class RequestFundsFragment : Fragment() {
 
 
     private fun requestPermission() {
+        progressBar.dialog.dismiss()
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_CONTACTS)) {
             // show UI part if you want here to show some rationale !!!
         } else {
@@ -156,6 +158,7 @@ class RequestFundsFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        progressBar.dialog.dismiss()
         when (requestCode) {
             REQUEST_READ_CONTACTS -> {
 
@@ -181,9 +184,11 @@ class RequestFundsFragment : Fragment() {
                 var cleanedPhoneNumber = phoneNumber.replace("-", "").replace(" ", "").replaceBefore("7", "0")
                 var id = phoneNumber.hashCode().toString()
                 contactMap.put(cleanedPhoneNumber, Contact(id, name, phoneNumber))
+                progressBar.dialog.dismiss()
             }
         } catch (e: Exception) {
             Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            progressBar.dialog.dismiss()
         }
     }
 
@@ -192,7 +197,6 @@ class RequestFundsFragment : Fragment() {
             override fun accept(internet: Boolean?) {
 
                 if (!internet!!) {
-                    progressBar.dialog.dismiss()
                     // Initialize a new instance of
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle("No Connection")
@@ -272,7 +276,6 @@ class RequestFundsFragment : Fragment() {
         loadPhoneContacts()
 
         if (result != null) {
-            progressBar.dialog.dismiss()
             for (item: JsonElement in result) {
                 var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
                 var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
@@ -307,7 +310,6 @@ class RequestFundsFragment : Fragment() {
     private fun mapRouteContactsToList(result: JsonArray) {
         loadPhoneContacts()
 
-        progressBar.dialog.dismiss()
         if (result != null) {
 
             for (item: JsonElement in result) {
@@ -335,11 +337,9 @@ class RequestFundsFragment : Fragment() {
             }
         } else {
 
-            progressBar.dialog.dismiss()
             Log.d("ContactResponse", "No contacts registered on route")
         }
 
-        progressBar.dialog.dismiss()
         contacts = routeContactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
@@ -353,76 +353,4 @@ class RequestFundsFragment : Fragment() {
         editor.apply()
 
     }
-
-
-//    private fun showSendMoneyDialog() {
-//        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-//        val viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
-//
-//        //then we will inflate the custom alert dialog xml that we created
-//        val dialogView = LayoutInflater.from(activity!!).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false)
-//        //Now we need an AlertDialog.Builder object
-//        val builder = AlertDialog.Builder(activity!!)
-//        //setting the view of the builder to our custom view that we already inflated
-//        builder.setView(dialogView)
-//        //finally creating the alert dialog and displaying it
-//        val alertDialog = builder.create()
-//        alertDialog.show()
-//
-//        // val pin: String = enterPin.text.toString()
-//        var account = ""
-//        var provider = ""
-//
-//        dialogView.dialogButtonPin.setOnClickListener {
-//
-//            val pin: String = dialogView.enterPin.text.toString()
-//            if (pin.isEmpty()) {
-//                Toast.makeText(activity!!, "Enter pin", Toast.LENGTH_LONG).show()
-//                return@setOnClickListener
-//            }
-//            when {
-//                prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(Constants.SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-////                    account = parentIntent.getStringExtra(PHONE_NUMBER)
-//                    account = prefs.getString(Constants.PHONE_NUMBER, "").toString()
-//                    provider = "MPESA WALLET"
-//                }
-//                prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(Constants.SEND_MONEY_TO_BANK) == 0 -> {
-//                    account = prefs.getString("bankAcNumber", "").toString()
-//                    provider = prefs.getString("chosenBank", "").toString()
-//                }
-//                prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(Constants.SEND_MONEY_TO_ROUTE) == 0 -> {
-//                    account = prefs.getString("walletAccountNumber", "").toString()
-//                    provider = "ROUTEWALLET"
-//                }
-//            }
-//
-//            Log.e("FundAmountActivity", "$account P $provider")
-//            if (account.isEmpty()) {
-//                Toast.makeText(activity!!, "User not registered or haven't verified their email", Toast.LENGTH_LONG).show()
-//                return@setOnClickListener
-//            }
-//
-//            val progressBar = CustomProgressBar()
-//            progressBar.show(activity!!, "Please Wait...")
-//            Constants.sendMoney(activity!!, account, binding.txtAmount.text.toString(), pin, token, provider, "Payment")
-//                    .setCallback { e, result ->
-//                        Log.e("FundAmountActivity", result.toString())
-//                        progressBar.dialog.dismiss()
-//                        if (result.has("errors")) {
-//                            Toast.makeText(activity!!, result.get("errors").asString, Toast.LENGTH_LONG).show()
-//                        } else {
-//                            editor.putString("Amount", binding.txtAmount.text.toString())
-//                            editor.apply()
-//                            val message = result.get("data").asJsonObject.get("message").asString
-//                            val intent = Intent(activity!!, FundRequestedActivity::class.java)
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-//                            intent.putExtra("Message", message)
-//                            startActivity(intent)
-//                            alertDialog.dismiss()
-//                            activity!!.finish()
-//                        }
-//                    }
-//        }
-//    }
-
 }
