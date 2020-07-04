@@ -4,16 +4,14 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.adapters.GroupSendToManyAdapter
 import com.beyondthehorizon.routeapp.bottomsheets.EditSendToManyBottomSheet
+import com.beyondthehorizon.routeapp.bottomsheets.EnterGroupBottomSheet
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.utils.Constants
@@ -21,10 +19,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.activity_confirm_pin.view.*
-import kotlinx.android.synthetic.main.activity_confirm_pin.view.dialogButtonOK
 import kotlinx.android.synthetic.main.activity_send_to_many.*
-import kotlinx.android.synthetic.main.group_name_item.view.*
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.text.NumberFormat
@@ -32,18 +27,23 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSendToManyBottomSheetListener, GroupSendToManyAdapter.SendToManyInterface,
-        EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
+        EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, EnterGroupBottomSheet.EnterGroupNameBottomSheetListener {
 
     var arrayList = ArrayList<MultiContactModel>()
     val arrayListJson = ArrayList<String>()
     lateinit var usersAdapter: GroupSendToManyAdapter
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var prefs: SharedPreferences
+    private lateinit var progressDialog: ProgressDialog
+    private lateinit var token:String
+    private lateinit var jsonn: String
+    private lateinit var messagetxt: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_to_many)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
+        progressDialog = ProgressDialog(this)
 
         submitButton.setOnClickListener {
             val enterPinBottomSheet = EnterPinBottomSheet()
@@ -107,7 +107,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
     }
 
     override fun enterPinDialog(pin: String) {
-        val progressDialog = ProgressDialog(this)
         progressDialog.setMessage("please wait...")
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.show()
@@ -118,7 +117,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         } else {
             "MPESA PAYBILL"
         }
-        val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+        token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
         val gsonn = Gson()
         val jsonn: String = gsonn.toJson(arrayList)
 
@@ -130,7 +129,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                         Toast.makeText(this, result["errors"].toString(), Toast.LENGTH_LONG).show()
                     } else
                         if (result["status"].toString().contains("success")) {
-                            val messagetxt = result["data"].asJsonObject.get("message").asString
+                            messagetxt = result["data"].asJsonObject.get("message").asString
 
                             if (prefs.getString(GROUP_IS_SAVED, "")!!.contains("YES")) {
                                 val intent = Intent(this, FundRequestedActivity::class.java)
@@ -140,44 +139,26 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                                 finish()
                                 return@setCallback
                             }
-                            val mDialogView = LayoutInflater.from(this).inflate(R.layout.group_name_item, null)
-                            val mBuilder = AlertDialog.Builder(this)
-                                    .setView(mDialogView)
 
-                            //show dialog
-                            val mAlertDialog = mBuilder.show()
-                            mAlertDialog.setCancelable(false)
-                            mDialogView.dialogButtonOKk.setOnClickListener {
-                                val grName = mDialogView.group_name.text.toString()
-                                if (grName.isBlank()) {
-                                    mDialogView.group_name.error = "Cannot be empty"
-                                    return@setOnClickListener
-                                }
-                                progressDialog.show()
-                                saveSendToManyGroup(this, token, jsonn, grName).setCallback { e, result ->
-                                    progressDialog.dismiss()
-                                    if (result["status"].toString().contains("success")) {
-                                        mAlertDialog.dismiss()
-                                        val intent = Intent(this, FundRequestedActivity::class.java)
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                        intent.putExtra("Message", messagetxt)
-                                        startActivity(intent)
-                                        finish()
-                                    } else {
-                                        mAlertDialog.dismiss()
-                                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-                            mDialogView.dialogButtonNoo.setOnClickListener {
-                                mAlertDialog.dismiss()
-                                val intent = Intent(this, FundRequestedActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.putExtra("Message", messagetxt)
-                                startActivity(intent)
-                                finish()
+                            val enterGroupBottomSheet = EnterGroupBottomSheet(messagetxt)
+                            enterGroupBottomSheet.show(supportFragmentManager, "Save Group")
                             }
                         }
                 }
+
+    override fun enterGroupNameDialog(group: String) {
+        progressDialog.show()
+        saveSendToManyGroup(this, token, jsonn, group).setCallback { e, result ->
+            progressDialog.dismiss()
+            if (result["status"].toString().contains("success")) {
+                val intent = Intent(this, FundRequestedActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("Message", messagetxt)
+                startActivity(intent)
+                finish()
+            } else {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

@@ -16,7 +16,6 @@ import com.beyondthehorizon.routeapp.models.TransactionModel
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.RECYCLER_HEADER
 import com.beyondthehorizon.routeapp.utils.Constants.RECYCLER_SECTION
-import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.fragment_received.*
 import org.json.JSONObject
@@ -92,39 +91,9 @@ class ReceivedFragment : Fragment() {
                                     list.add(TransactionModel(created_at, sender, withdrawn,
                                             paymentType, balance, wallet_account, reference, description, email, image, RECYCLER_SECTION))
                                 }
-
-//                        var status = item.asJsonObject.get("status").toString().toLowerCase()
-//                        var statusIcon = statusMapper[status]
-
-//                                val created_at = "$date  $time"
-//                                list.add(TransactionModel(created_at, sender, withdrawn,
-//                                        paymentType, balance, wallet_account, reference, description, email, image, RECYCLER_SECTION))
                             }
                         }
-//                        for (item: JsonElement in result.get("data").asJsonObject.get("rows").asJsonArray) {
-////                        var id = item.asJsonObject.get("id").asString
-////                        var username = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString + " " +
-////                                item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
-////                        var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
-////                        var imageUrl = R.drawable.group416
-//                            val date = item.asJsonObject.get("date").asString
-//                            val time = item.asJsonObject.get("time").asString
-//                            val withdrawn = item.asJsonObject.get("received").asString
-//                            val paymentType = "received"
-//                            val first_name = item.getJSONObject("sender")get("first_name").asString
-//                            val last_name = item.getJSONObject("sender")get("last_name").asString
-//                            val email = item.getJSONObject("sender")get("email").asString
-//                            val image = item.getJSONObject("sender")get("image").asString
-//                            val sender = "$first_name $last_name"
-//                            val description = item.asJsonObject.get("description").asString
-//                            val balance = item.asJsonObject.get("balance").asString
-//                            val wallet_account = item.asJsonObject.get("wallet_account").asString
-//                            val reference = item.asJsonObject.get("reference").asString
-////                        var status = item.asJsonObject.get("status").asString.toLowerCase()
-////                        var statusIcon = statusMapper[status]
-//
 
-//                        }
                     }
                     receivedRecycler.apply {
                         layoutManager = LinearLayoutManager(activity)

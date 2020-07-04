@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/fui_transparent"
     android:orientation="vertical">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/boxbg" />
 
     <TextView
         android:layout_width="match_parent"
@@ -22,17 +27,21 @@
         android:layout_height="0.5dp"
         android:background="@color/colorPrimaryLight" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         android:text="Save this group for future use?"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pin_input"
+        android:id="@+id/group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -44,7 +53,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/group_name"
+            android:id="@+id/group_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
@@ -57,32 +66,32 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
-        <TextView
+        <Button
             android:id="@+id/dialogButtonNoo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginVertical="20dp"
             android:layout_weight="1"
-            android:background="@color/faded_color"
-            android:gravity="center"
-            android:padding="8dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/round_route_button"
+            android:onClick="submitPin"
             android:text=" No "
-            android:textColor="#000"
+            android:textColor="#fff"
+            app:layout_constraintTop_toBottomOf="@id/group_name" />
+
+        <Button
+            android:id="@+id/dialogButtonOKk"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@drawable/round_route_button"
+            android:onClick="submitPin"
+            android:text=" Ok "
+            android:textColor="#fff"
             app:layout_constraintTop_toBottomOf="@id/pin_input" />
 
-        <TextView
-            android:id="@+id/dialogButtonOKk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginVertical="20dp"
-            android:layout_weight="1"
-            android:background="@color/faded_color"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text=" Save "
-            android:textColor="#000"
-            app:layout_constraintTop_toBottomOf="@id/pin_input" />
     </LinearLayout>
+</LinearLayout>
 </LinearLayout>

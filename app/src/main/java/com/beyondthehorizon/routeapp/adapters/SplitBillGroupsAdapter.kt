@@ -34,7 +34,7 @@ open class SplitBillGroupsAdapter(context: Context, bills: List<BillResponse>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.group_date.text = bills[position].date
+        holder.itemView.group_date.text = bills[position].date.capitalize()
         holder.itemView.group_name.text = bills[position].group
         holder.itemView.group_status.text = "Status: ${bills[position].status}"
         holder.itemView.group_amount.text = "Amount: Kes ${bills[position].amount}"
