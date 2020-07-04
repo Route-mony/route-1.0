@@ -115,4 +115,5 @@
     <string name="enter_pin">Enter pin</string>
     <string name="enter_reason">Enter reason</string>
     <string name="enter_your_reason">Enter your reason</string>
+    <string name="send_a_reminder">Send A Reminder</string>
 </resources>
