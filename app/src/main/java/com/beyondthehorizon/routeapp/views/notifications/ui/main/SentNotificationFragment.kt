@@ -1,22 +1,19 @@
 package com.beyondthehorizon.routeapp.views.notifications.ui.main
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.adapters.NotificationsAdapter
-import com.beyondthehorizon.routeapp.databinding.ActivityNotificationsBinding
 import com.beyondthehorizon.routeapp.databinding.FragmentSentNotificationBinding
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants
@@ -32,7 +29,7 @@ class SentNotificationFragment : Fragment() {
     private lateinit var notificationsAdapter: NotificationsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-    //    private lateinit var context: Context
+    // private lateinit var context: Context
     private lateinit var filteredNotifications: MutableList<Notification>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

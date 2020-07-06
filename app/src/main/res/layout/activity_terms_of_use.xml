@@ -1,59 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".views.settingsactivities.TermsOfUseActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        tools:context=".views.settingsactivities.TermsOfUseActivity">
 
     <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_arrow_back" />
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_arrow_back" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/terms_of_service"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/terms_of_service"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
     </RelativeLayout>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/header"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/card_main">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/card_main">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="90dp"
-            android:text="@string/lorem" />
+                android:id="@+id/terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="90dp"
+                android:text="@string/lorem" />
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
         <include layout="@layout/nav_bar_layout" />
     </LinearLayout>
