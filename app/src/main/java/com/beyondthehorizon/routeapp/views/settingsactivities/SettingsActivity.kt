@@ -107,22 +107,22 @@ class SettingsActivity : AppCompatActivity() {
             Log.e("SettingsActivity", isChecked.toString())
             editor.putBoolean(BALANCE_CHECK, isChecked)
             editor.apply()
-            switch1.isChecked=pref.getBoolean(BALANCE_CHECK, false)
+            switch1.isChecked = pref.getBoolean(BALANCE_CHECK, false)
             // do something, the isChecked will be
 // true if the switch is in the On position
         })
 
 //        if (pref.getBoolean(BALANCE_CHECK, false)){
-            switch1.isChecked=pref.getBoolean(BALANCE_CHECK, false)
+        switch1.isChecked = pref.getBoolean(BALANCE_CHECK, false)
 //        }
 
-            logOut.setOnClickListener {
-                editor.clear()
-                editor.apply()
-                val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-            }
+        logOut.setOnClickListener {
+            editor.clear()
+            editor.apply()
+            val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
 
         //Support
         supportHelp.setOnClickListener {

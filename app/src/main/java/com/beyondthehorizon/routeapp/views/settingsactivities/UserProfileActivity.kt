@@ -147,8 +147,8 @@ class UserProfileActivity : AppCompatActivity() {
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
-                                    .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                                    .error(R.drawable.ic_user_home_page)
+                                        .placeholder(R.drawable.ic_user_home_page)
                                     .apply(requestOptions)
                                     .into(profile_pic)
 

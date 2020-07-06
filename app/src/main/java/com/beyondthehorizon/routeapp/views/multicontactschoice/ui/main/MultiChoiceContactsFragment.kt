@@ -78,7 +78,9 @@ class MultiChoiceContactsFragment : Fragment() {
         parentIntent = activity!!.intent
         childIntent = Intent(activity!!, ConfirmFundRequestActivity::class.java)
         progressBar = ProgressDialog(activity)
-        progressBar.setMessage("Loading contact...")
+        progressBar.setMessage("Loading contacts this may take sometime. Please wait...")
+        progressBar.setCanceledOnTouchOutside(false)
+        progressBar.show()
 
         var transactionMessage = ""
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")

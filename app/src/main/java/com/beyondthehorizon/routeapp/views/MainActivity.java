@@ -1,9 +1,13 @@
 package com.beyondthehorizon.routeapp.views;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -29,6 +34,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendToManyModel;
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
 import com.beyondthehorizon.routeapp.databases.NotificationCount;
+import com.beyondthehorizon.routeapp.models.MultiContactModel;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.viewmodels.RoutViewModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
@@ -49,11 +55,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.BALANCE_CHECK;
@@ -61,6 +72,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.CARDS;
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.MOBILE_PROVIDERS;
+import static com.beyondthehorizon.routeapp.utils.Constants.MY_ROUTE_CONTACTS_NEW;
 import static com.beyondthehorizon.routeapp.utils.Constants.MyPhoneNumber;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.REQUEST_MONEY;
@@ -83,12 +95,13 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many,btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
+    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many, btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
     private Animation moveUp;
     private RoutViewModel routViewModel;
+    public static final int REQUEST_READ_CONTACTS = 243;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -269,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         });
 
         isLoggedIn();
+
     }
 
     private void isLoggedIn() {
@@ -281,7 +295,114 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         } else {
             getProfile();
             notificationCount();
+
+            try {
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_CONTACTS)) {
+                        // show UI part if you want here to show some rationale !!!
+                    } else {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS},
+                                REQUEST_READ_CONTACTS);
+                    }
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_CONTACTS)) {
+                    } else {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS},
+                                REQUEST_READ_CONTACTS);
+
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == REQUEST_READ_CONTACTS) {
+            // disable speech button is permission not granted or instantiate recorder
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            } else {
+                if (pref.getString(MY_ROUTE_CONTACTS_NEW, "").isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            loadContacts();
+                        }
+                    }).start();
+                }
+            }
+        }
+    }
+
+    private void loadContacts() {
+        Cursor phones = MainActivity.this.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+        ArrayList myContactsList = new ArrayList<MultiContactModel>();
+        final ArrayList myContactsList2 = new ArrayList<MultiContactModel>();
+
+        while (phones.moveToNext()) {
+            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            myContactsList.add(new MultiContactModel(
+                    "",
+                    name,
+                    phoneNumber,
+                    "",
+                    "",
+                    false,
+                    false
+            ));
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(myContactsList);
+        String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
+
+        Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (result != null) {
+                            if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
+                                return;
+                            }
+                            Gson gsonn = new Gson();
+                            String jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
+                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
+                            editor.apply();
+
+                            for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
+
+                                try {
+                                    JSONObject issueObj = new JSONObject(item.toString());
+                                    if (issueObj.getBoolean("is_route")) {
+                                        myContactsList2.add(new MultiContactModel(
+                                                issueObj.get("id").toString(),
+                                                issueObj.get("username").toString(),
+                                                issueObj.get("phone_number").toString(),
+                                                issueObj.get("image").toString(),
+                                                issueObj.get("amount").toString(),
+                                                issueObj.getBoolean("is_route"),
+                                                issueObj.getBoolean("is_selected")
+                                        ));
+                                    }
+
+                                    String json2 = gsonn.toJson(myContactsList2);
+                                    editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                                    editor.apply();
+                                } catch (JSONException ex) {
+                                    ex.printStackTrace();
+                                }
+
+                            }
+                        }
+                    }
+                });
     }
 
     private void notificationCount() {
@@ -330,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 String id = result.get("data").getAsJsonObject().get("id").getAsString();
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
-                                String username = "Hey " + name + " !";
+                                String username = "Hey " + name ;
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
                                 String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
 
@@ -345,8 +466,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                         .apply(requestOptions)
                                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                                         .skipMemoryCache(true)
-                                        .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                                        .error(R.drawable.ic_user_home_page)
+                                        .placeholder(R.drawable.ic_user_home_page)
                                         .into(profile_pic);
                                 user_name.setText(username);
                                 if (pref.getBoolean(BALANCE_CHECK, false)) {
