@@ -74,7 +74,7 @@ class CashOutFragment : Fragment() {
                                     val first_name = item.getJSONObject("recipient").get("first_name").toString()
                                     val last_name = item.getJSONObject("recipient").get("last_name").toString()
                                     val time = item.get("time").toString()
-                                    val withdrawn = item.get("received").toString()
+                                    val withdrawn = item.get("cash_outs").toString()
                                     val paymentType = "received"
                                     val email = item.getJSONObject("recipient").get("email").toString()
                                     val image = item.getJSONObject("recipient").get("image").toString()

@@ -29,7 +29,7 @@
                 android:scaleType="fitXY"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_user" />
+                app:srcCompat="@drawable/ic_user_home_page" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -410,6 +410,36 @@
                             android:orientation="vertical">
 
                             <ImageButton
+                                android:id="@+id/btn_request3"
+                                android:layout_width="@dimen/item_round_size"
+                                android:layout_height="@dimen/item_round_size"
+                                android:background="@drawable/service_buttons"
+                                android:elevation="3dp"
+                                android:padding="16dp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_split_bill" />
+
+                            <TextView
+                                android:id="@+id/txt_request3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:fontFamily="@font/rout_book"
+                                android:text="Split Bill"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="10dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="invisible">
+
+                            <ImageButton
                                 android:id="@+id/btn_request24"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
@@ -432,40 +462,14 @@
                                 android:textSize="10dp" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageButton
-                                android:id="@+id/btn_request3"
-                                android:layout_width="@dimen/item_round_size"
-                                android:layout_height="@dimen/item_round_size"
-                                android:background="@drawable/service_buttons"
-                                android:padding="16dp"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@drawable/ic_split_bill" />
-
-                            <TextView
-                                android:id="@+id/txt_request3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp"
-                                android:fontFamily="@font/rout_book"
-                                android:text="Split Bill"
-                                android:textAlignment="center"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="10dp" />
-                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="invisible">
 
                             <ImageButton
                                 android:id="@+id/btn_request54"

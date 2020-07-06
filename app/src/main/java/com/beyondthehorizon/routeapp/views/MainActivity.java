@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 String id = result.get("data").getAsJsonObject().get("id").getAsString();
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
                                 String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
-                                String username = "Hey " + name + " !";
+                                String username = "Hey " + name ;
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
                                 String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
 
@@ -466,8 +466,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                         .apply(requestOptions)
                                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                                         .skipMemoryCache(true)
-                                        .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                                        .error(R.drawable.ic_user_home_page)
+                                        .placeholder(R.drawable.ic_user_home_page)
                                         .into(profile_pic);
                                 user_name.setText(username);
                                 if (pref.getBoolean(BALANCE_CHECK, false)) {
