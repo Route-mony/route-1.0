@@ -192,137 +192,111 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             val lower = 100000000
             val upper = 999999999
             val secureRandom = SecureRandom()
-            var merchantId = "ROUTEK0001"
-            var domain = "ISWKE"
-            var amount = amount
-            var transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
-            var terminalId = "3TLP0001"
-            var currency = "KES"
-            var orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
-            var preauth = "1"
-            var customerId = prefs.getString(USER_ID, "")
-            var customerEmail = prefs.getString(USER_EMAIL, "")
-            var clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
-            var clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
+            val merchantId = "ROUTEK0001"
+            val domain = "ISWKE"
+            val amount = amount
+            val transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
+            val terminalId = "3TLP0001"
+            val currency = "KES"
+            val orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
+            val preauth = "1"
+            val customerId = prefs.getString(USER_ID, "")
+            val customerEmail = prefs.getString(USER_EMAIL, "")
+            val clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
+            val clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
 
             try {
-                var merchant = Merchant(merchantId, domain);
-                var payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                val merchant = Merchant(merchantId, domain);
+                val payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
                 payment.setPreauth(preauth)
-                var customer = Customer(customerId)
+                val customer = Customer(customerId)
                 customer.setEmail(customerEmail)
 
-                if (binding.txtAmount.text.isNullOrEmpty()) {
-                    Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
-                } else if (amount.toInt() <= 0) {
-                    Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_LONG).show()
-                }
-
-                /**HERE NOW*/
-                else if (transactionType.compareTo(REQUEST_MONEY) == 0) {
-                    editor.putString("Amount", amount)
-                    editor.apply()
-//                    startActivity(childIntent)
-                    if (binding.requestNarration.text.toString().trim().isEmpty()) {
-                        Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
-                        return@setOnClickListener
+                when {
+                    binding.txtAmount.text.isNullOrEmpty() -> {
+                        Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
                     }
-                    val userId = prefs.getString("Id", "").toString()
-                    val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-                    val intent = Intent(this, FundRequestedActivity::class.java)
-                    requestFund(this, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { e, result ->
-                        if (result.get("data") != null) {
-                            val message = result.get("data").asJsonObject.get("message").asString
-                            intent.putExtra("Message", message)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this, "User not registered or haven't confirmed their email", Toast.LENGTH_LONG).show();
-                        }
+                    amount.toInt() <= 0 -> {
+                        Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_LONG).show()
                     }
-                } else if (transactionType.compareTo(SEND_MONEY) == 0) {
-//                    showSendMoneyDialog()
-                    val enterPinBottomSheet = EnterPinBottomSheet()
-                    enterPinBottomSheet.show(supportFragmentManager, "Enter Pin")
 
-                } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0) {
-                    var country = parentIntent.getStringExtra(COUNTRY)
-                    var cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
-                    var expDate = parentIntent.getStringExtra(EXPIRY_DATE)
-                    var expYear = expDate.substring(3, 5)
-                    var expMonth = expDate.substring(0, 2)
-                    var cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
-                    cardStatus = parentIntent.getStringExtra(CARD_STATUS)
-                    var card = Card(cardNumber, cvvNumber, expYear, expMonth);
-                    lateinit var mobPay: MobPay;
-
-                    var config = MobPay.Config();
-                    mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
-
-                    progressBar.show(this, "Processing payment...")
-                    mobPay.makeCardPayment(
-                            card,
-                            merchant,
-                            payment,
-                            customer, {
-                        progressBar.dialog.dismiss()
-                        Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
-
-                        if (cardStatus.compareTo(NEW_CARD) == 0) {
-                            progressBar.show(this, "Updating route ...")
-                            addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
-                                    .setCallback { e, result ->
-                                        progressBar.dialog.dismiss()
-                                        try {
-                                            if (result != null) {
-                                                if (result.has("errors")) {
-                                                    var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
-                                                    Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
-                                                } else {
-                                                    transactionMessage = result.get("data").asJsonObject.get("message").asString
-                                                    Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
-                                                }
-
-                                            } else if (e != null) {
-                                                Log.d("INTERSWITCH_MESSAGE", e.toString())
-                                                Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
-                                            }
-                                        } catch (ex: Exception) {
-                                            Log.d("INTERSWITCH_MESSAGE", ex.message)
-                                        }
-                                    }
-                        }
-                        transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
-                        val intent = Intent(this, FundRequestedActivity::class.java)
-                        editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                    /**HERE NOW*/
+                    transactionType.compareTo(REQUEST_MONEY) == 0 -> {
+                        editor.putString("Amount", amount)
                         editor.apply()
-                        intent.putExtra("Message", transactionMessage)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
-                        startActivity(intent)
+        //                    startActivity(childIntent)
+                        if (binding.requestNarration.text.toString().trim().isEmpty()) {
+                            Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
+                            return@setOnClickListener
+                        }
+                        val userId = prefs.getString("Id", "").toString()
+                        val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+                        val intent = Intent(this, FundRequestedActivity::class.java)
+                        requestFund(this, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { e, result ->
+                            if (result.get("data") != null) {
+                                val message = result.get("data").asJsonObject.get("message").asString
+                                intent.putExtra("Message", message)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(this, "User not registered or haven't confirmed their email", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                    transactionType.compareTo(SEND_MONEY) == 0 -> {
+        //                    showSendMoneyDialog()
+                        val enterPinBottomSheet = EnterPinBottomSheet()
+                        enterPinBottomSheet.show(supportFragmentManager, "Enter Pin")
 
-                    }, {
-                        progressBar.dialog.dismiss()
-                        Log.d("INTERSWITCH_MESSAGE", it.message)
-                        Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
-                    });
+                    }
+                    transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 -> {
+                        val country = parentIntent.getStringExtra(COUNTRY)
+                        val cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
+                        val expDate = parentIntent.getStringExtra(EXPIRY_DATE)
+                        val expYear = expDate.substring(3, 5)
+                        val expMonth = expDate.substring(0, 2)
+                        val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
+                        cardStatus = parentIntent.getStringExtra(CARD_STATUS)
+                        val card = Card(cardNumber, cvvNumber, expYear, expMonth);
+                        lateinit var mobPay: MobPay;
 
-                } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
-                    try {
-                        var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
-                        var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
-                        var mobPay: MobPay
-                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
+                        val config = MobPay.Config();
+                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
+
                         progressBar.show(this, "Processing payment...")
-                        mobPay.makeMobileMoneyPayment(
-                                mobile,
+                        mobPay.makeCardPayment(
+                                card,
                                 merchant,
                                 payment,
                                 customer, {
                             progressBar.dialog.dismiss()
-                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
-                            editor.apply()
-                            transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                            Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
+
+                            if (cardStatus.compareTo(NEW_CARD) == 0) {
+                                progressBar.show(this, "Updating route ...")
+                                addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
+                                        .setCallback { e, result ->
+                                            progressBar.dialog.dismiss()
+                                            try {
+                                                if (result != null) {
+                                                    if (result.has("errors")) {
+                                                        var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
+                                                        Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
+                                                    } else {
+                                                        transactionMessage = result.get("data").asJsonObject.get("message").asString
+                                                        Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
+                                                    }
+
+                                                } else if (e != null) {
+                                                    Log.d("INTERSWITCH_MESSAGE", e.toString())
+                                                    Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                                                }
+                                            } catch (ex: Exception) {
+                                                Log.d("INTERSWITCH_MESSAGE", ex.message)
+                                            }
+                                        }
+                            }
+                            transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
                             val intent = Intent(this, FundRequestedActivity::class.java)
                             editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                             editor.apply()
@@ -330,38 +304,72 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
                             startActivity(intent)
+
                         }, {
                             progressBar.dialog.dismiss()
-                            Log.d("INTERSWITCH_MESSAGE", it.toString())
+                            Log.d("INTERSWITCH_MESSAGE", it.message)
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+                        });
 
-                        })
-                    } catch (e: Exception) {
-                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                     }
-                } else if (transactionType.compareTo(BUY_AIRTIME) == 0) {
-                    try {
-                        val intent = Intent(this, FundRequestedActivity::class.java)
-                        var phone = parentIntent.getStringExtra(PHONE_NUMBER)
-                        //TODO: Call the api to purchase airtime with the required parameters
+                    transactionType.compareTo(MOBILE_TRANSACTION) == 0 -> {
+                        try {
+                            var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
+                            var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
+                            var mobPay: MobPay
+                            mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
+                            progressBar.show(this, "Processing payment...")
+                            mobPay.makeMobileMoneyPayment(
+                                    mobile,
+                                    merchant,
+                                    payment,
+                                    customer, {
+                                progressBar.dialog.dismiss()
+                                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                                editor.apply()
+                                transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                                val intent = Intent(this, FundRequestedActivity::class.java)
+                                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                                editor.apply()
+                                intent.putExtra("Message", transactionMessage)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
+                                startActivity(intent)
+                            }, {
+                                progressBar.dialog.dismiss()
+                                Log.d("INTERSWITCH_MESSAGE", it.toString())
+                                Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
 
-                        //Dummy setup
-                        var transactionMessage = "You have successfully purchased Ksh. ${amount} of airtime for ${phone}"
-                        intent.putExtra("Message", transactionMessage)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)
-                        startActivity(intent)
-                    } catch (ex: Exception) {
-                        Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                            })
+                        } catch (e: Exception) {
+                            Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                        }
                     }
-                } else if (transactionType.compareTo(SPLIT_BILL) == 0) {
-                    try {
-                        val intent = Intent(this, MultiContactsActivity::class.java)
-                        editor.putString(BILL_AMOUNT, amount)
-                        editor.apply()
-                        startActivity(intent)
-                    } catch (ex: Exception) {
-                        Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                    transactionType.compareTo(BUY_AIRTIME) == 0 -> {
+                        try {
+                            val intent = Intent(this, FundRequestedActivity::class.java)
+                            val phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                            //TODO: Call the api to purchase airtime with the required parameters
+
+                            //Dummy setup
+                            val transactionMessage = "You have successfully purchased Ksh. ${amount} of airtime for ${phone}"
+                            intent.putExtra("Message", transactionMessage)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)
+                            startActivity(intent)
+                        } catch (ex: Exception) {
+                            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    transactionType.compareTo(SPLIT_BILL) == 0 -> {
+                        try {
+                            val intent = Intent(this, MultiContactsActivity::class.java)
+                            editor.putString(BILL_AMOUNT, amount)
+                            editor.apply()
+                            startActivity(intent)
+                        } catch (ex: Exception) {
+                            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             } catch (ex: Exception) {
