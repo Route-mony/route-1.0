@@ -122,6 +122,7 @@ class TransactionsAdapter(private val context: Context) :
                 amountTxt.text = "Ksh. ${invite.withdrawn}"
             } else {
 //                amountTxt.setTextColor(Color.parseColor("#c4838d"))
+//                minus.text = "- "
                 minus.visibility = View.VISIBLE
                 amountTxt.text = "Ksh. ${invite.withdrawn}"
             }
