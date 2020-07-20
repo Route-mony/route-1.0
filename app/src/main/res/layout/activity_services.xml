@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".views.ServicesActivity">
-
-    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".views.ServicesActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
         <com.github.islamkhsh.CardSliderViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="9"
-            app:auto_slide_time="5"
-            app:cardSlider_cardBackgroundColor="#909EB1FC"
-            app:cardSlider_cardCornerRadius="20dp"
-            app:cardSlider_indicator="@id/indicator"
-            app:cardSlider_pageMargin="31dp"
-            app:cardSlider_smallAlphaFactor="0.5"
-            app:cardSlider_smallScaleFactor="0.9" />
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                app:auto_slide_time="5"
+                app:cardSlider_cardBackgroundColor="#909EB1FC"
+                app:cardSlider_cardCornerRadius="20dp"
+                app:cardSlider_indicator="@id/indicator"
+                app:cardSlider_pageMargin="31dp"
+                app:cardSlider_smallAlphaFactor="0.5"
+                app:cardSlider_smallScaleFactor="0.9" />
 
         <com.github.islamkhsh.CardSliderIndicator
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="0.1" />
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="0.1" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
             <Button
-                android:id="@+id/signUp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="55dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="signUP"
-                android:text="SignUp"
-                android:textAllCaps="false"
-                android:textColor="#fff" />
+                    android:id="@+id/signUp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="55dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="signUP"
+                    android:text="SignUp"
+                    android:textAllCaps="false"
+                    android:textColor="#fff" />
 
             <Button
-                android:id="@+id/userLogin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="55dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="loginPage"
-                android:text="Login"
-                android:textAllCaps="false"
-                android:textColor="#fff" />
+                    android:id="@+id/userLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="55dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="loginPage"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textColor="#fff" />
         </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/globe"
-            android:layout_width="310dp"
-            android:layout_height="270dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ss" />
+                android:id="@+id/globe"
+                android:layout_width="310dp"
+                android:layout_height="270dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ss" />
     </RelativeLayout>
 </FrameLayout>

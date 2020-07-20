@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.adapters;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +32,8 @@ public class SliderAdapter extends CardSliderAdapter<Adverts> {
         Glide.with(context).asGif().load(item.getIcon_url()).into(imageView);
         title.setText(item.getTitle());
         desc.setText(item.getDescription());
-
+        title.setGravity(Gravity.CENTER_HORIZONTAL);
+        desc.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
     @Override
