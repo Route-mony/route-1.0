@@ -139,14 +139,6 @@ public class PasswordActivity extends AppCompatActivity {
                                 editor.apply();
 
                                 progressDialog.dismiss();
-//                                String email = result.get("data").getAsJsonObject().get("user").getAsJsonObject().get("email").toString();
-//                                String token = result.get("data").getAsJsonObject().get("user").getAsJsonObject().get("token").toString();
-//
-//                                editor.putString(LOGGED_IN, "true");
-//                                editor.putString(USER_EMAIL, email.substring(1, email.length() - 1));
-//                                editor.putString(USER_TOKEN, token.substring(1, token.length() - 1));
-//                                editor.apply();
-
                                 Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -159,19 +151,6 @@ public class PasswordActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    //*****************************************************************
-    public static boolean isValidPassword(final String password) {
-
-        Pattern pattern;
-        Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=\\S+$).{4,}$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-
-        return matcher.matches();
-
     }
 
     @Override

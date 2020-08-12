@@ -81,7 +81,7 @@ public class PhoneActivity extends AppCompatActivity {
         progressDialog.show();
 
         Constants.verifyUserEntry(PhoneActivity.this,
-                "phone_number", ccp.getFullNumberWithPlus())
+                "phone_number", ccp.getNumber())
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
