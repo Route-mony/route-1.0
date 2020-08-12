@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.beyondthehorizon.routeapp.BuildConfig
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
@@ -192,18 +193,18 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             val lower = 100000000
             val upper = 999999999
             val secureRandom = SecureRandom()
-            val merchantId = "ROUTEK0001"
-            val domain = "ISWKE"
+            val merchantId = BuildConfig.MERCHANT_ID
+            val domain = BuildConfig.DOMAIN
             val amount = amount
             val transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
-            val terminalId = "3TLP0001"
+            val terminalId = BuildConfig.TERMINAL_ID
             val currency = "KES"
-            val orderId = "ROUTE_TZD_${secureRandom.nextInt(10000)}"
+            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${secureRandom.nextInt(10000)}"
             val preauth = "1"
             val customerId = prefs.getString(USER_ID, "")
             val customerEmail = prefs.getString(USER_EMAIL, "")
-            val clientId = "IKIAF9CED95CD2EA93B367E5E1B580A1EDB06F9EEF6D"
-            val clientSecret = "g9n6CRhxzmADCz5H9IaxtmfFxfFh+jGVFCVae4+1Kko="
+            val clientId = BuildConfig.CLIENT_ID
+            val clientSecret = BuildConfig.CLIENT_SECRETE
 
             try {
                 val merchant = Merchant(merchantId, domain);

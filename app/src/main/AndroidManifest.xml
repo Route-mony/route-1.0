@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.beyondthehorizon.routeapp">
+    package="com.beyondthehorizon.routeapp">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
-            android:name=".AppBase"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan|adjustResize">
+        android:name=".AppBase"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan|adjustResize">
         <activity android:name=".views.multicontactschoice.SendToManyGroupsActivity"></activity>
         <activity android:name=".views.split.bill.SplitBillsDetailsActivity" />
         <activity android:name=".views.multicontactschoice.ui.main.SendToManyActivity" />
         <activity
-                android:name=".views.multicontactschoice.MultiContactsActivity"
-                android:label="@string/title_activity_multi_contacts"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".views.multicontactschoice.MultiContactsActivity"
+            android:label="@string/title_activity_multi_contacts"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.split.bill.SplitBillActivity" />
         <activity android:name=".views.BulkRequestActivity" />
         <activity android:name=".views.settingsactivities.ChangePinActivity" />
@@ -28,45 +29,45 @@
         <activity android:name=".views.settingsactivities.ResetPasswordOtpVerifyActivity" />
         <activity android:name=".views.settingsactivities.ResetPasswordActivity" />
         <activity
-                android:name=".views.notifications.NotificationsActivity"
-                android:label="@string/title_activity_notification"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".views.notifications.NotificationsActivity"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".views.requestfunds.RequestFundActivity"
-                android:label="@string/title_activity_request_fund"
-                android:launchMode="singleTask"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".views.requestfunds.RequestFundActivity"
+            android:label="@string/title_activity_request_fund"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.settingsactivities.DownloadStatementActivity" />
         <activity
-                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-                android:theme="@style/Base.Theme.AppCompat" />
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
-                android:name=".views.receipt.ReceiptActivity"
-                android:label="@string/title_activity_receipt"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".views.receipt.ReceiptActivity"
+            android:label="@string/title_activity_receipt"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.transactions.main.TransactionDetailsActivity" />
         <activity
-                android:name=".views.transactions.main.TransactionsActivity"
-                android:label="@string/title_activity_transactions"
-                android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".views.transactions.main.TransactionsActivity"
+            android:label="@string/title_activity_transactions"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".views.settingsactivities.UserProfileActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.UserProfileActivity"
+            android:launchMode="singleTask" />
         <activity
-                android:name=".views.settingsactivities.InviteFriendActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.InviteFriendActivity"
+            android:launchMode="singleTask" />
         <activity
-                android:name=".views.settingsactivities.ChangePasswordActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.ChangePasswordActivity"
+            android:launchMode="singleTask" />
         <activity
-                android:name=".views.settingsactivities.PasswordAndPinActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.PasswordAndPinActivity"
+            android:launchMode="singleTask" />
         <activity
-                android:name=".views.settingsactivities.TermsOfUseActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.TermsOfUseActivity"
+            android:launchMode="singleTask" />
         <activity
-                android:name=".views.settingsactivities.SettingsActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.settingsactivities.SettingsActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".views.MobileActivity" />
         <activity android:name=".views.CardActivity" />
         <activity android:name=".views.auth.SetSecurityInfo" />
@@ -78,20 +79,20 @@
         <activity android:name=".views.ConfirmFundRequestActivity" />
         <activity android:name=".views.FundAmountActivity" />
         <activity
-                android:name=".views.RequestFundsActivity"
-                android:windowSoftInputMode="adjustPan" />
+            android:name=".views.RequestFundsActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".views.auth.UserNameActivity" />
         <activity
-                android:name=".views.auth.SetTransactionPinActivity"
-                android:launchMode="singleTask"
-                android:theme="@style/Theme.Transparent" />
+            android:name=".views.auth.SetTransactionPinActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Transparent" />
         <activity
-                android:name=".views.auth.LoginActivity"
-                android:launchMode="singleTask" />
+            android:name=".views.auth.LoginActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".views.auth.UserNamesActivity" />
         <activity
-                android:name=".views.auth.PasswordActivity"
-                android:parentActivityName=".views.auth.PhoneActivity" />
+            android:name=".views.auth.PasswordActivity"
+            android:parentActivityName=".views.auth.PhoneActivity" />
         <activity android:name=".views.auth.PhoneActivity" />
         <activity android:name=".views.auth.EmailIDActivity" />
         <activity android:name=".views.ServicesActivity" />
@@ -109,23 +110,23 @@
 
         <!-- INTERSWITCH  CONFIGURATION METADATA -->
         <meta-data
-                android:name="interswitch-kenya-limited.mobpay.base_url"
-                android:value="https://testids.interswitch.co.ke:18082/api/v1/" />
+            android:name="interswitch-kenya-limited.mobpay.base_url"
+            android:value="https://testids.interswitch.co.ke:18082/api/v1/" />
         <meta-data
-                android:name="interswitch-kenya-limited.mobpay.mqtt_url"
-                android:value="tcp://testmerchant.interswitch-ke.com:1883" />
+            android:name="interswitch-kenya-limited.mobpay.mqtt_url"
+            android:value="tcp://testmerchant.interswitch-ke.com:1883" />
         <meta-data
-                android:name="interswitch-kenya-limited.mobpay.cardinal_url"
-                android:value="https://testmerchant.interswitch-ke.com/sdkcardinal" />
+            android:name="interswitch-kenya-limited.mobpay.cardinal_url"
+            android:value="https://testmerchant.interswitch-ke.com/sdkcardinal" />
         <meta-data
-                android:name="interswitch-kenya-limited.mobpay.modulus"
-                android:value="9c7b3ba621a26c4b02f48cfc07ef6ee0aed8e12b4bd11c5cc0abf80d5206be69e1891e60fc88e2d565e2fabe4d0cf630e318a6c721c3ded718d0c530cdf050387ad0a30a336899bbda877d0ec7c7c3ffe693988bfae0ffbab71b25468c7814924f022cb5fda36e0d2c30a7161fa1c6fb5fbd7d05adbef7e68d48f8b6c5f511827c4b1c5ed15b6f20555affc4d0857ef7ab2b5c18ba22bea5d3a79bd1834badb5878d8c7a4b19da20c1f62340b1f7fbf01d2f2e97c9714a9df376ac0ea58072b2b77aeb7872b54a89667519de44d0fc73540beeaec4cb778a45eebfbefe2d817a8a8319b2bc6d9fa714f5289ec7c0dbc43496d71cf2a642cb679b0fc4072fd2cf" />
+            android:name="interswitch-kenya-limited.mobpay.modulus"
+            android:value="9c7b3ba621a26c4b02f48cfc07ef6ee0aed8e12b4bd11c5cc0abf80d5206be69e1891e60fc88e2d565e2fabe4d0cf630e318a6c721c3ded718d0c530cdf050387ad0a30a336899bbda877d0ec7c7c3ffe693988bfae0ffbab71b25468c7814924f022cb5fda36e0d2c30a7161fa1c6fb5fbd7d05adbef7e68d48f8b6c5f511827c4b1c5ed15b6f20555affc4d0857ef7ab2b5c18ba22bea5d3a79bd1834badb5878d8c7a4b19da20c1f62340b1f7fbf01d2f2e97c9714a9df376ac0ea58072b2b77aeb7872b54a89667519de44d0fc73540beeaec4cb778a45eebfbefe2d817a8a8319b2bc6d9fa714f5289ec7c0dbc43496d71cf2a642cb679b0fc4072fd2cf" />
         <meta-data
-                android:name="interswitch-kenya-limited.mobpay.exponent"
-                android:value="010001" />
+            android:name="interswitch-kenya-limited.mobpay.exponent"
+            android:value="010001" />
         <meta-data
-                android:name="preloaded_fonts"
-                android:resource="@array/preloaded_fonts" />
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <service android:name=".utils.MyFirebaseMessagingService">
             <intent-filter>

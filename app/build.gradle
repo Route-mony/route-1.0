@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     compileSdkVersion 29
@@ -14,6 +19,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+        buildConfigField("String", "CLIENT_ID", apikeyProperties['CLIENT_ID'])
+        buildConfigField("String", "CLIENT_SECRETE", apikeyProperties['CLIENT_SECRETE'])
+        buildConfigField("String", "TERMINAL_ID", apikeyProperties['TERMINAL_ID'])
+        buildConfigField("String", "MERCHANT_ID", apikeyProperties['MERCHANT_ID'])
+        buildConfigField("String", "DOMAIN", apikeyProperties['DOMAIN'])
+        buildConfigField("String", "ORDER_ID_PREFIX", apikeyProperties['ORDER_ID_PREFIX'])
     }
     buildTypes {
         release {
