@@ -64,8 +64,8 @@ public class LoginActivity extends AppCompatActivity {
             email.setError("Enter your email");
             return;
         }
-        if (Password.length() < 8) {
-            password.setError("Password cannot be less than 8 characters");
+        if (Password.isEmpty()) {
+            password.setError("Enter your password");
             return;
         }
         View view1 = this.getCurrentFocus();

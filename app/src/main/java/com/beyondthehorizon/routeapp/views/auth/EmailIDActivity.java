@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.utils.Utils;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -71,7 +72,7 @@ public class EmailIDActivity extends AppCompatActivity {
             email.setError("Email cannot be empty");
             return;
         }
-        if (!(isEmailValid(emailAdd))) {
+        if (!Utils.emailValidator(emailAdd)) {
             email.setError("Enter a valid email");
             return;
         }
@@ -121,14 +122,6 @@ public class EmailIDActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public static boolean isEmailValid(String email) {
-
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.views.OtpVerificationActivity;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,8 +70,8 @@ public class PhoneActivity extends AppCompatActivity {
 
     public void nextPage(View view) {
         String phoneNumber = phone.getText().toString().trim();
-        if (phoneNumber.length() < 9) {
-            phone.setError("Add a valid phone number");
+        if (!Utils.isPhoneNumberValid(phoneNumber, ccp.getSelectedCountryNameCode())) {
+            phone.setError("Enter a valid phone number");
             return;
         }
 
@@ -80,7 +81,7 @@ public class PhoneActivity extends AppCompatActivity {
         progressDialog.show();
 
         Constants.verifyUserEntry(PhoneActivity.this,
-                "phone_number", ccp.getNumber())
+                "phone_number", ccp.getFullNumberWithPlus())
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityMobileBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.requestfunds.RequestFundActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
@@ -46,7 +47,6 @@ class MobileActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.phoneNumberInput.setFormat("---- ------")
         val phone = intent.getStringExtra(PHONE_NUMBER)
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
@@ -70,7 +70,7 @@ class MobileActivity : AppCompatActivity() {
         binding.btnSavePhone.setOnClickListener {
             val phone = binding.phoneNumberInput.text.toString().trim()
             var intent = Intent(this@MobileActivity, FundAmountActivity::class.java)
-            if (phone.length < 10) {
+            if (!Utils.isPhoneNumberValid(phone, "KE")) {
                 binding.phoneNumberInput.error = "Enter valid phone number"
             } else {
                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)

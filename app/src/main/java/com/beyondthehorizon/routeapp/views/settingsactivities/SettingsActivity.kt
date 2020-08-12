@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
+import com.beyondthehorizon.routeapp.bottomsheets.AddMoneyBottomsheet
 import com.beyondthehorizon.routeapp.utils.Constants.*
-import com.beyondthehorizon.routeapp.views.AddMoneyActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -87,7 +87,8 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this@SettingsActivity, PasswordAndPinActivity::class.java))
         }
         paymentMethods.setOnClickListener {
-            startActivity(Intent(this@SettingsActivity, AddMoneyActivity::class.java))
+            val addMoneyBottomsheet = AddMoneyBottomsheet()
+            addMoneyBottomsheet.show(supportFragmentManager, "Add Money Options")
         }
         termsAndConditions.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, TermsOfUseActivity::class.java))

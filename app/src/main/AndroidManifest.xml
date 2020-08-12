@@ -68,7 +68,6 @@
                 android:name=".views.settingsactivities.SettingsActivity"
                 android:launchMode="singleTask" />
         <activity android:name=".views.MobileActivity" />
-        <activity android:name=".views.AddMoneyActivity" />
         <activity android:name=".views.CardActivity" />
         <activity android:name=".views.auth.SetSecurityInfo" />
         <activity android:name=".views.RequestReminderActivity" />

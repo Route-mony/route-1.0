@@ -10,6 +10,7 @@ import com.beyondthehorizon.routeapp.databinding.ActivityNewPasswordBinding
 import com.beyondthehorizon.routeapp.databinding.ActivityOtpVerifyBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.beyondthehorizon.routeapp.views.OtpVerificationActivity
 
@@ -21,18 +22,22 @@ class NewPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_password)
         tokenIntent = getIntent()
-        val password_regex: Regex = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!\-_?&])(?=\S+$).{8,}""".toRegex()
 
         binding.next.setOnClickListener {
             try {
                 var newPassword = binding.password.text.toString()
                 var cPassword = binding.cpassword.text.toString()
 
-                if (!password_regex.matches(newPassword)) {
-                    binding.password.setError("Please enter a valid password");
+                if (newPassword.isNullOrEmpty()) {
+                    binding.password.setError("Please enter your current password");
                     binding.password.requestFocus();
-                } else if (!password_regex.matches(newPassword)) {
-                    binding.cpassword.setError("Please enter a valid password");
+                }
+                else if (!Utils.passwordValidator(newPassword)) {
+                    binding.password.setError("Please enter a strong password");
+                    binding.password.requestFocus();
+                }
+                else if (newPassword.isNullOrEmpty()) {
+                    binding.cpassword.setError("Please confirm your password");
                     binding.cpassword.requestFocus();
                 } else if (newPassword.compareTo(cPassword) == 0) {
                     var intent = Intent(this, FundRequestedActivity::class.java)

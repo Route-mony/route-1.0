@@ -63,18 +63,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:hint="@string/current_pin"
-                        android:theme="@style/TextLabel"
-                        app:passwordToggleEnabled="true">
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:hint="@string/new_pin"
-                        android:theme="@style/TextLabel"
+                        app:hintTextColor="@color/colorPrimary"
                         app:passwordToggleEnabled="true">
 
                         <EditText
@@ -84,8 +74,6 @@
                             android:layout_marginTop="8dp"
                             android:maxLength="4"
                             android:inputType="number"
-                            android:textColor="@color/colorPrimaryLight"
-                            android:textColorHint="#33FFFFFF"
                             android:textSize="14sp"
                             android:theme="@style/AppTheme.AppTheme2"
                             app:passwordToggleEnabled="true" />

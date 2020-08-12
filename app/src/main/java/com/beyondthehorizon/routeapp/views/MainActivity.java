@@ -27,6 +27,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.bottomsheets.AddMoneyBottomsheet;
 import com.beyondthehorizon.routeapp.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
@@ -144,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 R.anim.move_up);
 
         routViewModel = ViewModelProviders.of(this).get(RoutViewModel.class);
-//        intent = new Intent(this, RequestFundsActivity.class);
         intent = new Intent(this, RequestFundActivity.class);
 
         btn_request54.setOnClickListener(new View.OnClickListener() {
@@ -157,17 +157,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         add_money_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddMoneyActivity.class));
+                AddMoneyBottomsheet addMoneyBottomsheet = new AddMoneyBottomsheet();
+                addMoneyBottomsheet.show(getSupportFragmentManager(), "Add Money Options");
             }
         });
-//        btn_request_fund.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
-//                editor.apply();
-//                startActivity(intent);
-//            }
-//        });
         btn_fav1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,7 +243,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_request2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                viewMpesaPaymentOption();
                 MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
                 mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
             }
@@ -276,8 +268,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             public void onClick(View v) {
                 BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
                 airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
-//                TransactionModel airtimeModel = new TransactionModel();
-//                airtimeModel.show(getSupportFragmentManager(), "Airtime Options");
             }
         });
 
@@ -412,10 +402,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             public void onChanged(List<NotificationCount> recentChatModels) {
                 Log.e(TAG, "onChanged: " + recentChatModels.size());
                 if (recentChatModels.size() > 0) {
-//                    if (Integer.parseInt(recentChatModels.get(0).notif_count) > 0) {
                     notifCount.setText(String.valueOf(recentChatModels.size()));
                     notifCount.setVisibility(View.VISIBLE);
-//                    }
                 } else {
                     notifCount.setVisibility(View.GONE);
                 }

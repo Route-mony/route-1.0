@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.views.SignupVerifiedActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,20 +73,20 @@ public class PasswordActivity extends AppCompatActivity {
     public void nextPage(View view) {
         String Password = password.getText().toString().trim();
         String CPassword = c_password.getText().toString().trim();
-        if (Password.length() < 8) {
-            password.setError("Password cannot be less than 8 characters");
+        if(Password.isEmpty()){
+            password.setError("Please enter your password");
             return;
         }
-        if (CPassword.length() < 8) {
-            c_password.setError("Password cannot be less than 8 characters");
+        if(!Utils.passwordValidator(Password)){
+            password.setError("Please enter a strong password");
+            return;
+        }
+        if (CPassword.isEmpty()) {
+            c_password.setError("Password confirm your password");
             return;
         }
         if (!(Password.compareTo(CPassword) == 0)) {
-            Toast.makeText(PasswordActivity.this, "Pin do not match", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (!(isValidPassword(Password))) {
-            password.setError("Password must contain at least a number,a uppercase and lowercase alphabet");
+            Toast.makeText(PasswordActivity.this, "Password doesn't match", Toast.LENGTH_LONG).show();
             return;
         }
         editor.putString(USER_PASSWORD, Password);

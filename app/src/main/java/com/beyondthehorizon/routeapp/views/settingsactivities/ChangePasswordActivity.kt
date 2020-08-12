@@ -11,6 +11,7 @@ import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityChangePasswordBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -26,7 +27,6 @@ class ChangePasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_password)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        val password_regex: Regex = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!\-_?&])(?=\S+$).{8,}""".toRegex()
         val progressBar = CustomProgressBar()
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
@@ -61,12 +61,12 @@ class ChangePasswordActivity : AppCompatActivity() {
                 if (currentPassword.isNullOrEmpty()) {
                     binding.currentPassword.setError("Please enter your current password");
                     binding.currentPassword.requestFocus();
-                } else if (!password_regex.matches(newPassword)) {
-                    binding.newPassword.setError("Please enter a valid password");
+                } else if (newPassword.isNullOrEmpty()) {
+                    binding.newPassword.setError("Please enter a new password");
                     binding.newPassword.requestFocus();
-                } else if (!password_regex.matches(cpassword)) {
-                    binding.ConfirmNewPassword.setError("Please enter a valid password");
-                    binding.ConfirmNewPassword.requestFocus();
+                } else if (!Utils.passwordValidator(newPassword.toString())) {
+                    binding.newPassword.setError("Please enter a strong password");
+                    binding.newPassword.requestFocus();
                 } else if (cpassword.toString() == newPassword.toString()) {
                     val oldPassword = currentPassword.toString();
                     val newPassword = newPassword.toString();

@@ -98,4 +98,10 @@
         </item>
     </style>
 
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorButton</item>
+        <item name="colorControlActivated">#33691e</item>
+        <item name="colorControlHighlight">#d50000</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 </resources>
