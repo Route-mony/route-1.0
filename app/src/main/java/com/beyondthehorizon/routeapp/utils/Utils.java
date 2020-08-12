@@ -54,4 +54,8 @@ public class Utils {
         final Pattern EMAIL_REGEX = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", Pattern.CASE_INSENSITIVE);
         return EMAIL_REGEX.matcher(email.trim()).matches();
     }
+
+    public static String invalidPasswordMessage(){
+        return "Password must be between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character";
+    }
 }

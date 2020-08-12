@@ -33,7 +33,7 @@ class NewPasswordActivity : AppCompatActivity() {
                     binding.password.requestFocus();
                 }
                 else if (!Utils.passwordValidator(newPassword)) {
-                    binding.password.setError("Please enter a strong password");
+                    binding.password.setError(Utils.invalidPasswordMessage());
                     binding.password.requestFocus();
                 }
                 else if (newPassword.isNullOrEmpty()) {

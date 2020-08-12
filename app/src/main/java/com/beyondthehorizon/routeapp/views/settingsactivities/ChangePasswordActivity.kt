@@ -65,7 +65,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                     binding.newPassword.setError("Please enter a new password");
                     binding.newPassword.requestFocus();
                 } else if (!Utils.passwordValidator(newPassword.toString())) {
-                    binding.newPassword.setError("Please enter a strong password");
+                    binding.newPassword.setError(Utils.invalidPasswordMessage())
                     binding.newPassword.requestFocus();
                 } else if (cpassword.toString() == newPassword.toString()) {
                     val oldPassword = currentPassword.toString();

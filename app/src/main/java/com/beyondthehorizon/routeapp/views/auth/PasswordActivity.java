@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
+import com.koushikdutta.async.Util;
 import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.regex.Matcher;
@@ -78,7 +79,7 @@ public class PasswordActivity extends AppCompatActivity {
             return;
         }
         if(!Utils.passwordValidator(Password)){
-            password.setError("Please enter a strong password");
+            password.setError(Utils.invalidPasswordMessage());
             return;
         }
         if (CPassword.isEmpty()) {
