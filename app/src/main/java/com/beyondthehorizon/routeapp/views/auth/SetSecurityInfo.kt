@@ -1,4 +1,5 @@
 package com.beyondthehorizon.routeapp.views.auth
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -18,6 +19,7 @@ import com.beyondthehorizon.routeapp.views.RequestFundsActivity
 import kotlinx.android.synthetic.main.content_set_security_info.*
 import kotlinx.android.synthetic.main.fragment_keyboard.*
 import java.security.AccessController.getContext
+
 class SetSecurityInfo : AppCompatActivity() {
     private var pin1set = ""
     private var pin1 = ""
@@ -33,10 +35,11 @@ class SetSecurityInfo : AppCompatActivity() {
         editor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
 
-        password.setOnClickListener{
+        password.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
+
     fun inputKeyed(view: View) {
         when (view.id) {
             R.id.one -> {
@@ -89,18 +92,18 @@ class SetSecurityInfo : AppCompatActivity() {
                                     pin3 = ""
                                     pin4 = ""
                                     updateScreen("")
-                                    if(e!=null){
+                                    if (e != null) {
                                         progressBar.dialog.dismiss()
                                         Log.e("SetSecurityInfo 12356", e.toString())
                                         return@setCallback
                                     }
                                     if (result.has("errors")) {
                                         progressBar.dialog.dismiss()
-                                        Log.e("SetSecurityInfo", result.get("errors").asString)
-                                        label.text = result.get("errors").asString
+                                        Toast.makeText(this, "Pin Verified", Toast.LENGTH_LONG).show()
                                         label.setTextColor(Color.parseColor("#FA0505"))
                                     } else {
-                                        label.text="Pin Verified"
+//                                        label.text = "Pin Verified"
+                                        Toast.makeText(this, result.get("errors").asString, Toast.LENGTH_LONG).show()
                                         label.setTextColor(Color.parseColor("#40CA08"))
                                         val intent = Intent(Intent(this, MainActivity::class.java))
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -144,6 +147,7 @@ class SetSecurityInfo : AppCompatActivity() {
             }
         }
     }
+
     private fun updateScreen(digit: String) {
         if (digit != "") {
             when {

@@ -320,7 +320,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:text="Terms and conditions"
+                    android:text="Terms of Service"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 
@@ -357,7 +357,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="Sign out"
-                    android:textColor="@color/colorNotification"
+                    android:textColor="#CB0606"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
