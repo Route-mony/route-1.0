@@ -7,11 +7,13 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.utils.Constants.*
+import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -95,17 +97,31 @@ class UserProfileActivity : AppCompatActivity() {
         val pref: SharedPreferences = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         val token = "Bearer " + pref.getString(USER_TOKEN, "")
         val progressDialog = ProgressDialog(this@UserProfileActivity)
-        progressDialog.setMessage("please wait...")
-        progressDialog.setCanceledOnTouchOutside(false)
-        progressDialog.show()
-        updateUserProfile(this@UserProfileActivity, token,
-                phone.text.toString(),
-                userNameTxt.text.toString())
-                .setCallback { _, result ->
-                    progressDialog.dismiss()
-                    Toast.makeText(this@UserProfileActivity, "Updated successfully", Toast.LENGTH_LONG).show()
-                    Log.e(TAG, "updateUserProfileSettings: " + result!!)
-                }
+        if(TextUtils.isEmpty(userNameTxt.text)){
+            userNameTxt.error = "Username cannot be empty!"
+            return
+        }
+        if(TextUtils.isEmpty(phone.text)){
+            phone.error = "Phone number cannot be empty!"
+            return
+        }
+
+        if(Utils.isPhoneNumberValid(phone.text.toString(), "KE")) {
+            progressDialog.setMessage("please wait...")
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+            updateUserProfile(this@UserProfileActivity, token,
+                    phone.text.toString(),
+                    userNameTxt.text.toString())
+                    .setCallback { _, result ->
+                        progressDialog.dismiss()
+                        Toast.makeText(this@UserProfileActivity, "Updated successfully", Toast.LENGTH_LONG).show()
+                        Log.e(TAG, "updateUserProfileSettings: " + result!!)
+                    }
+        }
+        else{
+            phone.error = "Invalid phone number!"
+        }
     }
 
     private fun getProfile() {
