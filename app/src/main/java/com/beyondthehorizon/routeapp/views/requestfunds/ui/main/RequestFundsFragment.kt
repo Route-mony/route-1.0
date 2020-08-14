@@ -74,13 +74,13 @@ class RequestFundsFragment : Fragment() {
         searchView = binding.contactSearchView
         contacts = mutableListOf()
         contactMap = mutableMapOf()
-        contactsAdapater = ContactsAdapater(activity!!, contacts)
+        contactsAdapater = ContactsAdapater(requireActivity(), contacts)
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
-        parentIntent = activity!!.intent
-        childIntent = Intent(activity!!, ConfirmFundRequestActivity::class.java)
-        progressBar.show(activity!!, "Loading contact...")
+        parentIntent = requireActivity().intent
+        childIntent = Intent(requireActivity(), ConfirmFundRequestActivity::class.java)
+        progressBar.show(requireActivity(), "Loading contact...")
 
         var transactionMessage = ""
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
@@ -88,7 +88,7 @@ class RequestFundsFragment : Fragment() {
         transactionType = prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
 
         try {
-            if (ActivityCompat.checkSelfPermission(activity!!, android.Manifest.permission.READ_CONTACTS)
+            if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED) {
                 if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
 
@@ -99,7 +99,7 @@ class RequestFundsFragment : Fragment() {
 
                     recyclerView.layoutManager = linearLayoutManager
                     recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(activity!!, contacts)
+                    contactsAdapater = ContactsAdapater(requireActivity(), contacts)
                     recyclerView.adapter = contactsAdapater
 
                 } else {
@@ -110,7 +110,7 @@ class RequestFundsFragment : Fragment() {
             }
             progressBar.dialog.dismiss()
         } catch (e: Exception) {
-            Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -118,13 +118,13 @@ class RequestFundsFragment : Fragment() {
                 var pattern = newText.toLowerCase().toRegex()
                 try {
                     var filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }
-                    var adapter = ContactsAdapater(activity!!, filteredContacts.toMutableList())
+                    var adapter = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
                     recyclerView.layoutManager = linearLayoutManager
                     recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(activity!!, filteredContacts.toMutableList())
+                    contactsAdapater = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
                     recyclerView.adapter = adapter
                 } catch (ex: Exception) {
-                    Toast.makeText(activity!!, ex.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), ex.message, Toast.LENGTH_LONG).show()
                 }
                 progressBar.dialog.dismiss()
                 return false
@@ -144,15 +144,15 @@ class RequestFundsFragment : Fragment() {
 
     private fun requestPermission() {
         progressBar.dialog.dismiss()
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
             // show UI part if you want here to show some rationale !!!
         } else {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_CONTACTS),
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
                     REQUEST_READ_CONTACTS)
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
         } else {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_CONTACTS),
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
                     REQUEST_READ_CONTACTS)
         }
     }
@@ -164,7 +164,7 @@ class RequestFundsFragment : Fragment() {
 
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(activity!!, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Permission Denied", Toast.LENGTH_SHORT).show()
 
                 } else {
 
@@ -177,7 +177,7 @@ class RequestFundsFragment : Fragment() {
 
     private fun loadPhoneContacts() {
         try {
-            val phones = activity!!.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
@@ -187,7 +187,7 @@ class RequestFundsFragment : Fragment() {
                 progressBar.dialog.dismiss()
             }
         } catch (e: Exception) {
-            Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             progressBar.dialog.dismiss()
         }
     }
@@ -221,7 +221,7 @@ class RequestFundsFragment : Fragment() {
         })
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            Constants.loadUserContacts(activity!!, token).setCallback { e, result ->
+            Constants.loadUserContacts(requireActivity(), token).setCallback { e, result ->
 
                 if (result != null) {
                     progressBar.dialog.dismiss()
@@ -237,7 +237,7 @@ class RequestFundsFragment : Fragment() {
 
                             recyclerView.layoutManager = linearLayoutManager
                             recyclerView.setHasFixedSize(true)
-                            contactsAdapater = ContactsAdapater(activity!!, contacts)
+                            contactsAdapater = ContactsAdapater(requireActivity(), contacts)
                             recyclerView.adapter = contactsAdapater
 
                         } else {
@@ -253,7 +253,7 @@ class RequestFundsFragment : Fragment() {
 
                             recyclerView.layoutManager = linearLayoutManager
                             recyclerView.setHasFixedSize(true)
-                            contactsAdapater = ContactsAdapater(activity!!, contacts)
+                            contactsAdapater = ContactsAdapater(requireActivity(), contacts)
                             recyclerView.adapter = contactsAdapater
 
                         } else {
@@ -263,11 +263,11 @@ class RequestFundsFragment : Fragment() {
 
                 } else {
                     progressBar.dialog.dismiss()
-                    Toast.makeText(activity!!, "Error Loading contacts", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), "Error Loading contacts", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: Exception) {
-            Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
         }
 
     }
@@ -298,7 +298,7 @@ class RequestFundsFragment : Fragment() {
         contacts = contactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(activity!!, contacts)
+        contactsAdapater = ContactsAdapater(requireActivity(), contacts)
         recyclerView.adapter = contactsAdapater
         progressBar.dialog.dismiss()
         val gson = Gson()
@@ -343,7 +343,7 @@ class RequestFundsFragment : Fragment() {
         contacts = routeContactMap.values.toMutableList()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(activity!!, contacts)
+        contactsAdapater = ContactsAdapater(requireActivity(), contacts)
         recyclerView.adapter = contactsAdapater
         binding.swipeRefresh.isRefreshing = false
         progressBar.dialog.dismiss()

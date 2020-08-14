@@ -18,7 +18,7 @@ class EnterReasonBottomSheet: BottomSheetDialogFragment(){
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.dialog_reject_reason, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         //login button click of custom layout
@@ -26,7 +26,7 @@ class EnterReasonBottomSheet: BottomSheetDialogFragment(){
 
             val reason: String =  v.enterReason.text.toString()
             if (reason.isEmpty()) {
-                Toast.makeText(activity!!, "Enter Reason", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), "Enter Reason", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             mListener.enterReasonDialog(reason)

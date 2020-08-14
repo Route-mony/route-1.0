@@ -24,7 +24,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.edit_sendtomany_item_layout, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         val gson = Gson()
@@ -38,7 +38,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
 
         if (editPersonData.is_route) {
-            Glide.with(context!!)
+            Glide.with(requireContext())
                     .load(editPersonData.image)
                     .centerCrop()
                     .error(R.drawable.group416)
@@ -48,7 +48,7 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
                     .apply(requestOptions)
                     .into(v.profile_image)
         } else {
-            Glide.with(context!!)
+            Glide.with(requireContext())
                     .load(editPersonData.image)
                     .centerCrop()
                     .error(R.drawable.default_avatar)

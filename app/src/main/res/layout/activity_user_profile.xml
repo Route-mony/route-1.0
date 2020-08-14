@@ -36,9 +36,9 @@
                 android:layout_width="@dimen/image_width"
                 android:layout_height="@dimen/image_height"
                 android:scaleType="fitXY"
-                android:src="@drawable/profile_pic"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user_home_page" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -85,8 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Username"
-                android:theme="@style/TextLabel">
+                android:hint="Username">
 
                 <EditText
                     android:id="@+id/userNameTxt"
@@ -101,8 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Full Names"
-                android:theme="@style/TextLabel">
+                android:hint="Full Names">
 
                 <EditText
                     android:id="@+id/fullNames"
@@ -117,8 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="jondoe@gmail.com"
-                android:theme="@style/TextLabel">
+                android:hint="jondoe@gmail.com">
 
                 <EditText
                     android:id="@+id/email"
@@ -134,14 +131,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Phone Number"
-                android:theme="@style/TextLabel">
+                android:hint="Phone Number">
 
                 <EditText
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:inputType="phone"
                     android:textColor="@color/colorPrimaryLight" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -150,8 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Gender"
-                android:theme="@style/TextLabel">
+                android:hint="Gender">
 
                 <EditText
                     android:id="@+id/gender"
@@ -166,8 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Date of birth"
-                android:theme="@style/TextLabel">
+                android:hint="Date of birth">
 
                 <EditText
                     android:id="@+id/dob"

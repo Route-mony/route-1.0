@@ -41,9 +41,9 @@ class ReceivedNotificationFragment : Fragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_received_notifaction, container, false)
         val view = binding.root
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         recyclerView = binding.notificationsRecyclerView
-        linearLayoutManager = LinearLayoutManager(activity!!)
+        linearLayoutManager = LinearLayoutManager(requireActivity())
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
         notifications = mutableListOf()
@@ -60,11 +60,11 @@ class ReceivedNotificationFragment : Fragment() {
     private fun loadRequests(type: String) {
         try {
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            val progressDialog = ProgressDialog(activity!!)
+            val progressDialog = ProgressDialog(requireActivity())
             progressDialog.setMessage("please wait...")
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
-            Constants.getFundRequests(activity!!, type, token).setCallback { e, result ->
+            Constants.getFundRequests(requireActivity(), type, token).setCallback { e, result ->
                 progressDialog.dismiss()
                 if (result != null) {
                     var statusMapper = mapOf(
@@ -92,10 +92,10 @@ class ReceivedNotificationFragment : Fragment() {
                         notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!, type))
                     }
                     filteredNotifications = notifications.filter { it.type == type }.toMutableList()
-                    notificationsAdapter = NotificationsAdapter(activity!!, filteredNotifications)
+                    notificationsAdapter = NotificationsAdapter(requireActivity(), filteredNotifications)
                     recyclerView.adapter = notificationsAdapter
                 } else {
-                    Toast.makeText(activity!!, "No $type requests found", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), "No $type requests found", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: Exception) {

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.R
@@ -31,23 +32,27 @@ class ReceivedFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_received, container, false)
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        transactionsAdapter = TransactionsAdapter(activity!!)
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        transactionsAdapter = TransactionsAdapter(requireActivity())
         loadSentTransactions()
 
         return view
     }
 
     private fun loadSentTransactions() {
-        try {
-            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            val progressDialog = ProgressDialog(activity)
-            progressDialog.setMessage("please wait...")
-            progressDialog.setCanceledOnTouchOutside(false)
-            progressDialog.show()
-            Constants.getUserStatement(activity, token, "received").setCallback { _, result ->
-                progressDialog.dismiss()
+        val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+        val progressDialog = ProgressDialog(activity)
+        progressDialog.setMessage("please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.show()
+        Constants.getUserStatement(activity, token, "received").setCallback { _, result ->
+            progressDialog.dismiss()
+            try {
                 if (result != null) {
+                    if (result.has("errors")){
+                        Toast.makeText(requireContext(), result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                        return@setCallback
+                    }
 
                     Log.e("HERE 13 ", result.toString())
 
@@ -102,9 +107,10 @@ class ReceivedFragment : Fragment() {
                     transactionsAdapter.setContact(list)
 //                    }
                 }
+            } catch (e: Exception) {
+                Log.d("TAG", e.message)
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
-        } catch (e: Exception) {
-            Log.d("TAG", e.message)
         }
     }
 }

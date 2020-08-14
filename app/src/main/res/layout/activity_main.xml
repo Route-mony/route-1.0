@@ -378,7 +378,7 @@
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:padding="16dp"
+                                android:padding="12dp"
                                 android:scaleType="fitXY"
                                 app:srcCompat="@drawable/ic_send_to_many_greyed" />
 
@@ -415,7 +415,7 @@
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:padding="16dp"
+                                android:padding="12dp"
                                 android:scaleType="fitXY"
                                 app:srcCompat="@drawable/ic_split_bill" />
 

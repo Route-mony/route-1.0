@@ -23,8 +23,8 @@ class BuyAirtimeDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_buy_airtime, container, false)
-        editor = activity!!.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
-        prefs = activity!!.getSharedPreferences(REG_APP_PREFERENCES, 0)
+        editor = requireActivity().getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
+        prefs = requireActivity().getSharedPreferences(REG_APP_PREFERENCES, 0)
         var phone = view.findViewById<TextView>(R.id.mobile_number)
         var btnBuy = view.findViewById<Button>(R.id.buy_airtime_button)
         var btnContactSearch = view.findViewById<ImageView>(R.id.img_search)

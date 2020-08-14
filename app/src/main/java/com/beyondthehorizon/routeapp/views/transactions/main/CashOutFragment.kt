@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.routeapp.R
@@ -30,8 +31,8 @@ class CashOutFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_cash_out, container, false)
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        transactionsAdapter = TransactionsAdapter(activity!!)
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        transactionsAdapter = TransactionsAdapter(requireActivity())
         loadSentTransactions()
 
         return view
@@ -49,7 +50,11 @@ class CashOutFragment : Fragment() {
                 if (result != null) {
 
                     Log.e("HERE 11 ", result.toString())
-                    if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
+                    if(result.has("errors")){
+                        Toast.makeText(requireActivity(), result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                        return@setCallback
+                    }
+                    if(result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
                         return@setCallback
                     }
                     val list = ArrayList<TransactionModel>()
@@ -95,7 +100,7 @@ class CashOutFragment : Fragment() {
                     }
 
                     cashOutRecycler.apply {
-                        layoutManager = LinearLayoutManager(activity!!)
+                        layoutManager = LinearLayoutManager(requireActivity())
                         adapter = transactionsAdapter
                     }
                     transactionsAdapter.setContact(list)

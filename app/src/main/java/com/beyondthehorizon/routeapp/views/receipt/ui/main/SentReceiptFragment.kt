@@ -36,8 +36,8 @@ class SentReceiptFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_sent_receipt, container, false)
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        receiptAdapter = ReceiptAdapter(activity!!, "SentReceiptFragment")
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        receiptAdapter = ReceiptAdapter(requireActivity(), "SentReceiptFragment")
         loadSentReceipts(view)
 
         // Set an on refresh listener for swipe refresh layout

@@ -34,8 +34,8 @@ class ReceivedReceiptFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_received_receipt, container, false)
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        receiptAdapter = ReceiptAdapter(activity!!, "ReceivedReceiptFragment")
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        receiptAdapter = ReceiptAdapter(requireActivity(), "ReceivedReceiptFragment")
 
         loadSentReceipts(view)
 

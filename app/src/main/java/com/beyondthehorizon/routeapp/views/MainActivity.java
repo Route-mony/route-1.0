@@ -270,12 +270,11 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
             }
         });
-
         isLoggedIn();
-
     }
 
     private void isLoggedIn() {
+        checkPermissions();
         if (pref.getString(USER_TOKEN, "").isEmpty()) {
             editor.putString(LOGGED_IN, "false");
             editor.apply();
@@ -285,27 +284,19 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         } else {
             getProfile();
             notificationCount();
+        }
+    }
 
-            try {
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_CONTACTS)) {
-                        // show UI part if you want here to show some rationale !!!
-                    } else {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS},
-                                REQUEST_READ_CONTACTS);
-                    }
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_CONTACTS)) {
-                    } else {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS},
-                                REQUEST_READ_CONTACTS);
-
-                    }
-                }
-            } catch (Exception e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+    public void checkPermissions() {
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
             }
+            else{
+                loadContacts();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -314,18 +305,18 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
         if (requestCode == REQUEST_READ_CONTACTS) {
             // disable speech button is permission not granted or instantiate recorder
-            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-            } else {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (pref.getString(MY_ROUTE_CONTACTS_NEW, "").isEmpty()) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-
                             loadContacts();
                         }
                     }).start();
                 }
+
+            } else {
+                Toast.makeText(MainActivity.this, "Permission Denied, you will not be able to request or send funds since it requires loading your contacts", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -435,55 +426,64 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.apply();
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
+                                try {
 
-                                String id = result.get("data").getAsJsonObject().get("id").getAsString();
-                                String name = result.get("data").getAsJsonObject().get("username").getAsString();
-                                String wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
-                                String username = "Hey " + name ;
-                                String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
-                                String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
+                                    String id = result.get("data").getAsJsonObject().get("id").getAsString();
+                                    String name = result.get("data").getAsJsonObject().get("username").getAsString();
 
-                                String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
-                                String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
-                                String image = result.get("data").getAsJsonObject().get("image").getAsString();
+                                    String wallet_balance = "0";
+                                    if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
+                                        wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
+                                    }
+                                    String username = "Hey " + name;
+                                    String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
+                                    String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
 
-                                RequestOptions requestOptions = new RequestOptions();
-                                requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-                                Glide.with(MainActivity.this)
-                                        .load(image)
-                                        .apply(requestOptions)
-                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true)
-                                        .error(R.drawable.ic_user_home_page)
-                                        .placeholder(R.drawable.ic_user_home_page)
-                                        .into(profile_pic);
-                                user_name.setText(username);
-                                if (pref.getBoolean(BALANCE_CHECK, false)) {
-                                    balance_value.setText("KES ......");
-                                } else {
-                                    balance_value.setText("KES " + wallet_balance);
-                                }
-                                editor.putString("FullName", fname + " " + lname);
-                                editor.putString("ProfileImage", image);
-                                editor.putString(USER_ID, id);
-                                editor.putString(UserName, name);
-                                editor.putString(MyPhoneNumber, phone);
-                                editor.putString(CARDS, cards);
-                                editor.apply();
+                                    String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
+                                    String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
+                                    String image = result.get("data").getAsJsonObject().get("image").getAsString();
 
-                                getServiceProviders();
-                                sendRegistrationToServer();
-                                boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
-                                String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
+                                    RequestOptions requestOptions = new RequestOptions();
+                                    requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                                    Glide.with(MainActivity.this)
+                                            .load(image)
+                                            .apply(requestOptions)
+                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .skipMemoryCache(true)
+                                            .error(R.drawable.ic_user_home_page)
+                                            .placeholder(R.drawable.ic_user_home_page)
+                                            .into(profile_pic);
+                                    profile_pic.setVisibility(View.VISIBLE);
+                                    user_name.setText(username);
+                                    if (pref.getBoolean(BALANCE_CHECK, false)) {
+                                        balance_value.setText("KES ......");
+                                    } else {
+                                        balance_value.setText("KES " + wallet_balance);
+                                    }
+                                    editor.putString("FullName", fname + " " + lname);
+                                    editor.putString("ProfileImage", image);
+                                    editor.putString(USER_ID, id);
+                                    editor.putString(UserName, name);
+                                    editor.putString(MyPhoneNumber, phone);
+                                    editor.putString(CARDS, cards);
+                                    editor.apply();
 
-                                if (!email_verified) {
-                                    verify_email.setVisibility(View.VISIBLE);
-                                    verify_email.setText(R.string.verify_email);
-                                } else {
-                                    verify_email.setVisibility(View.GONE);
-                                }
-                                if (is_pin_set.contains("False")) {
-                                    setPin();
+                                    getServiceProviders();
+                                    sendRegistrationToServer();
+                                    boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
+                                    String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
+
+                                    if (!email_verified) {
+                                        verify_email.setVisibility(View.VISIBLE);
+                                        verify_email.setText(R.string.verify_email);
+                                    } else {
+                                        verify_email.setVisibility(View.GONE);
+                                    }
+                                    if (is_pin_set.contains("False")) {
+                                        setPin();
+                                    }
+                                } catch (Exception ex) {
+                                    Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         } else {

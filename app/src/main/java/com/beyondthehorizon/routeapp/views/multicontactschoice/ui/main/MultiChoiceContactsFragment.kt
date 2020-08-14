@@ -73,10 +73,10 @@ class MultiChoiceContactsFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(activity)
         searchView = binding.contactSearchView
 
-        prefs = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
-        parentIntent = activity!!.intent
-        childIntent = Intent(activity!!, ConfirmFundRequestActivity::class.java)
+        parentIntent = requireActivity().intent
+        childIntent = Intent(requireActivity(), ConfirmFundRequestActivity::class.java)
         progressBar = ProgressDialog(activity)
         progressBar.setMessage("Loading contacts this may take sometime. Please wait...")
         progressBar.setCanceledOnTouchOutside(false)
@@ -88,7 +88,7 @@ class MultiChoiceContactsFragment : Fragment() {
         transactionType = prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
 
         try {
-            if (ActivityCompat.checkSelfPermission(activity!!, android.Manifest.permission.READ_CONTACTS)
+            if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED) {
 
                 //SEND TO MANY BY ROUTE CONTACTS
@@ -103,7 +103,7 @@ class MultiChoiceContactsFragment : Fragment() {
                         progressBar.dismiss()
                         recyclerView.layoutManager = linearLayoutManager
                         recyclerView.setHasFixedSize(true)
-                        contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
+                        contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
                         recyclerView.adapter = contactsAdapater
                     } else {
                         //CHECK IF WE HAVE CACHED ANY ROUTE CONTACTS FROM DB BEFORE IF NOT LOAD CONTACTS FROM BACKEND
@@ -120,7 +120,7 @@ class MultiChoiceContactsFragment : Fragment() {
                         contacts = gson.fromJson(string, type)
                         recyclerView.layoutManager = linearLayoutManager
                         recyclerView.setHasFixedSize(true)
-                        contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
+                        contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
                         recyclerView.adapter = contactsAdapater
                         progressBar.dismiss()
                     } else {
@@ -133,7 +133,7 @@ class MultiChoiceContactsFragment : Fragment() {
             }
 
         } catch (e: Exception) {
-            Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
         }
 
         binding.contactSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -157,15 +157,15 @@ class MultiChoiceContactsFragment : Fragment() {
 
 
     private fun requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
             // show UI part if you want here to show some rationale !!!
         } else {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_CONTACTS),
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
                     REQUEST_READ_CONTACTS)
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
         } else {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_CONTACTS),
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
                     REQUEST_READ_CONTACTS)
         }
     }
@@ -175,7 +175,7 @@ class MultiChoiceContactsFragment : Fragment() {
             REQUEST_READ_CONTACTS -> {
 
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(activity!!, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Permission Denied", Toast.LENGTH_SHORT).show()
                 } else {
                     loadRegisteredContacts()
                 }
@@ -215,7 +215,7 @@ class MultiChoiceContactsFragment : Fragment() {
                 }
             })
 
-            val phones = activity!!.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val myContactsList = ArrayList<MultiContactModel>()
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
@@ -236,7 +236,7 @@ class MultiChoiceContactsFragment : Fragment() {
             val json: String = gson.toJson(myContactsList)
             val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
-            Constants.getRegisteredRouteContacts(activity!!, token, json).setCallback { e, result ->
+            Constants.getRegisteredRouteContacts(requireActivity(), token, json).setCallback { e, result ->
                 progressBar.dismiss()
                 binding.swipeRefresh.isRefreshing = false
                 if (e != null) {
@@ -289,7 +289,7 @@ class MultiChoiceContactsFragment : Fragment() {
 
                     recyclerView.layoutManager = linearLayoutManager
                     recyclerView.setHasFixedSize(true)
-                    contactsAdapater = MultiChoiceContactsAdapter(activity!!, contacts)
+                    contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
                     recyclerView.adapter = contactsAdapater
 
 //                    val ggson = Gson()
@@ -298,7 +298,7 @@ class MultiChoiceContactsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Toast.makeText(activity!!, e.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
         }
     }
 }

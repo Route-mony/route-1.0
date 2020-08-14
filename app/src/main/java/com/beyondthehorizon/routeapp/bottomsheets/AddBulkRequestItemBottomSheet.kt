@@ -28,7 +28,7 @@ class AddBulkRequestItemBottomSheet : BottomSheetDialogFragment() {
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.add_bulk_item_layout, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         //login button click of custom layout

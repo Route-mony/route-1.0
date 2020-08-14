@@ -24,7 +24,7 @@ class TransactionModel : BottomSheetDialogFragment() {
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.send_mobile_money_dialog_layout, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
         var mobileInput = v.findViewById<TextView>(R.id.mobileNumber)
         var myPhoneButton = v.findViewById<Button>(R.id.myPhone)

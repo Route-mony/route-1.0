@@ -21,14 +21,14 @@ class EnterGroupBottomSheet(val msg:String): BottomSheetDialogFragment() {
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.group_name_item, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         v.dialogButtonOKk.setOnClickListener{
 
             val group: String =  v.group_input.text.toString()
             if (group.isEmpty()) {
-                Toast.makeText(activity!!, "Enter group name", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), "Enter group name", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             mListener.enterGroupNameDialog(group)

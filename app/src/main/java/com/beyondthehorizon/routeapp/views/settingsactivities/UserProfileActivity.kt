@@ -38,12 +38,17 @@ import java.io.IOException
 class UserProfileActivity : AppCompatActivity() {
 
     private val TAG = "UserProfileActivity"
+    private var pref: SharedPreferences? = null
+    private var editor: SharedPreferences.Editor? = null
     val myRequestCode = 201
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
         getProfile()
+
+        pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        editor = pref!!.edit()
 
         saveUpdate.setOnClickListener {
             updateProfile()
@@ -148,7 +153,7 @@ class UserProfileActivity : AppCompatActivity() {
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
                                     .error(R.drawable.ic_user_home_page)
-                                        .placeholder(R.drawable.ic_user_home_page)
+                                    .placeholder(R.drawable.ic_user_home_page)
                                     .apply(requestOptions)
                                     .into(profile_pic)
 
@@ -225,9 +230,11 @@ class UserProfileActivity : AppCompatActivity() {
                                                     .centerCrop()
                                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                                     .skipMemoryCache(true)
-                                                    .error(R.drawable.ic_user)
-                                        .placeholder(R.drawable.ic_user)
+                                                    .error(R.drawable.ic_user_home_page)
+                                                    .placeholder(R.drawable.ic_user_home_page)
                                                     .into(profile_pic)
+                                            editor!!.putString("ProfileImage", uri.toString())
+                                            editor!!.apply()
                                             progressBar.dismiss()
                                             Toast.makeText(this@UserProfileActivity, "Profile Picture updated successfully", Toast.LENGTH_LONG).show()
 

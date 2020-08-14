@@ -18,7 +18,7 @@ class EnterPinBottomSheet : BottomSheetDialogFragment(){
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.enter_pin_transaction_pin, container, false)
-        pref = activity!!.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         //login button click of custom layout
@@ -26,7 +26,7 @@ class EnterPinBottomSheet : BottomSheetDialogFragment(){
 
             val pin: String =  v.enterPin.text.toString()
             if (pin.isEmpty()) {
-                Toast.makeText(activity!!, "Enter pin", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), "Enter pin", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             mListener.enterPinDialog(pin)
