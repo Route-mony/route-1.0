@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="12345"
+                android:hint="@string/_123456"
                 android:maxLength="6"
                 android:inputType="number"
                 android:textColor="@color/colorAccent"
