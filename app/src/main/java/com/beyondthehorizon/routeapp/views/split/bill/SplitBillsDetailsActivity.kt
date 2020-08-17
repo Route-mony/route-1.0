@@ -64,18 +64,25 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
             } else {
                 progressDialog.show()
                 splitBill(this, recipients, group, token).setCallback { e, result ->
-                    if (result.has("data")) {
-                        val message = "You have successfully created a Ksh. ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)} bill."
-                        val intent = Intent(this, FundRequestedActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra("Message", message)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Log.d("TAG", e.message.toString())
-                        Toast.makeText(this, "Request failed", Toast.LENGTH_LONG).show()
+                    try {
+                        if (result.has("data")) {
+                            val message = "You have successfully created a Ksh. ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)} bill."
+                            val intent = Intent(this, FundRequestedActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra("Message", message)
+                            startActivity(intent)
+                            finish()
+                        } else if (result.has("errors")) {
+                            Toast.makeText(this@SplitBillsDetailsActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this, "Request failed", Toast.LENGTH_LONG).show()
+                        }
+                        progressDialog.dismiss()
                     }
-                    progressDialog.dismiss()
+                    catch (ex:Exception){
+                        progressDialog.dismiss()
+                        Toast.makeText(this@SplitBillsDetailsActivity, "Invalid bill details, ensure you have entered valid amounts", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -143,6 +150,9 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
                         ))
                     }
                     usersAdapter.setContact(arrayList)
+                } else if (result.has("errors")) {
+                    Toast.makeText(this@SplitBillsDetailsActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+
                 } else {
                     Toast.makeText(this, "Unable to fetch split group", Toast.LENGTH_LONG)
                 }

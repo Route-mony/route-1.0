@@ -59,8 +59,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter
         }
-        arrayList.add(MultiContactModel("id", "Name"
-                , "Quantity", "Quantity", "Amount", is_route = false, is_selected = false))
+        arrayList.add(MultiContactModel("id", "Name", "Quantity", "Quantity", "Amount", is_route = false, is_selected = false))
         usersAdapter.setContact(arrayList)
 
         back.setOnClickListener {
@@ -101,7 +100,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         val bundle = Bundle()
         bundle.putString("personData", item)
         bundle.putString("itemPosition", itemPosition)
-        bundle.putString("title","Edit Beneficiary ")
+        bundle.putString("title", "Edit Beneficiary ")
         editSendToManyBottomSheet.arguments = bundle
         editSendToManyBottomSheet.show(supportFragmentManager, "Edit Contact");
     }
@@ -125,8 +124,9 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                 .setCallback { e, result ->
                     progressDialog.dismiss()
                     Timber.e("HAPA Error%s", " $e  res $result")
-                    if (result["status"].toString().contains("failed")) {
-                        Toast.makeText(this, result["errors"].toString(), Toast.LENGTH_LONG).show()
+                    if (result.has("errors")) {
+                        Toast.makeText(this@SendToManyActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+
                     } else
                         if (result["status"].toString().contains("success")) {
                             messagetxt = result["data"].asJsonObject.get("message").asString

@@ -99,8 +99,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Add amount eg 3,000"
                 android:paddingStart="18dp"
-                android:paddingEnd="15dp"
-                android:theme="@style/TextLabel">
+                android:paddingEnd="15dp">
 
                 <EditText
                     android:id="@+id/addAmount"

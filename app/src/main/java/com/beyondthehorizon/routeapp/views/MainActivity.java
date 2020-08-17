@@ -555,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
 
-                        if (result.get("status").toString().compareTo("\"success\"") == 0) {
+                        if (result.has("data")) {
                             Log.e(TAG, "onCompleted: " + result);
                             editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
                             editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
@@ -613,7 +613,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                         progressDialog.dismiss();
                         if (result.has("errors")) {
-                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                         } else {
                             editor.remove("ben_ref");
                             editor.apply();
@@ -635,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                                 progressDialog.dismiss();
                                 if (result.has("errors")) {
-                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                                 } else {
                                     editor.remove("ben_ref");
                                     editor.apply();
@@ -660,8 +660,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             Log.e("FundAmountActivity", result.toString());
                             progressDialog.dismiss();
                             if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this,
-                                        result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                             } else {
                                 editor.putString("Amount", amountt);
                                 editor.apply();

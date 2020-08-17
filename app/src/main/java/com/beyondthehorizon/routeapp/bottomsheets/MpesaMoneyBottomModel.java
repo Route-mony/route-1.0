@@ -97,11 +97,6 @@ public class MpesaMoneyBottomModel extends BottomSheetDialogFragment {
                     tillAmount.setError("Can not be empty");
                     return;
                 }
-//                makePayments(v,
-//                        amount,
-//                        till,
-//                        ""
-//                );
 
                 mListener.mpesaBottomSheetListener(
                         amount,
@@ -131,11 +126,6 @@ public class MpesaMoneyBottomModel extends BottomSheetDialogFragment {
                     businessAmount.setError("Can not be empty");
                     return;
                 }
-//                makePayments(v,
-//                        amount,
-//                        Businessnumber,
-//                        businessaccount
-//                );
                 mListener.mpesaBottomSheetListener(
                         amount,
                         Businessnumber,

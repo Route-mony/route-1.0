@@ -72,8 +72,8 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     // retrofitimplementation 'com.github.IslamKhSh:CardSlider:
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:2.6.0"
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //room
     implementation "androidx.room:room-runtime:$room_version"
