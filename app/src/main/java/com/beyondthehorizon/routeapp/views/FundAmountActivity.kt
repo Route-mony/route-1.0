@@ -199,7 +199,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             val transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
             val terminalId = BuildConfig.TERMINAL_ID
             val currency = "KES"
-            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${secureRandom.nextInt(10000)}"
+//            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${secureRandom.nextInt(10000)}"
+            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${((Math.random() * (upper - lower)).toInt() + lower).toString()}"
             val preauth = "1"
             val customerId = prefs.getString(USER_ID, "")
             val customerEmail = prefs.getString(USER_EMAIL, "")
