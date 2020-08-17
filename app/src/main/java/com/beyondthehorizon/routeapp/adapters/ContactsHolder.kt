@@ -12,6 +12,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_contact.view.*
+import timber.log.Timber
 
 
 class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,7 +42,7 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
                 intent.putExtra(PHONE_NUMBER, value.contact)
                 context.startActivity(intent)
             } catch (ex: Exception) {
-                Log.d("TAG", ex.message)
+                Timber.d(ex.message.toString())
             }
         }
     }

@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_sent_receipt.*
 import kotlinx.android.synthetic.main.fragment_sent_receipt.view.*
 import kotlinx.android.synthetic.main.fragment_sent_receipt.view.receivedRecycler
 import org.json.JSONObject
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -150,7 +151,7 @@ class SentReceiptFragment : Fragment() {
                 view.swipe.isRefreshing = false
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

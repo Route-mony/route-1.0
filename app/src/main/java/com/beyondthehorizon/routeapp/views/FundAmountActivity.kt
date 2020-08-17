@@ -28,6 +28,7 @@ import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.activity_fund_amount.*
 import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -149,9 +150,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
             } else if (transactionType.compareTo(SEND_MONEY) == 0) {
                 if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0) {
-                    phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                    phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = " ${phone}"
+                    binding.requestTitle.text = " $phone"
                     binding.requestType.text = "Send To : "
 
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0) {
@@ -173,12 +174,12 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
                 binding.requestType.visibility = View.GONE
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
-                phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
                 binding.requestTitle.text = "${phone}"
                 binding.requestType.text = "Pay From : "
                 binding.btnRequest.text = "PAY"
             } else if (transactionType.compareTo(BUY_AIRTIME) == 0) {
-                phone = parentIntent.getStringExtra(PHONE_NUMBER)
+                phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
                 request_title.text = phone
                 requestType.text = "Buy For: "
                 btn_request.text = "Buy Airtime"
@@ -209,7 +210,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
             try {
                 val merchant = Merchant(merchantId, domain);
-                val payment = Payment(amount, transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
                 payment.setPreauth(preauth)
                 val customer = Customer(customerId)
                 customer.setEmail(customerEmail)
@@ -255,10 +256,10 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         val country = parentIntent.getStringExtra(COUNTRY)
                         val cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
                         val expDate = parentIntent.getStringExtra(EXPIRY_DATE)
-                        val expYear = expDate.substring(3, 5)
+                        val expYear = expDate!!.substring(3, 5)
                         val expMonth = expDate.substring(0, 2)
                         val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
-                        cardStatus = parentIntent.getStringExtra(CARD_STATUS)
+                        cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
                         val card = Card(cardNumber, cvvNumber, expYear, expMonth);
                         lateinit var mobPay: MobPay;
 
@@ -294,7 +295,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                                     Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                                                 }
                                             } catch (ex: Exception) {
-                                                Log.d("INTERSWITCH_MESSAGE", ex.message)
+                                                Timber.d(ex.message.toString())
                                             }
                                         }
                             }
@@ -309,7 +310,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
                         }, {
                             progressBar.dialog.dismiss()
-                            Log.d("INTERSWITCH_MESSAGE", it.message)
+                            Timber.d(it.message.toString())
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
                         });
 
@@ -354,7 +355,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             //TODO: Call the api to purchase airtime with the required parameters
 
                             //Dummy setup
-                            val transactionMessage = "You have successfully purchased Ksh. ${amount} of airtime for ${phone}"
+                            val transactionMessage = "You have successfully purchased Ksh. $amount of airtime for $phone"
                             intent.putExtra("Message", transactionMessage)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)

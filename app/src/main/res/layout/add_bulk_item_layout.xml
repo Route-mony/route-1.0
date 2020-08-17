@@ -40,43 +40,37 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Item Name/Request Reason"
-                android:theme="@style/TextLabel">
+                android:hint="Item Name/Request Reason">
 
                 <EditText
                     android:id="@+id/itemName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:theme="@style/TextLabel" />
+                    android:inputType="textMultiLine|textCapSentences"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Item Quantity (optional)"
-                android:theme="@style/TextLabel">
+                android:hint="Item Quantity (optional)">
 
                 <EditText
                     android:id="@+id/itemQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:theme="@style/TextLabel" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Unit Price eg 2000"
-                android:theme="@style/TextLabel">
+                android:hint="Unit Price eg 2000">
 
                 <EditText
                     android:id="@+id/itemAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:theme="@style/TextLabel" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

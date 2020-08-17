@@ -18,6 +18,7 @@ import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_split_bills_details.*
+import timber.log.Timber
 import java.lang.Boolean.FALSE
 import java.lang.reflect.Type
 import java.text.DecimalFormat
@@ -105,7 +106,7 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
             val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
             arrayList = gson.fromJson(prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""), type)
 
-            Log.e("NOWNOW", prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""))
+            Timber.e(prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""))
             usersAdapter.setContact(arrayList)
         } catch (ex: java.lang.Exception) {
             Toast.makeText(this, ex.message.toString(), Toast.LENGTH_LONG).show()

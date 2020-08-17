@@ -20,6 +20,7 @@ import com.beyondthehorizon.routeapp.databinding.FragmentSentNotificationBinding
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.google.gson.JsonElement
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -99,7 +100,7 @@ class ReceivedNotificationFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

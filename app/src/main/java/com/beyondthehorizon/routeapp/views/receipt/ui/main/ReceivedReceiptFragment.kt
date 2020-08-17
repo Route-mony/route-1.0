@@ -19,6 +19,7 @@ import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.fragment_received_receipt.*
 import kotlinx.android.synthetic.main.fragment_received_receipt.view.*
 import org.json.JSONObject
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -151,7 +152,7 @@ class ReceivedReceiptFragment : Fragment() {
                 view.swipe.isRefreshing = false
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

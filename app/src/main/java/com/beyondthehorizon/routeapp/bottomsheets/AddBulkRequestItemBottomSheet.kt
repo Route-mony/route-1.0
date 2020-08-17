@@ -25,12 +25,9 @@ import kotlinx.android.synthetic.main.add_bulk_item_layout.view.*
 class AddBulkRequestItemBottomSheet : BottomSheetDialogFragment() {
     private lateinit var mListener: AddBulkRequestItemBottomSheetListener
     private lateinit var pref: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.add_bulk_item_layout, container, false)
         pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
-        editor = pref!!.edit()
-
         //login button click of custom layout
         v.dialogAddBtn.setOnClickListener {
             //dismiss dialog
@@ -58,21 +55,6 @@ class AddBulkRequestItemBottomSheet : BottomSheetDialogFragment() {
 
             mListener.addNewBulkRequestItem(arrayList, arrayListJson)
             dismiss()
-//            if (arrayList.size > 1) {
-////                    val newArray = Arrays.copyOfRange(arrayList, 1, arrayList.size - 1);
-//                for (bulkyRequestModel: BulkyRequestModel in arrayList.subList(1, arrayList.size)) {
-//                    amountTotal += bulkyRequestModel.amount.toInt() * bulkyRequestModel.quantity.toInt()
-//                    Log.e("NAHAPA", amountTotal.toString())
-//                }
-//                totals.text = amountTotal.toString()
-//                totalCard.visibility = View.VISIBLE
-//                emptyList.visibility = View.GONE
-//            }
-//                else if (arrayList.size == 2) {
-//                    totals.text = arrayList.get(1).amount
-//                    totalCard.visibility = View.VISIBLE
-//
-//                }
 
         }
         return v;

@@ -21,6 +21,7 @@ import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationsBinding
@@ -75,7 +76,7 @@ class NotificationActivity : AppCompatActivity() {
             try {
                 loadRequests("received")
             } catch (e: Exception) {
-                Log.d("TAG", e.message)
+                Timber.d(e.message.toString())
             }
         }
 
@@ -86,7 +87,7 @@ class NotificationActivity : AppCompatActivity() {
             try {
                 loadRequests("sent")
             } catch (e: Exception) {
-                Log.d("TAG", e.message)
+                Timber.d(e.message.toString())
             }
         }
 
@@ -143,7 +144,7 @@ class NotificationActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

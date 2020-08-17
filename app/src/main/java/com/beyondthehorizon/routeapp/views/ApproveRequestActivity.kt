@@ -21,6 +21,7 @@ import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 
 class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, EnterReasonBottomSheet.EnterReasonBottomSheetListener {
     private lateinit var binding: ActivityApproveRequestBinding
@@ -101,7 +102,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
             binding.status.setTextColor(Color.parseColor(color[statusIcon]))
 
         } catch (ex: Exception) {
-            Log.d("TAG", ex.message)
+            Timber.d(ex.message.toString())
         }
 
         binding.btnApprove.setOnClickListener {
@@ -147,7 +148,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                 }
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 
@@ -170,7 +171,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
 
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

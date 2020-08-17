@@ -15,6 +15,7 @@ import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 
 class RequestReminderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRequestReminderBinding
@@ -80,7 +81,7 @@ class RequestReminderActivity : AppCompatActivity() {
             }
 
         } catch (ex: Exception) {
-            Log.d("TAG", ex.message)
+            Timber.d(ex.message.toString())
         }
 
         binding.btnRemind.setOnClickListener {

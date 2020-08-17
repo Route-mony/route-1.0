@@ -133,7 +133,6 @@ class ReceiptAdapter(private val context: Context,
                 receipt_status.text = "Status: ${invite.status}"
             }
             receiptModel = invite
-            val img = invite.image
 
             Glide.with(context)
                     .load(invite.image)

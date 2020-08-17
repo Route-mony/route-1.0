@@ -18,6 +18,7 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.fragment_cash_out.*
 import org.json.JSONObject
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -108,7 +109,7 @@ class CashOutFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("TAG", e.message)
+            Timber.d(e.message.toString())
         }
     }
 }

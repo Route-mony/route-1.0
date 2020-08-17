@@ -11,6 +11,7 @@ import com.beyondthehorizon.routeapp.views.ApproveRequestActivity
 import com.beyondthehorizon.routeapp.views.RequestReminderActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_notification.view.*
+import timber.log.Timber
 
 
 class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -67,8 +68,8 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 intent.putExtra("Phone", phone)
                 context.startActivity(intent)
             }
-            catch (ex: Exception){
-                Log.d("TAG", ex.message)
+            catch (ex: Exception) {
+                Timber.d(ex.message.toString())
             }
         }
     }

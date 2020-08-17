@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:hint="Enter your pin"
-            android:theme="@style/TextLabel"
             app:passwordToggleEnabled="true">
 
             <EditText

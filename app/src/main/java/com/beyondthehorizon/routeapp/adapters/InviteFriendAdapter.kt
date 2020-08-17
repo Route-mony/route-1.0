@@ -135,7 +135,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
         val gson = Gson()
 
         private val transactionModel: TransactionModel = gson.fromJson<TransactionModel>(pref.getString(Constants.TRANSACTION_DETAILS, ""),
-                TransactionModel::class.java!!)
+                TransactionModel::class.java)
         private val progressBar = ProgressDialog(context)
 
         init {
@@ -170,7 +170,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
 
 
                 // Set a positive button and its click listener on alert dialog
-                builder2.setPositiveButton("Ok") { dialog2, which ->
+                builder2.setPositiveButton("Ok") { dialog2, _ ->
 
                     Log.e("InviteFriendAdapter", transactionModel.withdrawn)
                     postUserReceipt(context, token, pref.getString(SHARE_RECEIPT_TITLE, ""),
@@ -187,7 +187,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
                             builder.setMessage(result.get("data").asJsonObject.get("message").asString)
 
                             // Set a positive button and its click listener on alert dialog
-                            builder.setPositiveButton("Ok") { dialog, which ->
+                            builder.setPositiveButton("Ok") { dialog, _ ->
                                 // Do something when user press the positive button
                                 editor.remove(SHARE_RECEIPT_TO_ID)
                                 editor.remove(SHARE_RECEIPT_TITLE)
@@ -210,7 +210,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
                             // Display a message on alert dialog
                             builder.setMessage("Something went Wrong, Try again")
                             // Set a positive button and its click listener on alert dialog
-                            builder.setPositiveButton("Ok") { dialog, which ->
+                            builder.setPositiveButton("Ok") { dialog, _ ->
                                 // Do something when user press the positive button
                                 dialog.dismiss()
                                 dialog2.dismiss()
@@ -223,7 +223,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
 
                     }
                 }
-                builder2.setNegativeButton("No") { dialog, which ->
+                builder2.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
 // Finally, make the alert dialog using builder

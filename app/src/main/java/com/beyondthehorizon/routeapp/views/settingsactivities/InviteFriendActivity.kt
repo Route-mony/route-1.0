@@ -39,7 +39,7 @@ class InviteFriendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite_friend)
 
-        val requestType = intent.getStringExtra("TYPE")
+        val requestType = intent.getStringExtra("TYPE").toString()
         if (requestType.contains("SHARE")) {
             header2.visibility = View.GONE
             inner_txt.visibility = View.GONE
@@ -182,7 +182,7 @@ class InviteFriendActivity : AppCompatActivity() {
         phones.close()
 
         var idList = ArrayList<String>()
-        val requestType = intent.getStringExtra("TYPE")
+        val requestType = intent.getStringExtra("TYPE").toString()
         if (result != null) {
             for (item: JsonElement in result) {
 

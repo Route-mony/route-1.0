@@ -20,6 +20,7 @@ import com.beyondthehorizon.routeapp.utils.Constants.RECYCLER_SECTION
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.fragment_received.*
 import org.json.JSONObject
+import timber.log.Timber
 
 
 /**
@@ -108,7 +109,7 @@ class ReceivedFragment : Fragment() {
 //                    }
                 }
             } catch (e: Exception) {
-                Log.d("TAG", e.message)
+                Timber.d(e.message.toString())
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }

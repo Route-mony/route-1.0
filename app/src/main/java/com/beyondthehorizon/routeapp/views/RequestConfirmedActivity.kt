@@ -14,6 +14,7 @@ import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 import java.lang.Exception
 
 class RequestConfirmedActivity : AppCompatActivity() {
@@ -55,8 +56,8 @@ class RequestConfirmedActivity : AppCompatActivity() {
                 startActivity(Intent(this, NotificationsActivity::class.java))
             }
         }
-        catch (e: Exception){
-            Log.d("TAG", e.message)
+        catch (e: Exception) {
+            Timber.d(e.message.toString())
         }
     }
 }
