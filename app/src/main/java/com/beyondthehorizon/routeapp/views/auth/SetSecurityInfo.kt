@@ -101,7 +101,7 @@ class SetSecurityInfo : AppCompatActivity() {
                                         progressBar.dialog.dismiss()
                                         Toast.makeText(this, result.get("errors").asString, Toast.LENGTH_LONG).show()
                                         label.setTextColor(Color.parseColor("#FA0505"))
-                                    } else {
+                                    } else if(result.has("data")){
 //                                        label.text = "Pin Verified"
                                         Toast.makeText(this, result.get("data").asJsonObject.get("message").asString, Toast.LENGTH_LONG).show()
                                         label.setTextColor(Color.parseColor("#40CA08"))
@@ -110,6 +110,12 @@ class SetSecurityInfo : AppCompatActivity() {
                                         progressBar.dialog.dismiss()
                                         startActivity(intent)
                                         this@SetSecurityInfo.finish()
+                                    }
+                                    else{
+                                        Toast.makeText(this, "Account not found, please login", Toast.LENGTH_LONG).show()
+                                        editor.clear()
+                                        editor.apply()
+                                        startActivity(Intent(this@SetSecurityInfo, LoginActivity::class.java))
                                     }
                                 }
                     } else {

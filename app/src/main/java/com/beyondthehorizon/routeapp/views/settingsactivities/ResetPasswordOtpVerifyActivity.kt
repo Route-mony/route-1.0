@@ -47,7 +47,7 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
     fun verifyOTP(otp: String) {
         val progressBar = CustomProgressBar()
         try {
-            if (otp.toString().length == 6) {
+            if (otp.length == 6) {
                 var intent = Intent(this, NewPasswordActivity::class.java)
                 var email = otpIntent.getStringExtra("Email")
                 prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)

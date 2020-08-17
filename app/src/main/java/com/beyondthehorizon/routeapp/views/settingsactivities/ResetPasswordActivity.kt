@@ -36,8 +36,8 @@ class ResetPasswordActivity : AppCompatActivity() {
                         if (result.has("data")) {
                             intent.putExtra("Email", email)
                             startActivity(intent)
-                        } else {
-                            Toast.makeText(this, "This email is not yet registered", Toast.LENGTH_LONG).show();
+                        } else if(result.has("errors")){
+                            Toast.makeText(this, result.get("errors").asJsonArray.get(1).asString, Toast.LENGTH_LONG).show()
                         }
                     }
                 } else {

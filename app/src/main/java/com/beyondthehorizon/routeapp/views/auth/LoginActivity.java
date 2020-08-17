@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void prevPage(View view) {
-        onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
