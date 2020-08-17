@@ -8,14 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.databinding.ActivityOtpVerifyBinding
-import com.beyondthehorizon.routeapp.utils.Common.OTPListener
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
-import com.beyondthehorizon.routeapp.utils.SMSListener
-import com.beyondthehorizon.routeapp.views.FundRequestedActivity
-import com.beyondthehorizon.routeapp.views.auth.LoginActivity
-import com.firebase.ui.auth.ui.email.EmailActivity
-
 
 class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpVerifyBinding
@@ -28,12 +22,6 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_otp_verify)
         routeOTP = binding.otpCode.text.toString();
         otpIntent = getIntent()
-        SMSListener().bindListener(object : OTPListener {
-            override fun onOTPReceived(extractedOTP: String) {
-                routeOTP = extractedOTP
-                verifyOTP(extractedOTP)
-            }
-        })
 
         binding.next.setOnClickListener {
             val otp = binding.otpCode.text.toString()
@@ -71,14 +59,5 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
         } catch (ex: Exception) {
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG)
         }
-    }
-
-    fun getOTP(): String {
-        return routeOTP;
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        SMSListener().unbindListener()
     }
 }
