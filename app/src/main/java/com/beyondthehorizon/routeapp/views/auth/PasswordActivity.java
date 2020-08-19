@@ -3,14 +3,19 @@ package com.beyondthehorizon.routeapp.views.auth;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
@@ -21,11 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.Util;
 import com.koushikdutta.async.future.FutureCallback;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.FirstName;
 import static com.beyondthehorizon.routeapp.utils.Constants.ID_NUMBER;
@@ -47,10 +48,13 @@ public class PasswordActivity extends AppCompatActivity {
     private RelativeLayout R11;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private CheckBox checkBox;
+    private TextView tvPrivacyPolicy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_password);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
@@ -63,22 +67,30 @@ public class PasswordActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         c_password = findViewById(R.id.c_password);
         back = findViewById(R.id.back);
+        checkBox = findViewById(R.id.chkPrivacyPolicy);
+        tvPrivacyPolicy = findViewById(R.id.tvPrivacyPolicy);
+
+        tvPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void nextPage(View view) {
         String Password = password.getText().toString().trim();
         String CPassword = c_password.getText().toString().trim();
-        if(Password.isEmpty()){
+        if (Password.isEmpty()) {
             password.setError("Please enter your password");
             return;
         }
-        if(!Utils.passwordValidator(Password)){
+        if (!Utils.passwordValidator(Password)) {
             password.setError(Utils.invalidPasswordMessage());
             return;
         }
@@ -88,6 +100,11 @@ public class PasswordActivity extends AppCompatActivity {
         }
         if (!(Password.compareTo(CPassword) == 0)) {
             Toast.makeText(PasswordActivity.this, "Password doesn't match", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!checkBox.isChecked()) {
+            checkBox.setButtonTintList(getColorStateList(R.color.view_color_red));
+            Toast.makeText(this, "Please accept Route Privacy Policy", Toast.LENGTH_LONG).show();
             return;
         }
         editor.putString(USER_PASSWORD, Password);

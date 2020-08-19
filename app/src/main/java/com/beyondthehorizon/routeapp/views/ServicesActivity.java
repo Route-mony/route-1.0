@@ -16,6 +16,7 @@ import com.beyondthehorizon.routeapp.adapters.SliderAdapter;
 import com.beyondthehorizon.routeapp.models.Adverts;
 import com.beyondthehorizon.routeapp.utils.Constants;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
+import com.beyondthehorizon.routeapp.views.auth.PasswordActivity;
 import com.beyondthehorizon.routeapp.views.auth.UserNamesActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 import com.google.gson.JsonArray;
