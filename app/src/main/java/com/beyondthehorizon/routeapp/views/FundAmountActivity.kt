@@ -319,6 +319,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         try {
                             var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
                             var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
+                            val merchant = Merchant(merchantId, domain);
+                            val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "MMO", currency, orderId)
+                            payment.setPreauth(preauth)
                             var mobPay: MobPay
                             mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
                             progressBar.show(this, "Processing payment...")
