@@ -2,14 +2,12 @@ package com.beyondthehorizon.routeapp.views
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils.substring
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
-import com.beyondthehorizon.routeapp.databinding.ActivityConfirmFundRequestBinding
 import com.beyondthehorizon.routeapp.databinding.ActivityFundRequestedBinding
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
@@ -20,7 +18,6 @@ import com.beyondthehorizon.routeapp.views.settingsactivities.PasswordAndPinActi
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import java.lang.Exception
 
 
 class FundRequestedActivity : AppCompatActivity() {
@@ -75,10 +72,9 @@ class FundRequestedActivity : AppCompatActivity() {
                 binding.btnDone.visibility = View.GONE
                 binding.btnNewRequest.visibility = View.GONE
                 binding.arrowBack.setOnClickListener {
-                    super.onBackPressed()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
-            }
-            else if (activity != null && activity.compareTo(RESET_PASSWORD_ACTIVITY) == 0) {
+            } else if (activity != null && activity.compareTo(RESET_PASSWORD_ACTIVITY) == 0) {
                 binding.btnDone.visibility = View.GONE
                 binding.btnNewRequest.visibility = View.GONE
                 binding.arrowBack.setOnClickListener {
@@ -87,8 +83,7 @@ class FundRequestedActivity : AppCompatActivity() {
                     startActivity(intent)
                     this@FundRequestedActivity.finish()
                 }
-            }
-            else if (activity != null && activity.compareTo(RESET_PIN_ACTIVITY) == 0) {
+            } else if (activity != null && activity.compareTo(RESET_PIN_ACTIVITY) == 0) {
                 binding.btnDone.visibility = View.GONE
                 binding.btnNewRequest.visibility = View.GONE
                 binding.arrowBack.setOnClickListener {
@@ -97,8 +92,7 @@ class FundRequestedActivity : AppCompatActivity() {
                     startActivity(intent)
                     this@FundRequestedActivity.finish()
                 }
-            }
-            else {
+            } else {
                 binding.btnDone.setOnClickListener {
                     val intent = Intent(Intent(this, MainActivity::class.java))
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

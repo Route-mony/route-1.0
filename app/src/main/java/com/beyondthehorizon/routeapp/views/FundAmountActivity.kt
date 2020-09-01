@@ -200,8 +200,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             val transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
             val terminalId = BuildConfig.TERMINAL_ID
             val currency = "KES"
-//            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${secureRandom.nextInt(10000)}"
-            val orderId = "${BuildConfig.ORDER_ID_PREFIX}${((Math.random() * (upper - lower)).toInt() + lower).toString()}"
+            val walletAccount = prefs.getString(WALLET_ACCOUNT, "")
+            val orderId = "${BuildConfig.ORDER_ID_PREFIX}$walletAccount"
             val preauth = "1"
             val customerId = prefs.getString(USER_ID, "")
             val customerEmail = prefs.getString(USER_EMAIL, "")
@@ -227,7 +227,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     transactionType.compareTo(REQUEST_MONEY) == 0 -> {
                         editor.putString("Amount", amount)
                         editor.apply()
-        //                    startActivity(childIntent)
+                        //                    startActivity(childIntent)
                         if (binding.requestNarration.text.toString().trim().isEmpty()) {
                             Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
                             return@setOnClickListener
@@ -241,13 +241,13 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 intent.putExtra("Message", message)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
-                            } else {
-                                Toast.makeText(this, "User not registered or haven't confirmed their email", Toast.LENGTH_LONG).show();
+                            } else if(result.has("errors")){
+                                Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
                     transactionType.compareTo(SEND_MONEY) == 0 -> {
-        //                    showSendMoneyDialog()
+                        //                    showSendMoneyDialog()
                         val enterPinBottomSheet = EnterPinBottomSheet()
                         enterPinBottomSheet.show(supportFragmentManager, "Enter Pin")
 
@@ -322,8 +322,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             val merchant = Merchant(merchantId, domain);
                             val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "MMO", currency, orderId)
                             payment.setPreauth(preauth)
-                            var mobPay: MobPay
-                            mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
+                            var mobPay: MobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
                             progressBar.show(this, "Processing payment...")
                             mobPay.makeMobileMoneyPayment(
                                     mobile,
@@ -495,7 +494,16 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     Log.e("FundAmountActivity", result.toString())
                     progressBar.dialog.dismiss()
                     if (result.has("errors")) {
-                        Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
+                        try {
+                            if (result.get("errors").asJsonObject.has("error")) {
+                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.get("error").asString, Toast.LENGTH_LONG).show()
+                                return@setCallback
+                            }
+                            Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
+                        }
+                        catch (ex:Exception){
+                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         editor.putString("Amount", amount)
                         editor.apply()

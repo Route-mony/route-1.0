@@ -26,6 +26,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
+import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_ACCOUNT;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -94,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 String email = result.get("data").getAsJsonObject().get("email").getAsString();
                                 String token = result.get("data").getAsJsonObject().get("token").getAsString();
-
                                 editor.putString(LOGGED_IN, "true");
                                 editor.putString(USER_EMAIL, email);
                                 editor.putString(USER_TOKEN, token);

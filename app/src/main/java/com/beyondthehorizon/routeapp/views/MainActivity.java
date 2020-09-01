@@ -85,6 +85,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.TRANSACTIONS_PIN;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
+import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_ACCOUNT;
 import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
@@ -432,8 +433,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     String name = result.get("data").getAsJsonObject().get("username").getAsString();
 
                                     String wallet_balance = "0";
+                                    String wallet_account = "";
                                     if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
                                         wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
+                                         wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
                                     }
                                     String username = "Hey " + name;
                                     String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
@@ -466,6 +469,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     editor.putString(UserName, name);
                                     editor.putString(MyPhoneNumber, phone);
                                     editor.putString(CARDS, cards);
+                                    editor.putString(WALLET_ACCOUNT, wallet_account);
                                     editor.apply();
 
                                     getServiceProviders();

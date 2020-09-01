@@ -49,6 +49,7 @@ public class Constants {
 
     public static final String LOAD_WALLET_FROM_CARD = "LOAD_WALLET_FROM_CARD";
     public static final String LOAD_WALLET_FROM_MPESA = "LOAD_WALLET_FROM_MPESA";
+    public static final String WALLET_ACCOUNT = "WALLET_ACCOUNT";
     public static final String CARD_NUMBER = "CARD_NUMBER";
     public static final String EXPIRY_DATE = "EXPIRY_DATE";
     public static final String CVV_NUMBER = "CVV_NUMBER";
