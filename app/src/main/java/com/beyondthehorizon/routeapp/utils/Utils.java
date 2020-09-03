@@ -1,20 +1,33 @@
 package com.beyondthehorizon.routeapp.utils;
 
-import android.util.Log;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import timber.log.Timber;
 
+import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.routeapp.utils.Constants.getWalletBalance;
+
 public class Utils {
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Context context;
 
-    private Utils() {
-
+    public Utils(Context context) {
+        this.context = context;
+        this.pref = context.getSharedPreferences(REG_APP_PREFERENCES, 0);
+        this.editor = pref.edit();
     }
+
     public static boolean isPhoneNumberValid(String phoneNumber, String countryCode) {
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         boolean result = false;
@@ -55,7 +68,20 @@ public class Utils {
         return EMAIL_REGEX.matcher(email.trim()).matches();
     }
 
-    public static String invalidPasswordMessage(){
+    public static String invalidPasswordMessage() {
         return "Password must be between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character";
+    }
+
+    public void loadWalletBalance(String token) {
+        getWalletBalance(context, token)
+                .setCallback((e, result) -> {
+                    if (result.has("data")) {
+                        String balance = result.get("data").getAsJsonObject().get("wallet").getAsJsonObject().get("available_balance").getAsString();
+                        editor.putString(WALLET_BALANCE, balance);
+                        editor.commit();
+                    } else {
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

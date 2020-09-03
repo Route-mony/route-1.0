@@ -1,14 +1,11 @@
 package com.beyondthehorizon.routeapp.views
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,6 +15,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
 import com.beyondthehorizon.routeapp.views.settingsactivities.SettingsActivity
@@ -25,7 +23,6 @@ import com.beyondthehorizon.routeapp.views.transactions.main.TransactionsActivit
 import com.interswitchgroup.mobpaylib.MobPay
 import com.interswitchgroup.mobpaylib.model.*
 import kotlinx.android.synthetic.main.activity_fund_amount.*
-import kotlinx.android.synthetic.main.enter_pin_transaction_pin.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 import timber.log.Timber
 import java.security.SecureRandom
@@ -47,11 +44,13 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private lateinit var cardStatus: String
     private lateinit var phone: String
     private lateinit var token: String
+    private lateinit var util: Utils
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
+        util = Utils(this)
 
         btn_home.setOnClickListener {
             val intent = Intent(this@FundAmountActivity, MainActivity::class.java)
@@ -246,70 +245,83 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         }
                     }
                     transactionType.compareTo(SEND_MONEY) == 0 -> {
-                        //                    showSendMoneyDialog()
                         val enterPinBottomSheet = EnterPinBottomSheet()
                         enterPinBottomSheet.show(supportFragmentManager, "Enter Pin")
 
                     }
+
+                    /**
+                     * LOAD WALLET FROM DEBIT CARD
+                     */
                     transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 -> {
-                        val country = parentIntent.getStringExtra(COUNTRY)
-                        val cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
-                        val expDate = parentIntent.getStringExtra(EXPIRY_DATE)
-                        val expYear = expDate!!.substring(3, 5)
-                        val expMonth = expDate.substring(0, 2)
-                        val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
-                        cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
-                        val card = Card(cardNumber, cvvNumber, expYear, expMonth)
+                        try {
+                            val country = parentIntent.getStringExtra(COUNTRY)
+                            val cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
+                            val expDate = parentIntent.getStringExtra(EXPIRY_DATE)
+                            val expYear = expDate!!.substring(3, 5)
+                            val expMonth = expDate.substring(0, 2)
+                            val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
+                            cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
+                            val card = Card(cardNumber, cvvNumber, expYear, expMonth)
+                            val config = MobPay.Config();
+                            val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
+                            progressBar.show(this, "Processing payment...")
+                            mobPay.makeCardPayment(
+                                    card,
+                                    merchant,
+                                    payment,
+                                    customer, {
+                                Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
+                                if (cardStatus.compareTo(NEW_CARD) == 0) {
+                                    progressBar.show(this, "Updating route ...")
+                                    addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
+                                            .setCallback { e, result ->
+                                                progressBar.dialog.dismiss()
+                                                try {
+                                                    if (result != null) {
+                                                        if (result.has("errors")) {
+                                                            var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
+                                                            Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
+                                                        } else {
+                                                            transactionMessage = result.get("data").asJsonObject.get("message").asString
+                                                            Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
+                                                        }
 
-                        val config = MobPay.Config();
-                        val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
-
-                        mobPay.makeCardPayment(
-                                card,
-                                merchant,
-                                payment,
-                                customer, {
-                            Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
-
-                            if (cardStatus.compareTo(NEW_CARD) == 0) {
-                                progressBar.show(this, "Updating route ...")
-                                addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
-                                        .setCallback { e, result ->
-                                            progressBar.dialog.dismiss()
-                                            try {
-                                                if (result != null) {
-                                                    if (result.has("errors")) {
-                                                        var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
-                                                        Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
-                                                    } else {
-                                                        transactionMessage = result.get("data").asJsonObject.get("message").asString
-                                                        Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
+                                                    } else if (e != null) {
+                                                        Log.d("INTERSWITCH_MESSAGE", e.toString())
+                                                        Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                                                     }
-
-                                                } else if (e != null) {
-                                                    Log.d("INTERSWITCH_MESSAGE", e.toString())
-                                                    Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                                                } catch (ex: Exception) {
+                                                    Timber.d(ex.message.toString())
                                                 }
-                                            } catch (ex: Exception) {
-                                                Timber.d(ex.message.toString())
                                             }
-                                        }
-                            }
-                            transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
-                            val intent = Intent(this, FundRequestedActivity::class.java)
-                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
-                            editor.apply()
-                            intent.putExtra("Message", transactionMessage)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
-                            startActivity(intent)
+                                }
+                                //Load wallet balance from ISW
+                                util.loadWalletBalance(token)
 
-                        }, {
-                            Timber.d(it.message.toString())
-                            Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
-                        });
+                                transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                                val intent = Intent(this, FundRequestedActivity::class.java)
+                                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                                editor.apply()
+                                intent.putExtra("Message", transactionMessage)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
+                                startActivity(intent)
 
+                            }, {
+                                progressBar.dialog.dismiss()
+                                Timber.d(it.message.toString())
+                                Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
+                            });
+                        } catch (e: Exception) {
+                            progressBar.dialog.dismiss()
+                            Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
+                        }
                     }
+
+                    /**
+                     * LOAD WALLET FROM MPESA
+                     */
                     transactionType.compareTo(MOBILE_TRANSACTION) == 0 -> {
                         try {
                             var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
@@ -325,9 +337,13 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                     payment,
                                     customer, {
                                 progressBar.dialog.dismiss()
+
+                                //Load wallet balance from ISW
+                                util.loadWalletBalance(token)
+
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
-                                transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                                transactionMessage = "Ksh. $amount was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}"
                                 val intent = Intent(this, FundRequestedActivity::class.java)
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
@@ -342,6 +358,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
                             })
                         } catch (e: Exception) {
+                            progressBar.dialog.dismiss()
                             Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                         }
                     }
@@ -387,76 +404,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         return format.format(amt.toInt())
     }
 
-    private fun showSendMoneyDialog() {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        val viewGroup = findViewById<ViewGroup>(android.R.id.content)
-
-        //then we will inflate the custom alert dialog xml that we created
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.enter_pin_transaction_pin, viewGroup, false)
-        //Now we need an AlertDialog.Builder object
-        val builder = AlertDialog.Builder(this)
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView)
-        //finally creating the alert dialog and displaying it
-        val alertDialog = builder.create()
-        alertDialog.show()
-
-        // val pin: String = enterPin.text.toString()
-        var account = ""
-        var provider = ""
-
-        dialogView.dialogButtonPin.setOnClickListener {
-
-            val pin: String = dialogView.enterPin.text.toString()
-            if (pin.isEmpty()) {
-                Toast.makeText(this@FundAmountActivity, "Enter pin", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-            when {
-                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-//                    account = parentIntent.getStringExtra(PHONE_NUMBER)
-                    account = prefs.getString(PHONE_NUMBER, "").toString()
-                    provider = "MPESA WALLET"
-                }
-                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0 -> {
-                    account = prefs.getString("bankAcNumber", "").toString()
-                    provider = prefs.getString("chosenBank", "").toString()
-                }
-                prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0 -> {
-                    account = prefs.getString("walletAccountNumber", "").toString()
-                    provider = "ROUTEWALLET"
-                }
-            }
-
-            Log.e("FundAmountActivity", "$account P $provider")
-            if (account.isEmpty()) {
-                Toast.makeText(this@FundAmountActivity, "User not registered or haven't verified their email", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-
-            val progressBar = CustomProgressBar()
-            progressBar.show(this, "Please Wait...")
-            sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
-                    .setCallback { e, result ->
-                        Log.e("FundAmountActivity", result.toString())
-                        progressBar.dialog.dismiss()
-                        if (result.has("errors")) {
-                            Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
-                        } else {
-                            editor.putString("Amount", amount)
-                            editor.apply()
-                            val message = result.get("data").asJsonObject.get("message").asString
-                            val intent = Intent(this, FundRequestedActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.putExtra("Message", message)
-                            startActivity(intent)
-                            alertDialog.dismiss()
-                            finish()
-                        }
-                    }
-        }
-    }
-
     override fun enterPinDialog(pin: String) {
         var account = ""
         var provider = ""
@@ -476,7 +423,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             }
         }
 
-        Log.e("FundAmountActivity", "$account P $provider")
         if (account.isEmpty()) {
             Toast.makeText(this@FundAmountActivity, "User not registered or haven't verified their email", Toast.LENGTH_LONG).show()
             return
@@ -486,7 +432,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         progressBar.show(this, "Please Wait...")
         sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
                 .setCallback { e, result ->
-                    Log.e("FundAmountActivity", result.toString())
+                    Timber.e(result.toString())
                     progressBar.dialog.dismiss()
                     if (result.has("errors")) {
                         try {
@@ -509,5 +455,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         finish()
                     }
                 }
+    }
+
+    companion object {
+        private val TAG = this.javaClass.simpleName;
     }
 }

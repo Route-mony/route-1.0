@@ -131,7 +131,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rout_bold"
                     android:text="KES 0"
-
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
                     android:textStyle="bold"

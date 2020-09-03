@@ -37,6 +37,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
 import com.beyondthehorizon.routeapp.databases.NotificationCount;
 import com.beyondthehorizon.routeapp.models.MultiContactModel;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.viewmodels.RoutViewModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
 import com.beyondthehorizon.routeapp.views.auth.SetTransactionPinActivity;
@@ -68,6 +69,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static com.beyondthehorizon.routeapp.utils.Constants.BALANCE_CHECK;
 import static com.beyondthehorizon.routeapp.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.routeapp.utils.Constants.CARDS;
@@ -86,6 +89,8 @@ import static com.beyondthehorizon.routeapp.utils.Constants.USER_ID;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
 import static com.beyondthehorizon.routeapp.utils.Constants.UserName;
 import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_ACCOUNT;
+import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.routeapp.utils.Constants.getWalletBalance;
 import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
@@ -102,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
     private Animation moveUp;
+    private String token;
+    private Utils util;
     private RoutViewModel routViewModel;
     public static final int REQUEST_READ_CONTACTS = 243;
 
@@ -110,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         super.onCreate(savedInstanceState);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
+        token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
+        util = new Utils(this);
         setContentView(R.layout.activity_main);
 
         btn_home = findViewById(R.id.btn_home);
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_send_to_many = findViewById(R.id.btn_request4);
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
         notifCount = findViewById(R.id.notifCount);
-
+        balance_value.setVisibility(View.GONE);
         btn_home.setImageResource(R.drawable.ic_nav_home);
         txt_home.setTextColor(getResources().getColor(R.color.colorButton));
 
@@ -292,8 +301,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         try {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
-            }
-            else{
+            } else {
                 loadContacts();
             }
         } catch (Exception e) {
@@ -343,8 +351,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         }
         Gson gson = new Gson();
         String json = gson.toJson(myContactsList);
-        String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
-
         Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -404,9 +410,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void getProfile() {
-        String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
-
-        Log.d(TAG, "getProfile: " + token);
+        Timber.d("getProfile: " + token);
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -416,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         progressDialog.dismiss();
-                        Log.e(TAG, "getUserProfile: " + result);
+                        Timber.e("getUserProfile: " + result);
                         if (result != null) {
 
                             if (result.get("status").toString().contains("failed")) {
@@ -427,16 +431,17 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.apply();
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
-                                try {
 
+                                //Load wallet balance from ISW
+                                util.loadWalletBalance(token);
+
+                                try {
                                     String id = result.get("data").getAsJsonObject().get("id").getAsString();
                                     String name = result.get("data").getAsJsonObject().get("username").getAsString();
 
-                                    String wallet_balance = "0";
                                     String wallet_account = "";
                                     if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
-                                        wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
-                                         wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
+                                        wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
                                     }
                                     String username = "Hey " + name;
                                     String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
@@ -459,10 +464,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     profile_pic.setVisibility(View.VISIBLE);
                                     user_name.setText(username);
                                     if (pref.getBoolean(BALANCE_CHECK, false)) {
-                                        balance_value.setText("KES ......");
+                                        balance_value.setText("");
                                     } else {
-                                        balance_value.setText("KES " + wallet_balance);
+                                        String wallet_balance = pref.getString(WALLET_BALANCE, "0.00");
+                                        balance_value.setText(String.format("%s %s", "KES ", wallet_balance));
                                     }
+                                    balance_value.setVisibility(View.VISIBLE);
                                     editor.putString("FullName", fname + " " + lname);
                                     editor.putString("ProfileImage", image);
                                     editor.putString(USER_ID, id);
@@ -525,8 +532,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                         }
                         // Get new Instance ID token
                         String firebase_token = task.getResult().getToken();
-                        String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
-
                         Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
                                 .setCallback(new FutureCallback<JsonObject>() {
                                     @Override
@@ -551,9 +556,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void getServiceProviders() {
-
-        String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
-
         Constants.getServiceProviders(MainActivity.this, token)
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -586,13 +588,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
     @Override
     public void transactionBottomSheetListener(final String amount, final String ben_account, final String ben_ref) {
-        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
     }
 
     @Override
     public void enterPinDialog(@NotNull String pin) {
-
-        final String token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -602,7 +601,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         String ben_ref = pref.getString("ben_ref", "");
         String ben_account = pref.getString("ben_account", "");
         final String amount = pref.getString("amount21", "");
-
         String transactionType = pref.getString("BottomSheetListener", "");
 
         Log.e(TAG, "enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
@@ -658,24 +656,34 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             final String amountt = pref.getString("amount211", "");
 
             sendMoney(MainActivity.this, accountNumber, amountt, pin, token, bankName1, "Payment")
-                    .setCallback(new FutureCallback<JsonObject>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result) {
-                            Log.e("FundAmountActivity", result.toString());
-                            progressDialog.dismiss();
-                            if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                            } else {
-                                editor.putString("Amount", amountt);
-                                editor.apply();
-                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                intent.putExtra("Message", message);
-                                startActivity(intent);
-                            }
+                    .setCallback((e, result) -> {
+                        Log.e("FundAmountActivity", result.toString());
+                        progressDialog.dismiss();
+                        if (result.has("errors")) {
+                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                        } else {
+                            editor.putString("Amount", amountt);
+                            editor.apply();
+                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                            Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                            intent.putExtra("Message", message);
+                            startActivity(intent);
                         }
                     });
         }
+    }
+
+    private void fetchWalletBalance() {
+        getWalletBalance(this, token)
+                .setCallback((e, result) -> {
+                    if (result.has("data")) {
+                        String balance = result.get("data").getAsJsonObject().get("wallet").getAsJsonObject().get("available_balance").getAsString();
+                        editor.putString(WALLET_BALANCE, balance);
+                        editor.apply();
+                    } else {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override

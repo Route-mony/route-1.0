@@ -66,6 +66,7 @@ public class Constants {
     public static final String BUY_AIRTIME_ACTIVITY = "BUY_AIRTIME_ACTIVITY";
     public static final String RESET_PASSWORD_ACTIVITY = "RESET_PASSWORD_ACTIVITY";
     public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
+    public static final String WALLET_BALANCE = "WALLET_BALANCE";
 
     public static final String MY_ROUTE_CONTACTS = "MY_ROUTE_CONTACTS";
     public static final String MY_ROUTE_CONTACTS_NEW = "MY_ROUTE_CONTACTS_NEW";
@@ -621,6 +622,18 @@ public class Constants {
     //GET SPLIT BILL BY ID
     public static ResponseFuture<JsonObject> getSplitBill(Context context, String id, String token) {
         String SERVER_URL = BASE_URL + "requests/split-bill/" + id;
+        JsonObject json = new JsonObject();
+        return Ion.with(context)
+                .load("GET", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
+
+    //FETCH BALANCE
+    public static ResponseFuture<JsonObject> getWalletBalance(Context context, String token) {
+        String SERVER_URL = BASE_URL + "wallets/balance";
         JsonObject json = new JsonObject();
         return Ion.with(context)
                 .load("GET", SERVER_URL)
