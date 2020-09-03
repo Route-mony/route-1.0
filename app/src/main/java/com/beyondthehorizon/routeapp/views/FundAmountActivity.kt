@@ -16,7 +16,6 @@ import com.beyondthehorizon.routeapp.BuildConfig
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
 import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity
@@ -201,7 +200,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             val terminalId = BuildConfig.TERMINAL_ID
             val currency = "KES"
             val walletAccount = prefs.getString(WALLET_ACCOUNT, "")
-            val orderId = "${BuildConfig.ORDER_ID_PREFIX}$walletAccount"
+            val orderId = walletAccount
             val preauth = "1"
             val customerId = prefs.getString(USER_ID, "")
             val customerEmail = prefs.getString(USER_EMAIL, "")
@@ -233,7 +232,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             return@setOnClickListener
                         }
                         val userId = prefs.getString("Id", "").toString()
-                        val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+                        val token = "Bearer " + prefs.getString(USER_TOKEN, "")
                         val intent = Intent(this, FundRequestedActivity::class.java)
                         requestFund(this, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { e, result ->
                             if (result.get("data") != null) {
@@ -241,7 +240,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 intent.putExtra("Message", message)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
-                            } else if(result.has("errors")){
+                            } else if (result.has("errors")) {
                                 Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
                             }
                         }
@@ -260,19 +259,16 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         val expMonth = expDate.substring(0, 2)
                         val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
                         cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
-                        val card = Card(cardNumber, cvvNumber, expYear, expMonth);
-                        lateinit var mobPay: MobPay;
+                        val card = Card(cardNumber, cvvNumber, expYear, expMonth)
 
                         val config = MobPay.Config();
-                        mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
+                        val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
 
-                        progressBar.show(this, "Processing payment...")
                         mobPay.makeCardPayment(
                                 card,
                                 merchant,
                                 payment,
                                 customer, {
-                            progressBar.dialog.dismiss()
                             Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
 
                             if (cardStatus.compareTo(NEW_CARD) == 0) {
@@ -309,7 +305,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             startActivity(intent)
 
                         }, {
-                            progressBar.dialog.dismiss()
                             Timber.d(it.message.toString())
                             Toast.makeText(this@FundAmountActivity, it.message, Toast.LENGTH_LONG).show()
                         });
@@ -500,8 +495,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 return@setCallback
                             }
                             Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
-                        }
-                        catch (ex:Exception){
+                        } catch (ex: Exception) {
                             Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
                         }
                     } else {
