@@ -188,9 +188,7 @@ class RequestFundsActivity : AppCompatActivity() {
         if (result != null) {
             for (item: JsonElement in result) {
                 var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
-
-//                Log.e("RequestFundsActivity", item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString())
+                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
 
                 if (contactMap.keys.contains(phone)) {
                     var id = item.asJsonObject.get("id").asString

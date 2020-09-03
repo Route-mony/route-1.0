@@ -352,42 +352,39 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         Gson gson = new Gson();
         String json = gson.toJson(myContactsList);
         Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        if (result != null) {
-                            if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
-                                return;
-                            }
-                            Gson gsonn = new Gson();
-                            String jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
-                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
-                            editor.apply();
+                .setCallback((e, result) -> {
+                    if (result != null) {
+                        if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
+                            return;
+                        }
+                        Gson gsonn = new Gson();
+                        String jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
+                        editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
+                        editor.apply();
 
-                            for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
+                        for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
 
-                                try {
-                                    JSONObject issueObj = new JSONObject(item.toString());
-                                    if (issueObj.getBoolean("is_route")) {
-                                        myContactsList2.add(new MultiContactModel(
-                                                issueObj.get("id").toString(),
-                                                issueObj.get("username").toString(),
-                                                issueObj.get("phone_number").toString(),
-                                                issueObj.get("image").toString(),
-                                                issueObj.get("amount").toString(),
-                                                issueObj.getBoolean("is_route"),
-                                                issueObj.getBoolean("is_selected")
-                                        ));
-                                    }
-
-                                    String json2 = gsonn.toJson(myContactsList2);
-                                    editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
-                                    editor.apply();
-                                } catch (JSONException ex) {
-                                    ex.printStackTrace();
+                            try {
+                                JSONObject issueObj = new JSONObject(item.toString());
+                                if (issueObj.getBoolean("is_route")) {
+                                    myContactsList2.add(new MultiContactModel(
+                                            issueObj.get("id").toString(),
+                                            issueObj.get("username").toString(),
+                                            issueObj.get("phone_number").toString(),
+                                            issueObj.get("image").toString(),
+                                            issueObj.get("amount").toString(),
+                                            issueObj.getBoolean("is_route"),
+                                            issueObj.getBoolean("is_selected")
+                                    ));
                                 }
 
+                                String json2 = gsonn.toJson(myContactsList2);
+                                editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                                editor.apply();
+                            } catch (JSONException ex) {
+                                ex.printStackTrace();
                             }
+
                         }
                     }
                 });
@@ -410,6 +407,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void getProfile() {
+        //Load wallet balance from ISW
+        util.loadWalletBalance(token);
         Timber.d("getProfile: " + token);
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("please wait...");
@@ -431,10 +430,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.apply();
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             } else if (result.get("status").toString().contains("success")) {
-
-                                //Load wallet balance from ISW
-                                util.loadWalletBalance(token);
-
                                 try {
                                     String id = result.get("data").getAsJsonObject().get("id").getAsString();
                                     String name = result.get("data").getAsJsonObject().get("username").getAsString();

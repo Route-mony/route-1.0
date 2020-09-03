@@ -275,24 +275,18 @@ class RequestFundsFragment : Fragment() {
     private fun mapContactsToList(result: JsonArray) {
         loadPhoneContacts()
 
-        if (result != null) {
-            for (item: JsonElement in result) {
-                var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
+        for (item: JsonElement in result) {
+            var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
+            var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
 
-//                Log.e("RequestFundsActivity", item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString())
-
-                if (contactMap.keys.contains(phone)) {
-                    var id = item.asJsonObject.get("id").asString
-                    var avatar = R.drawable.group416
-                    contactMap.getValue(phone).id = id
-                    contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
-                    contactMap.getValue(phone).avatar = avatar
-                    contactMap.getValue(phone).accountNumber = accountNumber
-                }
+            if (contactMap.keys.contains(phone)) {
+                var id = item.asJsonObject.get("id").asString
+                var avatar = R.drawable.group416
+                contactMap.getValue(phone).id = id
+                contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
+                contactMap.getValue(phone).avatar = avatar
+                contactMap.getValue(phone).accountNumber = accountNumber
             }
-        } else {
-            Log.d("ContactResponse", "No contacts registered on route")
         }
 
         contacts = contactMap.values.toMutableList()
@@ -310,34 +304,26 @@ class RequestFundsFragment : Fragment() {
     private fun mapRouteContactsToList(result: JsonArray) {
         loadPhoneContacts()
 
-        if (result != null) {
+        for (item: JsonElement in result) {
+            var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
+            var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
 
-            for (item: JsonElement in result) {
-                var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-                var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString()
+            if (contactMap.keys.contains(phone)) {
+                var id = item.asJsonObject.get("id").asString
+                var avatar = R.drawable.group416
+                contactMap.getValue(phone).id = id
+                contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
+                contactMap.getValue(phone).avatar = avatar
+                contactMap.getValue(phone).accountNumber = accountNumber
 
-//                Log.e("RequestFundsActivity", item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").toString())
-
-                if (contactMap.keys.contains(phone)) {
-                    var id = item.asJsonObject.get("id").asString
-                    var avatar = R.drawable.group416
-                    contactMap.getValue(phone).id = id
-                    contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
-                    contactMap.getValue(phone).avatar = avatar
-                    contactMap.getValue(phone).accountNumber = accountNumber
-
-                    routeContactMap.put(
-                            phone,
-                            Contact(id,
-                                    contactMap.getValue(phone).name,
-                                    item.asJsonObject.get("phone_number").asString,
-                                    avatar,
-                                    accountNumber))
-                }
+                routeContactMap.put(
+                        phone,
+                        Contact(id,
+                                contactMap.getValue(phone).name,
+                                item.asJsonObject.get("phone_number").asString,
+                                avatar,
+                                accountNumber))
             }
-        } else {
-
-            Log.d("ContactResponse", "No contacts registered on route")
         }
 
         contacts = routeContactMap.values.toMutableList()

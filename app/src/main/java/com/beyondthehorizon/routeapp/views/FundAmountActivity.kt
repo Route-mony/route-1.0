@@ -131,6 +131,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
         binding.btnClear.setOnClickListener {
             if (amount.length <= 1) {
+                amount = "";
                 binding.txtAmount.text = ""
             } else {
                 binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
@@ -156,13 +157,13 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                     username = prefs.getString("Username", "").toString()
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = "${username}"
+                    binding.requestTitle.text = username
                     binding.requestType.text = "Send To : "
 
                 } else if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_BANK) == 0) {
                     username = prefs.getString("chosenBank", "").toString() + "\nAccount No: " + prefs.getString("bankAcNumber", "").toString()
                     binding.btnRequest.text = "SEND"
-                    binding.requestTitle.text = "${username}"
+                    binding.requestTitle.text = username
                     binding.requestType.text = "Send To : "
 
                 }
@@ -173,7 +174,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 binding.requestType.visibility = View.GONE
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
-                binding.requestTitle.text = "${phone}"
+                binding.requestTitle.text = phone
                 binding.requestType.text = "Pay From : "
                 binding.btnRequest.text = "PAY"
             } else if (transactionType.compareTo(BUY_AIRTIME) == 0) {
@@ -299,7 +300,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 //Load wallet balance from ISW
                                 util.loadWalletBalance(token)
 
-                                transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                                transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}. It might take 3 to 5 minutes to reflect the new balance."
                                 val intent = Intent(this, FundRequestedActivity::class.java)
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
@@ -343,7 +344,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
-                                transactionMessage = "Ksh. $amount was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}"
+                                transactionMessage = "Ksh. $amount was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}. It might take 3 to 5 minutes to reflect the new balance."
                                 val intent = Intent(this, FundRequestedActivity::class.java)
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
@@ -418,7 +419,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 provider = prefs.getString("chosenBank", "").toString()
             }
             prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_ROUTE) == 0 -> {
-                account = prefs.getString("walletAccountNumber", "").toString()
+                account = prefs.getString("walletAccountNumber", "")!!
                 provider = "ROUTEWALLET"
             }
         }
@@ -442,7 +443,11 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             }
                             Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
                         } catch (ex: Exception) {
-                            Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                            try {
+                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.get("beneficiary_account").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                            } catch (e: Exception) {
+                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
+                            }
                         }
                     } else {
                         editor.putString("Amount", amount)
@@ -458,6 +463,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     }
 
     companion object {
-        private val TAG = this.javaClass.simpleName;
+        private val TAG = this.javaClass.simpleName
     }
 }
