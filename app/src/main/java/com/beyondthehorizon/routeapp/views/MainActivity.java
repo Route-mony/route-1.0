@@ -181,110 +181,71 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             }
         });
 
-        btn_notifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
-                Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
-                routViewModel.deleteNotifiCount();
-                startActivity(intent);
-            }
+        btn_notifications.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, NotificationsActivity.class);
+            routViewModel.deleteNotifiCount();
+            startActivity(intent);
         });
 
-        btn_transactions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
-                startActivity(intent);
-            }
+        btn_transactions.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TransactionsActivity.class);
+            startActivity(intent);
         });
 
-        btn_receipts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
-                startActivity(intent);
-            }
+        btn_receipts.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+            startActivity(intent);
         });
 
-        profile_pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
+        profile_pic.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         });
-        btn_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
+        btn_settings.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         });
 
 
-        btn_fav3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
-                startActivity(intent);
-            }
+        btn_fav3.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+            startActivity(intent);
         });
-        btn_request34.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
-                sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
-            }
+        btn_request34.setOnClickListener(v -> {
+            SendMoneyBottomModel sendMoneyBottomModel = new SendMoneyBottomModel();
+            sendMoneyBottomModel.show(getSupportFragmentManager(), "Send Money Options");
         });
 
-        btn_fav2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, RequestFundsActivity.class);
-                Intent intent = new Intent(MainActivity.this, RequestFundActivity.class);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
-                editor.apply();
-                startActivity(intent);
-            }
+        btn_fav2.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RequestFundActivity.class);
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, SEND_MONEY);
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, SEND_MONEY_TO_ROUTE);
+            editor.apply();
+            startActivity(intent);
         });
 
-        btn_request2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
-                mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
-            }
+        btn_request2.setOnClickListener(v -> {
+            MpesaMoneyBottomModel mpesaMoneyBottomModel = new MpesaMoneyBottomModel();
+            mpesaMoneyBottomModel.show(getSupportFragmentManager(), "Mpesa Options");
         });
 
-        btn_send_to_many.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendToManyModel sendToManyModel = new SendToManyModel();
-                sendToManyModel.show(getSupportFragmentManager(), "Send To Many");
-            }
+        btn_send_to_many.setOnClickListener(v -> {
+            SendToManyModel sendToManyModel = new SendToManyModel();
+            sendToManyModel.show(getSupportFragmentManager(), "Send To Many");
         });
 
-        btn_request3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SplitBillActivity.class);
-                startActivity(intent);
-            }
+        btn_request3.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SplitBillActivity.class);
+            startActivity(intent);
         });
-        btn_buy_airtime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
-                airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
-            }
+        btn_buy_airtime.setOnClickListener(v -> {
+            BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
+            airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
         });
         isLoggedIn();
     }
 
     private void isLoggedIn() {
-        checkPermissions();
         if (pref.getString(USER_TOKEN, "").isEmpty()) {
             editor.putString(LOGGED_IN, "false");
             editor.apply();
@@ -407,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void getProfile() {
+        checkPermissions();
         //Load wallet balance from ISW
         util.loadWalletBalance(token);
         Timber.d("getProfile: " + token);
@@ -415,103 +377,100 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
         Constants.getUserProfile(MainActivity.this, token)
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        progressDialog.dismiss();
-                        Timber.e("getUserProfile: " + result);
-                        if (result != null) {
+                .setCallback((e, result) -> {
+                    progressDialog.dismiss();
+                    Timber.e("getUserProfile: " + result);
+                    if (result != null) {
 
-                            if (result.get("status").toString().contains("failed")) {
-                                Snackbar snackbar = Snackbar
-                                        .make(RL1, "A user with this email and password was not found.", Snackbar.LENGTH_LONG);
-                                snackbar.show();
-                                editor.clear();
+                        if (result.get("status").toString().contains("failed")) {
+                            Snackbar snackbar = Snackbar
+                                    .make(RL1, "A user with this email and password was not found.", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            editor.clear();
+                            editor.apply();
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        } else if (result.get("status").toString().contains("success")) {
+                            try {
+                                String id = result.get("data").getAsJsonObject().get("id").getAsString();
+                                String name = result.get("data").getAsJsonObject().get("username").getAsString();
+
+                                String wallet_account = "";
+                                if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
+                                    wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
+                                }
+                                String username = "Hey " + name;
+                                String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
+                                String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
+
+                                String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
+                                String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
+                                String image = result.get("data").getAsJsonObject().get("image").getAsString();
+
+                                RequestOptions requestOptions = new RequestOptions();
+                                requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                                Glide.with(MainActivity.this)
+                                        .load(image)
+                                        .apply(requestOptions)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .error(R.drawable.ic_user_home_page)
+                                        .placeholder(R.drawable.ic_user_home_page)
+                                        .into(profile_pic);
+                                profile_pic.setVisibility(View.VISIBLE);
+                                user_name.setText(username);
+                                if (pref.getBoolean(BALANCE_CHECK, true)) {
+                                    String wallet_balance = pref.getString(WALLET_BALANCE, "0.00");
+                                    balance_value.setText(String.format("%s %s", "KES ", wallet_balance));
+                                } else {
+                                    balance_value.setText("");
+                                }
+                                balance_value.setVisibility(View.VISIBLE);
+                                editor.putString("FullName", fname + " " + lname);
+                                editor.putString("ProfileImage", image);
+                                editor.putString(USER_ID, id);
+                                editor.putString(UserName, name);
+                                editor.putString(MyPhoneNumber, phone);
+                                editor.putString(CARDS, cards);
+                                editor.putString(WALLET_ACCOUNT, wallet_account);
                                 editor.apply();
-                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            } else if (result.get("status").toString().contains("success")) {
-                                try {
-                                    String id = result.get("data").getAsJsonObject().get("id").getAsString();
-                                    String name = result.get("data").getAsJsonObject().get("username").getAsString();
 
-                                    String wallet_account = "";
-                                    if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
-                                        wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
-                                    }
-                                    String username = "Hey " + name;
-                                    String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
-                                    String cards = result.get("data").getAsJsonObject().get("debit_cards").getAsJsonArray().toString();
+                                getServiceProviders();
+                                sendRegistrationToServer();
+                                boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
+                                String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 
-                                    String fname = result.get("data").getAsJsonObject().get("first_name").getAsString();
-                                    String lname = result.get("data").getAsJsonObject().get("last_name").getAsString();
-                                    String image = result.get("data").getAsJsonObject().get("image").getAsString();
-
-                                    RequestOptions requestOptions = new RequestOptions();
-                                    requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-                                    Glide.with(MainActivity.this)
-                                            .load(image)
-                                            .apply(requestOptions)
-                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                            .skipMemoryCache(true)
-                                            .error(R.drawable.ic_user_home_page)
-                                            .placeholder(R.drawable.ic_user_home_page)
-                                            .into(profile_pic);
-                                    profile_pic.setVisibility(View.VISIBLE);
-                                    user_name.setText(username);
-                                    if (pref.getBoolean(BALANCE_CHECK, false)) {
-                                        balance_value.setText("");
-                                    } else {
-                                        String wallet_balance = pref.getString(WALLET_BALANCE, "0.00");
-                                        balance_value.setText(String.format("%s %s", "KES ", wallet_balance));
-                                    }
-                                    balance_value.setVisibility(View.VISIBLE);
-                                    editor.putString("FullName", fname + " " + lname);
-                                    editor.putString("ProfileImage", image);
-                                    editor.putString(USER_ID, id);
-                                    editor.putString(UserName, name);
-                                    editor.putString(MyPhoneNumber, phone);
-                                    editor.putString(CARDS, cards);
-                                    editor.putString(WALLET_ACCOUNT, wallet_account);
+                                if (!email_verified) {
+                                    verify_email.setVisibility(View.VISIBLE);
+                                    verify_email.setText(R.string.verify_email);
+                                } else {
+                                    verify_email.setVisibility(View.GONE);
+                                }
+                                if (is_pin_set.contains("False")) {
+                                    setPin();
+                                }
+                            } catch (Exception ex) {
+                                Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    } else {
+                        final Snackbar snackbar = Snackbar
+                                .make(RL1, "Unable to load data ", Snackbar.LENGTH_INDEFINITE);
+                        snackbar.setAction("Try again", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snackbar.dismiss();
+                                if (pref.getString(USER_TOKEN, "").isEmpty()) {
+                                    editor.putString(LOGGED_IN, "false");
                                     editor.apply();
-
-                                    getServiceProviders();
-                                    sendRegistrationToServer();
-                                    boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
-                                    String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
-
-                                    if (!email_verified) {
-                                        verify_email.setVisibility(View.VISIBLE);
-                                        verify_email.setText(R.string.verify_email);
-                                    } else {
-                                        verify_email.setVisibility(View.GONE);
-                                    }
-                                    if (is_pin_set.contains("False")) {
-                                        setPin();
-                                    }
-                                } catch (Exception ex) {
-                                    Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                } else {
+                                    getProfile();
                                 }
                             }
-                        } else {
-                            final Snackbar snackbar = Snackbar
-                                    .make(RL1, "Unable to load data ", Snackbar.LENGTH_INDEFINITE);
-                            snackbar.setAction("Try again", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snackbar.dismiss();
-                                    if (pref.getString(USER_TOKEN, "").isEmpty()) {
-                                        editor.putString(LOGGED_IN, "false");
-                                        editor.apply();
-                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    } else {
-                                        getProfile();
-                                    }
-                                }
-                            });
-                            snackbar.show();
-                        }
+                        });
+                        snackbar.show();
                     }
                 });
     }
@@ -552,17 +511,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
     private void getServiceProviders() {
         Constants.getServiceProviders(MainActivity.this, token)
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                .setCallback((e, result) -> {
 
-                        if (result.has("data")) {
-                            Log.e(TAG, "onCompleted: " + result);
-                            editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
-                            editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
-                            editor.apply();
+                    if (result.has("data")) {
+                        Log.e(TAG, "onCompleted: " + result);
+                        editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
+                        editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
+                        editor.apply();
 
-                        }
                     }
                 });
     }

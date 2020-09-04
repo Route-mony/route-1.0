@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.Card
 import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.utils.Constants.LOAD_WALLET_FROM_CARD
 import com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES
 import com.beyondthehorizon.routeapp.views.CardActivity
 import com.beyondthehorizon.routeapp.views.FundAmountActivity
@@ -63,7 +64,7 @@ class AddMoneyBottomsheet : BottomSheetDialogFragment(), TransactionModel.Transa
                         intent.putExtra(Constants.EXPIRY_DATE, cardList[0].expiry_date)
                         intent.putExtra(Constants.CVV_NUMBER, cardList[0].cvv)
                         intent.putExtra(Constants.COUNTRY, cardList[0].country)
-                        editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, Constants.LOAD_WALLET_FROM_CARD)
+                        editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
                         editor.apply()
                         startActivity(intent)
                     }
@@ -85,7 +86,7 @@ class AddMoneyBottomsheet : BottomSheetDialogFragment(), TransactionModel.Transa
                     intent.putExtra(Constants.EXPIRY_DATE, cardList[1].expiry_date)
                     intent.putExtra(Constants.CVV_NUMBER, cardList[1].cvv)
                     intent.putExtra(Constants.COUNTRY, cardList[1].country)
-                    editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, Constants.LOAD_WALLET_FROM_CARD)
+                    editor.putString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_CARD)
                     editor.apply()
                     startActivity(intent)
                 } catch (ex: Exception) {

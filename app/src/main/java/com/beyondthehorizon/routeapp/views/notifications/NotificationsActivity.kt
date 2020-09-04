@@ -56,6 +56,7 @@ class NotificationsActivity : AppCompatActivity() {
     }
 
     fun prevPage(view: View) {
-        onBackPressed()
+        startActivity(Intent(this@NotificationsActivity, MainActivity::class.java))
+        finish()
     }
 }

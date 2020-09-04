@@ -54,14 +54,14 @@ class MobileActivity : AppCompatActivity() {
         binding.myPhone.setOnClickListener {
             var phone = prefs.getString(MyPhoneNumber, "")
             var intent = Intent(this@MobileActivity, FundAmountActivity::class.java)
-            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_MPESA)
             editor.apply()
             intent.putExtra(PHONE_NUMBER, phone)
             startActivity(intent)
         }
 
         binding.imgSearch.setOnClickListener {
-            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_MPESA)
             editor.apply()
             var intent = Intent(this@MobileActivity, RequestFundActivity::class.java)
             startActivity(intent)
@@ -73,7 +73,7 @@ class MobileActivity : AppCompatActivity() {
             if (!Utils.isPhoneNumberValid(phone, "KE")) {
                 binding.phoneNumberInput.error = "Enter valid phone number"
             } else {
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, MOBILE_TRANSACTION)
+                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET_FROM_MPESA)
                 editor.apply()
                 intent.putExtra(PHONE_NUMBER, phone)
                 startActivity(intent)

@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.bottomsheets.AddMoneyBottomsheet
@@ -103,19 +102,12 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Show balalance
-        switch1.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-
-            Log.e("SettingsActivity", isChecked.toString())
+        switch1.setOnCheckedChangeListener { _, isChecked ->
             editor.putBoolean(BALANCE_CHECK, isChecked)
-            editor.apply()
-            switch1.isChecked = pref.getBoolean(BALANCE_CHECK, false)
-            // do something, the isChecked will be
-// true if the switch is in the On position
-        })
+            editor.commit()
+        }
 
-//        if (pref.getBoolean(BALANCE_CHECK, false)){
-        switch1.isChecked = pref.getBoolean(BALANCE_CHECK, false)
-//        }
+        switch1.isChecked = pref.getBoolean(BALANCE_CHECK, true)
 
         logOut.setOnClickListener {
             editor.clear()

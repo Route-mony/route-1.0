@@ -168,9 +168,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 
                 }
             } else if (transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 || transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0) {
-                binding.btnRequest.text = "PAY"
-                binding.requestTitle.text = "Enter Amount to Pay"
-
+                binding.btnRequest.text = "LOAD"
+                binding.requestTitle.text = "Enter Amount to load"
                 binding.requestType.visibility = View.GONE
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
