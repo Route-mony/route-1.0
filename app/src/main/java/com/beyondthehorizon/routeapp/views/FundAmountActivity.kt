@@ -450,6 +450,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             }
                         }
                     } else {
+                        //Load wallet balance from ISW
+                        util.loadWalletBalance(token)
+
                         editor.putString("Amount", amount)
                         editor.apply()
                         val message = result.get("data").asJsonObject.get("message").asString
