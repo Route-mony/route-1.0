@@ -322,7 +322,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     /**
                      * LOAD WALLET FROM MPESA
                      */
-                    transactionType.compareTo(MOBILE_TRANSACTION) == 0 -> {
+                    transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0 -> {
                         try {
                             var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
                             var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
