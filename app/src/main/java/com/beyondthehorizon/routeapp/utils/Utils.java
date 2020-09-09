@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -47,7 +48,7 @@ public class Utils {
         try {
             number = phoneUtil.parse(phoneNumber, countryCode);
         } catch (NumberParseException e) {
-            Timber.d(e.getMessage());
+            Timber.d(e);
         }
         return phoneUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replaceAll(" ", "");
     }
@@ -75,12 +76,16 @@ public class Utils {
     public void loadWalletBalance(String token) {
         getWalletBalance(context, token)
                 .setCallback((e, result) -> {
-                    if (result.has("data")) {
-                        String balance = result.get("data").getAsJsonObject().get("wallet").getAsJsonObject().get("available_balance").getAsString();
-                        editor.putString(WALLET_BALANCE, balance);
-                        editor.commit();
-                    } else {
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                    try {
+                        if (result.has("data")) {
+                            String balance = result.get("data").getAsJsonObject().get("wallet").getAsJsonObject().get("available_balance").getAsString();
+                            editor.putString(WALLET_BALANCE, balance);
+                            editor.commit();
+                        } else {
+                            Timber.d(e);
+                        }
+                    } catch (Exception ex) {
+                        Timber.d(ex);
                     }
                 });
     }

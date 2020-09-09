@@ -554,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         final String amount = pref.getString("amount21", "");
         String transactionType = pref.getString("BottomSheetListener", "");
 
-        Log.e(TAG, "enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
+        Timber.e("enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
 
         if (transactionType.compareTo("mpesaBottomSheetListener") == 0) {
             if (ben_ref.trim().isEmpty()) {
@@ -581,22 +581,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 Constants.sendMoneyBeneficiary(MainActivity.this,
                         ben_account, amount, pin, token,
                         "MPESA PAYBILL", ben_ref.trim(), "Payment")
-                        .setCallback(new FutureCallback<JsonObject>() {
-                            @Override
-                            public void onCompleted(Exception e, JsonObject result) {
-                                Log.e(TAG, "onCompleted: " + result);
+                        .setCallback((e, result) -> {
+                            Log.e(TAG, "onCompleted: " + result);
 
-                                progressDialog.dismiss();
-                                if (result.has("errors")) {
+                            progressDialog.dismiss();
+                            if (result.has("errors")) {
+                                if (result.getAsJsonObject("errors").has("amount")) {
+                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().get("amount").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                                } else if (result.getAsJsonObject("errors").has("amount")) {
                                     Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                                } else {
-                                    editor.remove("ben_ref");
-                                    editor.apply();
-                                    String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                    Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                    intent.putExtra("Message", message);
-                                    startActivity(intent);
                                 }
+                            } else {
+                                editor.remove("ben_ref");
+                                editor.apply();
+                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                intent.putExtra("Message", message);
+                                startActivity(intent);
                             }
                         });
             }

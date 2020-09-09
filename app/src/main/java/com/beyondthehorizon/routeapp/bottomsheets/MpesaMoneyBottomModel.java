@@ -66,22 +66,16 @@ public class MpesaMoneyBottomModel extends BottomSheetDialogFragment {
         final EditText businessAmount = v.findViewById(R.id.businessAmount);
         Button payBillButton = v.findViewById(R.id.payBillButton);
 
-        buyGoods.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parentLayout.setVisibility(View.GONE);
-                payBillLayout.setVisibility(View.GONE);
-                buyGoodsLayout.setVisibility(View.VISIBLE);
-            }
+        buyGoods.setOnClickListener(v13 -> {
+            parentLayout.setVisibility(View.GONE);
+            payBillLayout.setVisibility(View.GONE);
+            buyGoodsLayout.setVisibility(View.VISIBLE);
         });
 
-        payBill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parentLayout.setVisibility(View.GONE);
-                buyGoodsLayout.setVisibility(View.GONE);
-                payBillLayout.setVisibility(View.VISIBLE);
-            }
+        payBill.setOnClickListener(v12 -> {
+            parentLayout.setVisibility(View.GONE);
+            buyGoodsLayout.setVisibility(View.GONE);
+            payBillLayout.setVisibility(View.VISIBLE);
         });
 
         buyGoodsButton.setOnClickListener(new View.OnClickListener() {
@@ -107,32 +101,29 @@ public class MpesaMoneyBottomModel extends BottomSheetDialogFragment {
             }
         });
 
-        payBillButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String Businessnumber = businessNumber.getText().toString().trim();
-                String businessaccount = businessAccount.getText().toString().trim();
-                String amount = businessAmount.getText().toString().trim();
+        payBillButton.setOnClickListener(v1 -> {
+            String Businessnumber = businessNumber.getText().toString().trim();
+            String businessaccount = businessAccount.getText().toString().trim();
+            String amount = businessAmount.getText().toString().trim();
 
-                if (Businessnumber.isEmpty()) {
-                    businessNumber.setError("Can not be empty");
-                    return;
-                }
-                if (businessaccount.isEmpty()) {
-                    businessAccount.setError("Can not be empty");
-                    return;
-                }
-                if (amount.isEmpty()) {
-                    businessAmount.setError("Can not be empty");
-                    return;
-                }
-                mListener.mpesaBottomSheetListener(
-                        amount,
-                        Businessnumber,
-                        businessaccount
-                );
-                dismiss();
+            if (Businessnumber.isEmpty()) {
+                businessNumber.setError("Can not be empty");
+                return;
             }
+            if (businessaccount.isEmpty()) {
+                businessAccount.setError("Can not be empty");
+                return;
+            }
+            if (amount.isEmpty()) {
+                businessAmount.setError("Can not be empty");
+                return;
+            }
+            mListener.mpesaBottomSheetListener(
+                    amount,
+                    Businessnumber,
+                    businessaccount
+            );
+            dismiss();
         });
         return v;
     }
