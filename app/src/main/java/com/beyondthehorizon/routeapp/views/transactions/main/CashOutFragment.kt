@@ -51,11 +51,11 @@ class CashOutFragment : Fragment() {
                 if (result != null) {
 
                     Log.e("HERE 11 ", result.toString())
-                    if(result.has("errors")){
+                    if (result.has("errors")) {
                         Toast.makeText(requireActivity(), result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
                         return@setCallback
                     }
-                    if(result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
+                    if (result.get("data").asJsonObject.get("rows").asJsonArray.size() == 0) {
                         return@setCallback
                     }
                     val list = ArrayList<TransactionModel>()
@@ -75,22 +75,28 @@ class CashOutFragment : Fragment() {
                             for (i in 0 until transactionArray.length()) {
                                 val item = transactionArray.getJSONObject(i)
                                 if (item.has("recipient")) {
-                                    Log.e("HERE 134567 ", item.toString())
                                     val date: String = item.get("date").toString()
-                                    val first_name = item.getJSONObject("recipient").get("first_name").toString()
-                                    val last_name = item.getJSONObject("recipient").get("last_name").toString()
+                                    var first_name = ""
+                                    var last_name = ""
+                                    var email = ""
+                                    var image = ""
+                                    try {
+                                        val res = item.getJSONObject("recipient")
+                                        first_name = item.getJSONObject("recipient").get("first_name").toString()
+                                        last_name = item.getJSONObject("recipient").get("last_name").toString()
+                                        email = item.getJSONObject("recipient").get("email").toString()
+                                        image = item.getJSONObject("recipient").get("image").toString()
+                                    } catch (ex: Exception) {
+                                        first_name = item.getString("recipient")
+                                    }
                                     val time = item.get("time").toString()
                                     val withdrawn = item.get("cash_outs").toString()
                                     val paymentType = "cash_outs"
-                                    val email = item.getJSONObject("recipient").get("email").toString()
-                                    val image = item.getJSONObject("recipient").get("image").toString()
                                     val recipient = "$first_name $last_name"
                                     val description = item.get("description").toString()
                                     val balance = item.get("balance").toString()
                                     val wallet_account = item.get("wallet_account").toString()
                                     val reference = item.get("reference").toString()
-
-                                    Log.e("HERE 134 ", last_name)
 
                                     val created_at = "$date  $time"
                                     list.add(TransactionModel(created_at, recipient, withdrawn,

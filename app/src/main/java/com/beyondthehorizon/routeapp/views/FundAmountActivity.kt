@@ -227,8 +227,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
         binding.btnRequest.setOnClickListener {
-            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
-            payment.preauth = preauth
             try {
                 when {
                     binding.txtAmount.text.isNullOrEmpty() -> {
@@ -271,6 +269,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                      */
                     transactionType.compareTo(LOAD_WALLET_FROM_CARD) == 0 -> {
                         try {
+                            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                            payment.preauth = preauth
                             val country = parentIntent.getStringExtra(COUNTRY)
                             val cardNumber = parentIntent.getStringExtra(CARD_NUMBER)
                             val expDate = parentIntent.getStringExtra(EXPIRY_DATE)
@@ -339,6 +339,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                      */
                     transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0 -> {
                         try {
+                            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                            payment.preauth = preauth
                             var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
                             var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
                             val merchant = Merchant(merchantId, domain);
