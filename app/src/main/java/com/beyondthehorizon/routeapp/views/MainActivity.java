@@ -68,6 +68,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         super.onCreate(savedInstanceState);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
-        token = "Bearer ".concat(pref.getString(USER_TOKEN, ""));
         util = new Utils(this);
         setContentView(R.layout.activity_main);
 
@@ -253,6 +253,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else {
+            token = "Bearer ".concat(Objects.requireNonNull(pref.getString(USER_TOKEN, "")));
+            //Load wallet balance from ISW
+            util.loadWalletBalance(token);
             getProfile();
             notificationCount();
         }
@@ -369,8 +372,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
     private void getProfile() {
         checkPermissions();
-        //Load wallet balance from ISW
-        util.loadWalletBalance(token);
         Timber.d("getProfile: " + token);
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("please wait...");
@@ -395,8 +396,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 String name = result.get("data").getAsJsonObject().get("username").getAsString();
 
                                 String wallet_account = "";
+                                String wallet_balance = "";
                                 if (result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance") != null) {
                                     wallet_account = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("wallet_account").getAsString();
+                                    wallet_balance = result.get("data").getAsJsonObject().get("wallet_account").getAsJsonObject().get("available_balance").getAsString();
+                                    if (String.valueOf(pref.getString(WALLET_BALANCE, "")).isEmpty()) {
+                                        editor.putString(WALLET_BALANCE, wallet_balance);
+                                        editor.commit();
+                                    }
                                 }
                                 String username = "Hey " + name;
                                 String phone = result.get("data").getAsJsonObject().get("phone_number").getAsString();
@@ -418,12 +425,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                         .into(profile_pic);
                                 profile_pic.setVisibility(View.VISIBLE);
                                 user_name.setText(username);
-                                if (pref.getBoolean(BALANCE_CHECK, true)) {
-                                    String wallet_balance = pref.getString(WALLET_BALANCE, "0.00");
-                                    balance_value.setText(String.format("%s %s", "KES ", wallet_balance));
-                                } else {
-                                    balance_value.setText("");
-                                }
                                 balance_value.setVisibility(View.VISIBLE);
                                 editor.putString("FullName", fname + " " + lname);
                                 editor.putString("ProfileImage", image);
@@ -447,6 +448,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 }
                                 if (is_pin_set.contains("False")) {
                                     setPin();
+                                }
+
+                                if (pref.getBoolean(BALANCE_CHECK, true)) {
+                                    balance_value.setText(String.format("%s %s", "KES ", pref.getString(WALLET_BALANCE, "0.00")));
+                                } else {
+                                    balance_value.setText("");
                                 }
                             } catch (Exception ex) {
                                 Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
