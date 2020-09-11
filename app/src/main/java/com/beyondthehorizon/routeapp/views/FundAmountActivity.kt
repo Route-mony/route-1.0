@@ -28,6 +28,7 @@ import timber.log.Timber
 import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import kotlin.properties.Delegates
 
 
 class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
@@ -45,12 +46,31 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private lateinit var phone: String
     private lateinit var token: String
     private lateinit var util: Utils
+    private var lower by Delegates.notNull<Int>()
+    private var upper by Delegates.notNull<Int>()
+    private lateinit var secureRandom: SecureRandom
+    private lateinit var merchantId: String
+    private lateinit var domain: String
+    private lateinit var transactionRef: String
+    private lateinit var terminalId: String
+    private lateinit var currency: String
+    private lateinit var walletAccount: String
+    private lateinit var orderId: String
+    private lateinit var preauth: String
+    private lateinit var customerId: String
+    private lateinit var customerEmail: String
+    private lateinit var clientId: String
+    private lateinit var clientSecret: String
+    private lateinit var merchant: Merchant
+    private lateinit var payment: Payment
+    private lateinit var customer: Customer
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
         util = Utils(this)
+        val config = MobPay.Config();
 
         btn_home.setOnClickListener {
             val intent = Intent(this@FundAmountActivity, MainActivity::class.java)
@@ -171,6 +191,24 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 binding.btnRequest.text = "LOAD"
                 binding.requestTitle.text = "Enter Amount to load"
                 binding.requestType.visibility = View.GONE
+                lower = 100000000
+                upper = 999999999
+                secureRandom = SecureRandom()
+                merchantId = BuildConfig.MERCHANT_ID
+                domain = BuildConfig.DOMAIN
+                transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
+                terminalId = BuildConfig.TERMINAL_ID
+                currency = "KES"
+                walletAccount = prefs.getString(WALLET_ACCOUNT, "").toString()
+                orderId = walletAccount
+                preauth = "1"
+                customerId = prefs.getString(USER_ID, "").toString()
+                customerEmail = prefs.getString(USER_EMAIL, "").toString()
+                clientId = BuildConfig.CLIENT_ID
+                clientSecret = BuildConfig.CLIENT_SECRETE
+                merchant = Merchant(merchantId, domain);
+                customer = Customer(customerId)
+                customer.email = customerEmail
             } else if (transactionType.compareTo(MOBILE_TRANSACTION) == 0) {
                 phone = parentIntent.getStringExtra(PHONE_NUMBER).toString()
                 binding.requestTitle.text = phone
@@ -189,30 +227,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
         binding.btnRequest.setOnClickListener {
-            val lower = 100000000
-            val upper = 999999999
-            val secureRandom = SecureRandom()
-            val merchantId = BuildConfig.MERCHANT_ID
-            val domain = BuildConfig.DOMAIN
-            val amount = amount
-            val transactionRef = ((Math.random() * (upper - lower)).toInt() + lower).toString()
-            val terminalId = BuildConfig.TERMINAL_ID
-            val currency = "KES"
-            val walletAccount = prefs.getString(WALLET_ACCOUNT, "")
-            val orderId = walletAccount
-            val preauth = "1"
-            val customerId = prefs.getString(USER_ID, "")
-            val customerEmail = prefs.getString(USER_EMAIL, "")
-            val clientId = BuildConfig.CLIENT_ID
-            val clientSecret = BuildConfig.CLIENT_SECRETE
-
+            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+            payment.preauth = preauth
             try {
-                val merchant = Merchant(merchantId, domain);
-                val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
-                payment.setPreauth(preauth)
-                val customer = Customer(customerId)
-                customer.setEmail(customerEmail)
-
                 when {
                     binding.txtAmount.text.isNullOrEmpty() -> {
                         Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
@@ -225,7 +242,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     transactionType.compareTo(REQUEST_MONEY) == 0 -> {
                         editor.putString("Amount", amount)
                         editor.apply()
-                        //                    startActivity(childIntent)
                         if (binding.requestNarration.text.toString().trim().isEmpty()) {
                             Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
                             return@setOnClickListener
@@ -263,7 +279,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             val cvvNumber = parentIntent.getStringExtra(CVV_NUMBER)
                             cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
                             val card = Card(cardNumber, cvvNumber, expYear, expMonth)
-                            val config = MobPay.Config();
                             val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
                             progressBar.show(this, "Processing payment...")
                             mobPay.makeCardPayment(
@@ -271,7 +286,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                     merchant,
                                     payment,
                                     customer, {
-                                Log.d("INTERSWITCH_MESSAGE", it.transactionOrderId)
+                                Timber.d(it.transactionOrderId)
                                 if (cardStatus.compareTo(NEW_CARD) == 0) {
                                     progressBar.show(this, "Updating route ...")
                                     addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
@@ -288,7 +303,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                                         }
 
                                                     } else if (e != null) {
-                                                        Log.d("INTERSWITCH_MESSAGE", e.toString())
+                                                        Timber.d(e.toString())
                                                         Toast.makeText(this@FundAmountActivity, e.message, Toast.LENGTH_LONG).show()
                                                     }
                                                 } catch (ex: Exception) {
