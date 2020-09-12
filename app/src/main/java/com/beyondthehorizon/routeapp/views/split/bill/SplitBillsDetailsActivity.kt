@@ -41,7 +41,7 @@ class SplitBillsDetailsActivity : AppCompatActivity(), EditSendToManyBottomSheet
         setContentView(R.layout.activity_split_bills_details)
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
-        var amount = prefs.getString(BILL_AMOUNT, "").toString().toDouble()
+        var amount = prefs.getString(BILL_AMOUNT, "0.00").toString().toDouble()
         format = DecimalFormat("#,###")
         tvBillAmount.text = "Kes ${format.format(amount)}"
 

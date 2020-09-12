@@ -409,11 +409,11 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             } catch (ex: Exception) {
                 Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
             }
-            binding.arrowBack.setOnClickListener {
-                onBackPressed()
-            }
         }
 
+        binding.arrowBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun formatAmount(amt: String): String {

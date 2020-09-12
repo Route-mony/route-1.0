@@ -34,15 +34,17 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var prefs: SharedPreferences
     private lateinit var progressDialog: ProgressDialog
-    private lateinit var token:String
+    private lateinit var token: String
     private lateinit var jsonn: String
     private lateinit var messagetxt: String
+    private lateinit var gsonn: Gson
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_to_many)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
         progressDialog = ProgressDialog(this)
+        gsonn = Gson()
 
         submitButton.setOnClickListener {
             val enterPinBottomSheet = EnterPinBottomSheet()
@@ -68,16 +70,15 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
     }
 
     private fun sendToManyFunction() {
-
-        val gson = Gson()
         val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
-        arrayList = gson.fromJson(prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""), type)
+        arrayList = gsonn.fromJson(prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""), type)
         usersAdapter.setContact(arrayList)
         var amountTotal = 0
         for (multiContactModel: MultiContactModel in arrayList) {
             amountTotal += multiContactModel.amount.toInt()
         }
         totalAmount.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
+        jsonn = gsonn.toJson(arrayList)
     }
 
     fun prevPage(view: View) {
@@ -116,9 +117,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
             "MPESA PAYBILL"
         }
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-        val gsonn = Gson()
-        jsonn = gsonn.toJson(arrayList)
-
         sendToMany(this, pin, provider, "", token, jsonn)
                 .setCallback { e, result ->
                     progressDialog.dismiss()
@@ -141,9 +139,9 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
 
                             val enterGroupBottomSheet = EnterGroupBottomSheet(messagetxt)
                             enterGroupBottomSheet.show(supportFragmentManager, "Save Group")
-                            }
                         }
                 }
+    }
 
     override fun enterGroupNameDialog(group: String) {
         saveSendToManyGroup(this, token, jsonn, group).setCallback { e, result ->
