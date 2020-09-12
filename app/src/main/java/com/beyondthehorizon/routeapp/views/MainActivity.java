@@ -382,7 +382,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     progressDialog.dismiss();
                     Timber.e("getUserProfile: " + result);
                     if (result != null) {
-
                         if (result.get("status").toString().contains("failed")) {
                             Snackbar snackbar = Snackbar
                                     .make(RL1, "A user with this email and password was not found.", Snackbar.LENGTH_LONG);

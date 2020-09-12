@@ -30,7 +30,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, EnterGroupBottomSheet.EnterGroupNameBottomSheetListener {
 
     var arrayList = ArrayList<MultiContactModel>()
-    val arrayListJson = ArrayList<String>()
     lateinit var usersAdapter: GroupSendToManyAdapter
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var prefs: SharedPreferences
@@ -118,7 +117,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         }
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
         val gsonn = Gson()
-        val jsonn: String = gsonn.toJson(arrayList)
+        jsonn = gsonn.toJson(arrayList)
 
         sendToMany(this, pin, provider, "", token, jsonn)
                 .setCallback { e, result ->
@@ -147,9 +146,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                 }
 
     override fun enterGroupNameDialog(group: String) {
-        progressDialog.show()
         saveSendToManyGroup(this, token, jsonn, group).setCallback { e, result ->
-            progressDialog.dismiss()
             if (result["status"].toString().contains("success")) {
                 val intent = Intent(this, FundRequestedActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -157,7 +154,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Amount cannot be zero or negative", Toast.LENGTH_LONG).show()
             }
         }
     }

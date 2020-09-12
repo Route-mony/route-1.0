@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.group_name_item.view.*
 
 class EnterGroupBottomSheet(val msg:String): BottomSheetDialogFragment() {
 
-    private lateinit var mListener: EnterGroupBottomSheet.EnterGroupNameBottomSheetListener
+    private lateinit var mListener: EnterGroupNameBottomSheetListener
     private lateinit var pref: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
