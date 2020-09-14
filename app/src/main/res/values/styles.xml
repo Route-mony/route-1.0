@@ -57,7 +57,7 @@
 
     </style>
 
-    <style name="TextLabel" parent="TextAppearance.AppCompat">
+    <style name="TextLabel" parent="Theme.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:textSize">14sp</item>
@@ -69,7 +69,7 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
-    <style name="TextLabel2" parent="TextAppearance.AppCompat">
+    <style name="TextLabel2" parent="Theme.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:textSize">14sp</item>
