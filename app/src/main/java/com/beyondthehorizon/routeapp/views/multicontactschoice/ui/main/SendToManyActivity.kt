@@ -13,7 +13,6 @@ import com.beyondthehorizon.routeapp.bottomsheets.EditSendToManyBottomSheet
 import com.beyondthehorizon.routeapp.bottomsheets.EnterGroupBottomSheet
 import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.models.MultiContactModel
-import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.views.FundRequestedActivity
 import com.google.gson.Gson
@@ -92,7 +91,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
             amountTotal += multiContactModel.amount.toInt()
         }
         totalAmount.text = String.format("%s %s", "Kes", NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal))
-        jsonn = gsonn.toJson(arrayList)
     }
 
     override fun updateItem(item: String, itemPosition: String) {
@@ -116,32 +114,46 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         } else {
             "MPESA PAYBILL"
         }
-        token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-        sendToMany(this, pin, provider, "", token, jsonn)
-                .setCallback { e, result ->
-                    progressDialog.dismiss()
-                    Timber.e("HAPA Error%s", " $e  res $result")
-                    if (result.has("errors")) {
-                        Toast.makeText(this@SendToManyActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
-                    } else
-                        if (result["status"].toString().contains("success")) {
-                            messagetxt = result["data"].asJsonObject.get("message").asString
-                            if (prefs.getString(GROUP_IS_SAVED, "")!!.contains("YES")) {
-                                val intent = Intent(this, FundRequestedActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.putExtra("Message", messagetxt)
-                                startActivity(intent)
-                                finish()
-                                return@setCallback
-                            }
+        token = "Bearer " + prefs.getString(USER_TOKEN, "")
+        var filteredList = ArrayList<MultiContactModel>()
+        for (item in arrayList) {
+            if (item.amount.toInt() > 0) {
+                filteredList.add(item)
+            }
+        }
 
-                            val enterGroupBottomSheet = EnterGroupBottomSheet(messagetxt)
-                            enterGroupBottomSheet.show(supportFragmentManager, "Save Group")
-                        }
-                }
+        if (filteredList.isNotEmpty()) {
+            jsonn = gsonn.toJson(filteredList)
+            sendToMany(this, pin, provider, "", token, jsonn)
+                    .setCallback { e, result ->
+                        progressDialog.dismiss()
+                        Timber.e("HAPA Error%s", " $e  res $result")
+                        if (result.has("errors")) {
+                            Toast.makeText(this@SendToManyActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+                        } else
+                            if (result["status"].toString().contains("success")) {
+                                messagetxt = result["data"].asJsonObject.get("message").asString
+                                if (prefs.getString(GROUP_IS_SAVED, "")!!.contains("YES")) {
+                                    val intent = Intent(this, FundRequestedActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.putExtra("Message", messagetxt)
+                                    startActivity(intent)
+                                    finish()
+                                    return@setCallback
+                                }
+
+                                val enterGroupBottomSheet = EnterGroupBottomSheet(messagetxt)
+                                enterGroupBottomSheet.show(supportFragmentManager, "Save Group")
+                            }
+                    }
+        } else {
+            progressDialog.dismiss()
+            Toast.makeText(this, "Amount cannot be zero or negative", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun enterGroupNameDialog(group: String) {
+        jsonn = gsonn.toJson(arrayList)
         saveSendToManyGroup(this, token, jsonn, group).setCallback { e, result ->
             if (result["status"].toString().contains("success")) {
                 val intent = Intent(this, FundRequestedActivity::class.java)

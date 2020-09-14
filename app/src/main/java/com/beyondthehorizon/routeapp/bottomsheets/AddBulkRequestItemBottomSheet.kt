@@ -40,8 +40,12 @@ class AddBulkRequestItemBottomSheet : BottomSheetDialogFragment() {
                 v.itemName.error = "Cannot be empty"
                 return@setOnClickListener
             }
+            if (quantity.isEmpty()) {
+                v.itemQuantity.error = "Cannot be empty"
+                return@setOnClickListener
+            }
             if (amount.isEmpty()) {
-                v.itemName.error = "Cannot be empty"
+                v.itemAmount.error = "Cannot be empty"
                 return@setOnClickListener
             }
             val arrayList = ArrayList<BulkyRequestModel>()
@@ -52,10 +56,8 @@ class AddBulkRequestItemBottomSheet : BottomSheetDialogFragment() {
             item.addProperty("quantity", quantity)
             arrayList.add(BulkyRequestModel(name, amount, quantity))
             arrayListJson.add(item.toString())
-
             mListener.addNewBulkRequestItem(arrayList, arrayListJson)
             dismiss()
-
         }
         return v;
     }

@@ -553,7 +553,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         progressDialog.setMessage("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-//        editor.putString("mpesaBottomSheetListener", "mpesaBottomSheetListener");
 
         String ben_ref = pref.getString("ben_ref", "");
         String ben_account = pref.getString("ben_account", "");
@@ -592,11 +591,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
                             progressDialog.dismiss();
                             if (result.has("errors")) {
-                                if (result.getAsJsonObject("errors").has("amount")) {
-                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonObject().get("amount").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                                } else if (result.getAsJsonObject("errors").has("amount")) {
-                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                             } else {
                                 editor.remove("ben_ref");
                                 editor.apply();
@@ -631,19 +626,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         }
     }
 
-    private void fetchWalletBalance() {
-        getWalletBalance(this, token)
-                .setCallback((e, result) -> {
-                    if (result.has("data")) {
-                        String balance = result.get("data").getAsJsonObject().get("wallet").getAsJsonObject().get("available_balance").getAsString();
-                        editor.putString(WALLET_BALANCE, balance);
-                        editor.apply();
-                    } else {
-                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
     @Override
     public void onBankBottomSheetListener(String amount, String accountNumber, String bankName) {
         editor.putString("amount211", amount);
@@ -651,7 +633,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         editor.putString("bankName1", bankName);
         editor.putString("BottomSheetListener", "SendMoneyBottomModel");
         editor.apply();
-
         EnterPinBottomSheet enterPinBottomSheet = new EnterPinBottomSheet();
         enterPinBottomSheet.show(getSupportFragmentManager(), "Mpesa Options");
     }
