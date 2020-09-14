@@ -113,7 +113,7 @@
             android:value="https://esb.interswitch-ke.com:18082/api/v1/" />
         <meta-data
             android:name="interswitch-kenya-limited.mobpay.mqtt_url"
-            android:value="tcp://testmerchant.interswitch-ke.com:1883" />
+            android:value="tcp://merchant.interswitch-ke.com:1883" />
         <meta-data
             android:name="interswitch-kenya-limited.mobpay.cardinal_url"
             android:value="https://merchant.interswitch-ke.com/sdkcardinal" />

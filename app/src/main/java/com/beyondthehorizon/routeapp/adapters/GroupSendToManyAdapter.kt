@@ -61,9 +61,6 @@ class GroupSendToManyAdapter(private val context: Context, val mListener: SendTo
         private var bulkyRequestModel: MultiContactModel? = null
         private var pst: Int? = null
 
-        var sharedPref: SharedPreferences =
-                context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-
         init {
             view.setOnClickListener {
                 val gson = Gson()

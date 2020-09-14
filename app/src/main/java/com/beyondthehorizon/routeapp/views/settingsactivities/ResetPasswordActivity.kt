@@ -37,7 +37,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                             intent.putExtra("Email", email)
                             startActivity(intent)
                         } else if(result.has("errors")){
-                            Toast.makeText(this, result.get("errors").asJsonArray.get(1).asString, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
                         }
                     }
                 } else {

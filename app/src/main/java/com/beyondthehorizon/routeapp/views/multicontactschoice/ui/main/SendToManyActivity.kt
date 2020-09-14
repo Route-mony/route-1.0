@@ -4,7 +4,6 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +40,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_send_to_many)
-        prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
         progressDialog = ProgressDialog(this)
         gsonn = Gson()
@@ -72,16 +71,16 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
     private fun sendToManyFunction() {
         val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
         arrayList = gsonn.fromJson(prefs.getString(MY_MULTI_CHOICE_SELECTED_CONTACTS, ""), type)
+        jsonn = gsonn.toJson(arrayList)
         usersAdapter.setContact(arrayList)
         var amountTotal = 0
         for (multiContactModel: MultiContactModel in arrayList) {
             amountTotal += multiContactModel.amount.toInt()
         }
-        totalAmount.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
-        jsonn = gsonn.toJson(arrayList)
+        totalAmount.text = String.format("%s %s", "Kes", NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal))
     }
 
-    fun prevPage(view: View) {
+    fun prevPage() {
         onBackPressed()
     }
 
@@ -92,7 +91,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         for (multiContactModel: MultiContactModel in arrayList) {
             amountTotal += multiContactModel.amount.toInt()
         }
-        totalAmount.text = "Kes ${NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal)}"
+        totalAmount.text = String.format("%s %s", "Kes", NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal))
     }
 
     override fun updateItem(item: String, itemPosition: String) {
@@ -110,7 +109,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.show()
 
-        prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         val provider = if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.contains(SEND_MONEY_TO_ROUTE)) {
             "ROUTEWALLET"
         } else {
@@ -123,7 +122,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                     Timber.e("HAPA Error%s", " $e  res $result")
                     if (result.has("errors")) {
                         Toast.makeText(this@SendToManyActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
-
                     } else
                         if (result["status"].toString().contains("success")) {
                             messagetxt = result["data"].asJsonObject.get("message").asString

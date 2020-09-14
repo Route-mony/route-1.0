@@ -28,6 +28,7 @@ import timber.log.Timber
 import java.security.SecureRandom
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -37,7 +38,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private var amount = ""
     private lateinit var parentIntent: Intent
     private lateinit var childIntent: Intent
-    private lateinit var format: NumberFormat
+    private lateinit var format: DecimalFormat
     private lateinit var prefs: SharedPreferences
     private lateinit var binding: ActivityFundAmountBinding
     private lateinit var editor: SharedPreferences.Editor
@@ -104,7 +105,14 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         val progressBar = CustomProgressBar()
         var transactionMessage = ""
 
-        format = DecimalFormat("#,###")
+        //Format currency
+        val locale = Locale("en", "KE")
+        val symbol = Currency.getInstance(locale).getSymbol(locale)
+        format = NumberFormat.getCurrencyInstance(locale) as DecimalFormat
+        format.isGroupingUsed = true
+        format.positivePrefix = "$symbol "
+        format.maximumFractionDigits = 0
+
         binding.btnOne.setOnClickListener {
             binding.txtAmount.text = formatAmount("${amount}${binding.btnOne.text}")
         }
@@ -154,7 +162,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 amount = "";
                 binding.txtAmount.text = ""
             } else {
-                binding.txtAmount.text = formatAmount(amount.removeRange(amount.lastIndex - 1, amount.lastIndex))
+                binding.txtAmount.text = formatAmount(amount.substring(0, amount.length - 1))
             }
         }
         binding.bulkRequest.setOnClickListener {
@@ -164,7 +172,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 binding.requestLayout.visibility = View.VISIBLE
                 username = prefs.getString("Username", "").toString()
-                binding.requestTitle.text = "$username"
+                binding.requestTitle.text = username
                 binding.requestType.text = "Request : "
 
             } else if (transactionType.compareTo(SEND_MONEY) == 0) {
@@ -417,8 +425,10 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     }
 
     private fun formatAmount(amt: String): String {
-        amount = amt
-        return format.format(amt.toInt())
+        if (amt.length <= 7) {
+            amount = amt
+        }
+        return format.format(amount.toInt())
     }
 
     override fun enterPinDialog(pin: String) {
