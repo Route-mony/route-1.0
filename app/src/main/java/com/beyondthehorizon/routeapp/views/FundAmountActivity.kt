@@ -262,7 +262,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
                             } else if (result.has("errors")) {
-                                Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@FundAmountActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -303,8 +303,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                                 try {
                                                     if (result != null) {
                                                         if (result.has("errors")) {
-                                                            var error = result.get("errors").asJsonObject.get("card_number").asJsonArray.get(0).asString
-                                                            Toast.makeText(this@FundAmountActivity, error, Toast.LENGTH_LONG).show()
+                                                            Toast.makeText(this@FundAmountActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                                                         } else {
                                                             transactionMessage = result.get("data").asJsonObject.get("message").asString
                                                             Toast.makeText(this@FundAmountActivity, transactionMessage, Toast.LENGTH_LONG).show()
@@ -462,19 +461,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     Timber.e(result.toString())
                     progressBar.dialog.dismiss()
                     if (result.has("errors")) {
-                        try {
-                            if (result.get("errors").asJsonObject.has("error")) {
-                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.get("error").asString, Toast.LENGTH_LONG).show()
-                                return@setCallback
-                            }
-                            Toast.makeText(this@FundAmountActivity, result.get("errors").asString, Toast.LENGTH_LONG).show()
-                        } catch (ex: Exception) {
-                            try {
-                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonObject.get("beneficiary_account").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
-                            } catch (e: Exception) {
-                                Toast.makeText(this@FundAmountActivity, result.get("errors").asJsonArray.get(0).asString, Toast.LENGTH_LONG).show()
-                            }
-                        }
+                        Toast.makeText(this@FundAmountActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                     } else {
                         //Load wallet balance from ISW
                         util.loadWalletBalance(token)

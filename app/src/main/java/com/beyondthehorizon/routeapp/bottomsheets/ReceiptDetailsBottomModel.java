@@ -170,8 +170,8 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                     if (result.get("status").getAsString().contains("success")) {
                                         Toast.makeText(getActivity(), "Receipt Approved Successfully", Toast.LENGTH_LONG).show();
                                         dismiss();
-                                    } else {
-                                        Toast.makeText(getActivity(), result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                                    }else if (result.has("errors")) {
+                                        Toast.makeText(requireContext(),result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -235,8 +235,8 @@ public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {
                                                 Toast.makeText(getActivity(), "Successful", Toast.LENGTH_LONG).show();
                                                 alertDialog.dismiss();
                                                 dismiss();
-                                            } else {
-                                                Toast.makeText(getActivity(), result.get("errors").getAsString(), Toast.LENGTH_LONG).show();
+                                            } else if (result.has("errors")) {
+                                                Toast.makeText(requireContext(), result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     });

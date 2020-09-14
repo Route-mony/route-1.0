@@ -99,7 +99,7 @@ class SetSecurityInfo : AppCompatActivity() {
                                     }
                                     if (result.has("errors")) {
                                         progressBar.dialog.dismiss()
-                                        Toast.makeText(this, result.get("errors").asString, Toast.LENGTH_LONG).show()
+                                        Toast.makeText(this, result.get("errors").asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                                         label.setTextColor(Color.parseColor("#FA0505"))
                                     } else if(result.has("data")){
 //                                        label.text = "Pin Verified"

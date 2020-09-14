@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.routeapp.R
@@ -135,8 +136,8 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                                 if (result.asJsonObject.get("status").asString == "success") {
                                     intent.putExtra("Message", "Your approval for $username request of Ksh. $amount for $reason is being processed. You will be notified after the processing is done.")
                                     startActivity(intent)
-                                } else {
-                                    Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
+                                } else if (result.has("errors")) {
+                                    Toast.makeText(this@ApproveRequestActivity, result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                                 }
                             } else {
                                 Snackbar.make(binding.notificationsView, "Unable to process your request, please try again later", Snackbar.LENGTH_LONG).show()
@@ -162,8 +163,8 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                     if (result.asJsonObject.get("status").asString == "success") {
                         intent.putExtra("Message", "You have rejected $username request of Ksh. $amount for $reason")
                         startActivity(intent)
-                    } else {
-                        Snackbar.make(binding.notificationsView, result.asJsonObject.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
+                    } else if(result.has("errors")){
+                        Snackbar.make(binding.notificationsView, result.get("errors").asJsonArray[0].asString, Snackbar.LENGTH_LONG).show()
                     }
                 } else {
                     Snackbar.make(binding.notificationsView, "An error has occurred, please try again later", Snackbar.LENGTH_LONG).show()

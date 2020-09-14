@@ -92,6 +92,7 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
             amountTotal += multiContactModel.amount.toInt()
         }
         totalAmount.text = String.format("%s %s", "Kes", NumberFormat.getNumberInstance(Locale.getDefault()).format(amountTotal))
+        jsonn = gsonn.toJson(arrayList)
     }
 
     override fun updateItem(item: String, itemPosition: String) {
@@ -125,7 +126,6 @@ class SendToManyActivity : AppCompatActivity(), EditSendToManyBottomSheet.EditSe
                     } else
                         if (result["status"].toString().contains("success")) {
                             messagetxt = result["data"].asJsonObject.get("message").asString
-
                             if (prefs.getString(GROUP_IS_SAVED, "")!!.contains("YES")) {
                                 val intent = Intent(this, FundRequestedActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
