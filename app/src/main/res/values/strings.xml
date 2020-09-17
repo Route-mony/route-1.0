@@ -49,6 +49,7 @@
     <string name="enter_account_number">Enter Account Number </string>
     <string name="enter_mobile_number">Enter Mobile Number </string>
     <string name="enter_bank_account">Enter Bank Account </string>
+    <string name="permisson_txt">Route syncs your phone contacts from your address book to Route servers to help you connect with other Route users.</string>
 
     <string name="_1">1</string>
     <string name="_2">2</string>

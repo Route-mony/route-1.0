@@ -2,6 +2,7 @@ package com.beyondthehorizon.routeapp.views;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
@@ -264,7 +266,27 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     public void checkPermissions() {
         try {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme);
+                builder1.setTitle("Route Would Like to Access Your Contacts");
+                builder1.setMessage(R.string.permisson_txt);
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Ok",
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            Toast.makeText(MainActivity.this, "You will not be able to access Route effectively", Toast.LENGTH_SHORT).show();
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             } else {
                 loadContacts();
             }
