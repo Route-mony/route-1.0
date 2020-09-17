@@ -3,7 +3,6 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'org.fabiomsr.drawableoptimizer'
 
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
 def apikeyProperties = new Properties()
@@ -42,14 +41,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    drawableOptimizer {
-        optimizer = 'zopfli'
-        compressionLevel = 9
-        iterations = 15
-        onlyOnRelease = true
-        logLevel = 'info'
     }
 }
 
