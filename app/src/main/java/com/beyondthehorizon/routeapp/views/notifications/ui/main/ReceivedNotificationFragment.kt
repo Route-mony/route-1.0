@@ -3,22 +3,20 @@ package com.beyondthehorizon.routeapp.views.notifications.ui.main
 import android.app.ProgressDialog
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.adapters.NotificationsAdapter
 import com.beyondthehorizon.routeapp.databinding.FragmentReceivedNotifactionBinding
-import com.beyondthehorizon.routeapp.databinding.FragmentSentNotificationBinding
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants
+import com.beyondthehorizon.routeapp.utils.DateFormatter
 import com.google.gson.JsonElement
 import timber.log.Timber
 
@@ -33,7 +31,7 @@ class ReceivedNotificationFragment : Fragment() {
     private lateinit var notificationsAdapter: NotificationsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-    //    private lateinit var context: Context
+
     private lateinit var filteredNotifications: MutableList<Notification>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -82,15 +80,17 @@ class ReceivedNotificationFragment : Fragment() {
                     notifications = mutableListOf()
                     for (item: JsonElement in requests) {
                         var id = item.asJsonObject.get("id").asString
-                        var username = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString + " " +
-                                item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
+                        var date = DateFormatter.formatMonthDayYear(item.asJsonObject.get("created_at").asString)
+                        var firstName = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString
+                        var lastName = item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
+                        var username = item.asJsonObject.get(userType).asJsonObject.get("username").asString
                         var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
-                        var imageUrl = R.drawable.group416
+                        var imageUrl = item.asJsonObject.get(userType).asJsonObject.get("image").asString
                         var reason = item.asJsonObject.get("reason").asString
                         var amount = item.asJsonObject.get("amount").asString
                         var status = item.asJsonObject.get("status").asString.toLowerCase()
                         var statusIcon = statusMapper[status]
-                        notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!, type))
+                        notifications.add(Notification(id, firstName, lastName, username, phone, imageUrl, reason, amount, status, statusIcon!!, type, date))
                     }
                     filteredNotifications = notifications.filter { it.type == type }.toMutableList()
                     notificationsAdapter = NotificationsAdapter(requireActivity(), filteredNotifications)

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -125,21 +124,21 @@ class NotificationActivity : AppCompatActivity() {
                     notifications = mutableListOf()
                     for (item: JsonElement in requests) {
                         var id = item.asJsonObject.get("id").asString
-                        var username = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString + " " +
-                                item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
+                        var firstName = item.asJsonObject.get(userType).asJsonObject.get("first_name").asString
+                        var lastName = item.asJsonObject.get(userType).asJsonObject.get("last_name").asString
+                        var username = item.asJsonObject.get(userType).asJsonObject.get("username").asString
                         var phone = item.asJsonObject.get(userType).asJsonObject.get("phone_number").asString
-                        var imageUrl = R.drawable.group416
+                        var imageUrl = item.asJsonObject.get("reason").asString
                         var reason = item.asJsonObject.get("reason").asString
                         var amount = item.asJsonObject.get("amount").asString
                         var status = item.asJsonObject.get("status").asString.toLowerCase()
                         var statusIcon = statusMapper[status]
-                        notifications.add(Notification(id, username, phone, imageUrl, reason, amount, status, statusIcon!!, type))
+                        notifications.add(Notification(id, firstName, lastName, username, phone, imageUrl, reason, amount, status, statusIcon!!, type))
                     }
                     filteredNotifications = notifications.filter { it.type == type }.toMutableList()
                     notificationsAdapter = NotificationsAdapter(this, filteredNotifications)
                     recyclerView.adapter = notificationsAdapter
-                }
-                else{
+                } else {
                     Toast.makeText(this, "No $type requests found", Toast.LENGTH_LONG).show()
                 }
             }

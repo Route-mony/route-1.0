@@ -19,6 +19,6 @@ class NotificationsAdapter (var context: Context, var notifications: MutableList
     }
 
     override fun onBindViewHolder(holder: NotificationsHolder, position: Int) {
-        holder.setValues(notifications.get(holder.adapterPosition))
+        holder.setValues(notifications[holder.adapterPosition])
     }
 }

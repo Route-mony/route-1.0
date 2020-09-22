@@ -124,4 +124,9 @@
     <string name="_123456">123456</string>
     <string name="sign_out">Sign out</string>
     <string name="i_agree_to_the_route_privacy_policy">I agree to the Route <a href="https://route.money/privacy-policy/">Privacy Policy</a></string>
+    <string name="status">Status: </string>
+    <string name="sample_date">12 Mar 2020</string>
+    <string name="sample_success_message">You account has been verified successfully</string>
+    <string name="approve">Approve</string>
+    <string name="decline">Decline</string>
 </resources>

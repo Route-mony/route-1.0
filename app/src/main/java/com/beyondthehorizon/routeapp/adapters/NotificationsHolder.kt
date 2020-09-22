@@ -12,6 +12,7 @@ import com.beyondthehorizon.routeapp.views.RequestReminderActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_notification.view.*
 import timber.log.Timber
+import java.util.*
 
 
 class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,37 +23,41 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
      * Set view with values available
      */
     fun setValues(value: Notification) {
-        val maxLen = 45
         var message = ""
         var id = value.id
         var username = value.username
+        var firstName = value.firstName
+        var lastName = value.lastName
         var amount = value.amount
         var reason = value.reason
         var statusIcon = value.statusIcon
         var status = value.status
         var avatarUrl = value.avatar
         var phone = value.phone
+        var date = value.date
+        var cancellationReason = value.cancellation_reason
+        var type = value.type
 
-        when(value.type){
+        when(type.toLowerCase()){
             "sent" -> {
-                intent = Intent(context, RequestReminderActivity::class.java)
-                message = "You have requested Ksh. $amount from $username for $reason"
+                message = "You've requested Ksh. $amount from $firstName $lastName for $reason"
             }
             "received" -> {
-                intent = Intent(context, ApproveRequestActivity::class.java)
-                message = username.split(" ")[0] + " has requested you Ksh. $amount for $reason"
+                message = "$firstName $lastName has requested you Ksh. $amount for $reason"
             }
         }
-        if (message.length > maxLen) {
-            message = message.subSequence(0, maxLen).toString() + "..."
-        }
+        intent = Intent(context, ApproveRequestActivity::class.java)
         itemView.message.text = message
         itemView.status_icon.setImageResource(statusIcon)
-        Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
+        itemView.tvStatus.text = status.capitalize()
+        itemView.tvDate.text = date
+        if(avatarUrl.isNotEmpty()) {
+            Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
+        }
 
         itemView.setOnClickListener {
             try {
-                when(status){
+                when(status.toLowerCase()){
                     "ok" -> status = "Approved"
                     "pending" -> status ="Pending"
                     "cancelled" -> status = "Rejected"
@@ -60,12 +65,18 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
 
                 intent.putExtra("Id", id)
                 intent.putExtra("Username", username)
+                intent.putExtra("FirstName", firstName)
+                intent.putExtra("LastName", lastName)
                 intent.putExtra(PHONE_NUMBER, phone)
                 intent.putExtra("Reason", reason)
                 intent.putExtra("Amount", amount)
                 intent.putExtra("Status", status)
                 intent.putExtra("StatusIcon", statusIcon)
+                intent.putExtra("Avatar", avatarUrl)
                 intent.putExtra("Phone", phone)
+                intent.putExtra("Date", date)
+                intent.putExtra("CancellationReason", cancellationReason)
+                intent.putExtra("RequestType", type)
                 context.startActivity(intent)
             }
             catch (ex: Exception) {
