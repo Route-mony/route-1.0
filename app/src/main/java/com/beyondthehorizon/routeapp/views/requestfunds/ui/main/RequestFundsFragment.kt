@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,7 @@ import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.MY_ALL_ROUTE_CONTACTS
 import com.beyondthehorizon.routeapp.utils.Constants.MY_ROUTE_CONTACTS
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
-import com.beyondthehorizon.routeapp.utils.InternetCheck
+import com.beyondthehorizon.routeapp.utils.NetworkUtils
 import com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.google.gson.Gson
@@ -40,6 +39,7 @@ import java.lang.reflect.Type
  * A simple [Fragment] subclass.
  */
 class RequestFundsFragment : Fragment() {
+    private lateinit var networkUtils: NetworkUtils
     private var contacts: MutableList<Contact> = mutableListOf()
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
     private var routeContactMap: MutableMap<String, Contact> = mutableMapOf()
@@ -67,6 +67,7 @@ class RequestFundsFragment : Fragment() {
 //        binding = DataBindingUtil.inflate(R.layout.fragment_request_funds, container, false)
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_request_funds, container, false)
+        networkUtils = NetworkUtils(requireContext())
 
         val view = binding.root
         recyclerView = binding.contactRecyclerView
@@ -193,83 +194,79 @@ class RequestFundsFragment : Fragment() {
     }
 
     private fun loadRouteContacts() {
-        InternetCheck(object : InternetCheck.Consumer {
-            override fun accept(internet: Boolean?) {
-
-                if (!internet!!) {
-                    // Initialize a new instance of
-                    val builder = AlertDialog.Builder(requireContext())
-                    builder.setTitle("No Connection")
-                    builder.setMessage("No internet connection")
-                    builder.setPositiveButton("Retry") { dialog, which ->
-                        dialog.dismiss()
-                        loadRouteContacts()
-                    }
-                    builder.setNegativeButton("Cancel") { dialog, which ->
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        dialog.dismiss()
-                        startActivity(intent)
-                        requireActivity().finish()
-                    }
-                    val dialog: AlertDialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    dialog.show()
-                    return
-                }
+        if (!networkUtils.isNetworkAvailable) {
+            // Initialize a new instance of
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("No Connection")
+            builder.setMessage("No internet connection")
+            builder.setPositiveButton("Retry") { dialog, _ ->
+                dialog.dismiss()
+                loadRouteContacts()
             }
-        })
-        try {
-            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-            Constants.loadUserContacts(requireActivity(), token).setCallback { e, result ->
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                dialog.dismiss()
+                startActivity(intent)
+                requireActivity().finish()
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
+            return
+        } else {
+            try {
+                val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+                Constants.loadUserContacts(requireActivity(), token).setCallback { e, result ->
 
-                if (result != null) {
-                    progressBar.dialog.dismiss()
-                    if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
-                            || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
+                    if (result != null) {
+                        progressBar.dialog.dismiss()
+                        if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
+                                || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
 
-                        if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
+                            if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
 
-                            val gson = Gson()
-                            val string = prefs.getString(MY_ROUTE_CONTACTS, "")
-                            val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
-                            contacts = gson.fromJson(string, type)
+                                val gson = Gson()
+                                val string = prefs.getString(MY_ROUTE_CONTACTS, "")
+                                val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
+                                contacts = gson.fromJson(string, type)
 
-                            recyclerView.layoutManager = linearLayoutManager
-                            recyclerView.setHasFixedSize(true)
-                            contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-                            recyclerView.adapter = contactsAdapater
+                                recyclerView.layoutManager = linearLayoutManager
+                                recyclerView.setHasFixedSize(true)
+                                contactsAdapater = ContactsAdapater(requireActivity(), contacts)
+                                recyclerView.adapter = contactsAdapater
 
+                            } else {
+                                mapRouteContactsToList(result.getAsJsonArray("rows"))
+                            }
                         } else {
-                            mapRouteContactsToList(result.getAsJsonArray("rows"))
+                            if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
+
+                                val gson = Gson()
+                                val string = prefs.getString(MY_ALL_ROUTE_CONTACTS, "")
+                                val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
+                                contacts = gson.fromJson(string, type)
+
+                                recyclerView.layoutManager = linearLayoutManager
+                                recyclerView.setHasFixedSize(true)
+                                contactsAdapater = ContactsAdapater(requireActivity(), contacts)
+                                recyclerView.adapter = contactsAdapater
+
+                            } else {
+                                mapContactsToList(result.getAsJsonArray("rows"))
+                            }
                         }
+
                     } else {
-                        if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
-
-                            val gson = Gson()
-                            val string = prefs.getString(MY_ALL_ROUTE_CONTACTS, "")
-                            val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
-                            contacts = gson.fromJson(string, type)
-
-                            recyclerView.layoutManager = linearLayoutManager
-                            recyclerView.setHasFixedSize(true)
-                            contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-                            recyclerView.adapter = contactsAdapater
-
-                        } else {
-                            mapContactsToList(result.getAsJsonArray("rows"))
-                        }
+                        progressBar.dialog.dismiss()
+                        Toast.makeText(requireActivity(), "Error Loading contacts", Toast.LENGTH_LONG).show()
                     }
-
-                } else {
-                    progressBar.dialog.dismiss()
-                    Toast.makeText(requireActivity(), "Error Loading contacts", Toast.LENGTH_LONG).show()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             }
-        } catch (e: Exception) {
-            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
-        }
 
+        }
     }
 
     private fun mapContactsToList(result: JsonArray) {

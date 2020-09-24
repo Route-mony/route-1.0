@@ -141,14 +141,16 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
             if (status.toLowerCase() == "pending") {
                 binding.btnReject.visibility = View.GONE
                 binding.btnApprove.visibility = View.GONE
+                binding.llSent.visibility = View.VISIBLE
+                binding.status.setBackgroundResource(R.drawable.round_button_pending)
             }
-            when (status.toLowerCase()) {
-                "pending" -> {
-                    binding.llSent.visibility = View.VISIBLE
-                }
-                else -> {
-                    binding.llSent.visibility = View.GONE
-                }
+            else if (status.toLowerCase() == "approved") {
+                binding.llSent.visibility = View.GONE
+                binding.status.setBackgroundResource(R.drawable.round_button_green)
+            }
+            else {
+                binding.llSent.visibility = View.GONE
+                binding.status.setBackgroundResource(R.drawable.round_button_danger)
             }
 
             when (requestType.toLowerCase()) {

@@ -70,10 +70,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="30dp"
-                        android:text="Request"
+                        android:layout_marginHorizontal="20dp"
+                        android:text="@string/request"
                         android:textColor="@color/colorButton"
-                        android:textSize="24sp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,9 +118,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:alpha=".9"
-                                        android:fontFamily="@font/rout_bold"
                                         android:text="Jane Doe"
-                                        android:textSize="24sp"
+                                        android:fontFamily="@font/rout_medium"
+                                        android:textColor="@color/our_black"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -128,7 +128,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="Payment by JneD"
-                                        android:textSize="22sp" />
+                                        android:fontFamily="@font/rout_book"
+                                        android:textColor="@color/colorPrimary" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -142,17 +143,17 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha=".9"
-                                    android:fontFamily="@font/rout_bold"
                                     android:text="Amount"
-                                    android:textSize="22sp"
+                                    android:fontFamily="@font/rout_medium"
+                                    android:textColor="@color/our_black"
                                     android:textStyle="bold" />
-
                                 <TextView
                                     android:id="@+id/txt_amount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Kes 2,000"
-                                    android:textSize="22sp" />
+                                    android:fontFamily="@font/rout_book"
+                                    android:textColor="@color/colorPrimary" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -165,9 +166,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha=".9"
-                                    android:fontFamily="@font/rout_bold"
                                     android:text="For"
-                                    android:textSize="22sp"
+                                    android:fontFamily="@font/rout_medium"
+                                    android:textColor="@color/our_black"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -175,7 +176,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Lunch with Clients"
-                                    android:textSize="22sp"
+                                    android:fontFamily="@font/rout_book"
+                                    android:textColor="@color/colorPrimary"
                                     android:visibility="visible" />
 
                                 <LinearLayout
@@ -215,9 +217,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:alpha=".9"
-                                    android:fontFamily="@font/rout_bold"
                                     android:text="Date"
-                                    android:textSize="22sp"
+                                    android:fontFamily="@font/rout_medium"
+                                    android:textColor="@color/our_black"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -225,7 +227,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="12/08/20"
-                                    android:textSize="22sp" />
+                                    android:fontFamily="@font/rout_book"
+                                    android:textColor="@color/colorPrimary" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -237,9 +240,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/rout_bold"
                                     android:text="Status"
-                                    android:textSize="22sp"
+                                    android:fontFamily="@font/rout_medium"
+                                    android:textColor="@color/our_black"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -248,7 +251,8 @@
                                     android:layout_height="wrap_content"
                                     android:alpha=".9"
                                     android:text="Pending"
-                                    android:textSize="22sp" />
+                                    android:fontFamily="@font/rout_book"
+                                    android:textColor="@color/colorPrimary" />
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>

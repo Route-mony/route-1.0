@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.adapters.MultiChoiceContactsAdapter
 import com.beyondthehorizon.routeapp.databinding.FragmentRequestFundsBinding
@@ -25,8 +26,7 @@ import com.beyondthehorizon.routeapp.models.Contact
 import com.beyondthehorizon.routeapp.models.MultiContactModel
 import com.beyondthehorizon.routeapp.utils.Constants
 import com.beyondthehorizon.routeapp.utils.Constants.*
-import com.beyondthehorizon.routeapp.utils.CustomProgressBar
-import com.beyondthehorizon.routeapp.utils.InternetCheck
+import com.beyondthehorizon.routeapp.utils.NetworkUtils
 import com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +42,8 @@ import java.lang.reflect.Type
 /**
  * A simple [Fragment] subclass.
  */
-class MultiChoiceContactsFragment : Fragment() {
+class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    private lateinit var networkUtils: NetworkUtils
     private lateinit var contacts: ArrayList<MultiContactModel>
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
     private var routeContactMap: MutableMap<String, Contact> = mutableMapOf()
@@ -61,12 +62,12 @@ class MultiChoiceContactsFragment : Fragment() {
     private lateinit var mobileNumber: String
     private var REQUEST_READ_CONTACTS = 79
     private lateinit var token: String
-    lateinit var progressBar: ProgressDialog
 
     //    private lateinit var context: Context
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_request_funds, container, false)
+        networkUtils = NetworkUtils(requireContext())
 
         val view = binding.root
         recyclerView = binding.contactRecyclerView
@@ -77,13 +78,8 @@ class MultiChoiceContactsFragment : Fragment() {
         editor = prefs.edit()
         parentIntent = requireActivity().intent
         childIntent = Intent(requireActivity(), ConfirmFundRequestActivity::class.java)
-        progressBar = ProgressDialog(activity)
-        progressBar.setMessage("Loading contacts this may take sometime. Please wait...")
-        progressBar.setCanceledOnTouchOutside(false)
-        progressBar.show()
-
         var transactionMessage = ""
-        token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+        token = "Bearer " + prefs.getString(USER_TOKEN, "")
 
         transactionType = prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
 
@@ -100,7 +96,6 @@ class MultiChoiceContactsFragment : Fragment() {
                         val string = prefs.getString(MY_ROUTE_CONTACTS_NEW, "")
                         val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
                         contacts = gson.fromJson(string, type)
-                        progressBar.dismiss()
                         recyclerView.layoutManager = linearLayoutManager
                         recyclerView.setHasFixedSize(true)
                         contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
@@ -122,7 +117,6 @@ class MultiChoiceContactsFragment : Fragment() {
                         recyclerView.setHasFixedSize(true)
                         contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
                         recyclerView.adapter = contactsAdapater
-                        progressBar.dismiss()
                     } else {
                         //CHECK IF WE HAVE CACHED ANY  CONTACTS FROM DB BEFORE IF NOT LOAD CONTACTS FROM BACKEND
                         loadRegisteredContacts()
@@ -149,7 +143,7 @@ class MultiChoiceContactsFragment : Fragment() {
             }
         })
         binding.swipeRefresh.setOnRefreshListener {
-            loadRegisteredContacts()
+            swipeRefresh.isRefreshing = true
         }
 
         return view
@@ -187,118 +181,109 @@ class MultiChoiceContactsFragment : Fragment() {
         contacts = ArrayList()
         try {
             //CHECK INTERNET CONNECTION
-            InternetCheck(object : InternetCheck.Consumer {
-                override fun accept(internet: Boolean?) {
+            if (!networkUtils.isNetworkAvailable) {
+                // Initialize a new instance of
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("No Connection")
+                builder.setMessage("No internet connection")
+                builder.setPositiveButton("Retry") { dialog, _ ->
+                    dialog.dismiss()
+                    loadRegisteredContacts()
+                }
+                builder.setNegativeButton("Cancel") { dialog, _ ->
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    dialog.dismiss()
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.show()
+                return
+            } else {
+                val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val myContactsList = ArrayList<MultiContactModel>()
+                while (phones!!.moveToNext()) {
+                    val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-                    if (!(internet!!)) {
-                        progressBar.dismiss()
-                        // Initialize a new instance of
-                        val builder = AlertDialog.Builder(requireContext())
-                        builder.setTitle("No Connection")
-                        builder.setMessage("No internet connection")
-                        builder.setPositiveButton("Retry") { dialog, which ->
-                            dialog.dismiss()
+                    myContactsList.add(MultiContactModel(
+                            "",
+                            name,
+                            phoneNumber,
+                            "",
+                            "",
+                            is_route = false,
+                            is_selected = false
+                    ))
+                }
+
+                val gson = Gson()
+                val json: String = gson.toJson(myContactsList)
+                val token = "Bearer " + prefs.getString(USER_TOKEN, "")
+
+                getRegisteredRouteContacts(requireActivity(), token, json).setCallback { e, result ->
+                    swipeRefresh.isRefreshing = false
+                    if (e != null) {
+                        val snackbar = Snackbar
+                                .make(frameLayout, "Unable to load contacts ", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Try again") {
+                            snackbar.dismiss()
                             loadRegisteredContacts()
                         }
-                        builder.setNegativeButton("Cancel") { dialog, which ->
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            dialog.dismiss()
-                            startActivity(intent)
-                            requireActivity().finish()
-                        }
-                        val dialog: AlertDialog = builder.create()
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.show()
-                        return
-                    }
-                }
-            })
-
-            val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-            val myContactsList = ArrayList<MultiContactModel>()
-            while (phones!!.moveToNext()) {
-                val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-                myContactsList.add(MultiContactModel(
-                        "",
-                        name,
-                        phoneNumber,
-                        "",
-                        "",
-                        is_route = false,
-                        is_selected = false
-                ))
-            }
-
-            val gson = Gson()
-            val json: String = gson.toJson(myContactsList)
-            val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-
-            Constants.getRegisteredRouteContacts(requireActivity(), token, json).setCallback { e, result ->
-                progressBar.dismiss()
-                binding.swipeRefresh.isRefreshing = false
-                if (e != null) {
-                    val snackbar = Snackbar
-                            .make(frameLayout, "Unable to load contacts ", Snackbar.LENGTH_INDEFINITE)
-                    snackbar.setAction("Try again") {
-                        snackbar.dismiss()
-                        loadRegisteredContacts()
-                    }
-                    snackbar.show()
-                    return@setCallback
-                }
-                if (result != null) {
-//              TODO : FILTER FOR REGISTER CONTACTS AND STORE IN MY_ROUTE_CONTACTS_NEW, THE REST STORE IN MY_ALL_ROUTE_CONTACTS_NEW
-                    Timber.e("CHECKPROVIDER %s", result)
-                    if (result.getAsJsonObject("data").get("contacts").asJsonArray.size() == 0) {
+                        snackbar.show()
                         return@setCallback
                     }
-
-                    val gsonn = Gson()
-                    val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
-                    editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
-                    editor.apply()
-                    if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
-                        for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
-                            val issueObj = JSONObject(item.toString())
-
-                            if (issueObj.getBoolean("is_route")) {
-                                contacts.add(MultiContactModel(
-                                        issueObj.get("id").toString(),
-                                        issueObj.get("username").toString(),
-                                        issueObj.get("phone_number").toString(),
-                                        issueObj.get("image").toString(),
-                                        issueObj.get("amount").toString(),
-                                        issueObj.getBoolean("is_route"),
-                                        issueObj.getBoolean("is_selected")
-                                ))
-                            }
-
-                            val json2: String = gsonn.toJson(contacts)
-                            editor.putString(Constants.MY_ROUTE_CONTACTS_NEW, json2)
-                            editor.apply()
+                    if (result != null) {
+                        Timber.e("CHECKPROVIDER %s", result)
+                        if (result.getAsJsonObject("data").get("contacts").asJsonArray.size() == 0) {
+                            return@setCallback
                         }
-                    } else {
-                        val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
-                        contacts = gson.fromJson(jsonn, type)
+
+                        val gsonn = Gson()
+                        val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
                         editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
                         editor.apply()
+                        if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
+                            for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
+                                val issueObj = JSONObject(item.toString())
+                                if (issueObj.getBoolean("is_route")) {
+                                    contacts.add(MultiContactModel(
+                                            issueObj.get("id").toString(),
+                                            issueObj.get("username").toString(),
+                                            issueObj.get("phone_number").toString(),
+                                            issueObj.get("image").toString(),
+                                            issueObj.get("amount").toString(),
+                                            issueObj.getBoolean("is_route"),
+                                            issueObj.getBoolean("is_selected")
+                                    ))
+                                }
+
+                                val json2: String = gsonn.toJson(contacts)
+                                editor.putString(Constants.MY_ROUTE_CONTACTS_NEW, json2)
+                                editor.apply()
+                            }
+                        } else {
+                            val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
+                            contacts = gson.fromJson(jsonn, type)
+                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
+                            editor.apply()
+                        }
+
+                        recyclerView.layoutManager = linearLayoutManager
+                        recyclerView.setHasFixedSize(true)
+                        contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
+                        recyclerView.adapter = contactsAdapater
                     }
-
-                    recyclerView.layoutManager = linearLayoutManager
-                    recyclerView.setHasFixedSize(true)
-                    contactsAdapater = MultiChoiceContactsAdapter(requireActivity(), contacts)
-                    recyclerView.adapter = contactsAdapater
-
-//                    val ggson = Gson()
-//                    val jjson = ggson.toJson(contacts)
-//                    val editor = prefs.edit()
                 }
             }
         } catch (e: Exception) {
             Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onRefresh() {
+        loadRegisteredContacts();
     }
 }

@@ -129,4 +129,5 @@
     <string name="sample_success_message">You account has been verified successfully</string>
     <string name="approve">Approve</string>
     <string name="decline">Decline</string>
+    <string name="request">Request</string>
 </resources>

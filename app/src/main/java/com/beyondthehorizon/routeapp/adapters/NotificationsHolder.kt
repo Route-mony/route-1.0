@@ -2,22 +2,21 @@ package com.beyondthehorizon.routeapp.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.Notification
 import com.beyondthehorizon.routeapp.utils.Constants.PHONE_NUMBER
 import com.beyondthehorizon.routeapp.views.ApproveRequestActivity
-import com.beyondthehorizon.routeapp.views.RequestReminderActivity
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_approve_request.view.*
 import kotlinx.android.synthetic.main.row_notification.view.*
 import timber.log.Timber
-import java.util.*
 
 
 class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var context = context
-    private lateinit var intent:Intent
+    private lateinit var intent: Intent
 
     /**
      * Set view with values available
@@ -38,7 +37,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         var cancellationReason = value.cancellation_reason
         var type = value.type
 
-        when(type.toLowerCase()){
+        when (type.toLowerCase()) {
             "sent" -> {
                 message = "You've requested Ksh. $amount from $firstName $lastName for $reason"
             }
@@ -51,16 +50,25 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         itemView.status_icon.setImageResource(statusIcon)
         itemView.tvStatus.text = status.capitalize()
         itemView.tvDate.text = date
-        if(avatarUrl.isNotEmpty()) {
+        if (avatarUrl.isNotEmpty()) {
             Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
         }
 
         itemView.setOnClickListener {
             try {
-                when(status.toLowerCase()){
-                    "ok" -> status = "Approved"
-                    "pending" -> status ="Pending"
-                    "cancelled" -> status = "Rejected"
+                when (status.toLowerCase()) {
+                    "ok" -> {
+                        status = "Approved"
+                        itemView.status.setBackgroundResource(R.drawable.round_button_green)
+                    }
+                    "pending" -> {
+                        status = "Pending"
+                        itemView.status.setBackgroundResource(R.drawable.round_button_pending)
+                    }
+                    "cancelled" -> {
+                        status = "Rejected"
+                        itemView.status.setBackgroundResource(R.drawable.round_button_danger)
+                    }
                 }
 
                 intent.putExtra("Id", id)
@@ -78,8 +86,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 intent.putExtra("CancellationReason", cancellationReason)
                 intent.putExtra("RequestType", type)
                 context.startActivity(intent)
-            }
-            catch (ex: Exception) {
+            } catch (ex: Exception) {
                 Timber.d(ex.message.toString())
             }
         }
