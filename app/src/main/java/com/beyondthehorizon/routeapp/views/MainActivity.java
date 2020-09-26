@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.routeapp.R;
@@ -35,9 +34,9 @@ import com.beyondthehorizon.routeapp.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.routeapp.bottomsheets.SendToManyModel;
 import com.beyondthehorizon.routeapp.bottomsheets.TransactionModel;
-import com.beyondthehorizon.routeapp.databases.NotificationCount;
 import com.beyondthehorizon.routeapp.models.MultiContactModel;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.NetworkUtils;
 import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.viewmodels.RoutViewModel;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
@@ -67,7 +66,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import timber.log.Timber;
@@ -96,6 +94,7 @@ import static com.beyondthehorizon.routeapp.utils.Constants.sendMoney;
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
         MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener,
         EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, SendToManyModel.SendToManyBottomSheetListener {
+    private NetworkUtils networkUtils;
     private static final String TAG = "MainActivity";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -111,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private Utils util;
     private RoutViewModel routViewModel;
     public static final int REQUEST_READ_CONTACTS = 243;
+    private LinearLayout llInternetDialog;
+    private Button btnCancel, btnRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         editor = pref.edit();
         util = new Utils(this);
         setContentView(R.layout.activity_main);
+        networkUtils = new NetworkUtils(this);
 
         btn_home = findViewById(R.id.btn_home);
         txt_home = findViewById(R.id.txt_home);
@@ -150,25 +152,28 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         btn_home.setImageResource(R.drawable.ic_nav_home);
         txt_home.setTextColor(getResources().getColor(R.color.colorButton));
 
-        moveUp = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.move_up);
+        moveUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_up);
+        llInternetDialog = findViewById(R.id.llInternetDialog);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnRetry = findViewById(R.id.btn_retry);
 
         routViewModel = ViewModelProviders.of(this).get(RoutViewModel.class);
         intent = new Intent(this, RequestFundActivity.class);
 
-        btn_request54.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
-                startActivity(intent);
-            }
+        btnRetry.setOnClickListener(v -> {
+            llInternetDialog.setVisibility(View.GONE);
+            isLoggedIn();
         });
-        add_money_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddMoneyBottomsheet addMoneyBottomsheet = new AddMoneyBottomsheet();
-                addMoneyBottomsheet.show(getSupportFragmentManager(), "Add Money Options");
-            }
+
+        btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
+
+        btn_request54.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+            startActivity(intent);
+        });
+        add_money_button.setOnClickListener(v -> {
+            AddMoneyBottomsheet addMoneyBottomsheet = new AddMoneyBottomsheet();
+            addMoneyBottomsheet.show(getSupportFragmentManager(), "Add Money Options");
         });
         btn_fav1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,9 +259,13 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         } else {
             token = "Bearer ".concat(Objects.requireNonNull(pref.getString(USER_TOKEN, "")));
             //Load wallet balance from ISW
-            util.loadWalletBalance(token);
-            getProfile();
-            notificationCount();
+            if (networkUtils.isNetworkAvailable()) {
+                util.loadWalletBalance(token);
+                getProfile();
+                notificationCount();
+            } else {
+                llInternetDialog.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -287,8 +296,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             } else {
                 loadContacts();
             }
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Timber.d(ex.getMessage());
         }
     }
 
@@ -336,11 +345,11 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         String json = gson.toJson(myContactsList);
         Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
                 .setCallback((e, result) -> {
-                    if (result.has("data")) {
-                        if (result.get("data").getAsJsonObject().has("contacts")) {
-                            Gson gsonn = new Gson();
-                            String jsonn = null;
-                            try {
+                    try {
+                        if (result.has("data")) {
+                            if (result.get("data").getAsJsonObject().has("contacts")) {
+                                Gson gsonn = new Gson();
+                                String jsonn = null;
                                 jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
                                 if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
                                     return;
@@ -365,26 +374,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
                                     editor.apply();
                                 }
-                            } catch (Exception ex) {
-                                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
+                    } catch (Exception ex) {
+                        Timber.d(ex.getMessage());
                     }
                 });
     }
 
     private void notificationCount() {
         Log.e(TAG, "onChanged: HERE");
-        routViewModel.getNotifiCount().observe(this, new Observer<List<NotificationCount>>() {
-            @Override
-            public void onChanged(List<NotificationCount> recentChatModels) {
-                Log.e(TAG, "onChanged: " + recentChatModels.size());
-                if (recentChatModels.size() > 0) {
-                    notifCount.setText(String.valueOf(recentChatModels.size()));
-                    notifCount.setVisibility(View.VISIBLE);
-                } else {
-                    notifCount.setVisibility(View.GONE);
-                }
+        routViewModel.getNotifiCount().observe(this, recentChatModels -> {
+            Log.e(TAG, "onChanged: " + recentChatModels.size());
+            if (recentChatModels.size() > 0) {
+                notifCount.setText(String.valueOf(recentChatModels.size()));
+                notifCount.setVisibility(View.VISIBLE);
+            } else {
+                notifCount.setVisibility(View.GONE);
             }
         });
     }
@@ -474,28 +480,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     balance_value.setText("");
                                 }
                             } catch (Exception ex) {
-                                Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                                Timber.d(ex.getMessage());
                             }
                         }
-                    } else {
-                        final Snackbar snackbar = Snackbar
-                                .make(RL1, "Unable to load data ", Snackbar.LENGTH_INDEFINITE);
-                        snackbar.setAction("Try again", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snackbar.dismiss();
-                                if (pref.getString(USER_TOKEN, "").isEmpty()) {
-                                    editor.putString(LOGGED_IN, "false");
-                                    editor.apply();
-                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                } else {
-                                    getProfile();
-                                }
-                            }
-                        });
-                        snackbar.show();
                     }
                 });
     }
@@ -535,16 +522,24 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void getServiceProviders() {
-        Constants.getServiceProviders(MainActivity.this, token)
-                .setCallback((e, result) -> {
-                    if (result.has("data")) {
-                        Log.e(TAG, "onCompleted: " + result);
-                        editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
-                        editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
-                        editor.apply();
+        if (networkUtils.isNetworkAvailable()) {
+            try {
+                Constants.getServiceProviders(MainActivity.this, token)
+                        .setCallback((e, result) -> {
+                            if (result.has("data")) {
+                                Log.e(TAG, "onCompleted: " + result);
+                                editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
+                                editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
+                                editor.apply();
 
-                    }
-                });
+                            }
+                        });
+            } catch (Exception ex) {
+                Timber.d(ex.getMessage());
+            }
+        } else {
+            llInternetDialog.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -570,78 +565,84 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
 
-        String ben_ref = pref.getString("ben_ref", "");
-        String ben_account = pref.getString("ben_account", "");
-        final String amount = pref.getString("amount21", "");
-        String transactionType = pref.getString("BottomSheetListener", "");
+        if (networkUtils.isNetworkAvailable()) {
+            try {
+                progressDialog.show();
+                String ben_ref = pref.getString("ben_ref", "");
+                String ben_account = pref.getString("ben_account", "");
+                final String amount = pref.getString("amount21", "");
+                String transactionType = pref.getString("BottomSheetListener", "");
 
-        Timber.e("enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
+                Timber.e("enterPinDialog: BREF " + ben_ref + " BAC " + ben_account + " amn " + amount);
 
-        if (transactionType.compareTo("mpesaBottomSheetListener") == 0) {
-            if (ben_ref.trim().isEmpty()) {
-                Constants.sendMoney(MainActivity.this,
-                        ben_account, amount, pin, token,
-                        "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+                if (transactionType.compareTo("mpesaBottomSheetListener") == 0) {
+                    if (ben_ref.trim().isEmpty()) {
+                        Constants.sendMoney(MainActivity.this,
+                                ben_account, amount, pin, token,
+                                "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
 
-                        progressDialog.dismiss();
-                        if (result.has("errors")) {
-                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                        } else {
-                            editor.remove("ben_ref");
-                            editor.apply();
-                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                            Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                            intent.putExtra("Message", message);
-                            startActivity(intent);
-                        }
-                    }
-                });
-            } else {
-                Constants.sendMoneyBeneficiary(MainActivity.this,
-                        ben_account, amount, pin, token,
-                        "MPESA PAYBILL", ben_ref.trim(), "Payment")
-                        .setCallback((e, result) -> {
-                            Log.e(TAG, "onCompleted: " + result);
-
-                            progressDialog.dismiss();
-                            if (result.has("errors")) {
-                                Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                            } else {
-                                editor.remove("ben_ref");
-                                editor.apply();
-                                String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                intent.putExtra("Message", message);
-                                startActivity(intent);
+                                progressDialog.dismiss();
+                                if (result.has("errors")) {
+                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                                } else {
+                                    editor.remove("ben_ref");
+                                    editor.apply();
+                                    String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                    Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                    intent.putExtra("Message", message);
+                                    startActivity(intent);
+                                }
                             }
                         });
+                    } else {
+                        Constants.sendMoneyBeneficiary(MainActivity.this,
+                                ben_account, amount, pin, token,
+                                "MPESA PAYBILL", ben_ref.trim(), "Payment")
+                                .setCallback((e, result) -> {
+                                    Log.e(TAG, "onCompleted: " + result);
+
+                                    progressDialog.dismiss();
+                                    if (result.has("errors")) {
+                                        Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        editor.remove("ben_ref");
+                                        editor.apply();
+                                        String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                        Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                        intent.putExtra("Message", message);
+                                        startActivity(intent);
+                                    }
+                                });
+                    }
+                } else if (transactionType.compareTo("SendMoneyBottomModel") == 0) {
+
+                    String bankName1 = pref.getString("bankName1", "");
+                    String accountNumber = pref.getString("accountNumber1", "");
+                    final String amountt = pref.getString("amount211", "");
+                    sendMoney(MainActivity.this, accountNumber, amountt, pin, token, bankName1, "Payment")
+                            .setCallback((e, result) -> {
+                                Log.e("FundAmountActivity", result.toString());
+                                progressDialog.dismiss();
+                                if (result.has("errors")) {
+                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                                } else {
+                                    editor.putString("Amount", amountt);
+                                    editor.apply();
+                                    String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                    Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                    intent.putExtra("Message", message);
+                                    startActivity(intent);
+                                }
+                            });
+                }
+            } catch (Exception ex) {
+                Timber.d(ex.getMessage());
             }
-        } else if (transactionType.compareTo("SendMoneyBottomModel") == 0) {
-
-            String bankName1 = pref.getString("bankName1", "");
-            String accountNumber = pref.getString("accountNumber1", "");
-            final String amountt = pref.getString("amount211", "");
-
-            sendMoney(MainActivity.this, accountNumber, amountt, pin, token, bankName1, "Payment")
-                    .setCallback((e, result) -> {
-                        Log.e("FundAmountActivity", result.toString());
-                        progressDialog.dismiss();
-                        if (result.has("errors")) {
-                            Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                        } else {
-                            editor.putString("Amount", amountt);
-                            editor.apply();
-                            String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                            Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                            intent.putExtra("Message", message);
-                            startActivity(intent);
-                        }
-                    });
         }
+
     }
 
     @Override

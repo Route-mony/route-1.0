@@ -4,38 +4,44 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.NetworkUtils;
 import com.beyondthehorizon.routeapp.views.MainActivity;
 import com.beyondthehorizon.routeapp.views.settingsactivities.ResetPasswordActivity;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_EMAIL;
 import static com.beyondthehorizon.routeapp.utils.Constants.USER_TOKEN;
-import static com.beyondthehorizon.routeapp.utils.Constants.WALLET_ACCOUNT;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private NetworkUtils networkUtils;
     private EditText email, password;
     private ProgressDialog progressDialog;
     private RelativeLayout R11;
     private TextView forgotPassword;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private String Email, Password;
+    private LinearLayout llInternetDialog;
+    private Button btnCancel, btnRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +49,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
         editor = pref.edit();
+        networkUtils = new NetworkUtils(this);
+        llInternetDialog = findViewById(R.id.llInternetDialog);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnRetry = findViewById(R.id.btn_retry);
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         forgotPassword = findViewById(R.id.forgotPassword);
         R11 = findViewById(R.id.R11);
+
+        btnRetry.setOnClickListener(v -> {llInternetDialog.setVisibility(View.GONE); loginRequest();});
+        btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
 
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +71,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void nextPage(View view) {
-        String Email = email.getText().toString().trim();
-        String Password = password.getText().toString().trim();
+        Email = email.getText().toString().trim();
+        Password = password.getText().toString().trim();
         if (Email.isEmpty()) {
             email.setError("Enter your email");
             return;
@@ -79,13 +93,15 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMessage("please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        loginRequest();
+    }
 
-        Constants.sendLogInRequest(LoginActivity.this,
-                Password, Email)
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
+    private void loginRequest() {
+        if (networkUtils.isNetworkAvailable()) {
+            progressDialog.show();
+            Constants.sendLogInRequest(LoginActivity.this,
+                    Password, Email)
+                    .setCallback((e, result) -> {
                         progressDialog.dismiss();
                         Log.d("TAG", "onCompleted: " + result);
 
@@ -106,8 +122,10 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(LoginActivity.this, "Unable to login. Try again later", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        } else {
+            llInternetDialog.setVisibility(View.VISIBLE);
+        }
     }
 
     public void prevPage(View view) {

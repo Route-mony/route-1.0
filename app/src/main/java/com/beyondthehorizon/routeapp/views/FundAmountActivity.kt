@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,6 +17,7 @@ import com.beyondthehorizon.routeapp.bottomsheets.EnterPinBottomSheet
 import com.beyondthehorizon.routeapp.databinding.ActivityFundAmountBinding
 import com.beyondthehorizon.routeapp.utils.Constants.*
 import com.beyondthehorizon.routeapp.utils.CustomProgressBar
+import com.beyondthehorizon.routeapp.utils.NetworkUtils
 import com.beyondthehorizon.routeapp.utils.Utils
 import com.beyondthehorizon.routeapp.views.multicontactschoice.MultiContactsActivity
 import com.beyondthehorizon.routeapp.views.receipt.ReceiptActivity
@@ -33,9 +36,9 @@ import kotlin.properties.Delegates
 
 
 class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener {
-
     private var username = ""
     private var amount = ""
+    private lateinit var networkUtils: NetworkUtils
     private lateinit var parentIntent: Intent
     private lateinit var childIntent: Intent
     private lateinit var format: DecimalFormat
@@ -65,13 +68,25 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private lateinit var merchant: Merchant
     private lateinit var payment: Payment
     private lateinit var customer: Customer
+    private lateinit var llInternetDialog: LinearLayout
+    private lateinit var btnCancel: Button
+    private lateinit var btnRetry: android.widget.Button
+    private val progressBar = CustomProgressBar()
+    private var transactionMessage = ""
+    //Format currency
+    private val locale = Locale("en", "KE")
+    private val symbol = Currency.getInstance(locale).getSymbol(locale)
+    private val config = MobPay.Config();
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
         util = Utils(this)
-        val config = MobPay.Config();
+        networkUtils = NetworkUtils(this)
+        llInternetDialog = findViewById(R.id.llInternetDialog)
+        btnCancel = findViewById(R.id.btn_cancel)
+        btnRetry = findViewById(R.id.btn_retry)
 
         btn_home.setOnClickListener {
             val intent = Intent(this@FundAmountActivity, MainActivity::class.java)
@@ -102,12 +117,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
 //        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
         transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
         token = "Bearer " + prefs.getString(USER_TOKEN, "")
-        val progressBar = CustomProgressBar()
-        var transactionMessage = ""
-
-        //Format currency
-        val locale = Locale("en", "KE")
-        val symbol = Currency.getInstance(locale).getSymbol(locale)
         format = NumberFormat.getCurrencyInstance(locale) as DecimalFormat
         format.isGroupingUsed = true
         format.positivePrefix = "$symbol "
@@ -168,6 +177,12 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         binding.bulkRequest.setOnClickListener {
             startActivity(Intent(this, BulkRequestActivity::class.java))
         }
+        binding.btnRetry.setOnClickListener {
+            llInternetDialog.visibility = View.GONE
+            sendRequest()
+        }
+
+        btnCancel.setOnClickListener { v: View? -> llInternetDialog.visibility = View.GONE }
         try {
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 binding.requestLayout.visibility = View.VISIBLE
@@ -235,7 +250,17 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
         binding.btnRequest.setOnClickListener {
-            try {
+            sendRequest()
+        }
+
+        binding.arrowBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun sendRequest() {
+        try {
+            if (networkUtils.isNetworkAvailable) {
                 when {
                     binding.txtAmount.text.isNullOrEmpty() -> {
                         Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
@@ -250,7 +275,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         editor.apply()
                         if (binding.requestNarration.text.toString().trim().isEmpty()) {
                             Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
-                            return@setOnClickListener
+                            return
                         }
                         val userId = prefs.getString("Id", "").toString()
                         val token = "Bearer " + prefs.getString(USER_TOKEN, "")
@@ -413,13 +438,11 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         }
                     }
                 }
-            } catch (ex: Exception) {
-                Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+            } else {
+                llInternetDialog.visibility = View.VISIBLE
             }
-        }
-
-        binding.arrowBack.setOnClickListener {
-            onBackPressed()
+        } catch (ex: Exception) {
+            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
         }
     }
 

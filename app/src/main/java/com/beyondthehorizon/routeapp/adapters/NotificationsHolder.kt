@@ -3,6 +3,7 @@ package com.beyondthehorizon.routeapp.adapters
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.routeapp.R
 import com.beyondthehorizon.routeapp.models.Notification
@@ -53,24 +54,23 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         if (avatarUrl.isNotEmpty()) {
             Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
         }
+        when (status.toLowerCase()) {
+            "ok" -> {
+                status = "Approved"
+                itemView.tvStatus.setBackgroundResource(R.drawable.round_button_green)
+            }
+            "cancelled" -> {
+                status = "Rejected"
+                itemView.tvStatus.setBackgroundResource(R.drawable.round_button_danger)
+            }
+            else -> {
+                status = "Pending"
+                itemView.tvStatus.setBackgroundResource(R.drawable.round_button_pending)
+            }
+        }
 
         itemView.setOnClickListener {
             try {
-                when (status.toLowerCase()) {
-                    "ok" -> {
-                        status = "Approved"
-                        itemView.status.setBackgroundResource(R.drawable.round_button_green)
-                    }
-                    "pending" -> {
-                        status = "Pending"
-                        itemView.status.setBackgroundResource(R.drawable.round_button_pending)
-                    }
-                    "cancelled" -> {
-                        status = "Rejected"
-                        itemView.status.setBackgroundResource(R.drawable.round_button_danger)
-                    }
-                }
-
                 intent.putExtra("Id", id)
                 intent.putExtra("Username", username)
                 intent.putExtra("FirstName", firstName)
@@ -88,6 +88,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 context.startActivity(intent)
             } catch (ex: Exception) {
                 Timber.d(ex.message.toString())
+                Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
             }
         }
     }

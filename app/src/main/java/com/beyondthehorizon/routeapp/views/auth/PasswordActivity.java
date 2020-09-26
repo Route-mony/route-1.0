@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.NetworkUtils;
 import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.views.SignupVerifiedActivity;
 import com.google.android.material.snackbar.Snackbar;
@@ -50,7 +54,12 @@ public class PasswordActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private CheckBox checkBox;
     private TextView tvPrivacyPolicy;
+    private NetworkUtils networkUtils;
+    private LinearLayout llInternetDialog;
+    private Button btnCancel, btnRetry;
+    private ImageButton btnNext;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +88,20 @@ public class PasswordActivity extends AppCompatActivity {
             }
         });
 
+        btnRetry.setOnClickListener(v -> {
+            llInternetDialog.setVisibility(View.GONE);
+            nextPage();
+        });
 
+        btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
+
+        btnNext.setOnClickListener(v -> {
+            nextPage();
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void nextPage(View view) {
+    public void nextPage() {
         String Password = password.getText().toString().trim();
         String CPassword = c_password.getText().toString().trim();
         if (Password.isEmpty()) {
@@ -121,53 +139,47 @@ public class PasswordActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(PasswordActivity.this);
         progressDialog.setMessage("please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
 
-        Constants.sendSignInRequest(PasswordActivity.this,
-                firstName, lastName,
-                surName, username,
-                Password, idNumber,
-                phoneNumber, emailAdd)
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        Log.d(TAG, "onCompleted: " + result);
-                        if (result != null) {
-                            if (result.get("status").toString().contains("failed")) {
-                                progressDialog.dismiss();
-                                String theError = "";
-                                if (result.get("errors").toString().contains("Email")) {
-                                    theError += "Email already exist.";
-                                } else if (result.get("errors").toString().contains("username")) {
-                                    theError += "\nUsername already exist.";
-                                } else if (result.get("errors").toString().contains("id_number")) {
-                                    theError += "\nId number already exist.";
-                                } else if (result.get("errors").toString().contains("phone_number")) {
-                                    theError += "\nPhone number already exist.";
+        if (networkUtils.isNetworkAvailable()) {
+            try {
+                progressDialog.show();
+                Constants.sendSignInRequest(PasswordActivity.this,
+                        firstName, lastName,
+                        surName, username,
+                        Password, idNumber,
+                        phoneNumber, emailAdd)
+                        .setCallback((e, result) -> {
+                            Log.d(TAG, "onCompleted: " + result);
+                            if (result != null) {
+                                if (result.get("status").toString().contains("failed")) {
+                                    progressDialog.dismiss();
+                                    if(result.has("errors")){
+                                        Snackbar snackbar = Snackbar.make(R11, result.get("errors").getAsJsonArray().get(0).getAsString(), Snackbar.LENGTH_LONG);
+                                        snackbar.show();
+                                    }
+                                } else {
+                                    editor.clear();
+                                    editor.apply();
 
-                                } else if (result.get("errors").toString().contains("surname")) {
-                                    theError += "\nInvalid surname e.g avoid using special characters or numbers";
+                                    progressDialog.dismiss();
+                                    Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                 }
-                                Snackbar snackbar = Snackbar
-                                        .make(R11, theError, Snackbar.LENGTH_LONG);
-                                snackbar.show();
                             } else {
-                                editor.clear();
-                                editor.apply();
-
                                 progressDialog.dismiss();
-                                Intent intent = new Intent(PasswordActivity.this, SignupVerifiedActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                Snackbar snackbar = Snackbar
+                                        .make(R11, "Unable to verify phone number", Snackbar.LENGTH_LONG);
+                                snackbar.show();
                             }
-                        } else {
-                            progressDialog.dismiss();
-                            Snackbar snackbar = Snackbar
-                                    .make(R11, "Unable to verify phone number", Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        }
-                    }
-                });
+                        });
+            } catch (
+                    Exception ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            llInternetDialog.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

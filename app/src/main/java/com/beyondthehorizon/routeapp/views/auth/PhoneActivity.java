@@ -1,21 +1,26 @@
 package com.beyondthehorizon.routeapp.views.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
+import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.NetworkUtils;
 import com.beyondthehorizon.routeapp.utils.Utils;
 import com.beyondthehorizon.routeapp.views.OtpVerificationActivity;
-import com.beyondthehorizon.routeapp.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
@@ -37,6 +42,10 @@ public class PhoneActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private TextView exitsTxt;
+    private NetworkUtils networkUtils;
+    private LinearLayout llInternetDialog;
+    private Button btnCancel, btnRetry;
+    private ImageButton btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +62,24 @@ public class PhoneActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         ccp.registerPhoneNumberTextView(phone);
         exitsTxt = findViewById(R.id.exitsTxt);
+        networkUtils = new NetworkUtils(this);
+        llInternetDialog = findViewById(R.id.llInternetDialog);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnRetry = findViewById(R.id.btn_retry);
+        btnNext = findViewById(R.id.next);
 
         back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        back.setOnClickListener(v -> onBackPressed());
+
+        btnRetry.setOnClickListener(v -> {
+            llInternetDialog.setVisibility(View.GONE);
+            nextPage();
+        });
+
+        btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
+
+        btnNext.setOnClickListener(v -> {
+            nextPage();
         });
 
         if (!(pref.getString(MyPhoneNumber, "nop").compareTo("nop") == 0)) {
@@ -68,7 +88,7 @@ public class PhoneActivity extends AppCompatActivity {
 
     }
 
-    public void nextPage(View view) {
+    public void nextPage() {
         String phoneNumber = phone.getText().toString().trim();
         if (!Utils.isPhoneNumberValid(phoneNumber, ccp.getSelectedCountryNameCode())) {
             phone.setError("Enter a valid phone number");
@@ -78,48 +98,55 @@ public class PhoneActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(PhoneActivity.this);
         progressDialog.setMessage("verifying please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
 
-        Constants.verifyUserEntry(PhoneActivity.this,
-                "phone_number", ccp.getNumber())
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        Log.d(TAG, "onCompleted: " + result);
-                        if (result != null) {
-                            progressDialog.dismiss();
-                            if (result.get("status").toString().contains("failed")) {
-                                exitsTxt.setVisibility(View.VISIBLE);
-                                String theError = "";
-                                if (result.get("errors").toString().contains("phone_number")) {
-                                    theError += "This phone number is already registered with another account. Use a different phone number !";
-                                }
-                                exitsTxt.setText(theError);
-                            } else {
+        if (networkUtils.isNetworkAvailable()) {
+            try {
+                progressDialog.show();
+
+                Constants.verifyUserEntry(PhoneActivity.this,
+                        "phone_number", ccp.getNumber())
+                        .setCallback((e, result) -> {
+                            Log.d(TAG, "onCompleted: " + result);
+                            if (result != null) {
                                 progressDialog.dismiss();
-                                exitsTxt.setVisibility(View.GONE);
-                                editor.putString(MyPhoneNumber, ccp.getNumber());
-                                editor.apply();
-                                if (currentUser != null) {
-                                    String ccphone = ccp.getNumber().substring(ccp.getNumber().length() - 9);
-                                    String firephone = currentUser.getPhoneNumber().substring(currentUser.getPhoneNumber().length() - 9);
-                                    if (ccphone.compareTo(firephone) == 0) {
-                                        startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
+                                if (result.get("status").toString().contains("failed")) {
+                                    exitsTxt.setVisibility(View.VISIBLE);
+                                    String theError = "";
+                                    if(result.has("errors")){
+                                        theError = result.get("errors").getAsJsonArray().get(0).getAsString();
+                                    }
+                                    exitsTxt.setText(theError);
+                                } else {
+                                    progressDialog.dismiss();
+                                    exitsTxt.setVisibility(View.GONE);
+                                    editor.putString(MyPhoneNumber, ccp.getNumber());
+                                    editor.apply();
+                                    if (currentUser != null) {
+                                        String ccphone = ccp.getNumber().substring(ccp.getNumber().length() - 9);
+                                        String firephone = currentUser.getPhoneNumber().substring(currentUser.getPhoneNumber().length() - 9);
+                                        if (ccphone.compareTo(firephone) == 0) {
+                                            startActivity(new Intent(PhoneActivity.this, PasswordActivity.class));
+                                        } else {
+                                            startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
+                                        }
                                     } else {
                                         startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
                                     }
-                                } else {
-                                    startActivity(new Intent(PhoneActivity.this, OtpVerificationActivity.class));
-                                }
 
+                                }
+                            } else {
+                                progressDialog.dismiss();
+                                exitsTxt.setVisibility(View.VISIBLE);
+                                exitsTxt.setText("Unable to verify phone number");
                             }
-                        } else {
-                            progressDialog.dismiss();
-                            exitsTxt.setVisibility(View.VISIBLE);
-                            exitsTxt.setText("Unable to verify phone number");
-                        }
-                    }
-                });
+                        });
+            } catch (
+                    Exception ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            llInternetDialog.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

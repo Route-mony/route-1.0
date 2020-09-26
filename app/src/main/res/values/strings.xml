@@ -130,4 +130,8 @@
     <string name="approve">Approve</string>
     <string name="decline">Decline</string>
     <string name="request">Request</string>
+    <string name="pending">Pending</string>
+    <string name="retry">Retry</string>
+    <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again.</string>
+    <string name="no_internet_connection">No internet connection!</string>
 </resources>

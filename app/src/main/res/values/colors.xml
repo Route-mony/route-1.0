@@ -36,6 +36,7 @@
     <color name="dim">#cfcfcf</color>
     <color name="clear">#1b0084ff</color>
     <color name="transparent">#00ffffff</color>
+    <color name="translucent">#CC000000</color>
     <color name="bluish_bar">#eb0084ff</color>
     <color name="btnColor">#f57708</color>
     <color name="trans">#CC000000</color>
@@ -49,6 +50,13 @@
     <color name="background_color">#78ffffff</color>
     <color name="sign_up_shady">#8C2196F3</color>
     <color name="keyboard_color">#034380</color>
+    <color name="view_color_orange">#f57708</color>
+    <color name="view_color_light_orange">#E1A36D</color>
+    <color name="view_color_dark_orange">#98561B</color>
     <color name="view_color_red">#FD0303</color>
+    <color name="view_color_light_red">#E38383</color>
+    <color name="view_color_dark_red">#731717</color>
     <color name="view_color_green">#40CA08</color>
+    <color name="view_color_light_green">#64A54A</color>
+    <color name="view_color_dark_green">#1E5C05</color>
 </resources>

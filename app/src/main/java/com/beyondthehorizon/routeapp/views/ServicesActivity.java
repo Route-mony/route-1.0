@@ -4,43 +4,65 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.routeapp.R;
 import com.beyondthehorizon.routeapp.adapters.SliderAdapter;
 import com.beyondthehorizon.routeapp.models.Adverts;
 import com.beyondthehorizon.routeapp.utils.Constants;
+import com.beyondthehorizon.routeapp.utils.NetworkUtils;
 import com.beyondthehorizon.routeapp.views.auth.LoginActivity;
-import com.beyondthehorizon.routeapp.views.auth.PasswordActivity;
 import com.beyondthehorizon.routeapp.views.auth.UserNamesActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import java.util.ArrayList;
+
+import timber.log.Timber;
 
 import static com.beyondthehorizon.routeapp.utils.Constants.REG_APP_PREFERENCES;
 
 public class ServicesActivity extends AppCompatActivity {
     private SharedPreferences pref;
+    private String token;
+    private NetworkUtils networkUtils;
+    private LinearLayout llInternetDialog;
+    private Button btnCancel, btnRetry;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services);
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0);
-        try {
-            String token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
-            Constants.getAdverts(this)
-                    .setCallback(new FutureCallback<JsonObject>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result) {
+        token = "Bearer " + pref.getString(Constants.USER_TOKEN, "");
+        networkUtils = new NetworkUtils(this);
+        llInternetDialog = findViewById(R.id.llInternetDialog);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnRetry = findViewById(R.id.btn_retry);
+        getAdverts();
+
+        btnRetry.setOnClickListener(v -> {
+            llInternetDialog.setVisibility(View.GONE);
+            getAdverts();
+        });
+
+        btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
+    }
+
+    public void getAdverts() {
+        if (networkUtils.isNetworkAvailable()) {
+            try {
+                Constants.getAdverts(this)
+                        .setCallback((e, result) -> {
                             ArrayList<Adverts> adverts = new ArrayList<>();
                             try {
                                 if (result.has("data")) {
@@ -57,17 +79,19 @@ public class ServicesActivity extends AppCompatActivity {
                                     adverts.add(new Adverts(icon, "Welcome to Route", "Adverts coming soon on this screen, please login or signup to enjoy our services."));
                                 }
                             } catch (Exception ex) {
-                                Log.d("ADVERTSERROR", ex.getMessage());
+                                Timber.d(ex);
                             }
 
                             CardSliderViewPager cardSliderViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
                             cardSliderViewPager.setAdapter(new
                                     SliderAdapter(getApplicationContext(), adverts));
-                        }
-                    });
-        } catch (
-                Exception ex) {
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                        });
+            } catch (
+                    Exception ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            llInternetDialog.setVisibility(View.VISIBLE);
         }
     }
 

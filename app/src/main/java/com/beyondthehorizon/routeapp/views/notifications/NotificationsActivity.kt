@@ -2,9 +2,12 @@ package com.beyondthehorizon.routeapp.views.notifications
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.routeapp.R
+import com.beyondthehorizon.routeapp.utils.NetworkUtils
 import com.beyondthehorizon.routeapp.views.MainActivity
 import com.beyondthehorizon.routeapp.views.notifications.ui.main.ReceivedNotificationFragment
 import com.beyondthehorizon.routeapp.views.notifications.ui.main.SentNotificationFragment
@@ -26,8 +29,6 @@ class NotificationsActivity : AppCompatActivity() {
         tabs.setupWithViewPager(view_pager)
         sectionsPagerAdapter.addFragment(SentNotificationFragment(), "Sent")
         sectionsPagerAdapter.addFragment(ReceivedNotificationFragment(), "Received")
-//        sectionsPagerAdapter.addFragment(CashOutFragment(), "Cash Outs")
-
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
 

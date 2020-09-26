@@ -9,6 +9,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -58,13 +59,13 @@ class RequestFundsFragment : Fragment() {
     private lateinit var mobileNumber: String
     private var REQUEST_READ_CONTACTS = 79
     private lateinit var token: String
+    private lateinit var tvNoInternet: TextView
+    private lateinit var rvReceived: RecyclerView
     val progressBar = CustomProgressBar()
 
     //    private lateinit var context: Context
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for activity fragment
-//        binding = DataBindingUtil.inflate(R.layout.fragment_request_funds, container, false)
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_request_funds, container, false)
         networkUtils = NetworkUtils(requireContext())
@@ -194,27 +195,7 @@ class RequestFundsFragment : Fragment() {
     }
 
     private fun loadRouteContacts() {
-        if (!networkUtils.isNetworkAvailable) {
-            // Initialize a new instance of
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("No Connection")
-            builder.setMessage("No internet connection")
-            builder.setPositiveButton("Retry") { dialog, _ ->
-                dialog.dismiss()
-                loadRouteContacts()
-            }
-            builder.setNegativeButton("Cancel") { dialog, _ ->
-                val intent = Intent(requireActivity(), MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                dialog.dismiss()
-                startActivity(intent)
-                requireActivity().finish()
-            }
-            val dialog: AlertDialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.show()
-            return
-        } else {
+        if (networkUtils.isNetworkAvailable) {
             try {
                 val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
                 Constants.loadUserContacts(requireActivity(), token).setCallback { e, result ->
@@ -265,13 +246,14 @@ class RequestFundsFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             }
-
+        }
+        else{
+            internetDialog()
         }
     }
 
     private fun mapContactsToList(result: JsonArray) {
         loadPhoneContacts()
-
         for (item: JsonElement in result) {
             var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
             var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
@@ -300,7 +282,6 @@ class RequestFundsFragment : Fragment() {
 
     private fun mapRouteContactsToList(result: JsonArray) {
         loadPhoneContacts()
-
         for (item: JsonElement in result) {
             var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
             var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
@@ -335,5 +316,23 @@ class RequestFundsFragment : Fragment() {
         editor.putString(MY_ROUTE_CONTACTS, json)
         editor.apply()
 
+    }
+
+    private fun internetDialog(){
+        // Initialize a new instance of
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Connection")
+        builder.setMessage("No internet connection")
+        builder.setPositiveButton("Retry") { dialog, _ ->
+            dialog.dismiss()
+            loadRouteContacts()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+        return
     }
 }

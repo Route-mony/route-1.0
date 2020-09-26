@@ -249,10 +249,12 @@
                                     android:id="@+id/status"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingHorizontal="@dimen/lb_30_sp"
                                     android:alpha=".9"
+                                    android:background="@drawable/round_button_pending"
                                     android:text="Pending"
                                     android:fontFamily="@font/rout_book"
-                                    android:textColor="@color/colorPrimary" />
+                                    android:textColor="@color/darkGreen" />
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
