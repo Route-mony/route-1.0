@@ -23,8 +23,6 @@ import com.beyondthehorizon.route.utils.Utils;
 import com.beyondthehorizon.route.views.OtpVerificationActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;

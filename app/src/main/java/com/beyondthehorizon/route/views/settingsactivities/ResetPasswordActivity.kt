@@ -11,7 +11,6 @@ import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityResetPasswordBinding
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.CustomProgressBar
-import com.beyondthehorizon.route.views.auth.LoginActivity
 
 class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
@@ -31,7 +30,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                     var intent = Intent(this, ResetPasswordOtpVerifyActivity::class.java)
                     prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
                     progressBar.show(this, "Verifying email...")
-                    Constants.resetPassword(this, email).setCallback { e, result ->
+                    Constants.resetPassword(this, email).setCallback { _, result ->
                         progressBar.dialog.dismiss()
                         if (result.has("data")) {
                             intent.putExtra("Email", email)
@@ -41,7 +40,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    binding.email.setError("Email is invalid")
+                    binding.email.error = "Email is invalid"
                 }
             }
             catch (ex: Exception){

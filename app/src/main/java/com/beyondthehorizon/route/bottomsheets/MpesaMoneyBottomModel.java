@@ -1,38 +1,21 @@
 package com.beyondthehorizon.route.bottomsheets;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.utils.Constants;
-import com.beyondthehorizon.route.views.FundRequestedActivity;
-import com.beyondthehorizon.route.views.RequestFundsActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_BANK;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
 
 public class MpesaMoneyBottomModel extends BottomSheetDialogFragment {
     private MpesaBottomSheetListener mListener;

@@ -1,23 +1,14 @@
 package com.beyondthehorizon.route.bottomsheets
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.models.BulkyRequestModel
 import com.beyondthehorizon.route.utils.Constants
-import com.beyondthehorizon.route.utils.Constants.*
-import com.beyondthehorizon.route.views.FundAmountActivity
-import com.beyondthehorizon.route.views.RequestFundsActivity
-import com.beyondthehorizon.route.views.requestfunds.RequestFundActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.add_bulk_item_layout.view.*

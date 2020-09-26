@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.beyondthehorizon.route.R
-import com.beyondthehorizon.route.models.ReceiptModel
 import com.beyondthehorizon.route.models.TransactionModel
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.Constants.*
@@ -30,16 +28,12 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
-import com.koushikdutta.async.future.FutureCallback
-import com.koushikdutta.ion.Ion
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.activity_transaction_details.*
 import kotlinx.android.synthetic.main.activity_transaction_details.receipt_amount
 import kotlinx.android.synthetic.main.upload_image_layout.view.*
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException

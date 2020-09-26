@@ -7,7 +7,7 @@
 
         <variable
             name="contact"
-            type="com.beyondthehorizon.routeapp.adapters.ContactsHolder" />
+            type="com.beyondthehorizon.route.adapters.ContactsHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

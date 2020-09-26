@@ -15,10 +15,8 @@ import com.beyondthehorizon.route.views.FundRequestedActivity
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.activity_change_password.back
 import kotlinx.android.synthetic.main.activity_change_password.btn_change
-import kotlinx.android.synthetic.main.activity_change_pin.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class ChangePinActivity : AppCompatActivity() {

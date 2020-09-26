@@ -20,7 +20,6 @@ import com.beyondthehorizon.route.utils.Constants.RECYCLER_HEADER
 import com.beyondthehorizon.route.utils.Constants.RECYCLER_SECTION
 import com.beyondthehorizon.route.utils.NetworkUtils
 import com.google.gson.JsonElement
-import kotlinx.android.synthetic.main.fragment_cash_out.*
 import kotlinx.android.synthetic.main.fragment_sent_receipt.*
 import kotlinx.android.synthetic.main.fragment_sent_receipt.view.*
 import org.json.JSONObject

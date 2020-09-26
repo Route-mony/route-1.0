@@ -1,25 +1,19 @@
 package com.beyondthehorizon.route.views.settingsactivities
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.utils.DatePickerHelper
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.activity_change_password.back
 import kotlinx.android.synthetic.main.activity_download_statement.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import java.text.SimpleDateFormat
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class DownloadStatementActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var datePicker: DatePickerHelper

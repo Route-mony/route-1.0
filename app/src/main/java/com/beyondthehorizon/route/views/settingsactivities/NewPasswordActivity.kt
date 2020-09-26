@@ -12,7 +12,6 @@ import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.Utils
 import com.beyondthehorizon.route.views.FundRequestedActivity
-import com.beyondthehorizon.route.views.OtpVerificationActivity
 
 class NewPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewPasswordBinding

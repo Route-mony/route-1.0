@@ -3,11 +3,8 @@ package com.beyondthehorizon.route.views.notifications
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.route.R
-import com.beyondthehorizon.route.utils.NetworkUtils
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.notifications.ui.main.ReceivedNotificationFragment
 import com.beyondthehorizon.route.views.notifications.ui.main.SentNotificationFragment

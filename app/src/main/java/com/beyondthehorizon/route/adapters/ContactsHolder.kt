@@ -3,7 +3,6 @@ package com.beyondthehorizon.route.adapters
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.route.models.Contact

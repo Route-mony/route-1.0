@@ -32,7 +32,6 @@ import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
-import kotlin.properties.Delegates
 
 class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, EnterReasonBottomSheet.EnterReasonBottomSheetListener {
     private lateinit var binding: ActivityApproveRequestBinding

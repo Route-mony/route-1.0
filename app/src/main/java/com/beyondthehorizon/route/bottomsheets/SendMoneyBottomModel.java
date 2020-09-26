@@ -1,12 +1,9 @@
 package com.beyondthehorizon.route.bottomsheets;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.utils.Constants;
 import com.beyondthehorizon.route.views.FundAmountActivity;
-import com.beyondthehorizon.route.views.FundRequestedActivity;
 import com.beyondthehorizon.route.views.requestfunds.RequestFundActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +37,6 @@ import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
 import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_BANK;
 import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
 import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.beyondthehorizon.route.utils.Constants.sendMoney;
 
 public class SendMoneyBottomModel extends BottomSheetDialogFragment {
     private SendMoneyBottomSheetListener mListener;

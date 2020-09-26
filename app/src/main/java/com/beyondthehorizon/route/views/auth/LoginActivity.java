@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.route.R;
@@ -62,12 +61,9 @@ public class LoginActivity extends AppCompatActivity {
         btnRetry.setOnClickListener(v -> {llInternetDialog.setVisibility(View.GONE); loginRequest();});
         btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
-                startActivity(intent);
-            }
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
         });
     }
 

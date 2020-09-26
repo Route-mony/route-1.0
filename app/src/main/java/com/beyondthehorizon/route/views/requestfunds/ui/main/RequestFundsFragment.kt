@@ -28,7 +28,6 @@ import com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
 import com.beyondthehorizon.route.views.ConfirmFundRequestActivity
-import com.beyondthehorizon.route.views.MainActivity
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement

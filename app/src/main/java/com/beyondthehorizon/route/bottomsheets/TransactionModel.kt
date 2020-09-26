@@ -14,7 +14,6 @@ import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.Constants.*
 import com.beyondthehorizon.route.views.FundAmountActivity
-import com.beyondthehorizon.route.views.RequestFundsActivity
 import com.beyondthehorizon.route.views.requestfunds.RequestFundActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

@@ -1,7 +1,6 @@
 package com.beyondthehorizon.route.adapters
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.models.MultiContactModel
-import com.beyondthehorizon.route.utils.Constants
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.send_many_item.view.*
 import java.text.NumberFormat

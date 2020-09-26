@@ -7,33 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.models.InviteFriend
 import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
-import android.R.attr.name
 import android.content.SharedPreferences
 import com.beyondthehorizon.route.models.TransactionModel
 import com.beyondthehorizon.route.utils.Constants
 import com.google.gson.Gson
-import android.R.id.message
-import android.R.attr.name
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.widget.EditText
 import com.beyondthehorizon.route.utils.Constants.*
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import kotlinx.android.synthetic.main.share_receipt_to_admin.view.*
-import androidx.core.content.ContextCompat.startActivity
-import android.R.attr.name
-import com.beyondthehorizon.route.views.MainActivity
-import androidx.core.content.ContextCompat.startActivity
-import android.R.attr.name
-import android.net.Uri
 
 
 class InviteFriendAdapter(private val context: Context, private val theView: String) :

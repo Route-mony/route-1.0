@@ -7,7 +7,7 @@
 
         <variable
             name="contacts"
-            type="com.beyondthehorizon.routeapp.models.Contact" />
+            type="com.beyondthehorizon.route.models.Contact" />
     </data>
 
 

@@ -3,12 +3,9 @@ package com.beyondthehorizon.route.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityRequestConfirmedBinding
-import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.views.notifications.NotificationsActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity

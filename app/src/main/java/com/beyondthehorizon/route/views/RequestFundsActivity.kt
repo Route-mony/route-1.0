@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -20,20 +19,13 @@ import com.beyondthehorizon.route.adapters.ContactsAdapater
 import com.beyondthehorizon.route.databinding.ActivityRequestFundsBinding
 import com.beyondthehorizon.route.models.Contact
 import com.beyondthehorizon.route.utils.Constants
-import com.beyondthehorizon.route.views.auth.LoginActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_phone.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import java.io.ObjectInput
 import java.lang.Exception
-import java.util.concurrent.Future
 
 
 class RequestFundsActivity : AppCompatActivity() {

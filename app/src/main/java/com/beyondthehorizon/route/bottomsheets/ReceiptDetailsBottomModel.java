@@ -2,20 +2,15 @@ package com.beyondthehorizon.route.bottomsheets;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +19,6 @@ import androidx.annotation.Nullable;
 import com.beyondthehorizon.route.R;
 import com.beyondthehorizon.route.models.ReceiptModel;
 import com.beyondthehorizon.route.utils.Constants;
-import com.beyondthehorizon.route.views.FundAmountActivity;
-import com.beyondthehorizon.route.views.RequestFundsActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -33,21 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
 import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_BANK;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_MOBILE_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
 import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
 
 public class ReceiptDetailsBottomModel extends BottomSheetDialogFragment {

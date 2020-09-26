@@ -1,6 +1,5 @@
 package com.beyondthehorizon.route.utils
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context

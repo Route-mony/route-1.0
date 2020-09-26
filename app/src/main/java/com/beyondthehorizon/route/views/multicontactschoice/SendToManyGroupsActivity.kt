@@ -9,16 +9,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.adapters.SavedGroupsAdapter
-import com.beyondthehorizon.route.models.MultiContactModel
-import com.beyondthehorizon.route.models.ReceiptModel
 import com.beyondthehorizon.route.models.SavedGroupItem
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.Constants.*
-import com.google.gson.Gson
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.activity_send_to_many_groups.*
-import kotlinx.android.synthetic.main.fragment_received_receipt.*
-import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
 

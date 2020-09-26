@@ -10,7 +10,6 @@ import com.beyondthehorizon.route.models.Notification
 import com.beyondthehorizon.route.utils.Constants.PHONE_NUMBER
 import com.beyondthehorizon.route.views.ApproveRequestActivity
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_approve_request.view.*
 import kotlinx.android.synthetic.main.row_notification.view.*
 import timber.log.Timber
 

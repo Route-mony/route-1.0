@@ -29,8 +29,6 @@ import com.beyondthehorizon.route.views.SignupVerifiedActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 
 import static com.beyondthehorizon.route.utils.Constants.FirstName;
 import static com.beyondthehorizon.route.utils.Constants.ID_NUMBER;
