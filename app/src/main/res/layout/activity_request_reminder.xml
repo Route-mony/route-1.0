@@ -8,7 +8,7 @@
 
         <variable
             name="request"
-            type="com.beyondthehorizon.routeapp.views.RequestReminderActivity"
+            type="com.beyondthehorizon.route.views.RequestReminderActivity"
             />
     </data>
 

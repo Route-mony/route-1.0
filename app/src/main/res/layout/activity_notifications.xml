@@ -7,7 +7,7 @@
 
         <variable
             name="notifications"
-            type="com.beyondthehorizon.routeapp.views.NotificationActivity" />
+            type="com.beyondthehorizon.route.views.NotificationActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

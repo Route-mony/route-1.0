@@ -7,7 +7,7 @@
 
         <variable
             name="bills"
-            type="com.beyondthehorizon.routeapp.views.split.bill.SplitBillActivity" />
+            type="com.beyondthehorizon.route.views.split.bill.SplitBillActivity" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

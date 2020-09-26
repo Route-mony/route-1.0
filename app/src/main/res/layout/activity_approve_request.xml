@@ -7,7 +7,7 @@
 
         <variable
             name="request"
-            type="com.beyondthehorizon.routeapp.views.ApproveRequestActivity" />
+            type="com.beyondthehorizon.route.views.ApproveRequestActivity" />
     </data>
 
 

@@ -25,3 +25,4 @@
 #-keep class com.google.gson.stream.** { *; }
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.beyondthehorizon.route.** { *; }
+-keep class * extends androidx.databinding.DataBinderMapper { *; }

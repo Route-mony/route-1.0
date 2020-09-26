@@ -7,7 +7,7 @@
 
         <variable
             name="money"
-            type="com.beyondthehorizon.routeapp.views.CardActivity" />
+            type="com.beyondthehorizon.route.views.CardActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
