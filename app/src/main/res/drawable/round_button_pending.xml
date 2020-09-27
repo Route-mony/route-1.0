@@ -3,8 +3,9 @@
     android:shape="rectangle">
     <corners android:radius="@dimen/lb_40_sp" />
 
-    <gradient
-        android:angle="270"
-        android:endColor="@color/view_color_light_orange"
-        android:startColor="@color/view_color_dark_orange" />
+<!--    <gradient-->
+<!--        android:angle="270"-->
+<!--        android:endColor="@color/view_color_light_orange"-->
+<!--        android:startColor="@color/view_color_dark_orange" />-->
+    <solid android:color="@color/btn_pending_color"/>
 </shape>
