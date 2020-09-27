@@ -137,6 +137,18 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
             binding.status.text = status
             binding.txtDate.text = date
 
+            when {
+                status.toLowerCase() == "pending" -> {
+                    binding.status.setBackgroundResource(R.drawable.round_button_pending)
+                }
+                status.toLowerCase() == "approved" -> {
+                    binding.status.setBackgroundResource(R.drawable.round_button_green)
+                }
+                else -> {
+                    binding.status.setBackgroundResource(R.drawable.round_button_danger)
+                }
+            }
+
             when (requestType.toLowerCase()) {
                 "sent" -> {
                     if (status.toLowerCase() == "pending") {

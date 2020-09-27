@@ -45,11 +45,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 message = "$firstName $lastName has requested you Ksh. $amount for $reason"
             }
         }
-        intent = Intent(context, ApproveRequestActivity::class.java)
-        itemView.message.text = message
-        itemView.status_icon.setImageResource(statusIcon)
-        itemView.tvStatus.text = status.capitalize()
-        itemView.tvDate.text = date
+
         if (avatarUrl.isNotEmpty()) {
             Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
         } else {
@@ -57,7 +53,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         }
         when (status.toLowerCase()) {
             "ok" -> {
-                status = "Approved"
+                status = "Done"
                 itemView.tvStatus.setBackgroundResource(R.drawable.round_button_green)
             }
             "cancelled" -> {
@@ -69,6 +65,12 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
                 itemView.tvStatus.setBackgroundResource(R.drawable.round_button_pending)
             }
         }
+
+        intent = Intent(context, ApproveRequestActivity::class.java)
+        itemView.message.text = message
+        itemView.status_icon.setImageResource(statusIcon)
+        itemView.tvStatus.text = status.capitalize()
+        itemView.tvDate.text = date
 
         itemView.setOnClickListener {
             try {
