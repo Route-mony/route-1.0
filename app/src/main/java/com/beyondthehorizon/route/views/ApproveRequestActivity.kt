@@ -141,7 +141,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                 status.toLowerCase() == "pending" -> {
                     binding.status.setBackgroundResource(R.drawable.round_button_pending)
                 }
-                status.toLowerCase() == "approved" -> {
+                status.toLowerCase() == "done" -> {
                     binding.status.setBackgroundResource(R.drawable.round_button_green)
                 }
                 else -> {
