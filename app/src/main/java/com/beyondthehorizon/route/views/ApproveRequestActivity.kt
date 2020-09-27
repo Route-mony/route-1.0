@@ -47,7 +47,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
     private lateinit var lastName: String
     private lateinit var phone: String
     private lateinit var reason: String
-    private lateinit var amount:String
+    private lateinit var amount: String
     private lateinit var status: String
     private lateinit var provider: String
     private lateinit var cancellationStatus: String
@@ -137,30 +137,22 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
             binding.status.text = status
             binding.txtDate.text = date
 
-            if (status.toLowerCase() == "pending") {
-                binding.btnReject.visibility = View.GONE
-                binding.btnApprove.visibility = View.GONE
-                binding.llSent.visibility = View.VISIBLE
-                binding.status.setBackgroundResource(R.drawable.round_button_pending)
-            }
-            else if (status.toLowerCase() == "approved") {
-                binding.llSent.visibility = View.GONE
-                binding.status.setBackgroundResource(R.drawable.round_button_green)
-            }
-            else {
-                binding.llSent.visibility = View.GONE
-                binding.status.setBackgroundResource(R.drawable.round_button_danger)
-            }
-
             when (requestType.toLowerCase()) {
                 "sent" -> {
-                    binding.requestTitle.text = resources.getString(R.string.send_a_reminder)
-                    binding.llSent.visibility = View.VISIBLE
-                    binding.llReceived.visibility = View.GONE
+                    if (status.toLowerCase() == "pending") {
+                        binding.requestTitle.text = resources.getString(R.string.send_a_reminder)
+                        binding.llSent.visibility = View.VISIBLE
+                        binding.llReceived.visibility = View.GONE
+                    } else {
+                        binding.llSent.visibility = View.GONE
+                        binding.llReceived.visibility = View.GONE
+                    }
                 }
                 "received" -> {
-                    binding.llReceived.visibility = View.VISIBLE
                     binding.llSent.visibility = View.GONE
+                    if (status.toLowerCase() != "pending") {
+                        binding.llReceived.visibility = View.GONE
+                    }
                 }
             }
 

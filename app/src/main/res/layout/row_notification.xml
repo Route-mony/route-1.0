@@ -24,7 +24,7 @@
             android:layout_marginRight="5dp"
             android:layout_weight=".2"
             android:scaleType="centerCrop"
-            android:src="@drawable/default_avatar"
+            app:srcCompat="@drawable/ic_user"
             app:civ_border_color="@color/grey"
             app:civ_border_width="2dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -52,6 +52,8 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         itemView.tvDate.text = date
         if (avatarUrl.isNotEmpty()) {
             Picasso.get().load(avatarUrl).into(itemView.notification_type_icon)
+        } else {
+            Picasso.get().load(R.drawable.ic_user).into(itemView.notification_type_icon)
         }
         when (status.toLowerCase()) {
             "ok" -> {
