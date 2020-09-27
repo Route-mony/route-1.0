@@ -138,10 +138,10 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
             binding.txtDate.text = date
 
             when {
-                status.toLowerCase() == "pending" -> {
+                status.toLowerCase(Locale.ROOT) == "pending" -> {
                     binding.status.setBackgroundResource(R.drawable.round_button_pending)
                 }
-                status.toLowerCase() == "done" -> {
+                status.toLowerCase(Locale.ROOT) == "done" -> {
                     binding.status.setBackgroundResource(R.drawable.round_button_green)
                 }
                 else -> {
@@ -149,9 +149,9 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                 }
             }
 
-            when (requestType.toLowerCase()) {
+            when (requestType.toLowerCase(Locale.ROOT)) {
                 "sent" -> {
-                    if (status.toLowerCase() == "pending") {
+                    if (status.toLowerCase(Locale.ROOT) == "pending") {
                         binding.requestTitle.text = resources.getString(R.string.send_a_reminder)
                         binding.llSent.visibility = View.VISIBLE
                         binding.llReceived.visibility = View.GONE
@@ -162,7 +162,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                 }
                 "received" -> {
                     binding.llSent.visibility = View.GONE
-                    if (status.toLowerCase() != "pending") {
+                    if (status.toLowerCase(Locale.ROOT) != "pending") {
                         binding.llReceived.visibility = View.GONE
                     }
                 }

@@ -12,6 +12,7 @@ import com.beyondthehorizon.route.views.ApproveRequestActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_notification.view.*
 import timber.log.Timber
+import java.util.*
 
 
 class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,7 +38,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         var cancellationReason = value.cancellation_reason
         var type = value.type
 
-        when (type.toLowerCase()) {
+        when (type.toLowerCase(Locale.ROOT)) {
             "sent" -> {
                 message = "You've requested Ksh. $amount from $firstName $lastName for $reason"
             }
@@ -51,7 +52,7 @@ class NotificationsHolder(context: Context, itemView: View) : RecyclerView.ViewH
         } else {
             Picasso.get().load(R.drawable.ic_user).into(itemView.notification_type_icon)
         }
-        when (status.toLowerCase()) {
+        when (status.toLowerCase(Locale.ROOT)) {
             "ok" -> {
                 status = "Done"
                 itemView.tvStatus.setBackgroundResource(R.drawable.round_button_green)
