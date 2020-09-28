@@ -183,7 +183,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             sendRequest()
         }
 
-        btnCancel.setOnClickListener { v: View? -> llInternetDialog.visibility = View.GONE }
+        btnCancel.setOnClickListener { llInternetDialog.visibility = View.GONE }
         try {
             if (transactionType.compareTo(REQUEST_MONEY) == 0) {
                 binding.requestLayout.visibility = View.VISIBLE
@@ -372,13 +372,11 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                      */
                     transactionType.compareTo(LOAD_WALLET_FROM_MPESA) == 0 -> {
                         try {
-                            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "CRD", currency, orderId)
+                            payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "MMO", currency, orderId)
                             payment.preauth = preauth
                             var mobileNumber = parentIntent.getStringExtra(PHONE_NUMBER)
                             var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
                             val merchant = Merchant(merchantId, domain);
-                            val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "MMO", currency, orderId)
-                            payment.preauth = preauth
                             var mobPay: MobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
                             progressBar.show(this@FundAmountActivity, "Processing payment...")
                             mobPay.makeMobileMoneyPayment(
