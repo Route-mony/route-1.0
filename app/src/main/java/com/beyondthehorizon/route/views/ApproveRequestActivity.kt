@@ -168,7 +168,7 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                 }
             }
 
-            binding.status.setTextColor(Color.parseColor(color[statusIcon]))
+//            binding.status.setTextColor(Color.parseColor(color[statusIcon]))
 
             var requestOptions = RequestOptions();
             requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))

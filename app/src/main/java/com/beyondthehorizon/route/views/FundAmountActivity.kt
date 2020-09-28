@@ -70,9 +70,10 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private lateinit var customer: Customer
     private lateinit var llInternetDialog: LinearLayout
     private lateinit var btnCancel: Button
-    private lateinit var btnRetry: android.widget.Button
+    private lateinit var btnRetry: Button
     private val progressBar = CustomProgressBar()
     private var transactionMessage = ""
+
     //Format currency
     private val locale = Locale("en", "KE")
     private val symbol = Currency.getInstance(locale).getSymbol(locale)
@@ -81,9 +82,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_amount)
-        util = Utils(this)
-        networkUtils = NetworkUtils(this)
+        binding = DataBindingUtil.setContentView(this@FundAmountActivity, R.layout.activity_fund_amount)
+        util = Utils(this@FundAmountActivity)
+        networkUtils = NetworkUtils(this@FundAmountActivity)
         llInternetDialog = findViewById(R.id.llInternetDialog)
         btnCancel = findViewById(R.id.btn_cancel)
         btnRetry = findViewById(R.id.btn_retry)
@@ -113,7 +114,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         editor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
         parentIntent = intent
-        childIntent = Intent(this, ConfirmFundRequestActivity::class.java)
+        childIntent = Intent(this@FundAmountActivity, ConfirmFundRequestActivity::class.java)
 //        transactionType = parentIntent.getStringExtra(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY)
         transactionType = prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
         token = "Bearer " + prefs.getString(USER_TOKEN, "")
@@ -175,7 +176,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             }
         }
         binding.bulkRequest.setOnClickListener {
-            startActivity(Intent(this, BulkRequestActivity::class.java))
+            startActivity(Intent(this@FundAmountActivity, BulkRequestActivity::class.java))
         }
         binding.btnRetry.setOnClickListener {
             llInternetDialog.visibility = View.GONE
@@ -247,7 +248,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 btn_request.text = "Continue"
             }
         } catch (ex: Exception) {
-            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this@FundAmountActivity, ex.message, Toast.LENGTH_LONG).show()
         }
         binding.btnRequest.setOnClickListener {
             sendRequest()
@@ -263,10 +264,10 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             if (networkUtils.isNetworkAvailable) {
                 when {
                     binding.txtAmount.text.isNullOrEmpty() -> {
-                        Toast.makeText(this, "Please enter amount", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@FundAmountActivity, "Please enter amount", Toast.LENGTH_LONG).show()
                     }
                     amount.toInt() <= 0 -> {
-                        Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@FundAmountActivity, "Please enter a valid amount", Toast.LENGTH_LONG).show()
                     }
 
                     /**HERE NOW*/
@@ -274,13 +275,13 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         editor.putString("Amount", amount)
                         editor.apply()
                         if (binding.requestNarration.text.toString().trim().isEmpty()) {
-                            Toast.makeText(this, "Please enter your reason", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this@FundAmountActivity, "Please enter your reason", Toast.LENGTH_LONG).show();
                             return
                         }
                         val userId = prefs.getString("Id", "").toString()
                         val token = "Bearer " + prefs.getString(USER_TOKEN, "")
-                        val intent = Intent(this, FundRequestedActivity::class.java)
-                        requestFund(this, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { e, result ->
+                        val intent = Intent(this@FundAmountActivity, FundRequestedActivity::class.java)
+                        requestFund(this@FundAmountActivity, userId, amount, binding.requestNarration.text.toString().trim(), token).setCallback { _, result ->
                             if (result.get("data") != null) {
                                 val message = result.get("data").asJsonObject.get("message").asString
                                 intent.putExtra("Message", message)
@@ -313,7 +314,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
                             val card = Card(cardNumber, cvvNumber, expYear, expMonth)
                             val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
-                            progressBar.show(this, "Processing payment...")
+                            progressBar.show(this@FundAmountActivity, "Processing payment...")
                             mobPay.makeCardPayment(
                                     card,
                                     merchant,
@@ -321,8 +322,8 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                     customer, {
                                 Timber.d(it.transactionOrderId)
                                 if (cardStatus.compareTo(NEW_CARD) == 0) {
-                                    progressBar.show(this, "Updating route ...")
-                                    addPaymentCard(this, cardNumber, expDate, cvvNumber, country, token)
+                                    progressBar.show(this@FundAmountActivity, "Updating route ...")
+                                    addPaymentCard(this@FundAmountActivity, cardNumber, expDate, cvvNumber, country, token)
                                             .setCallback { e, result ->
                                                 progressBar.dialog.dismiss()
                                                 try {
@@ -347,7 +348,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 util.loadWalletBalance(token)
 
                                 transactionMessage = "Ksh. ${amount} was successfully loaded to your route wallet  from card number ${cardNumber}. Transaction reference no:\t${it.transactionOrderId}. It might take 3 to 5 minutes to reflect the new balance."
-                                val intent = Intent(this, FundRequestedActivity::class.java)
+                                val intent = Intent(this@FundAmountActivity, FundRequestedActivity::class.java)
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
                                 intent.putExtra("Message", transactionMessage)
@@ -377,9 +378,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
                             val merchant = Merchant(merchantId, domain);
                             val payment = Payment("${amount.toInt() * 100}", transactionRef, "MOBILE", terminalId, "MMO", currency, orderId)
-                            payment.setPreauth(preauth)
+                            payment.preauth = preauth
                             var mobPay: MobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
-                            progressBar.show(this, "Processing payment...")
+                            progressBar.show(this@FundAmountActivity, "Processing payment...")
                             mobPay.makeMobileMoneyPayment(
                                     mobile,
                                     merchant,
@@ -393,7 +394,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
                                 transactionMessage = "Ksh. $amount was successfully loaded to your route wallet  from mobile number ${mobileNumber}. Transaction reference no:\t${it.transactionOrderId}. It might take 3 to 5 minutes to reflect the new balance."
-                                val intent = Intent(this, FundRequestedActivity::class.java)
+                                val intent = Intent(this@FundAmountActivity, FundRequestedActivity::class.java)
                                 editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
                                 editor.apply()
                                 intent.putExtra("Message", transactionMessage)
@@ -413,7 +414,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                     }
                     transactionType.compareTo(BUY_AIRTIME) == 0 -> {
                         try {
-                            val intent = Intent(this, FundRequestedActivity::class.java)
+                            val intent = Intent(this@FundAmountActivity, FundRequestedActivity::class.java)
                             val phone = parentIntent.getStringExtra(PHONE_NUMBER)
                             //TODO: Call the api to purchase airtime with the required parameters
 
@@ -424,17 +425,17 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                             intent.putExtra(ACTIVITY_TYPE, BUY_AIRTIME_ACTIVITY)
                             startActivity(intent)
                         } catch (ex: Exception) {
-                            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@FundAmountActivity, ex.message, Toast.LENGTH_LONG).show()
                         }
                     }
                     transactionType.compareTo(SPLIT_BILL) == 0 -> {
                         try {
-                            val intent = Intent(this, MultiContactsActivity::class.java)
+                            val intent = Intent(this@FundAmountActivity, MultiContactsActivity::class.java)
                             editor.putString(BILL_AMOUNT, amount)
                             editor.apply()
                             startActivity(intent)
                         } catch (ex: Exception) {
-                            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@FundAmountActivity, ex.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -442,7 +443,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                 llInternetDialog.visibility = View.VISIBLE
             }
         } catch (ex: Exception) {
-            Toast.makeText(this, ex.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this@FundAmountActivity, ex.message, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -458,7 +459,6 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         var provider = ""
         when {
             prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "").toString().compareTo(SEND_MONEY_TO_MOBILE_MONEY) == 0 -> {
-//                    account = parentIntent.getStringExtra(PHONE_NUMBER)
                 account = prefs.getString(PHONE_NUMBER, "").toString()
                 provider = "MPESA WALLET"
             }
@@ -478,9 +478,9 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         }
 
         val progressBar = CustomProgressBar()
-        progressBar.show(this, "Please Wait...")
+        progressBar.show(this@FundAmountActivity, "Please Wait...")
         sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
-                .setCallback { e, result ->
+                .setCallback { _, result ->
                     Timber.e(result.toString())
                     progressBar.dialog.dismiss()
                     if (result.has("errors")) {
@@ -492,7 +492,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         editor.putString("Amount", amount)
                         editor.apply()
                         val message = result.get("data").asJsonObject.get("message").asString
-                        val intent = Intent(this, FundRequestedActivity::class.java)
+                        val intent = Intent(this@FundAmountActivity, FundRequestedActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         intent.putExtra("Message", message)
                         startActivity(intent)

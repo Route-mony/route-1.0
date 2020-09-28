@@ -18,7 +18,7 @@ class ResetPasswordActivity : AppCompatActivity() {
     private var REQUEST_CODE_READ_SMS: Int = 1000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_reset_password)
+        binding = DataBindingUtil.setContentView(this@ResetPasswordActivity, R.layout.activity_reset_password)
         val progressBar = CustomProgressBar()
 
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECEIVE_SMS), REQUEST_CODE_READ_SMS)
