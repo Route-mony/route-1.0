@@ -28,8 +28,8 @@ class FundRequestedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fund_requested)
-        prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        prefsEditor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
+        prefs = getSharedPreferences(REG_APP_PREFERENCES, 0)
+        prefsEditor = getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
 
         btn_home.setOnClickListener {
             val intent = Intent(this@FundRequestedActivity, MainActivity::class.java)

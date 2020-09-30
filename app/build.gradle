@@ -32,16 +32,17 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
+
+    buildFeatures {
+        dataBinding = true
     }
 
     compileOptions {
@@ -79,8 +80,8 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
 
     // retrofitimplementation 'com.github.IslamKhSh:CardSlider:
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:2.6.0"
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //room
     implementation "androidx.room:room-runtime:$room_version"
@@ -97,7 +98,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.4.0'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.firebaseui:firebase-ui-auth:5.1.0'
     implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
     implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
     //Kommunicate

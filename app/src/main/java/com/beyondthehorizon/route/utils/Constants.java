@@ -643,4 +643,17 @@ public class Constants {
                 .asJsonObject();
     }
 
+    //LOAD WALLET
+    public static ResponseFuture<JsonObject> loadIndividualWallet(Context context, String amount, String token) {
+        String SERVER_URL = BASE_URL + "wallets/load";
+        JsonObject json = new JsonObject();
+        json.addProperty("amount", amount);
+
+        return Ion.with(context)
+                .load("POST", SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .setJsonObjectBody(json)
+                .asJsonObject();
+    }
 }

@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="contacts"
-            type="com.beyondthehorizon.route.views.FundAmountActivity" />
+            type="com.beyondthehorizon.route.views.FundAmountActivity"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

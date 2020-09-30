@@ -20,7 +20,6 @@ class CustomProgressBar {
 
     fun show(context: Context): Dialog {
         return show(context, null)
-
     }
 
     fun show(context: Context, title: CharSequence?): Dialog {
