@@ -131,7 +131,7 @@ class SetSecurityInfo : AppCompatActivity() {
                                     label.setTextColor(Color.parseColor("#FA0505"))
                                 } else if (result.has("data")) {
 //                                        label.text = "Pin Verified"
-                                    Toast.makeText(this, result.get("data").asJsonObject.get("message").asString, Toast.LENGTH_LONG).show()
+//                                    Toast.makeText(this, result.get("data").asJsonObject.get("message").asString, Toast.LENGTH_LONG).show()
                                     label.setTextColor(Color.parseColor("#40CA08"))
                                     val intent = Intent(Intent(this, MainActivity::class.java))
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.models.TransactionModel
 import com.beyondthehorizon.route.utils.Constants
@@ -82,7 +83,7 @@ class TransactionDetailsActivity : AppCompatActivity() {
         }
         shareReceipt.setOnClickListener {
             if (receipt_title.text.toString().trim().isEmpty()) {
-                Toast.makeText(this@TransactionDetailsActivity, "Enter Transaction Type", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@TransactionDetailsActivity, "Enter Transaction Description", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             val intent = Intent(this@TransactionDetailsActivity, InviteFriendActivity::class.java)
@@ -91,6 +92,20 @@ class TransactionDetailsActivity : AppCompatActivity() {
 
             intent.putExtra("TYPE", "SHARE")
             startActivity(intent)
+        }
+
+        reimbursable.setOnClickListener { view ->
+            val switchView = view as SwitchCompat
+            when (switchView.isChecked) {
+                false -> {
+                    //do stuff for FALSE
+                    reimb_amount.visibility = View.GONE
+                }
+                true -> {
+                    reimb_amount.visibility = View.VISIBLE
+                    //do stuff for TRUE
+                }
+            }
         }
 
     }

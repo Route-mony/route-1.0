@@ -104,4 +104,6 @@
         <item name="colorControlHighlight">#d50000</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
+
 </resources>
