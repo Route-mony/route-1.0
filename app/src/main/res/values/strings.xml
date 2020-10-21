@@ -2,10 +2,10 @@
     <string name="app_name">route</string>
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
-    <string name="lbl_first_name">First name</string>
-    <string name="lbl_middle_name">middle name</string>
+    <string name="lbl_first_name">First Name</string>
+    <string name="lbl_middle_name">Middle Name(Optional)</string>
     <string name="lbl_user_name">username</string>
-    <string name="lbl_last_name">Last name</string>
+    <string name="lbl_last_name">Last Name</string>
     <string name="lbl_email">Email</string>
     <string name="lbl_otp">OTP</string>
     <string name="lbl_phone">Phone number</string>

@@ -74,6 +74,10 @@ public class PasswordActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         c_password = findViewById(R.id.c_password);
         back = findViewById(R.id.back);
+        btnNext = findViewById(R.id.next);
+        llInternetDialog = findViewById(R.id.llInternetDialog);
+        btnRetry = findViewById(R.id.btn_retry);
+        btnCancel = findViewById(R.id.btn_cancel);
         checkBox = findViewById(R.id.chkPrivacyPolicy);
         tvPrivacyPolicy = findViewById(R.id.tvPrivacyPolicy);
 
@@ -96,6 +100,8 @@ public class PasswordActivity extends AppCompatActivity {
         btnNext.setOnClickListener(v -> {
             nextPage();
         });
+
+        networkUtils = new NetworkUtils(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -151,7 +157,7 @@ public class PasswordActivity extends AppCompatActivity {
                             if (result != null) {
                                 if (result.get("status").toString().contains("failed")) {
                                     progressDialog.dismiss();
-                                    if(result.has("errors")){
+                                    if (result.has("errors")) {
                                         Snackbar snackbar = Snackbar.make(R11, result.get("errors").getAsJsonArray().get(0).getAsString(), Snackbar.LENGTH_LONG);
                                         snackbar.show();
                                     }
