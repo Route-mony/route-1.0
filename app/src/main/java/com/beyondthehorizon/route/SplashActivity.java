@@ -8,7 +8,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beyondthehorizon.route.views.OtpVerificationActivity;
 import com.beyondthehorizon.route.views.ServicesActivity;
+import com.beyondthehorizon.route.views.auth.PasswordActivity;
 import com.beyondthehorizon.route.views.auth.SetSecurityInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         // Initialize Firebase Auth
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         logo = findViewById(R.id.logo);
@@ -46,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
         final String isLoggedIn = pref.getString(LOGGED_IN, "false");
         Glide.with(this).asGif()
                 .load(R.drawable.logo)
-                .apply(new RequestOptions().override(500,500))
+                .apply(new RequestOptions().override(500, 500))
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transition(withCrossFade())
                 .into(logo);

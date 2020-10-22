@@ -47,10 +47,10 @@ public class UserNamesActivity extends AppCompatActivity {
             last_name.setError("Last name cannot be empty");
             return;
         }
-        if (surName.isEmpty()) {
-            sur_name.setError("Surname cannot be empty");
-            return;
-        }
+//        if (surName.isEmpty()) {
+//            sur_name.setError("Surname cannot be empty");
+//            return;
+//        }
 
         editor.putString(FirstName, firstName);
         editor.putString(LastName, lastName);
