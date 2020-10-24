@@ -112,7 +112,7 @@ public class PasswordActivity extends AppCompatActivity {
             password.setError("Please enter your password");
             return;
         }
-        if (!Utils.passwordValidator(Password)) {
+        if (Utils.passwordValidator(Password)) {
             password.setError(Utils.invalidPasswordMessage());
             return;
         }
@@ -154,6 +154,7 @@ public class PasswordActivity extends AppCompatActivity {
                         phoneNumber, emailAdd)
                         .setCallback((e, result) -> {
                             Log.d(TAG, "onCompleted: " + result);
+
                             if (result != null) {
                                 if (result.get("status").toString().contains("failed")) {
                                     progressDialog.dismiss();

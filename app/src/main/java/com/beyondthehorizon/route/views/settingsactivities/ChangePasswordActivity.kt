@@ -64,7 +64,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                 } else if (newPassword.isNullOrEmpty()) {
                     binding.newPassword.setError("Please enter a new password");
                     binding.newPassword.requestFocus();
-                } else if (!Utils.passwordValidator(newPassword.toString())) {
+                } else if (Utils.passwordValidator(newPassword.toString())) {
                     binding.newPassword.setError(Utils.invalidPasswordMessage())
                     binding.newPassword.requestFocus();
                 } else if (cpassword.toString() == newPassword.toString()) {

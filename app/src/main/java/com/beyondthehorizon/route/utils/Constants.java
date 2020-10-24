@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
+import timber.log.Timber;
+
 public class Constants {
     public static String BASE_URL = "https://route-api.com/api/v1/";
     private static boolean ALLOW_REDIRECT = false;
@@ -100,7 +102,7 @@ public class Constants {
         json.addProperty("id_number", id_number);
         json.addProperty("phone_number", phone_number);
         json.addProperty("email", email);
-
+        Timber.e(" BAbayao " + json);
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")

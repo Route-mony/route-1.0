@@ -31,7 +31,7 @@ class NewPasswordActivity : AppCompatActivity() {
                     binding.password.setError("Please enter your current password");
                     binding.password.requestFocus();
                 }
-                else if (!Utils.passwordValidator(newPassword)) {
+                else if (Utils.passwordValidator(newPassword)) {
                     binding.password.setError(Utils.invalidPasswordMessage());
                     binding.password.requestFocus();
                 }
