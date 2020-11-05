@@ -27,7 +27,9 @@ class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder
     fun setValues(value: Contact) {
         itemView.username.text = value.name
         itemView.contact.text = value.contact
-        Picasso.get().load(value.avatar).into(itemView.profile_image)
+        if (value.avatar.isNotEmpty()) {
+            Picasso.get().load(value.avatar).into(itemView.profile_image)
+        }
 
         itemView.setOnClickListener {
             try {
