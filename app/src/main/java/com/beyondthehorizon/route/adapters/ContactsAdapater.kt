@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.beyondthehorizon.route.models.Contact
 import com.beyondthehorizon.route.R
+import com.beyondthehorizon.route.models.Contact
 
-class ContactsAdapater( var context: Context, var contacts: MutableList<Contact>): RecyclerView.Adapter<ContactsHolder>(){
-
-    override fun getItemCount(): Int{
-        return contacts.size
+class ContactsAdapater(var context: Context, contacts: MutableList<Contact>) : RecyclerView.Adapter<ContactsHolder>() {
+    private var contactsList: MutableList<Contact> = contacts
+    override fun getItemCount(): Int {
+        return contactsList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsHolder {
@@ -19,7 +19,12 @@ class ContactsAdapater( var context: Context, var contacts: MutableList<Contact>
     }
 
     override fun onBindViewHolder(holder: ContactsHolder, position: Int) {
-        holder.setValues(contacts.get(holder.adapterPosition))
+        holder.setValues(contactsList.get(holder.adapterPosition))
+    }
+
+    fun updateContacts(contacts: MutableList<Contact>) {
+        this.contactsList = contacts
+        notifyDataSetChanged()
     }
 }
 

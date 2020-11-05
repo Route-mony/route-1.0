@@ -70,7 +70,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
     private lateinit var llInternetDialog: LinearLayout
     private lateinit var btnCancel: Button
     private lateinit var btnRetry: Button
-    private val progressBar = CustomProgressBar()
+    private lateinit var progressBar:CustomProgressBar
     private var transactionMessage = ""
 
     //Format currency
@@ -84,6 +84,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
         binding = DataBindingUtil.setContentView(this@FundAmountActivity, R.layout.activity_fund_amount)
         util = Utils(this@FundAmountActivity)
         networkUtils = NetworkUtils(this@FundAmountActivity)
+        progressBar = CustomProgressBar(this)
         llInternetDialog = findViewById(R.id.llInternetDialog)
         btnCancel = findViewById(R.id.btn_cancel)
         btnRetry = findViewById(R.id.btn_retry)
@@ -316,7 +317,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         cardStatus = parentIntent.getStringExtra(CARD_STATUS).toString()
                         val card = Card(cardNumber, cvvNumber, expYear, expMonth)
                         val mobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, config)
-                        progressBar.show(this@FundAmountActivity, "Processing payment...")
+                        progressBar.show("Processing payment...")
                         mobPay.makeCardPayment(
                                 card,
                                 merchant,
@@ -324,7 +325,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                                 customer, {
                             Timber.d(it.transactionOrderId)
                             if (cardStatus.compareTo(NEW_CARD) == 0) {
-                                progressBar.show(this@FundAmountActivity, "Updating route ...")
+                                progressBar.show("Updating route ...")
                                 addPaymentCard(this@FundAmountActivity, cardNumber, expDate, cvvNumber, country, token)
                                         .setCallback { e, result ->
                                             progressBar.dialog.dismiss()
@@ -387,7 +388,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
                         var mobile = Mobile(mobileNumber, Mobile.Type.MPESA)
                         val merchant = Merchant(merchantId, domain);
                         val mobPay: MobPay = MobPay.getInstance(this@FundAmountActivity, clientId, clientSecret, null)
-                        progressBar.show(this@FundAmountActivity, "Processing payment...")
+                        progressBar.show("Processing payment...")
                         mobPay.makeMobileMoneyPayment(
                                 mobile,
                                 merchant,
@@ -480,8 +481,7 @@ class FundAmountActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPinBott
             return
         }
 
-        val progressBar = CustomProgressBar()
-        progressBar.show(this@FundAmountActivity, "Please Wait...")
+        progressBar.show("Please Wait...")
         sendMoney(this@FundAmountActivity, account, amount, pin, token, provider, "Payment")
                 .setCallback { _, result ->
                     Timber.e(result.toString())

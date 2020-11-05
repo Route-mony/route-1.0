@@ -22,12 +22,12 @@ import kotlinx.android.synthetic.main.nav_bar_layout.*
 class ChangePinActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePinBinding
     private lateinit var prefs: SharedPreferences
-    private var progressDialog: ProgressDialog? = null
+    private lateinit var progressBar:CustomProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_pin)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        val progressBar = CustomProgressBar()
+        progressBar = CustomProgressBar(this)
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
         btn_home.setOnClickListener {
@@ -63,7 +63,7 @@ class ChangePinActivity : AppCompatActivity() {
                     binding.newPin.requestFocus();
                 } else {
                     var intent = Intent(this, FundRequestedActivity::class.java)
-                    progressBar.show(this, "Please wait...")
+                    progressBar.show("Please wait...")
                     Constants.changePin(this, newPin, token).setCallback { e, result ->
                         progressBar.dialog.dismiss()
                         if (result.has("data")) {

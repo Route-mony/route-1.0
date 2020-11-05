@@ -14,15 +14,15 @@ import androidx.core.content.res.ResourcesCompat
 import com.beyondthehorizon.route.R
 import kotlinx.android.synthetic.main.progress_bar.view.*
 
-class CustomProgressBar {
+class CustomProgressBar(val context: Context) {
 
-    lateinit var dialog: Dialog
+    val dialog = Dialog(context, R.style.CustomProgressBarTheme)
 
-    fun show(context: Context): Dialog {
-        return show(context, null)
+    fun show(): Dialog {
+        return show(null)
     }
 
-    fun show(context: Context, title: CharSequence?): Dialog {
+    fun show(title: CharSequence?): Dialog {
         val inflator = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflator.inflate(R.layout.progress_bar, null)
         if (title != null) {
@@ -37,7 +37,6 @@ class CustomProgressBar {
         ) //Progress Bar Color
 
         view.cp_title.setTextColor(Color.WHITE) //Text Color
-        dialog = Dialog(context, R.style.CustomProgressBarTheme)
         dialog.setContentView(view)
         dialog.show()
         return dialog

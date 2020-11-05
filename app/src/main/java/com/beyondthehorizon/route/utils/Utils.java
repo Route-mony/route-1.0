@@ -2,11 +2,13 @@ package com.beyondthehorizon.route.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.telephony.TelephonyManager;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,5 +85,15 @@ public class Utils {
                         Timber.d(ex);
                     }
                 });
+    }
+
+    public String getCountrySymbol() {
+        try {
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            Locale locale = new Locale("", tm.getNetworkCountryIso().toUpperCase());
+            return locale.getCountry();
+        } catch (Exception ex) {
+            return Locale.getDefault().getDisplayCountry();
+        }
     }
 }

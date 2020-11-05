@@ -17,11 +17,13 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private lateinit var routeOTP: String
     private lateinit var otpIntent: Intent
+    private lateinit var progressBar:CustomProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_otp_verify)
         routeOTP = binding.otpCode.text.toString();
         otpIntent = getIntent()
+        progressBar = CustomProgressBar(this)
 
         binding.next.setOnClickListener {
             val otp = binding.otpCode.text.toString()
@@ -33,14 +35,13 @@ class ResetPasswordOtpVerifyActivity : AppCompatActivity() {
     }
 
     fun verifyOTP(otp: String) {
-        val progressBar = CustomProgressBar()
         try {
             if (otp.length == 6) {
                 var intent = Intent(this, NewPasswordActivity::class.java)
                 var email = otpIntent.getStringExtra("Email")
                 prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
                 token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-                progressBar.show(this, "Verifying otp...")
+                progressBar.show("Verifying otp...")
                 Constants.otpVerify(this, email, otp).setCallback { e, result ->
                     progressBar.dialog.dismiss()
                     if (result.has("data")) {

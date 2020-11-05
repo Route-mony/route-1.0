@@ -6,10 +6,10 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -18,35 +18,30 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.adapters.ContactsAdapater
 import com.beyondthehorizon.route.databinding.FragmentRequestFundsBinding
 import com.beyondthehorizon.route.models.Contact
 import com.beyondthehorizon.route.utils.Constants
-import com.beyondthehorizon.route.utils.Constants.MY_ALL_ROUTE_CONTACTS
-import com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
+import com.beyondthehorizon.route.utils.Utils
 import com.beyondthehorizon.route.views.ConfirmFundRequestActivity
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class RequestFundsFragment : Fragment() {
+class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var networkUtils: NetworkUtils
+    private lateinit var utils: Utils
     private var contacts: MutableList<Contact> = mutableListOf()
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
     private var routeContactMap: MutableMap<String, Contact> = mutableMapOf()
     private lateinit var prefs: SharedPreferences
     private lateinit var searchView: SearchView
     private lateinit var parentIntent: Intent
-    private lateinit var cardStatus: String
     private lateinit var childIntent: Intent
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var binding: FragmentRequestFundsBinding
@@ -54,20 +49,17 @@ class RequestFundsFragment : Fragment() {
     private lateinit var contactsAdapater: ContactsAdapater
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-    private var dummyId = 0
-    private lateinit var mobileNumber: String
     private var REQUEST_READ_CONTACTS = 79
     private lateinit var token: String
-    private lateinit var tvNoInternet: TextView
-    private lateinit var rvReceived: RecyclerView
-    val progressBar = CustomProgressBar()
+    private lateinit var progressBar: CustomProgressBar
+    private lateinit var countryLabel: String;
 
-    //    private lateinit var context: Context
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_request_funds, container, false)
         networkUtils = NetworkUtils(requireContext())
+        utils = Utils(requireContext())
 
         val view = binding.root
         recyclerView = binding.contactRecyclerView
@@ -76,14 +68,14 @@ class RequestFundsFragment : Fragment() {
         contacts = mutableListOf()
         contactMap = mutableMapOf()
         contactsAdapater = ContactsAdapater(requireActivity(), contacts)
+        progressBar = CustomProgressBar(requireContext())
+        countryLabel = utils.countrySymbol
 
         prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
         parentIntent = requireActivity().intent
         childIntent = Intent(requireActivity(), ConfirmFundRequestActivity::class.java)
-        progressBar.show(requireActivity(), "Loading contact...")
 
-        var transactionMessage = ""
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
         transactionType = prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
@@ -91,21 +83,11 @@ class RequestFundsFragment : Fragment() {
         try {
             if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.READ_CONTACTS)
                     == PackageManager.PERMISSION_GRANTED) {
-                if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
-
-                    val gson = Gson()
-                    val string = prefs.getString(MY_ROUTE_CONTACTS, "")
-                    val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
-                    contacts = gson.fromJson(string, type)
-
-                    recyclerView.layoutManager = linearLayoutManager
-                    recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-                    recyclerView.adapter = contactsAdapater
-
-                } else {
-                    loadRouteContacts()
-                }
+                recyclerView.layoutManager = linearLayoutManager
+                recyclerView.setHasFixedSize(true)
+                contactsAdapater = ContactsAdapater(requireActivity(), contacts)
+                recyclerView.adapter = contactsAdapater
+                loadRouteContacts()
             } else {
                 requestPermission();
             }
@@ -168,9 +150,7 @@ class RequestFundsFragment : Fragment() {
                     Toast.makeText(requireActivity(), "Permission Denied", Toast.LENGTH_SHORT).show()
 
                 } else {
-
                     loadRouteContacts()
-
                 }
             }
         }
@@ -181,143 +161,60 @@ class RequestFundsFragment : Fragment() {
             val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                var cleanedPhoneNumber = phoneNumber.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-                var id = phoneNumber.hashCode().toString()
-                contactMap.put(cleanedPhoneNumber, Contact(id, name, phoneNumber))
-                progressBar.dialog.dismiss()
+                val phoneNumber = Utils.getFormattedPhoneNumber(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), countryLabel)
+                contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber)
             }
         } catch (e: Exception) {
-            Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
-            progressBar.dialog.dismiss()
+            Log.d(TAG, e.message)
         }
     }
 
     private fun loadRouteContacts() {
+        loadPhoneContacts()
         if (networkUtils.isNetworkAvailable) {
             try {
+                progressBar.show("Loading contact...")
+                binding.swipeRefresh.isRefreshing = true
                 val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
                 Constants.loadUserContacts(requireActivity(), token).setCallback { e, result ->
-
-                    if (result != null) {
-                        progressBar.dialog.dismiss()
+                    binding.swipeRefresh.isRefreshing = false
+                    progressBar.dialog.dismiss()
+                    if (result != null && result.has("rows")) {
                         if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
                                 || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
-
-                            if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
-
-                                val gson = Gson()
-                                val string = prefs.getString(MY_ROUTE_CONTACTS, "")
-                                val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
-                                contacts = gson.fromJson(string, type)
-
-                                recyclerView.layoutManager = linearLayoutManager
-                                recyclerView.setHasFixedSize(true)
-                                contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-                                recyclerView.adapter = contactsAdapater
-
-                            } else {
-                                mapRouteContactsToList(result.getAsJsonArray("rows"))
+                            val users = result.getAsJsonArray("rows")
+                            contacts.clear()
+                            users.forEach { contact ->
+                                val user = contact.asJsonObject
+                                val phone = Utils.getFormattedPhoneNumber(user.get("phone_number").asString, countryLabel)
+                                if (contactMap[phone] != null) {
+                                    contactMap[phone]!!.name = String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString)
+                                    contactMap[phone]!!.contact = user.get("phone_number").asString
+                                    contactMap[phone]!!.avatar = user.get("image").asString
+                                    contactMap[phone]!!.accountNumber = user.get("wallet_account").asJsonObject.get("wallet_account").asString
+                                    contacts.add(contactMap[phone]!!)
+                                }
                             }
                         } else {
-                            if (prefs.getString(MY_ROUTE_CONTACTS, "")!!.isNotEmpty()) {
-
-                                val gson = Gson()
-                                val string = prefs.getString(MY_ALL_ROUTE_CONTACTS, "")
-                                val type: Type = object : TypeToken<MutableList<Contact>>() {}.type
-                                contacts = gson.fromJson(string, type)
-
-                                recyclerView.layoutManager = linearLayoutManager
-                                recyclerView.setHasFixedSize(true)
-                                contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-                                recyclerView.adapter = contactsAdapater
-
-                            } else {
-                                mapContactsToList(result.getAsJsonArray("rows"))
-                            }
+                            contacts = contactMap.values.toMutableList()
                         }
-
+                        contactsAdapater.updateContacts(contacts)
+                    } else if (result.has("errors")) {
+                        Toast.makeText(requireContext(), result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
                     } else {
-                        progressBar.dialog.dismiss()
-                        Toast.makeText(requireActivity(), "Error Loading contacts", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
                     }
+                    progressBar.dialog.dismiss()
                 }
             } catch (e: Exception) {
                 Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             }
-        }
-        else{
+        } else {
             internetDialog()
         }
     }
 
-    private fun mapContactsToList(result: JsonArray) {
-        loadPhoneContacts()
-        for (item: JsonElement in result) {
-            var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-            var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
-
-            if (contactMap.keys.contains(phone)) {
-                var id = item.asJsonObject.get("id").asString
-                var avatar = R.drawable.group416
-                contactMap.getValue(phone).id = id
-                contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
-                contactMap.getValue(phone).avatar = avatar
-                contactMap.getValue(phone).accountNumber = accountNumber
-            }
-        }
-
-        contacts = contactMap.values.toMutableList()
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-        recyclerView.adapter = contactsAdapater
-        progressBar.dialog.dismiss()
-        val gson = Gson()
-        val json: String = gson.toJson(contacts)
-        editor.putString(MY_ALL_ROUTE_CONTACTS, json)
-        editor.apply()
-    }
-
-    private fun mapRouteContactsToList(result: JsonArray) {
-        loadPhoneContacts()
-        for (item: JsonElement in result) {
-            var phone = item.asJsonObject.get("phone_number").asString.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-            var accountNumber = item.asJsonObject.get("wallet_account").asJsonObject.get("wallet_account").asString
-
-            if (contactMap.keys.contains(phone)) {
-                var id = item.asJsonObject.get("id").asString
-                var avatar = R.drawable.group416
-                contactMap.getValue(phone).id = id
-                contactMap.getValue(phone).contact = item.asJsonObject.get("phone_number").asString
-                contactMap.getValue(phone).avatar = avatar
-                contactMap.getValue(phone).accountNumber = accountNumber
-
-                routeContactMap.put(
-                        phone,
-                        Contact(id,
-                                contactMap.getValue(phone).name,
-                                item.asJsonObject.get("phone_number").asString,
-                                avatar,
-                                accountNumber))
-            }
-        }
-
-        contacts = routeContactMap.values.toMutableList()
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-        contactsAdapater = ContactsAdapater(requireActivity(), contacts)
-        recyclerView.adapter = contactsAdapater
-        binding.swipeRefresh.isRefreshing = false
-        progressBar.dialog.dismiss()
-        val gson = Gson()
-        val json: String = gson.toJson(contacts)
-        editor.putString(MY_ROUTE_CONTACTS, json)
-        editor.apply()
-
-    }
-
-    private fun internetDialog(){
+    private fun internetDialog() {
         // Initialize a new instance of
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("No Connection")
@@ -333,5 +230,13 @@ class RequestFundsFragment : Fragment() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
         return
+    }
+
+    override fun onRefresh() {
+        loadRouteContacts();
+    }
+
+    companion object{
+        private val TAG = this.javaClass.simpleName
     }
 }

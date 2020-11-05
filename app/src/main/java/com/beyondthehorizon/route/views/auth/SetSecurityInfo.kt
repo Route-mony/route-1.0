@@ -33,6 +33,7 @@ class SetSecurityInfo : AppCompatActivity() {
     private lateinit var llInternetDialog: LinearLayout
     private lateinit var btnCancel: Button
     private lateinit var btnRetry: android.widget.Button
+    private lateinit var progressBar: CustomProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class SetSecurityInfo : AppCompatActivity() {
         editor = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0).edit()
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         networkUtils = NetworkUtils(this)
+        progressBar = CustomProgressBar(this)
 
         llInternetDialog = findViewById(R.id.llInternetDialog)
         btnCancel = findViewById(R.id.btn_cancel)
@@ -110,8 +112,7 @@ class SetSecurityInfo : AppCompatActivity() {
                 if (pin1set == "") {
                     pin1set = pin1 + pin2 + pin3 + pin4
                     token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-                    val progressBar = CustomProgressBar()
-                    progressBar.show(this, "Please Wait...")
+                    progressBar.show("Please Wait...")
                     verifyPin(this@SetSecurityInfo, pin1set, token)
                             .setCallback { e, result ->
                                 pin1set = ""

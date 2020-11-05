@@ -16,11 +16,13 @@ import com.beyondthehorizon.route.views.FundRequestedActivity
 class NewPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewPasswordBinding
     private lateinit var tokenIntent: Intent
+    private lateinit var progressBar:CustomProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_password)
         tokenIntent = getIntent()
+        progressBar = CustomProgressBar(this)
 
         binding.next.setOnClickListener {
             try {
@@ -42,9 +44,8 @@ class NewPasswordActivity : AppCompatActivity() {
                     var intent = Intent(this, FundRequestedActivity::class.java)
                     val token = "Bearer ${tokenIntent.getStringExtra("Token")}"
                     val email = tokenIntent.getStringExtra("Email")
-                    val progressBar = CustomProgressBar()
 
-                    progressBar.show(this, "Please wait...")
+                    progressBar.show("Please wait...")
                     Constants.updatePassword(this, newPassword, token).setCallback { e, result ->
                         progressBar.dialog.dismiss()
                         if (result.has("data")) {

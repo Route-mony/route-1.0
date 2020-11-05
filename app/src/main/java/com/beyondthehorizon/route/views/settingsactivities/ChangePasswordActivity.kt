@@ -1,6 +1,5 @@
 package com.beyondthehorizon.route.views.settingsactivities
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -22,14 +21,13 @@ import kotlinx.android.synthetic.main.nav_bar_layout.*
 class ChangePasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePasswordBinding
     private lateinit var prefs: SharedPreferences
-    private var progressDialog: ProgressDialog? = null
+    private lateinit var progressBar: CustomProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_change_password)
         prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        val progressBar = CustomProgressBar()
+        progressBar = CustomProgressBar(this)
         val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-
 
         btn_home.setOnClickListener {
             val intent = Intent(this@ChangePasswordActivity, MainActivity::class.java)
@@ -59,19 +57,19 @@ class ChangePasswordActivity : AppCompatActivity() {
                 val newPassword = binding.newPassword.text;
                 val cpassword = binding.ConfirmNewPassword.text;
                 if (currentPassword.isNullOrEmpty()) {
-                    binding.currentPassword.setError("Please enter your current password");
+                    binding.currentPassword.error = "Please enter your current password";
                     binding.currentPassword.requestFocus();
                 } else if (newPassword.isNullOrEmpty()) {
-                    binding.newPassword.setError("Please enter a new password");
+                    binding.newPassword.error = "Please enter a new password";
                     binding.newPassword.requestFocus();
                 } else if (Utils.passwordValidator(newPassword.toString())) {
-                    binding.newPassword.setError(Utils.invalidPasswordMessage())
+                    binding.newPassword.error = Utils.invalidPasswordMessage()
                     binding.newPassword.requestFocus();
                 } else if (cpassword.toString() == newPassword.toString()) {
                     val oldPassword = currentPassword.toString();
                     val newPassword = newPassword.toString();
                     var intent = Intent(this, FundRequestedActivity::class.java)
-                    progressBar.show(this, "Please wait...")
+                    progressBar.show("Please wait...")
                     Constants.changePassword(this, newPassword, oldPassword, token).setCallback { e, result ->
                         progressBar.dialog.dismiss()
                         if (result.has("data")) {

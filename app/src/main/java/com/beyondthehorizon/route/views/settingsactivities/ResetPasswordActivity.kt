@@ -16,11 +16,11 @@ class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var prefs: SharedPreferences
     private var REQUEST_CODE_READ_SMS: Int = 1000
+    private lateinit var progressBar: CustomProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@ResetPasswordActivity, R.layout.activity_reset_password)
-        val progressBar = CustomProgressBar()
-
+        progressBar = CustomProgressBar(this)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECEIVE_SMS), REQUEST_CODE_READ_SMS)
 
         binding.next.setOnClickListener {
@@ -29,7 +29,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                 if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     var intent = Intent(this, ResetPasswordOtpVerifyActivity::class.java)
                     prefs = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-                    progressBar.show(this, "Verifying email...")
+                    progressBar.show("Verifying email...")
                     Constants.resetPassword(this, email).setCallback { _, result ->
                         progressBar.dialog.dismiss()
                         if (result.has("data")) {

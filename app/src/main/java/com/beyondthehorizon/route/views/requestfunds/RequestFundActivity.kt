@@ -25,7 +25,6 @@ class RequestFundActivity : AppCompatActivity() {
         tabs.setupWithViewPager(view_pager)
         sectionsPagerAdapter.addFragment(RequestFundsFragment(), "Phone Number")
         sectionsPagerAdapter.addFragment(FavoriteContactsFragment(), "Favorites")
-//        sectionsPagerAdapter.addFragment(CashOutFragment(), "Cash Outs")
 
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)
