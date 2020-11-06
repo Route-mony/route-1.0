@@ -61,7 +61,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/colorAccent"
             android:hint="@string/id_number"
-            android:inputType="number"
+            android:inputType="textCapSentences"
             android:textColor="@color/colorAccent"
             android:textColorHint="#33FFFFFF"
             android:textSize="14sp"
