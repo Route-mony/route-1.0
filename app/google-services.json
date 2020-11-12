@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "592250773138-g8ecsnug703der8njru081eq9j9gp229.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.route",
+            "certificate_hash": "f99b3ec374ca535f63360f3713c65316e17fc848"
+          }
+        },
+        {
+          "client_id": "592250773138-r9r2hbbnbva1oamb9prhq9l039dcos79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.route",
+            "certificate_hash": "bd297fafa2a238a5346987a0046510bb8b139f96"
+          }
+        },
+        {
+          "client_id": "592250773138-7thnfoquht3h3t8tdf4dcnp26lbq6449.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.route",
+            "certificate_hash": "33f56cb4482d99c21145e1524355b5a26393d6ee"
+          }
+        },
+        {
           "client_id": "592250773138-9frv8c4uq7s1c22qovtsk71fh3jupl2d.apps.googleusercontent.com",
           "client_type": 3
         }
