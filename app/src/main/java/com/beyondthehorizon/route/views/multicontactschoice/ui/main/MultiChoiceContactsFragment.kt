@@ -143,6 +143,7 @@ class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshList
         })
         binding.swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = true
+            loadRegisteredContacts()
         }
 
         return view
@@ -206,8 +207,7 @@ class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshList
                 while (phones!!.moveToNext()) {
                     val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                     val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-                    myContactsList.add(MultiContactModel(
+                    val data = MultiContactModel(
                             "",
                             name,
                             phoneNumber,
@@ -215,7 +215,10 @@ class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshList
                             "",
                             is_route = false,
                             is_selected = false
-                    ))
+                    )
+                    if (!myContactsList.contains(data)) {
+                        myContactsList.add(data)
+                    }
                 }
 
                 val gson = Gson()

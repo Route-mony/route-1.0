@@ -324,14 +324,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
     private void loadContacts() {
         Cursor phones = MainActivity.this.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-        ArrayList myContactsList = new ArrayList<MultiContactModel>();
-        final ArrayList myContactsList2 = new ArrayList<MultiContactModel>();
+        ArrayList<MultiContactModel> myContactsList = new ArrayList<>();
+        final ArrayList<MultiContactModel> myContactsList2 = new ArrayList<MultiContactModel>();
 
         while (phones.moveToNext()) {
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-            myContactsList.add(new MultiContactModel(
+            MultiContactModel multiContactModel = new MultiContactModel(
                     "",
                     name,
                     phoneNumber,
@@ -339,7 +339,11 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     "",
                     false,
                     false
-            ));
+            );
+            if (!myContactsList.contains(multiContactModel)) {
+                myContactsList.add(multiContactModel);
+            }
+//            myContactsList.add(multiContactModel);
         }
         Gson gson = new Gson();
         String json = gson.toJson(myContactsList);
