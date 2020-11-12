@@ -44,11 +44,12 @@ public class Utils {
 
     public static String getFormattedPhoneNumber(String phoneNumber, String countryCode) {
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        Phonenumber.PhoneNumber number = null;
+        Phonenumber.PhoneNumber number;
         try {
             number = phoneUtil.parse(phoneNumber, countryCode);
         } catch (NumberParseException e) {
             Timber.d(e);
+            return "";
         }
         return phoneUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replaceAll(" ", "");
     }

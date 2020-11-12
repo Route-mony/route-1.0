@@ -193,10 +193,8 @@ class ApproveRequestActivity : AppCompatActivity(), EnterPinBottomSheet.EnterPin
                     .placeholder(R.drawable.ic_user_home_page)
                     .apply(requestOptions)
                     .into(img_avatar)
-
         } catch (ex: Exception) {
             Timber.d(ex.message.toString())
-            Log.d("ERROR", ex.message)
         }
 
         binding.btnApprove.setOnClickListener {

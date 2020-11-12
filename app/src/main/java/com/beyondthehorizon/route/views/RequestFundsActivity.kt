@@ -27,6 +27,7 @@ import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
+import timber.log.Timber
 
 
 class RequestFundsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -156,16 +157,16 @@ class RequestFundsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
 
     private fun loadPhoneContacts() {
         try {
-            val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val phones = this.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                var cleanedPhoneNumber = phoneNumber.replace("-", "").replace(" ", "").replaceBefore("7", "0")
-                var id = phoneNumber.hashCode().toString()
-                contactMap.put(cleanedPhoneNumber, Contact(id, name, phoneNumber))
+                val phoneNumber = Utils.getFormattedPhoneNumber(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), countryLabel)
+                if (phoneNumber.isNotEmpty()) {
+                    contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber)
+                }
             }
         } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            Timber.d(e.message.toString())
         }
     }
 

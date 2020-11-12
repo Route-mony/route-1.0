@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
 import com.beyondthehorizon.route.utils.Utils
 import com.beyondthehorizon.route.views.ConfirmFundRequestActivity
+import timber.log.Timber
 
 
 /**
@@ -98,7 +98,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-                var pattern = newText.toLowerCase().toRegex()
+                var pattern = newText.removePrefix("+").toLowerCase().toRegex()
                 try {
                     var filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }
                     var adapter = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
@@ -162,10 +162,12 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             while (phones!!.moveToNext()) {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val phoneNumber = Utils.getFormattedPhoneNumber(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), countryLabel)
-                contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber)
+                if (phoneNumber.isNotEmpty()) {
+                    contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber)
+                }
             }
         } catch (e: Exception) {
-            Log.d(TAG, e.message)
+            Timber.d(e.message.toString())
         }
     }
 
@@ -236,7 +238,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         loadRouteContacts();
     }
 
-    companion object{
+    companion object {
         private val TAG = this.javaClass.simpleName
     }
 }

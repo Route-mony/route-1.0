@@ -242,7 +242,7 @@ class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshList
 
                         val gsonn = Gson()
                         val jsonn: String = gsonn.toJson(result.getAsJsonObject("data").get("contacts"))
-                        editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
+                        editor.putString(MY_ALL_CONTACTS_NEW, jsonn)
                         editor.apply()
                         if (prefs.getString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "")!!.compareTo(SEND_MONEY_TO_ROUTE) == 0) {
                             for (item: JsonElement in result.getAsJsonObject("data").get("contacts").asJsonArray) {
@@ -266,7 +266,7 @@ class MultiChoiceContactsFragment : Fragment(), SwipeRefreshLayout.OnRefreshList
                         } else {
                             val type: Type = object : TypeToken<ArrayList<MultiContactModel>>() {}.type
                             contacts = gson.fromJson(jsonn, type)
-                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn)
+                            editor.putString(MY_ALL_CONTACTS_NEW, jsonn)
                             editor.apply()
                         }
 
