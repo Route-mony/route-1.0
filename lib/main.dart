@@ -4,7 +4,7 @@ import 'package:route_flutter/pages/splash.dart';
 
 void main() {
   runApp(MaterialApp(
-    initialRoute: '/',
+    initialRoute: '/services',
     routes: {
       '/': (context) => Splash(),
       '/services': (context) => Services(),

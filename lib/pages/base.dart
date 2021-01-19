@@ -12,6 +12,8 @@ class Base extends StatefulWidget {
     'colorPrimaryMain': Color(0xFFEDEEF0),
     'colorNotification': Color(0xFFFA0505),
     'our_black': Color(0xFF1D1F29),
+    'cardStartColor': Color(0xFFE006FF),
+    'cardEndColor': Color(0xFF1677F2)
   };
 
   @override
