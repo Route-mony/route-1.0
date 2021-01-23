@@ -1,8 +1,8 @@
 package com.beyondthehorizon.route.views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityRequestConfirmedBinding
@@ -12,7 +12,6 @@ import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 import timber.log.Timber
-import java.lang.Exception
 
 class RequestConfirmedActivity : AppCompatActivity() {
    private lateinit var binding: ActivityRequestConfirmedBinding

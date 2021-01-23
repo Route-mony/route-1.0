@@ -1,13 +1,12 @@
 package com.beyondthehorizon.route.views.settingsactivities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityNewPasswordBinding
-import com.beyondthehorizon.route.databinding.ActivityOtpVerifyBinding
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.Utils

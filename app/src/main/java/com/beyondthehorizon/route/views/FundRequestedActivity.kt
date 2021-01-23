@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityFundRequestedBinding
-import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.Constants.*
 import com.beyondthehorizon.route.views.auth.LoginActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity

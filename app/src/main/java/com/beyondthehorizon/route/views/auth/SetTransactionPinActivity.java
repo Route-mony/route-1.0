@@ -1,7 +1,5 @@
 package com.beyondthehorizon.route.views.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,9 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.views.MainActivity;
 import com.beyondthehorizon.route.utils.Constants;
+import com.beyondthehorizon.route.views.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;

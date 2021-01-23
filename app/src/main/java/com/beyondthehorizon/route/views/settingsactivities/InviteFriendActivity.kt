@@ -4,16 +4,16 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.beyondthehorizon.route.R
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.adapters.InviteFriendAdapter
 import com.beyondthehorizon.route.models.InviteFriend
 import com.beyondthehorizon.route.utils.Constants
@@ -23,9 +23,7 @@ import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import kotlinx.android.synthetic.main.activity_invite_friend.*
-import kotlinx.android.synthetic.main.activity_invite_friend.back
 import kotlinx.android.synthetic.main.nav_bar_layout.*
-import java.lang.Exception
 
 
 class InviteFriendActivity : AppCompatActivity() {

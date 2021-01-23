@@ -2,10 +2,10 @@ package com.beyondthehorizon.route.views.multicontactschoice
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.adapters.SavedGroupsAdapter
