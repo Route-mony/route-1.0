@@ -81,7 +81,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
 
         init {
             inviteBtn.setOnClickListener {
-                val shareBody = "Hello checkout this awesome app! Route App\nLink coming soon"
+                val shareBody = "Hello checkout this awesome app! Route App\nhttps://play.google.com/store/apps/details?id=com.beyondthehorizon.route"
                 val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
                 sharingIntent.type = "text/plain"
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")
