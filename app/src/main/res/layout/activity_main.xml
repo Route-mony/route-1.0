@@ -434,27 +434,25 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
+                            android:orientation="vertical">
 
                             <ImageButton
-                                android:id="@+id/btn_request24"
+                                android:id="@+id/btn_loan"
                                 android:layout_width="@dimen/item_round_size"
                                 android:layout_height="@dimen/item_round_size"
                                 android:background="@drawable/service_buttons"
                                 android:elevation="3dp"
-                                android:padding="16dp"
+                                android:padding="1dp"
                                 android:scaleType="fitXY"
-                                app:srcCompat="@drawable/ic_airtime" />
+                                app:srcCompat="@drawable/ic_loan_logo" />
 
                             <TextView
                                 android:id="@+id/txt_request24"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="7dp"
-
                                 android:fontFamily="@font/rout_book"
-                                android:text="Airtime"
+                                android:text="Request Loan"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="10dp" />
@@ -527,6 +525,7 @@
 
         <include layout="@layout/nav_bar_layout" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/llInternetDialog"
         android:layout_width="match_parent"

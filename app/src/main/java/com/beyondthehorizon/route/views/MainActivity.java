@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.beyondthehorizon.route.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendToManyModel;
 import com.beyondthehorizon.route.bottomsheets.TransactionModel;
+import com.beyondthehorizon.route.loan.LoanActivity;
 import com.beyondthehorizon.route.models.MultiContactModel;
 import com.beyondthehorizon.route.utils.Constants;
 import com.beyondthehorizon.route.utils.NetworkUtils;
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many, btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_home;
+    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many, btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_loan, btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         RL1 = findViewById(R.id.RL1);
 //        btn_request_fund = findViewById(R.id.btn_request);
         btn_notifications = findViewById(R.id.notifications);
-        btn_buy_airtime = findViewById(R.id.btn_request24);
+        btn_loan = findViewById(R.id.btn_loan);
         btn_send_to_many = findViewById(R.id.btn_request4);
         mobileMoneyLayout = findViewById(R.id.mobileLayout);
         notifCount = findViewById(R.id.notifCount);
@@ -242,9 +244,21 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             Intent intent = new Intent(MainActivity.this, SplitBillActivity.class);
             startActivity(intent);
         });
-        btn_buy_airtime.setOnClickListener(v -> {
-            BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
-            airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
+//        btn_loan.setOnClickListener(v -> {
+//            BuyAirtimeDialogFragment airtimeDialogFragment = new BuyAirtimeDialogFragment();
+//            airtimeDialogFragment.show(getSupportFragmentManager(), "Buy Airtime Options");
+//        });
+        btn_loan.setOnClickListener(v -> {
+            ProgressDialog pr = new ProgressDialog(MainActivity.this);
+            pr.setMessage("Please wait..");
+            pr.show();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                // yourMethod();
+                pr.dismiss();
+                Intent intent = new Intent(MainActivity.this, LoanActivity.class);
+                startActivity(intent);
+            }, 1000);
         });
         isLoggedIn();
     }
