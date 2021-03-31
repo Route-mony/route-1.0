@@ -2,8 +2,8 @@ package com.beyondthehorizon.route.views
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityCardBinding

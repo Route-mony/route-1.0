@@ -1,10 +1,10 @@
 package com.beyondthehorizon.route.views.settingsactivities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.utils.DatePickerHelper
 import com.beyondthehorizon.route.views.MainActivity

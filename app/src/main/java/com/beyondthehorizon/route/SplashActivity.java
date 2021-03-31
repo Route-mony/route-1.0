@@ -8,9 +8,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.beyondthehorizon.route.views.OtpVerificationActivity;
 import com.beyondthehorizon.route.views.ServicesActivity;
-import com.beyondthehorizon.route.views.auth.PasswordActivity;
 import com.beyondthehorizon.route.views.auth.SetSecurityInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;

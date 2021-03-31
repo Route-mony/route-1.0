@@ -1,6 +1,10 @@
 package com.beyondthehorizon.route.adapters
 
+import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +14,12 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.models.InviteFriend
-import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
-import android.content.Intent
-import android.content.SharedPreferences
 import com.beyondthehorizon.route.models.TransactionModel
 import com.beyondthehorizon.route.utils.Constants
-import com.google.gson.Gson
-import android.app.AlertDialog
-import android.app.ProgressDialog
 import com.beyondthehorizon.route.utils.Constants.*
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.invite_friend_layout_item.view.*
 
 
 class InviteFriendAdapter(private val context: Context, private val theView: String) :
@@ -81,7 +81,7 @@ class InviteFriendAdapter(private val context: Context, private val theView: Str
 
         init {
             inviteBtn.setOnClickListener {
-                val shareBody = "Hello checkout this awesome app! Route App\nLink coming soon"
+                val shareBody = "Hello checkout this awesome app! Route App\nhttps://play.google.com/store/apps/details?id=com.beyondthehorizon.route"
                 val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
                 sharingIntent.type = "text/plain"
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite Friend")

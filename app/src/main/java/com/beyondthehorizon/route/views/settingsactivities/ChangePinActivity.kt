@@ -1,11 +1,10 @@
 package com.beyondthehorizon.route.views.settingsactivities
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityChangePinBinding
@@ -15,8 +14,7 @@ import com.beyondthehorizon.route.views.FundRequestedActivity
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import kotlinx.android.synthetic.main.activity_change_password.back
-import kotlinx.android.synthetic.main.activity_change_password.btn_change
+import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class ChangePinActivity : AppCompatActivity() {

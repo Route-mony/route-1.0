@@ -6,10 +6,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.views.MainActivity
-import com.beyondthehorizon.route.views.requestfunds.ui.main.FavoriteContactsFragment
-import com.beyondthehorizon.route.views.requestfunds.ui.main.RequestFundsFragment
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.receipt.ui.main.RequestFundSectionsPagerAdapter
+import com.beyondthehorizon.route.views.requestfunds.ui.main.FavoriteContactsFragment
+import com.beyondthehorizon.route.views.requestfunds.ui.main.RequestFundsFragment
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_request_fund.*
