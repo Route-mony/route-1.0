@@ -104,7 +104,7 @@ dependencies {
     //Kommunicate
     implementation 'io.kommunicate.sdk:kommunicateui:1.9.6'
     //NETWORK CALL
-    implementation 'com.koushikdutta.ion:ion:2.2.1'
+    implementation 'com.koushikdutta.ion:ion:3.1.0'
 
     //EditText formatter
     implementation 'com.androidwidgets:formatedittext:0.2.0'

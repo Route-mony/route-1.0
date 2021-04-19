@@ -212,7 +212,7 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
 
 //            checkBox.setChecked(list.get(position).is_selected());
             username.setText(contact.getUsername());
-            single_contact.setText(contact.getPhone_number());
+            single_contact.setText(contact.getRoute_username());
 
             if (!itemStateArray.get(position, false)) {
                 checkBox.setChecked(false);
@@ -263,7 +263,8 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
                         list.get(adapterPosition).getImage(),
                         "0",
                         list.get(adapterPosition).is_route(),
-                        true
+                        true,
+                        list.get(adapterPosition).getRoute_username()
                 ));
 
             } else {
@@ -277,7 +278,8 @@ public class MultiChoiceContactsAdapter extends RecyclerView.Adapter<MultiChoice
                         list.get(adapterPosition).getImage(),
                         "0",
                         list.get(adapterPosition).is_route(),
-                        true
+                        true,
+                        list.get(adapterPosition).getRoute_username()
                 ));
             }
 

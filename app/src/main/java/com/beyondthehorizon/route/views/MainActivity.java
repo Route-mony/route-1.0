@@ -352,7 +352,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     "",
                     "",
                     false,
-                    false
+                    false,
+                    ""
             );
             if (!myContactsList.contains(multiContactModel)) {
                 myContactsList.add(multiContactModel);
@@ -384,7 +385,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                                 issueObj.get("image").toString(),
                                                 issueObj.get("amount").toString(),
                                                 issueObj.getBoolean("is_route"),
-                                                issueObj.getBoolean("is_selected")
+                                                issueObj.getBoolean("is_selected"),
+                                                issueObj.getString("route_username")
                                         ));
                                     }
 

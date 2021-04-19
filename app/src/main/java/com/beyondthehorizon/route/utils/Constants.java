@@ -164,6 +164,16 @@ public class Constants {
                 .asJsonObject();
     }
 
+    //SEARCH ROUTE USERS
+    public static ResponseFuture<JsonObject> searchRouteUsers(Context context, String query, String token) {
+        String SERVER_URL = BASE_URL + "users/retrieve?search="+query;
+        return Ion.with(context)
+                .load(SERVER_URL)
+                .addHeader("Content-Type", "application/json")
+                .setHeader("Authorization", token)
+                .asJsonObject();
+    }
+
     public static ResponseFuture<JsonObject> requestFund(Context context, String recipient, String amount, String reason, String token) {
         String SERVER_URL = BASE_URL + "requests/";
 

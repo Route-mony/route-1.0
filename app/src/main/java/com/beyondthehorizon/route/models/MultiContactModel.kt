@@ -9,4 +9,5 @@ data class MultiContactModel(
         var image: String,
         var amount: String,
         var is_route: Boolean,
-        var is_selected: Boolean) : Serializable
+        var is_selected: Boolean,
+        var route_username: String = "") : Serializable

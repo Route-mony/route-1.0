@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
 import com.beyondthehorizon.route.utils.Utils
 import com.beyondthehorizon.route.views.ConfirmFundRequestActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 
@@ -53,6 +55,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var token: String
     private lateinit var progressBar: CustomProgressBar
     private lateinit var countryLabel: String;
+    private lateinit var filteredContacts:  MutableList<Contact>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -100,12 +103,13 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 var pattern = newText.removePrefix("+").toLowerCase().toRegex()
                 try {
-                    var filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }
-                    var adapter = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
-                    recyclerView.layoutManager = linearLayoutManager
-                    recyclerView.setHasFixedSize(true)
-                    contactsAdapater = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
-                    recyclerView.adapter = adapter
+                    filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }.toMutableList()
+                    if (filteredContacts.isNotEmpty()) {
+                        displayContacts()
+                    }
+                    else{
+                        searchRouteContacts(newText)
+                    }
                 } catch (ex: Exception) {
                     Toast.makeText(requireActivity(), ex.message, Toast.LENGTH_LONG).show()
                 }
@@ -114,6 +118,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                searchRouteContacts(query)
                 return false
             }
         })
@@ -124,6 +129,13 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         return view
     }
 
+    private fun displayContacts(){
+        var adapter = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+        contactsAdapater = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
+        recyclerView.adapter = adapter
+    }
 
     private fun requestPermission() {
         progressBar.dialog.dismiss()
@@ -163,7 +175,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 val phoneNumber = Utils.getFormattedPhoneNumber(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), countryLabel)
                 if (phoneNumber.isNotEmpty()) {
-                    contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber)
+                    contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber, "")
                 }
             }
         } catch (e: Exception) {
@@ -194,6 +206,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                                     contactMap[phone]!!.contact = user.get("phone_number").asString
                                     contactMap[phone]!!.avatar = user.get("image").asString
                                     contactMap[phone]!!.accountNumber = user.get("wallet_account").asJsonObject.get("wallet_account").asString
+                                    contactMap[phone]!!.username = user.get("username").asString
                                     contacts.add(contactMap[phone]!!)
                                 }
                             }
@@ -208,6 +221,51 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
                     progressBar.dialog.dismiss()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
+            }
+        } else {
+            internetDialog()
+        }
+    }
+
+    private fun searchRouteContacts(query: String) {
+        if (networkUtils.isNetworkAvailable) {
+            try {
+                progressBar.show("Searching ${query}...")
+                binding.swipeRefresh.isRefreshing = true
+                val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
+                Constants.searchRouteUsers(requireActivity(), query, token).setCallback { e, result ->
+                    binding.swipeRefresh.isRefreshing = false
+                    progressBar.dialog.dismiss()
+                    if (result != null && result.has("rows")) {
+                        if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
+                                || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
+                            val users = result.getAsJsonArray("rows")
+                            users.forEach { contact ->
+                                val user = contact.asJsonObject
+                                filteredContacts.clear()
+                                filteredContacts.add(Contact(
+                                        user.get("id_number").asString,
+                                        String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString),
+                                        user.get("phone_number").asString,
+                                        user.get("image").asString,
+                                        user.get("wallet_account").asJsonObject.get("wallet_account").asString,
+                                        user.get("username").asString
+                                )
+                                )
+                                Log.d( String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString) + " : ", user.get("image").asString)
+                            }
+                        }
+                        displayContacts()
+                    } else if (result != null && result.has("errors")) {
+                        Timber.d(result["errors"].asJsonArray[0].asString)
+                    } else {
+                        contactsAdapater.updateContacts(contacts)
+                        Timber.d(e.message.toString())
+                    }
+                }
+                    progressBar.dialog.dismiss()
             } catch (e: Exception) {
                 Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             }

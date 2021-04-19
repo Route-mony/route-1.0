@@ -5,5 +5,6 @@ data class Contact (
         var name: String = "",
         var contact: String = "",
         var avatar: String = "",
-        var accountNumber: String = ""
+        var accountNumber: String = "",
+        var username: String = ""
 )
