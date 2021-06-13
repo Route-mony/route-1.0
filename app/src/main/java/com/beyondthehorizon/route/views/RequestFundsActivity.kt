@@ -188,6 +188,7 @@ class RequestFundsActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
                                 val user = contact.asJsonObject
                                 val phone = Utils.getFormattedPhoneNumber(user.get("phone_number").asString, countryLabel)
                                 if (contactMap[phone] != null) {
+                                    contactMap[phone]!!.id = user.get("id").asString
                                     contactMap[phone]!!.name = String.format("%s %s", user.get("first_name"), user.get("last_name"))
                                     contactMap[phone]!!.contact = user.get("phone_number").asString
                                     contactMap[phone]!!.avatar = user.get("image").asString
