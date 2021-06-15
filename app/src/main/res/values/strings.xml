@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">route</string>
+    <string name="app_name">Route</string>
     <string name="signup_title">Tell us about yourself</string>
     <string name="main_font_style">Roboto</string>
     <string name="lbl_first_name">First Name</string>
