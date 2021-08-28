@@ -110,6 +110,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     //Kommunicate
     implementation 'io.kommunicate.sdk:kommunicateui:1.9.6'

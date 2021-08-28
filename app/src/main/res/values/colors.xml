@@ -46,6 +46,7 @@
     <color name="loginBackground">#000000</color>
     <color name="darkGreen">#031208</color>
     <color name="ddd">#000000</color>
+    <color name="fui_transparent">#00000000</color>
     <color name="home">#b82f56</color>
     <color name="background_color">#78ffffff</color>
     <color name="sign_up_shady">#8C2196F3</color>
