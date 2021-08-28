@@ -14,7 +14,7 @@
     <LinearLayout
         android:id="@+id/L11"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
@@ -34,8 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:onClick="prevPage"
                 android:padding="5dp"
+                android:onClick="prevPage"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_arrow_back" />
 
@@ -69,9 +69,9 @@
             android:id="@+id/lbl_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/rout_medium"
-            android:paddingLeft="3dp"
             android:text="@string/lbl_email"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
@@ -96,9 +96,8 @@
             android:id="@+id/lbl_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginLeft="4dp"
             android:fontFamily="@font/rout_medium"
-            android:paddingLeft="3dp"
             android:text="@string/lbl_password"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent"
@@ -144,4 +143,80 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/ss" />
+
+    <LinearLayout
+        android:id="@+id/llInternetDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/translucent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="30dp"
+            android:background="@drawable/round_button_clear"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/lb_40_sp">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:srcCompat="@drawable/ic_no_wifi" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/rout_bold"
+                android:text="NO INTERNET"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:alpha=".8"
+                android:fontFamily="@font/rout_bold"
+                android:text="@string/check_your_internet_connection_and_try_again"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <LinearLayout
+                android:id="@+id/llButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".1"
+                    android:background="@drawable/round_button_danger"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_retry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight=".1"
+                    android:background="@drawable/round_button_green"
+                    android:text="@string/retry"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

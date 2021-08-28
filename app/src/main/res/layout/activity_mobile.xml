@@ -7,7 +7,7 @@
 
         <variable
             name="money"
-            type="com.beyondthehorizon.routeapp.views.MobileActivity" />
+            type="com.beyondthehorizon.route.views.MobileActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -74,8 +74,8 @@
                         android:id="@+id/card_option_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add Money"
-                        android:layout_marginBottom="5dp"
+                        android:text="Enter phone number"
+                        android:paddingVertical="20dp"
                         android:textStyle="bold"
                         android:textColor="@color/colorButton"
                         android:textSize="20sp"
@@ -94,6 +94,8 @@
                         android:layout_marginBottom="10dp"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/card_option_title"/>
 
                     <com.androidwidgets.formatedittext.widgets.FormatEditText
@@ -106,12 +108,13 @@
                         android:gravity="center"
                         android:digits="01234 56789"
                         android:textColor="@color/colorPrimary"
-                        android:hint="0712 456789"
+                        android:hint="@string/_0712_456789"
                         android:maxLength="16"
                         android:inputType="phone"
                         android:imeOptions="actionSend"
-                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:theme="@style/AppTheme.AppTheme2"
                         app:layout_constraintTop_toBottomOf="@id/card_number_title"/>
 
                     <ImageView

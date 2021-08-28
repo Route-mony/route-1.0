@@ -85,6 +85,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:focusableInTouchMode="true"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -95,15 +96,19 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="35dp"
                         android:hint="Transaction Description eg. Billing"
-                        android:theme="@style/TextLabel">
+                        app:hintTextAppearance="@style/TextInputLayout">
 
                         <EditText
                             android:id="@+id/receipt_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/route_fonts" />
+                            android:backgroundTint="#000"
+                            android:fontFamily="@font/route_fonts"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:textColor="@color/black"
+                            android:theme="@style/AppTheme.AppTheme2" />
                     </com.google.android.material.textfield.TextInputLayout>
-                    <!--            L1-->
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -153,7 +158,6 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <!--            L1-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -197,7 +201,7 @@
 
                         </LinearLayout>
                     </LinearLayout>
-                    <!--            L1-->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -241,7 +245,7 @@
 
                         </LinearLayout>
                     </LinearLayout>
-                    <!--            L1-->
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -285,7 +289,64 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <!--            L1-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Reimbursable"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/reimb_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Amount"
+                                android:visibility="gone"
+                                app:hintTextAppearance="@style/TextInputLayout">
+
+                                <EditText
+                                    android:id="@+id/enter_amount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="#000"
+                                    android:fontFamily="@font/route_fonts"
+                                    android:inputType="number"
+                                    android:textColor="@color/black"
+                                    android:theme="@style/AppTheme.AppTheme2" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/reimbursable"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:theme="@style/SCBSwitch" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -329,12 +390,6 @@
                                 app:srcCompat="@drawable/ic_upload_receipt" />
                         </LinearLayout>
                     </RelativeLayout>
-
-                    <!--                    <View-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="2dp"-->
-                    <!--                        android:layout_marginTop="10dp"-->
-                    <!--                        android:background="@color/colorPrimaryLight" />-->
 
                     <Button
                         android:id="@+id/shareReceipt"

@@ -7,7 +7,7 @@
 
         <variable
             name="contacts"
-            type="com.beyondthehorizon.routeapp.views.ConfirmFundRequestActivity" />
+            type="com.beyondthehorizon.route.views.ConfirmFundRequestActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -21,7 +22,7 @@
         android:layout_marginTop="10dp"
         android:hint="Eg. Billing"
         android:padding="5dp"
-        android:theme="@style/TextLabel">
+        app:hintTextColor="@color/colorPrimary">
 
         <TextView
             android:id="@+id/trans_type"

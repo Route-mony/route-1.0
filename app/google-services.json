@@ -1,42 +1,58 @@
 {
   "project_info": {
-    "project_number": "823144541938",
-    "firebase_url": "https://route-app-2a28f.firebaseio.com",
-    "project_id": "route-app-2a28f",
-    "storage_bucket": "route-app-2a28f.appspot.com"
+    "project_number": "592250773138",
+    "firebase_url": "https://route-976d6.firebaseio.com",
+    "project_id": "route-976d6",
+    "storage_bucket": "route-976d6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823144541938:android:f97e77455cd7d412e86a6b",
+        "mobilesdk_app_id": "1:592250773138:android:9addade8895ff9f444504b",
         "android_client_info": {
-          "package_name": "com.beyondthehorizon.routeapp"
+          "package_name": "com.beyondthehorizon.route"
         }
       },
       "oauth_client": [
         {
-          "client_id": "823144541938-mtifs25phn13r69p1m872n9pd27mkml8.apps.googleusercontent.com",
+          "client_id": "592250773138-g8ecsnug703der8njru081eq9j9gp229.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.beyondthehorizon.routeapp",
+            "package_name": "com.beyondthehorizon.route",
+            "certificate_hash": "f99b3ec374ca535f63360f3713c65316e17fc848"
+          }
+        },
+        {
+          "client_id": "592250773138-r9r2hbbnbva1oamb9prhq9l039dcos79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.route",
+            "certificate_hash": "bd297fafa2a238a5346987a0046510bb8b139f96"
+          }
+        },
+        {
+          "client_id": "592250773138-7thnfoquht3h3t8tdf4dcnp26lbq6449.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beyondthehorizon.route",
             "certificate_hash": "33f56cb4482d99c21145e1524355b5a26393d6ee"
           }
         },
         {
-          "client_id": "823144541938-9e7enkvacoh5mqn789rl59dut2coemfv.apps.googleusercontent.com",
+          "client_id": "592250773138-9frv8c4uq7s1c22qovtsk71fh3jupl2d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC3wj-cT7OQTlHdpoqUwrzCrQlB-JOvhaI"
+          "current_key": "AIzaSyCKfI-jyeLjH4F1MOxJt_Z0APQH9LPjvsc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "823144541938-9e7enkvacoh5mqn789rl59dut2coemfv.apps.googleusercontent.com",
+              "client_id": "592250773138-9frv8c4uq7s1c22qovtsk71fh3jupl2d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

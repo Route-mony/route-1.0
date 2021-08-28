@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <data>
                 <variable
                     name = "contact"
-                    type = "com.beyondthehorizon.routeapp.adapters.ContactsHolder"/>
+                    type = "com.beyondthehorizon.route.adapters.ContactsHolder"/>
         </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +19,7 @@
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/round_light_blue_button"
+
                     android:padding="4dp"
                     android:scaleType="centerCrop"
                     app:civ_border_width="2dp"

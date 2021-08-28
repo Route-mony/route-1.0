@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="17dp"
             android:backgroundTint="@color/colorButton"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -59,11 +59,16 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/groupmany" />
+
+                <ImageButton
+                    android:id="@+id/btn_request4"
+                    android:layout_width="@dimen/item_round_size"
+                    android:layout_height="@dimen/item_round_size"
+                    android:background="@drawable/service_buttons"
+                    android:elevation="3dp"
+                    android:padding="16dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_send_to_many_greyed" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,7 +91,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="17dp"
             android:text="Groups"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorButton" />
@@ -95,6 +100,7 @@
             android:id="@+id/groupsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="17dp"
+            tools:listitem="@layout/saved_group_item"/>
     </LinearLayout>
 </LinearLayout>
