@@ -1,5 +1,27 @@
 package com.beyondthehorizon.route.views;
 
+import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
+import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.CARDS;
+import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
+import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
+import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
+import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
+import static com.beyondthehorizon.route.utils.Constants.USER_ID;
+import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
+import static com.beyondthehorizon.route.utils.Constants.UserName;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.route.utils.Constants.sendMoney;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,10 +48,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.loader.content.CursorLoader;
 
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.bottomsheets.AddMoneyBottomsheet;
-import com.beyondthehorizon.route.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.route.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.route.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendMoneyBottomModel;
@@ -57,8 +78,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -72,27 +93,6 @@ import java.util.Objects;
 
 import timber.log.Timber;
 
-import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
-import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.CARDS;
-import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
-import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
-import static com.beyondthehorizon.route.utils.Constants.USER_ID;
-import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
-import static com.beyondthehorizon.route.utils.Constants.UserName;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
-import static com.beyondthehorizon.route.utils.Constants.sendMoney;
-
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
         MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener,
         EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, SendToManyModel.SendToManyBottomSheetListener {
@@ -103,7 +103,19 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private ImageView profile_pic, btn_notifications;
     private TextView user_name, txt_home, query_text, balance_title, balance_value, verify_email, notifCount;
     private Button add_money_button;
-    private ImageButton btn_request34, btn_fav2, btn_fav3, btn_send_to_many, btn_request2, btn_request3, btn_settings, btn_receipts, btn_transactions, btn_fav1, btn_request54, btn_buy_airtime, btn_loan, btn_home;
+    private ImageButton btn_request34;
+    private ImageButton btn_fav2;
+    private ImageButton btn_fav3;
+    private ImageButton btn_send_to_many;
+    private ImageButton btn_request2;
+    private ImageButton btn_request3;
+    private ImageButton btn_settings;
+    private ImageButton btn_receipts;
+    private ImageButton btn_transactions;
+    private ImageButton btn_fav1;
+    private ImageButton btn_request54;
+    private ImageButton btn_loan;
+    private ImageButton btn_home;
     private RelativeLayout RL1;
     private Intent intent; // Animation
     private LinearLayout mobileMoneyLayout;
@@ -174,17 +186,16 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             startActivity(intent);
         });
         add_money_button.setOnClickListener(v -> {
-            AddMoneyBottomsheet addMoneyBottomsheet = new AddMoneyBottomsheet();
-            addMoneyBottomsheet.show(getSupportFragmentManager(), "Add Money Options");
+            Intent intent = new Intent(this, FundAmountActivity.class);
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET);
+            editor.apply();
+            startActivity(intent);
         });
-        btn_fav1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
-                editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, REQUEST_MONEY);
-                editor.apply();
-                startActivity(intent);
-            }
+        btn_fav1.setOnClickListener(v -> {
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, REQUEST_MONEY);
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, REQUEST_MONEY);
+            editor.apply();
+            startActivity(intent);
         });
 
         btn_notifications.setOnClickListener(v -> {
@@ -317,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_READ_CONTACTS) {
             // disable speech button is permission not granted or instantiate recorder
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -337,69 +348,78 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void loadContacts() {
-        Cursor phones = MainActivity.this.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-        ArrayList<MultiContactModel> myContactsList = new ArrayList<>();
-        final ArrayList<MultiContactModel> myContactsList2 = new ArrayList<MultiContactModel>();
+        String[] PROJECTION = new String[]{
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
 
-        while (phones.moveToNext()) {
-            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        CursorLoader cursorLoader = new CursorLoader(this, ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, "UPPER(" + ContactsContract.Contacts.DISPLAY_NAME + ")ASC");
+        Cursor c = cursorLoader.loadInBackground();
+        if (c.moveToFirst()) {
+            int numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            int nameIndex = c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+            ArrayList<MultiContactModel> myContactsList = new ArrayList<>();
+            final ArrayList<MultiContactModel> myContactsList2 = new ArrayList<>();
+            do {
+                try {
+                    MultiContactModel multiContactModel = new MultiContactModel(
+                            "",
+                            c.getString(nameIndex),
+                            c.getString(numberIndex),
+                            "",
+                            "",
+                            false,
+                            false,
+                            ""
+                    );
+                    myContactsList.add(multiContactModel);
+                } catch (Exception e) {
+                }
+            } while (c.moveToNext());
+            c.close();
 
-            MultiContactModel multiContactModel = new MultiContactModel(
-                    "",
-                    name,
-                    phoneNumber,
-                    "",
-                    "",
-                    false,
-                    false,
-                    ""
-            );
-            if (!myContactsList.contains(multiContactModel)) {
-                myContactsList.add(multiContactModel);
-            }
-//            myContactsList.add(multiContactModel);
-        }
-        Gson gson = new Gson();
-        String json = gson.toJson(myContactsList);
-        Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
-                .setCallback((e, result) -> {
-                    try {
-                        if (result.has("data")) {
-                            if (result.get("data").getAsJsonObject().has("contacts")) {
-                                Gson gsonn = new Gson();
-                                String jsonn = null;
-                                jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
-                                if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
-                                    return;
-                                }
-                                editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
-                                editor.apply();
-                                for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
-                                    JSONObject issueObj = new JSONObject(item.toString());
-                                    if (issueObj.getBoolean("is_route")) {
-                                        myContactsList2.add(new MultiContactModel(
-                                                issueObj.get("id").toString(),
-                                                issueObj.get("username").toString(),
-                                                issueObj.get("phone_number").toString(),
-                                                issueObj.get("image").toString(),
-                                                issueObj.get("amount").toString(),
-                                                issueObj.getBoolean("is_route"),
-                                                issueObj.getBoolean("is_selected"),
-                                                issueObj.getString("route_username")
-                                        ));
+            Gson gson = new Gson();
+            String json = gson.toJson(myContactsList);
+            Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
+                    .setCallback((e, result) -> {
+                        try {
+                            if (result.has("data")) {
+                                if (result.get("data").getAsJsonObject().has("contacts")) {
+                                    Gson gsonn = new Gson();
+                                    String jsonn = null;
+                                    jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
+                                    if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
+                                        return;
                                     }
-
-                                    String json2 = gsonn.toJson(myContactsList2);
-                                    editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                                    editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
                                     editor.apply();
+                                    for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
+                                        JSONObject issueObj = new JSONObject(item.toString());
+                                        if (issueObj.getBoolean("is_route")) {
+                                            myContactsList2.add(new MultiContactModel(
+                                                    issueObj.get("id").toString(),
+                                                    issueObj.get("username").toString(),
+                                                    issueObj.get("phone_number").toString(),
+                                                    issueObj.get("image").toString(),
+                                                    issueObj.get("amount").toString(),
+                                                    issueObj.getBoolean("is_route"),
+                                                    issueObj.getBoolean("is_selected"),
+                                                    issueObj.getString("route_username")
+                                            ));
+                                        }
+
+                                        String json2 = gsonn.toJson(myContactsList2);
+                                        editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                                        editor.apply();
+                                    }
                                 }
                             }
+                        } catch (Exception ex) {
+                            Timber.d(ex.getMessage());
                         }
-                    } catch (Exception ex) {
-                        Timber.d(ex.getMessage());
-                    }
-                });
+                    });
+        }
     }
 
     private void notificationCount() {
@@ -508,25 +528,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void sendRegistrationToServer() {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String firebase_token = task.getResult().getToken();
-                        Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
-                                .setCallback(new FutureCallback<JsonObject>() {
-                                    @Override
-                                    public void onCompleted(Exception e, JsonObject result) {
-
-                                    }
-                                });
+        FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener(new OnCompleteListener<InstallationTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstallationTokenResult> task) {
+                if (!task.isSuccessful()) {
+                    if (task.getException() != null) {
+                        task.getException().printStackTrace();
+                    }
+                    return;
+                }
+                String firebase_token = task.getResult().getToken();
+                Constants.updateFirebaseToken(MainActivity.this, token, firebase_token).setCallback((e, result) -> {
+                    if (e != null) {
+                        e.printStackTrace();
                     }
                 });
+            }
+        });
     }
 
     private void setPin() {
@@ -547,7 +565,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 Constants.getServiceProviders(MainActivity.this, token)
                         .setCallback((e, result) -> {
                             if (result.has("data")) {
-                                Log.e(TAG, "onCompleted: " + result);
                                 editor.putString(MOBILE_PROVIDERS, result.get("data").getAsJsonObject().get("mobile").toString());
                                 editor.putString(BANK_PROVIDERS, result.get("data").getAsJsonObject().get("bank").toString());
                                 editor.apply();
@@ -555,7 +572,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             }
                         });
             } catch (Exception ex) {
-                Timber.d(ex.getMessage());
+                Timber.d(ex);
             }
         } else {
             llInternetDialog.setVisibility(View.VISIBLE);

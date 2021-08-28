@@ -175,7 +175,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:text="Payment methods"
+                    android:text="Add Money"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 

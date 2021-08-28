@@ -13,18 +13,21 @@ import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
-import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.activity_loan_success.*
-import kotlinx.android.synthetic.main.activity_loan_success.arrow_back
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
 class LoanSuccessActivity : AppCompatActivity() {
-    lateinit var pref: SharedPreferences
+    private lateinit var pref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_success)
         pref = getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
-        message.text = "Dear ${pref.getString("FullName", "")}, Thank you for using Route.Please continue using Route services to grow your loan limit and qualify for a loan."
+        message.text = "Dear ${
+            pref.getString(
+                "FullName",
+                ""
+            )
+        }, Thank you for using Route.Please continue using Route services to grow your loan limit and qualify for a loan."
 
         btn_apply_loan_done.setOnClickListener {
             val pr = ProgressDialog(this@LoanSuccessActivity)
