@@ -89,6 +89,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import timber.log.Timber;
@@ -359,66 +360,55 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         if (c.moveToFirst()) {
             int numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             int nameIndex = c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-            ArrayList<MultiContactModel> myContactsList = new ArrayList<>();
-            final ArrayList<MultiContactModel> myContactsList2 = new ArrayList<>();
+            final List<MultiContactModel> myContactsList = new ArrayList<>();
+            final List<MultiContactModel> myContactsList2 = new ArrayList<>();
             do {
                 try {
-                    MultiContactModel multiContactModel = new MultiContactModel(
-                            "",
-                            c.getString(nameIndex),
-                            c.getString(numberIndex),
-                            "",
-                            "",
-                            false,
-                            false,
-                            ""
-                    );
-                    myContactsList.add(multiContactModel);
+                    myContactsList.add(new MultiContactModel("", c.getString(nameIndex), Utils.getFormattedPhoneNumber(c.getString(numberIndex), util.getCountrySymbol()), "", "", false, false, ""));
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } while (c.moveToNext());
             c.close();
 
             Gson gson = new Gson();
             String json = gson.toJson(myContactsList);
-            Constants.getRegisteredRouteContacts(MainActivity.this, token, json)
-                    .setCallback((e, result) -> {
-                        try {
-                            if (result.has("data")) {
-                                if (result.get("data").getAsJsonObject().has("contacts")) {
-                                    Gson gsonn = new Gson();
-                                    String jsonn = null;
-                                    jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
-                                    if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
-                                        return;
-                                    }
-                                    editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
-                                    editor.apply();
-                                    for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
-                                        JSONObject issueObj = new JSONObject(item.toString());
-                                        if (issueObj.getBoolean("is_route")) {
-                                            myContactsList2.add(new MultiContactModel(
-                                                    issueObj.get("id").toString(),
-                                                    issueObj.get("username").toString(),
-                                                    issueObj.get("phone_number").toString(),
-                                                    issueObj.get("image").toString(),
-                                                    issueObj.get("amount").toString(),
-                                                    issueObj.getBoolean("is_route"),
-                                                    issueObj.getBoolean("is_selected"),
-                                                    issueObj.getString("route_username")
-                                            ));
-                                        }
-
-                                        String json2 = gsonn.toJson(myContactsList2);
-                                        editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
-                                        editor.apply();
-                                    }
+            Constants.getRegisteredRouteContacts(MainActivity.this, token, json).setCallback((e, result) -> {
+                try {
+                    if (result.has("data")) {
+                        if (result.get("data").getAsJsonObject().has("contacts")) {
+                            Gson gsonn = new Gson();
+                            String jsonn;
+                            jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
+                            if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
+                                return;
+                            }
+                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
+                            editor.apply();
+                            for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
+                                JSONObject issueObj = new JSONObject(item.toString());
+                                if (issueObj.getBoolean("is_route")) {
+                                    myContactsList2.add(new MultiContactModel(
+                                            issueObj.get("id").toString(),
+                                            issueObj.get("username").toString(),
+                                            issueObj.get("phone_number").toString(),
+                                            issueObj.get("image").toString(),
+                                            issueObj.get("amount").toString(),
+                                            issueObj.getBoolean("is_route"),
+                                            issueObj.getBoolean("is_selected"),
+                                            issueObj.getString("route_username")
+                                    ));
                                 }
                             }
-                        } catch (Exception ex) {
-                            Timber.d(ex.getMessage());
+                            String json2 = gsonn.toJson(myContactsList2);
+                            editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                            editor.apply();
                         }
-                    });
+                    }
+                } catch (Exception ex) {
+                    Timber.d(ex.getMessage());
+                }
+            });
         }
     }
 

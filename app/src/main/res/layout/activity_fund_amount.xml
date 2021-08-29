@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="contacts"
-            type="com.beyondthehorizon.route.views.FundAmountActivity"/>
+            type="com.beyondthehorizon.route.views.FundAmountActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,8 +149,8 @@
                         android:fontFamily="@font/rout_medium"
                         android:gravity="center"
                         android:text="KES"
-                        android:visibility="gone"
                         android:textSize="12sp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/txt_amount" />
 
                     <Button
@@ -295,21 +296,38 @@
                         app:layout_constraintStart_toEndOf="@id/btn_eight"
                         app:layout_constraintTop_toTopOf="@id/btn_zero" />
 
-                    <Button
-                        android:id="@+id/btn_request"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="50dp"
                         android:layout_marginVertical="30dp"
-                        android:background="@drawable/round_route_button"
-                        android:text="Request"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_zero" />
+                        app:layout_constraintTop_toBottomOf="@id/btn_zero">
+
+                        <Button
+                            android:id="@+id/btn_request"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="50dp"
+                            android:background="@drawable/round_route_button"
+                            android:text="Request"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="18sp"
+                            android:visibility="visible" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center"
+                            android:indeterminate="true"
+                            android:theme="@style/MyAppTheme"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
@@ -324,6 +342,7 @@
 
             <include layout="@layout/nav_bar_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:id="@+id/llInternetDialog"
             android:layout_width="match_parent"
