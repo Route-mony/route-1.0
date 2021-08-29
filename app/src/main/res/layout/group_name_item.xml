@@ -89,8 +89,7 @@
             android:background="@drawable/round_route_button"
             android:onClick="submitPin"
             android:text=" Ok "
-            android:textColor="#fff"
-            app:layout_constraintTop_toBottomOf="@id/pin_input" />
+            android:textColor="#fff" />
 
     </LinearLayout>
 </LinearLayout>

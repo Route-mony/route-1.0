@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Route</string>
     <string name="signup_title">Tell us about yourself</string>
-    <string name="main_font_style">Roboto</string>
     <string name="lbl_first_name">First Name</string>
     <string name="lbl_middle_name">Middle Name(Optional)</string>
     <string name="lbl_user_name">username</string>
@@ -17,7 +16,6 @@
     <string name="email">johndoe@gmail.com</string>
     <string name="phone">+254712469224</string>
     <string name="id_number">35889934</string>
-    <string name="btn_next">Next</string>
     <string name="verification_title">Verify your number</string>
     <string name="verification_alert">We have sent you an SMS with a code.</string>
     <string name="instruction_to_verify">To complete your phone number verification, please enter the 6-digit activation code.</string>
@@ -28,20 +26,14 @@
     <string name="btn_four">4</string>
     <string name="btn_five">1</string>
     <string name="verified">Verified</string>
-    <string name="title_activity_services">ServicesActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
 
-    <string name="send_cash"><![CDATA[<b><font color=#FF0000>-</font></b>]]></string>
     <string name="bill">Bill</string>
     <string name="pay_bill">Pay Bill </string>
     <string name="split_bill">Split Bill </string>
     <string name="split_bill_with">Split Bill With</string>
-    <string name="new_split_bill_activity">NewSplitBillActivity </string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
     <string name="buy_goods">Buy Goods </string>
@@ -51,38 +43,15 @@
     <string name="enter_bank_account">Enter Bank Account </string>
     <string name="permisson_txt">Route syncs your phone contacts from your address book to Route servers to help you connect with other Route users.</string>
 
-    <string name="_1">1</string>
-    <string name="_2">2</string>
-    <string name="_3">3</string>
-    <string name="_4">4</string>
-    <string name="_5">5</string>
-    <string name="_6">6</string>
-    <string name="_7">7</string>
-    <string name="_8">8</string>
-    <string name="_9">9</string>
     <string name="_0">0</string>
-    <string name="a_b_c"><!--A B C--></string>
-    <string name="d_e_f"><!--D E F--></string>
-    <string name="g_h_i"><!--G H I--></string>
-    <string name="j_k_l"><!--J K L--></string>
-    <string name="m_n_o"><!--M N O--></string>
-    <string name="p_q_r_s"><!--P Q R S--></string>
-    <string name="t_u_v"><!--T U V--></string>
-    <string name="w_x_y_z"><!--W X Y Z--></string>
     <string name="ok">OK</string>
     <string name="del">del</string>
 
     <string name="group_name">Group Name e.g Fundis Per Diem</string>
 
     <string name="fill_in">Please fill in all fields</string>
-    <string name="pin_request">Please Set Your Security PIN</string>
-    <string name="pin_request_verify">Confirm Your Security PIN</string>
     <string name="pin_request_invalid">PIN Don\'t Match\nPlease Set Your Security PIN Again</string>
 
-    <string name="lorem">
-        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. \n\nRichard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\n\nLorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-        \n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.\n\nSections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-    </string>
     <string name="terms_of_service">Terms Of Service</string>
     <string name="period_of_service">Choose Period</string>
     <string name="pass_and_pin">Password and PIN</string>
@@ -91,17 +60,12 @@
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
     <string name="change_pin">Change Pin</string>
-    <string name="confirm_new_pin">Confirm New Pin</string>
     <string name="new_pin">New Pin</string>
-    <string name="current_pin">Current Pin</string>
     <string name="reset_your_transaction_pin">Reset your transaction pin</string>
     <string name="invite_friend">Invite a friend</string>
     <string name="get_cash_gifts">Get cash gifts</string>
     <string name="earn_cash_gifts">Earn Ksh 5 every time a friend signs up on \nRoute with your code below </string>
     <string name="title_activity_transactions">TransactionsActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="title_activity_receipt">ReceiptActivity</string>
     <string name="title_activity_request_fund">RequestFundActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
@@ -112,8 +76,6 @@
     <string name="new_split_bill">New Split Bill</string>
     <string name="today">Today</string>
     <string name="verify_email">Verify your email!</string>
-    <string name="confirm">Confirm</string>
-    <string name="enter_pin">Enter pin</string>
     <string name="enter_reason">Enter reason</string>
     <string name="enter_your_reason">Enter your reason</string>
     <string name="send_a_reminder">Send A Reminder</string>
@@ -124,7 +86,6 @@
     <string name="_123456">123456</string>
     <string name="sign_out">Sign out</string>
     <string name="i_agree_to_the_route_privacy_policy">I agree to the Route <a href="https://route.money/privacy-policy/">Privacy Policy</a></string>
-    <string name="status">Status: </string>
     <string name="sample_date">12 Mar 2020</string>
     <string name="sample_success_message">You account has been verified successfully</string>
     <string name="approve">Approve</string>
@@ -135,4 +96,5 @@
     <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again.</string>
     <string name="no_internet_connection">No internet connection!</string>
     <string name="if_you_do_not_pay_this_loan">If you do not repay this loan by the final due date, you will be charged penalty interest under terms of use.</string>
+    <string name="please_wait">Please wait...</string>
 </resources>
