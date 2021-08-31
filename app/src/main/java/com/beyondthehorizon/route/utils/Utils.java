@@ -1,5 +1,9 @@
 package com.beyondthehorizon.route.utils;
 
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.route.utils.Constants.getWalletBalance;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
@@ -13,10 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import timber.log.Timber;
-
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
-import static com.beyondthehorizon.route.utils.Constants.getWalletBalance;
 
 public class Utils {
     private SharedPreferences pref;
@@ -48,7 +48,6 @@ public class Utils {
         try {
             number = phoneUtil.parse(phoneNumber, countryCode);
         } catch (NumberParseException e) {
-            Timber.d(e);
             return "";
         }
         return phoneUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL).replaceAll(" ", "");

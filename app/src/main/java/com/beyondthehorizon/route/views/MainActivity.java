@@ -57,7 +57,8 @@ import com.beyondthehorizon.route.bottomsheets.SendMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendToManyModel;
 import com.beyondthehorizon.route.bottomsheets.TransactionModel;
 import com.beyondthehorizon.route.loan.LoanActivity;
-import com.beyondthehorizon.route.models.MultiContactModel;
+import com.beyondthehorizon.route.models.contacts.ContactsResponse;
+import com.beyondthehorizon.route.models.contacts.MultiContactModel;
 import com.beyondthehorizon.route.utils.Constants;
 import com.beyondthehorizon.route.utils.NetworkUtils;
 import com.beyondthehorizon.route.utils.Utils;
@@ -81,12 +82,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.installations.InstallationTokenResult;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -334,12 +333,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             // disable speech button is permission not granted or instantiate recorder
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (pref.getString(MY_ROUTE_CONTACTS_NEW, "").isEmpty()) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadContacts();
-                        }
-                    }).start();
+                    new Thread(() -> loadContacts()).start();
                 }
 
             } else {
@@ -364,7 +358,10 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             final List<MultiContactModel> myContactsList2 = new ArrayList<>();
             do {
                 try {
-                    myContactsList.add(new MultiContactModel("", c.getString(nameIndex), Utils.getFormattedPhoneNumber(c.getString(numberIndex), util.getCountrySymbol()), "", "", false, false, ""));
+                    String number = Utils.getFormattedPhoneNumber(c.getString(numberIndex), util.getCountrySymbol());
+                    if (!number.isEmpty()) {
+                        myContactsList.add(new MultiContactModel("", "", "", false, false, number, "", c.getString(nameIndex)));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -375,41 +372,23 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             String json = gson.toJson(myContactsList);
             Constants.getRegisteredRouteContacts(MainActivity.this, token, json).setCallback((e, result) -> {
                 try {
-                    if (result.has("data")) {
-                        if (result.get("data").getAsJsonObject().has("contacts")) {
-                            Gson gsonn = new Gson();
-                            String jsonn;
-                            jsonn = gsonn.toJson(result.getAsJsonObject("data").get("contacts"));
-                            if (result.getAsJsonObject("data").get("contacts").getAsJsonArray().size() == 0) {
-                                return;
+                    if (result != null) {
+                        ContactsResponse contactsResponse = gson.fromJson(result, ContactsResponse.class);
+                        for (MultiContactModel multiContactModel : Objects.requireNonNull(Objects.requireNonNull(contactsResponse.getData()).getMultiContactModels())) {
+                            if (multiContactModel.isRoute()) {
+                                myContactsList2.add(multiContactModel);
                             }
-                            editor.putString(Constants.MY_ALL_CONTACTS_NEW, jsonn);
-                            editor.apply();
-                            for (JsonElement item : result.getAsJsonObject("data").get("contacts").getAsJsonArray()) {
-                                JSONObject issueObj = new JSONObject(item.toString());
-                                if (issueObj.getBoolean("is_route")) {
-                                    myContactsList2.add(new MultiContactModel(
-                                            issueObj.get("id").toString(),
-                                            issueObj.get("username").toString(),
-                                            issueObj.get("phone_number").toString(),
-                                            issueObj.get("image").toString(),
-                                            issueObj.get("amount").toString(),
-                                            issueObj.getBoolean("is_route"),
-                                            issueObj.getBoolean("is_selected"),
-                                            issueObj.getString("route_username")
-                                    ));
-                                }
-                            }
-                            String json2 = gsonn.toJson(myContactsList2);
-                            editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
-                            editor.apply();
                         }
+                        String json2 = gson.toJson(myContactsList2);
+                        editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                        editor.apply();
                     }
                 } catch (Exception ex) {
                     Timber.d(ex.getMessage());
                 }
             });
         }
+
     }
 
     private void notificationCount() {
@@ -669,7 +648,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 Timber.d(ex.getMessage());
             }
         }
-
     }
 
     @Override

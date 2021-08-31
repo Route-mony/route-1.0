@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.loader.content.CursorLoader
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,7 +29,6 @@ import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
 import com.beyondthehorizon.route.utils.Utils
 import com.beyondthehorizon.route.views.ConfirmFundRequestActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 
@@ -40,7 +40,6 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var utils: Utils
     private var contacts: MutableList<Contact> = mutableListOf()
     private var contactMap: MutableMap<String, Contact> = mutableMapOf()
-    private var routeContactMap: MutableMap<String, Contact> = mutableMapOf()
     private lateinit var prefs: SharedPreferences
     private lateinit var searchView: SearchView
     private lateinit var parentIntent: Intent
@@ -54,13 +53,19 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private var REQUEST_READ_CONTACTS = 79
     private lateinit var token: String
     private lateinit var progressBar: CustomProgressBar
-    private lateinit var countryLabel: String;
-    private lateinit var filteredContacts:  MutableList<Contact>
+    private lateinit var filteredContacts: MutableList<Contact>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_request_funds, container, false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_request_funds,
+            container,
+            false
+        )
         networkUtils = NetworkUtils(requireContext())
         utils = Utils(requireContext())
 
@@ -72,7 +77,6 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         contactMap = mutableMapOf()
         contactsAdapater = ContactsAdapater(requireActivity(), contacts)
         progressBar = CustomProgressBar(requireContext())
-        countryLabel = utils.countrySymbol
 
         prefs = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
         editor = prefs.edit()
@@ -81,11 +85,16 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
 
-        transactionType = prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
+        transactionType =
+            prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "").toString()
 
         try {
-            if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.READ_CONTACTS)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireActivity(),
+                    android.Manifest.permission.READ_CONTACTS
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 recyclerView.layoutManager = linearLayoutManager
                 recyclerView.setHasFixedSize(true)
                 contactsAdapater = ContactsAdapater(requireActivity(), contacts)
@@ -103,11 +112,12 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 var pattern = newText.removePrefix("+").toLowerCase().toRegex()
                 try {
-                    filteredContacts = contacts.filter { pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase()) }.toMutableList()
+                    filteredContacts = contacts.filter {
+                        pattern.containsMatchIn(it.contact) || pattern.containsMatchIn(it.name.toLowerCase())
+                    }.toMutableList()
                     if (filteredContacts.isNotEmpty()) {
                         displayContacts()
-                    }
-                    else{
+                    } else {
                         searchRouteContacts(newText)
                     }
                 } catch (ex: Exception) {
@@ -129,7 +139,7 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         return view
     }
 
-    private fun displayContacts(){
+    private fun displayContacts() {
         var adapter = ContactsAdapater(requireActivity(), filteredContacts.toMutableList())
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
@@ -139,27 +149,44 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun requestPermission() {
         progressBar.dialog.dismiss()
-        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.READ_CONTACTS
+            )
+        ) {
             // show UI part if you want here to show some rationale !!!
         } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
-                    REQUEST_READ_CONTACTS)
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
+                REQUEST_READ_CONTACTS
+            )
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.READ_CONTACTS)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.READ_CONTACTS
+            )
+        ) {
         } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
-                    REQUEST_READ_CONTACTS)
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(Manifest.permission.READ_CONTACTS),
+                REQUEST_READ_CONTACTS
+            )
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         progressBar.dialog.dismiss()
         when (requestCode) {
             REQUEST_READ_CONTACTS -> {
 
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(requireActivity(), "Permission Denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Permission Denied", Toast.LENGTH_SHORT)
+                        .show()
 
                 } else {
                     loadRouteContacts()
@@ -170,12 +197,68 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun loadPhoneContacts() {
         try {
-            val phones = requireActivity().contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val PROJECTION = arrayOf(
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+            )
+
+            val cursorLoader = CursorLoader(
+                requireContext(),
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                PROJECTION,
+                null,
+                null,
+                "UPPER(" + ContactsContract.Contacts.DISPLAY_NAME + ")ASC"
+            )
+            val c = cursorLoader.loadInBackground()
+            if (c!!.moveToFirst()) {
+                val numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val nameIndex = c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                do {
+                    try {
+                        val phoneNumber = Utils.getFormattedPhoneNumber(
+                            c.getString(numberIndex),
+                            utils.countrySymbol
+                        )
+                        if (phoneNumber.isNotEmpty()) {
+                            contactMap[phoneNumber] =
+                                Contact(
+                                    phoneNumber.hashCode().toString(),
+                                    c.getString(nameIndex),
+                                    phoneNumber,
+                                    ""
+                                )
+                        }
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                } while (c.moveToNext())
+                c.close()
+            }
+        } catch (e: Exception) {
+            Timber.d(e.message.toString())
+        }
+
+        try {
+            val phones = requireActivity().contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                null,
+                null,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+            )
             while (phones!!.moveToNext()) {
-                val name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phoneNumber = Utils.getFormattedPhoneNumber(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)), countryLabel)
+                val name =
+                    phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val phoneNumber = Utils.getFormattedPhoneNumber(
+                    phones.getString(
+                        phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    ), utils.countrySymbol
+                )
                 if (phoneNumber.isNotEmpty()) {
-                    contactMap[phoneNumber] = Contact(phoneNumber.hashCode().toString(), name, phoneNumber, "")
+                    contactMap[phoneNumber] =
+                        Contact(phoneNumber.hashCode().toString(), name, phoneNumber, "")
                 }
             }
         } catch (e: Exception) {
@@ -194,19 +277,34 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     binding.swipeRefresh.isRefreshing = false
                     progressBar.dialog.dismiss()
                     if (result != null && result.has("rows")) {
-                        if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
-                                || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
+                        if (prefs.getString(
+                                Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE,
+                                ""
+                            ) == Constants.SEND_MONEY_TO_ROUTE
+                            || prefs.getString(
+                                Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE,
+                                ""
+                            ) == Constants.REQUEST_MONEY
+                        ) {
                             val users = result.getAsJsonArray("rows")
                             contacts.clear()
                             users.forEach { contact ->
                                 val user = contact.asJsonObject
-                                val phone = Utils.getFormattedPhoneNumber(user.get("phone_number").asString, countryLabel)
+                                val phone = Utils.getFormattedPhoneNumber(
+                                    user.get("phone_number").asString,
+                                    utils.countrySymbol
+                                )
                                 if (contactMap[phone] != null) {
                                     contactMap[phone]!!.id = user.get("id").asString
-                                    contactMap[phone]!!.name = String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString)
+                                    contactMap[phone]!!.name = String.format(
+                                        "%s %s",
+                                        user.get("first_name").asString,
+                                        user.get("last_name").asString
+                                    )
                                     contactMap[phone]!!.contact = user.get("phone_number").asString
                                     contactMap[phone]!!.avatar = user.get("image").asString
-                                    contactMap[phone]!!.accountNumber = user.get("wallet_account").asJsonObject.get("wallet_account").asString
+                                    contactMap[phone]!!.accountNumber =
+                                        user.get("wallet_account").asJsonObject.get("wallet_account").asString
                                     contactMap[phone]!!.username = user.get("username").asString
                                     contacts.add(contactMap[phone]!!)
                                 }
@@ -216,7 +314,11 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                         }
                         contactsAdapater.updateContacts(contacts)
                     } else if (result.has("errors")) {
-                        Toast.makeText(requireContext(), result["errors"].asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            result["errors"].asJsonArray[0].asString,
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
                     }
@@ -236,37 +338,56 @@ class RequestFundsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 progressBar.show("Searching ${query}...")
                 binding.swipeRefresh.isRefreshing = true
                 val token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
-                Constants.searchRouteUsers(requireActivity(), query, token).setCallback { e, result ->
-                    binding.swipeRefresh.isRefreshing = false
-                    progressBar.dialog.dismiss()
-                    if (result != null && result.has("rows")) {
-                        if (prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.SEND_MONEY_TO_ROUTE
-                                || prefs.getString(Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE, "") == Constants.REQUEST_MONEY) {
-                            val users = result.getAsJsonArray("rows")
-                            users.forEach { contact ->
-                                val user = contact.asJsonObject
-                                filteredContacts.clear()
-                                filteredContacts.add(Contact(
-                                        user.get("id_number").asString,
-                                        String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString),
-                                        user.get("phone_number").asString,
-                                        user.get("image").asString,
-                                        user.get("wallet_account").asJsonObject.get("wallet_account").asString,
-                                        user.get("username").asString
-                                )
-                                )
-                                Log.d( String.format("%s %s", user.get("first_name").asString, user.get("last_name").asString) + " : ", user.get("image").asString)
+                Constants.searchRouteUsers(requireActivity(), query, token)
+                    .setCallback { e, result ->
+                        binding.swipeRefresh.isRefreshing = false
+                        progressBar.dialog.dismiss()
+                        if (result != null && result.has("rows")) {
+                            if (prefs.getString(
+                                    Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE,
+                                    ""
+                                ) == Constants.SEND_MONEY_TO_ROUTE
+                                || prefs.getString(
+                                    Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE,
+                                    ""
+                                ) == Constants.REQUEST_MONEY
+                            ) {
+                                val users = result.getAsJsonArray("rows")
+                                users.forEach { contact ->
+                                    val user = contact.asJsonObject
+                                    filteredContacts.clear()
+                                    filteredContacts.add(
+                                        Contact(
+                                            user.get("id_number").asString,
+                                            String.format(
+                                                "%s %s",
+                                                user.get("first_name").asString,
+                                                user.get("last_name").asString
+                                            ),
+                                            user.get("phone_number").asString,
+                                            user.get("image").asString,
+                                            user.get("wallet_account").asJsonObject.get("wallet_account").asString,
+                                            user.get("username").asString
+                                        )
+                                    )
+                                    Log.d(
+                                        String.format(
+                                            "%s %s",
+                                            user.get("first_name").asString,
+                                            user.get("last_name").asString
+                                        ) + " : ", user.get("image").asString
+                                    )
+                                }
                             }
+                            displayContacts()
+                        } else if (result != null && result.has("errors")) {
+                            Timber.d(result["errors"].asJsonArray[0].asString)
+                        } else {
+                            contactsAdapater.updateContacts(contacts)
+                            Timber.d(e.message.toString())
                         }
-                        displayContacts()
-                    } else if (result != null && result.has("errors")) {
-                        Timber.d(result["errors"].asJsonArray[0].asString)
-                    } else {
-                        contactsAdapater.updateContacts(contacts)
-                        Timber.d(e.message.toString())
                     }
-                }
-                    progressBar.dialog.dismiss()
+                progressBar.dialog.dismiss()
             } catch (e: Exception) {
                 Toast.makeText(requireActivity(), e.message, Toast.LENGTH_LONG).show()
             }
