@@ -328,7 +328,7 @@ class FundAmountActivity : AppCompatActivity(),
                     //MobPay config
                     val config = MobPay.Config()
                     config.iconUrl =
-                        "https://res.cloudinary.com/dz9lcxyoy/image/upload/v1630158922/Route/Screenshot_from_2021-08-28_16-54-51_vpuhnh.png"
+                        "https://res.cloudinary.com/dz9lcxyoy/image/upload/v1630391332/Route/Logo-PNG-1_yie91q.png"
                     val mobPay = MobPay.getInstance(
                         this,
                         BuildConfig.CLIENT_ID,
