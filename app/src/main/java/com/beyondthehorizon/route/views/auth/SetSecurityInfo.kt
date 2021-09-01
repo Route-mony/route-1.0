@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.utils.Constants
+import com.beyondthehorizon.route.utils.Constants.LOGGED_IN
 import com.beyondthehorizon.route.utils.Constants.verifyPin
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.NetworkUtils
@@ -114,38 +115,54 @@ class SetSecurityInfo : AppCompatActivity() {
                     token = "Bearer " + prefs.getString(Constants.USER_TOKEN, "")
                     progressBar.show("Please Wait...")
                     verifyPin(this@SetSecurityInfo, pin1set, token)
-                            .setCallback { e, result ->
-                                pin1set = ""
-                                pin1 = ""
-                                pin2 = ""
-                                pin3 = ""
-                                pin4 = ""
-                                updateScreen("")
-                                if (e != null) {
+                        .setCallback { e, result ->
+                            pin1set = ""
+                            pin1 = ""
+                            pin2 = ""
+                            pin3 = ""
+                            pin4 = ""
+                            updateScreen("")
+                            if (e != null) {
+                                progressBar.dialog.dismiss()
+                                Log.e("SetSecurityInfo 12356", e.toString())
+                                return@setCallback
+                            }
+                            when {
+                                result.has("errors") -> {
                                     progressBar.dialog.dismiss()
-                                    Log.e("SetSecurityInfo 12356", e.toString())
-                                    return@setCallback
-                                }
-                                if (result.has("errors")) {
-                                    progressBar.dialog.dismiss()
-                                    Toast.makeText(this, result.get("errors").asJsonArray[0].asString, Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        this,
+                                        result.get("errors").asJsonArray[0].asString,
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                     label.setTextColor(Color.parseColor("#FA0505"))
-                                } else if (result.has("data")) {
-//                                        label.text = "Pin Verified"
-//                                    Toast.makeText(this, result.get("data").asJsonObject.get("message").asString, Toast.LENGTH_LONG).show()
+                                }
+                                result.has("data") -> {
                                     label.setTextColor(Color.parseColor("#40CA08"))
                                     val intent = Intent(Intent(this, MainActivity::class.java))
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     progressBar.dialog.dismiss()
                                     startActivity(intent)
                                     this@SetSecurityInfo.finish()
-                                } else {
-                                    Toast.makeText(this, "Account not found, please login", Toast.LENGTH_LONG).show()
+                                }
+                                else -> {
+                                    Toast.makeText(
+                                        this,
+                                        "Account not found, please login",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                     editor.clear()
+                                    editor.putBoolean(LOGGED_IN, false)
                                     editor.apply()
-                                    startActivity(Intent(this@SetSecurityInfo, LoginActivity::class.java))
+                                    startActivity(
+                                        Intent(
+                                            this@SetSecurityInfo,
+                                            LoginActivity::class.java
+                                        )
+                                    )
                                 }
                             }
+                        }
                 } else {
                     if (pin1set == (pin1 + pin2 + pin3 + pin4)) {
                         val intent = Intent(Intent(this, MainActivity::class.java))
@@ -184,22 +201,26 @@ class SetSecurityInfo : AppCompatActivity() {
 //            pin_1.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
             pin_1.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.empty_dot)
         } else {
-            pin_1.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
+            pin_1.background =
+                ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
         }
         if (pin2 == "") {
             pin_2.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.empty_dot)
         } else {
-            pin_2.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
+            pin_2.background =
+                ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
         }
         if (pin3 == "") {
             pin_3.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.empty_dot)
         } else {
-            pin_3.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
+            pin_3.background =
+                ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
         }
         if (pin4 == "") {
             pin_4.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.empty_dot)
         } else {
-            pin_4.background = ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
+            pin_4.background =
+                ContextCompat.getDrawable(this@SetSecurityInfo, R.drawable.filled_dot)
         }
     }
 }

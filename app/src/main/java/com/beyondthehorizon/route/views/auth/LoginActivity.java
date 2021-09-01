@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 String email = result.get("data").getAsJsonObject().get("email").getAsString();
                                 String token = result.get("data").getAsJsonObject().get("token").getAsString();
-                                editor.putString(LOGGED_IN, "true");
+                                editor.putBoolean(LOGGED_IN, true);
                                 editor.putString(USER_EMAIL, email);
                                 editor.putString(USER_TOKEN, token);
                                 editor.apply();

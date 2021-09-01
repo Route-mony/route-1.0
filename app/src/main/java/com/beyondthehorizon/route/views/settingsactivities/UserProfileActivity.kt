@@ -49,7 +49,8 @@ class UserProfileActivity : AppCompatActivity() {
 
         getProfile()
 
-        pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref =
+            applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref!!.edit()
 
         saveUpdate.setOnClickListener {
@@ -59,8 +60,8 @@ class UserProfileActivity : AppCompatActivity() {
         updateImage.setOnClickListener {
             // start picker to get image for cropping and then use the image in cropping activity
             val intent = CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .getIntent(this@UserProfileActivity)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(this@UserProfileActivity)
             startActivityForResult(intent, myRequestCode)
         }
         back.setOnClickListener {
@@ -94,39 +95,46 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun updateProfile() {
-        val pref: SharedPreferences = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        val pref: SharedPreferences =
+            applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         val token = "Bearer " + pref.getString(USER_TOKEN, "")
         val progressDialog = ProgressDialog(this@UserProfileActivity)
-        if(TextUtils.isEmpty(userNameTxt.text)){
+        if (TextUtils.isEmpty(userNameTxt.text)) {
             userNameTxt.error = "Username cannot be empty!"
             return
         }
-        if(TextUtils.isEmpty(phone.text)){
+        if (TextUtils.isEmpty(phone.text)) {
             phone.error = "Phone number cannot be empty!"
             return
         }
 
-        if(Utils.isPhoneNumberValid(phone.text.toString(), "KE")) {
+        if (Utils.isPhoneNumberValid(phone.text.toString(), "KE")) {
             progressDialog.setMessage("please wait...")
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
-            updateUserProfile(this@UserProfileActivity, token,
-                    phone.text.toString(),
-                    userNameTxt.text.toString())
-                    .setCallback { _, result ->
-                        progressDialog.dismiss()
-                        Toast.makeText(this@UserProfileActivity, "Updated successfully", Toast.LENGTH_LONG).show()
-                        Log.e(TAG, "updateUserProfileSettings: " + result!!)
-                    }
-        }
-        else{
+            updateUserProfile(
+                this@UserProfileActivity, token,
+                phone.text.toString(),
+                userNameTxt.text.toString()
+            )
+                .setCallback { _, result ->
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@UserProfileActivity,
+                        "Updated successfully",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.e(TAG, "updateUserProfileSettings: " + result!!)
+                }
+        } else {
             phone.error = "Invalid phone number!"
         }
     }
 
     private fun getProfile() {
 
-        val pref: SharedPreferences = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        val pref: SharedPreferences =
+            applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         val editor: SharedPreferences.Editor
         editor = pref.edit()
         val token = "Bearer " + pref.getString(USER_TOKEN, "")
@@ -138,62 +146,63 @@ class UserProfileActivity : AppCompatActivity() {
         progressDialog.show()
 
         getUserProfile(this@UserProfileActivity, token)
-                .setCallback { e, result ->
-                    progressDialog.dismiss()
-                    Log.e(TAG, "getUserProfileSettings: " + result!!)
+            .setCallback { e, result ->
+                progressDialog.dismiss()
+                Log.e(TAG, "getUserProfileSettings: " + result!!)
 
-                    if (result != null) {
+                if (result != null) {
 
-                        if (result.get("status").toString().contains("failed")) {
-                            editor.clear()
-                            editor.apply()
-                            startActivity(Intent(this@UserProfileActivity, LoginActivity::class.java))
-                        } else if (result.get("status").toString().contains("success")) {
+                    if (result.get("status").toString().contains("failed")) {
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this@UserProfileActivity, LoginActivity::class.java))
+                    } else if (result.get("status").toString().contains("success")) {
 
-                            val username = result.get("data").asJsonObject.get("username").asString
-                            val fname = result.get("data").asJsonObject.get("first_name").asString
-                            val lname = result.get("data").asJsonObject.get("last_name").asString
-                            val emailString = result.get("data").asJsonObject.get("email").asString
-                            val phone_number = result.get("data").asJsonObject.get("phone_number").asString
-                            val image = result.get("data").asJsonObject.get("image").asString
+                        val username = result.get("data").asJsonObject.get("username").asString
+                        val fname = result.get("data").asJsonObject.get("first_name").asString
+                        val lname = result.get("data").asJsonObject.get("last_name").asString
+                        val emailString = result.get("data").asJsonObject.get("email").asString
+                        val phone_number =
+                            result.get("data").asJsonObject.get("phone_number").asString
+                        val image = result.get("data").asJsonObject.get("image").asString
 
-                            phone.setText(phone_number)
-                            userNameTxt.setText(username)
-                            email.setText(emailString)
-                            fullNames.setText("${fname} ${lname}")
-                            var requestOptions = RequestOptions();
-                            requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16));
-                            Glide.with(this@UserProfileActivity)
-                                    .load(image)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .error(R.drawable.ic_user_home_page)
-                                    .placeholder(R.drawable.ic_user_home_page)
-                                    .apply(requestOptions)
-                                    .into(profile_pic)
+                        phone.setText(phone_number)
+                        userNameTxt.setText(username)
+                        email.setText(emailString)
+                        fullNames.setText("${fname} ${lname}")
+                        var requestOptions = RequestOptions();
+                        requestOptions =
+                            requestOptions.transforms(CenterCrop(), RoundedCorners(16));
+                        Glide.with(this@UserProfileActivity)
+                            .load(image)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .error(R.drawable.ic_user_home_page)
+                            .placeholder(R.drawable.ic_user_home_page)
+                            .apply(requestOptions)
+                            .into(profile_pic)
 
-                            gender.setText("None")
-                            dob.setText("0-00-1900")
+                        gender.setText("None")
+                        dob.setText("0-00-1900")
 
-                        }
-                    } else {
-                        val snackbar = Snackbar
-                                .make(RL1, "Unable to load data ", Snackbar.LENGTH_LONG)
-                        snackbar.setAction("Try again") {
-                            if (pref.getString(USER_TOKEN, "")!!.isEmpty()) {
-                                editor.putString(LOGGED_IN, "false")
-                                editor.apply()
-                                val intent = Intent(this@UserProfileActivity, LoginActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(intent)
-                            } else {
-                                getProfile()
-                            }
-                        }
-                        snackbar.show()
                     }
+                } else {
+                    val snackbar = Snackbar
+                        .make(RL1, "Unable to load data ", Snackbar.LENGTH_LONG)
+                    snackbar.setAction("Try again") {
+                        if (pref.getBoolean(LOGGED_IN, false)) {
+                            getProfile()
+                        } else {
+                            val intent = Intent(this@UserProfileActivity, LoginActivity::class.java)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        }
+                    }
+                    snackbar.show()
                 }
+            }
     }
 
 
@@ -208,9 +217,9 @@ class UserProfileActivity : AppCompatActivity() {
                 progressBar.setCanceledOnTouchOutside(false)
                 try {
                     val compressedImage = Compressor(this)
-                            .setQuality(100)
-                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                            .compressToBitmap(actualImage)
+                        .setQuality(100)
+                        .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                        .compressToBitmap(actualImage)
 
                     val baos = ByteArrayOutputStream()
                     compressedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -223,39 +232,51 @@ class UserProfileActivity : AppCompatActivity() {
                         val storage = Firebase.storage
                         val storageReference = storage.reference
 
-                        val pref: SharedPreferences = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0)
+                        val pref: SharedPreferences =
+                            applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0)
                         val token = "Bearer " + pref.getString(USER_TOKEN, "")
 
 
                         val urL = userNameTxt.text.toString().trim()
                         val filePath = storageReference.child(PROFILE_IMAGES)
-                                .child("$urL.jpg")
+                            .child("$urL.jpg")
                         val uploadTask = filePath.putBytes(finalImage)
 
                         uploadTask.addOnFailureListener(OnFailureListener {
                             progressBar.dismiss()
-                            Toast.makeText(this@UserProfileActivity, "Unable to upload image, try again later", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@UserProfileActivity,
+                                "Unable to upload image, try again later",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }).addOnSuccessListener(OnSuccessListener<Any> {
-                            filePath.getDownloadUrl().addOnSuccessListener(OnSuccessListener<Uri> { uri ->
+                            filePath.getDownloadUrl()
+                                .addOnSuccessListener(OnSuccessListener<Uri> { uri ->
 
-                                updateUserProfileImage(this@UserProfileActivity, token,
-                                        uri.toString())
+                                    updateUserProfileImage(
+                                        this@UserProfileActivity, token,
+                                        uri.toString()
+                                    )
                                         .setCallback { _, result ->
                                             Glide.with(this@UserProfileActivity)
-                                                    .load(uri.toString())
-                                                    .centerCrop()
-                                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                                    .skipMemoryCache(true)
-                                                    .error(R.drawable.ic_user_home_page)
-                                                    .placeholder(R.drawable.ic_user_home_page)
-                                                    .into(profile_pic)
+                                                .load(uri.toString())
+                                                .centerCrop()
+                                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                                .skipMemoryCache(true)
+                                                .error(R.drawable.ic_user_home_page)
+                                                .placeholder(R.drawable.ic_user_home_page)
+                                                .into(profile_pic)
                                             editor!!.putString("ProfileImage", uri.toString())
                                             editor!!.apply()
                                             progressBar.dismiss()
-                                            Toast.makeText(this@UserProfileActivity, "Profile Picture updated successfully", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(
+                                                this@UserProfileActivity,
+                                                "Profile Picture updated successfully",
+                                                Toast.LENGTH_LONG
+                                            ).show()
 
                                         }
-                            })
+                                })
                         })
 
 

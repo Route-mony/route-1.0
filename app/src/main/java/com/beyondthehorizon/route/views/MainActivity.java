@@ -275,22 +275,21 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void isLoggedIn() {
-        if (pref.getString(USER_TOKEN, "").isEmpty()) {
-            editor.putString(LOGGED_IN, "false");
-            editor.apply();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        } else {
+        if (pref.getBoolean(LOGGED_IN, false)) {
             token = "Bearer ".concat(Objects.requireNonNull(pref.getString(USER_TOKEN, "")));
-            //Load wallet balance from ISW
             if (networkUtils.isNetworkAvailable()) {
                 util.loadWalletBalance(token);
                 getProfile();
                 notificationCount();
+                getServiceProviders();
+                sendRegistrationToServer();
             } else {
                 llInternetDialog.setVisibility(View.VISIBLE);
             }
+        } else {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
@@ -330,12 +329,8 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_READ_CONTACTS) {
-            // disable speech button is permission not granted or instantiate recorder
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (pref.getString(MY_ROUTE_CONTACTS_NEW, "").isEmpty()) {
-                    new Thread(() -> loadContacts()).start();
-                }
-
+                loadContacts();
             } else {
                 Toast.makeText(MainActivity.this, "Permission Denied, you will not be able to request or send funds since it requires loading your contacts", Toast.LENGTH_SHORT).show();
             }
@@ -351,41 +346,38 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
 
         CursorLoader cursorLoader = new CursorLoader(this, ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION, null, null, "UPPER(" + ContactsContract.Contacts.DISPLAY_NAME + ")ASC");
         Cursor c = cursorLoader.loadInBackground();
-        if (c.moveToFirst()) {
-            int numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            int nameIndex = c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-            final List<MultiContactModel> myContactsList = new ArrayList<>();
-            final List<MultiContactModel> myContactsList2 = new ArrayList<>();
-            do {
-                try {
-                    String number = Utils.getFormattedPhoneNumber(c.getString(numberIndex), util.getCountrySymbol());
-                    if (!number.isEmpty()) {
-                        myContactsList.add(new MultiContactModel("", "", "", false, false, number, "", c.getString(nameIndex)));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        c.moveToFirst();
+        int numberIndex = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        int nameIndex = c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        final List<MultiContactModel> myContactsList = new ArrayList<>();
+        do {
+            try {
+                String number = Utils.getFormattedPhoneNumber(c.getString(numberIndex), util.getCountrySymbol());
+                if (!number.isEmpty()) {
+                    myContactsList.add(new MultiContactModel("", "", "", false, false, number, "", c.getString(nameIndex)));
                 }
-            } while (c.moveToNext());
-            c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } while (c.moveToNext());
+        c.close();
 
-            Gson gson = new Gson();
-            String json = gson.toJson(myContactsList);
-            Constants.getRegisteredRouteContacts(MainActivity.this, token, json).setCallback((e, result) -> {
-                try {
-                    if (result != null) {
-                        ContactsResponse contactsResponse = gson.fromJson(result, ContactsResponse.class);
-                        if (contactsResponse.getData() != null && contactsResponse.getData().getMultiContactModels() != null) {
-                            String json2 = gson.toJson(contactsResponse.getData().getMultiContactModels());
-                            editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
-                            editor.apply();
-                        }
+        Gson gson = new Gson();
+        String json = gson.toJson(myContactsList);
+        Constants.getRegisteredRouteContacts(MainActivity.this, token, json).setCallback((e, result) -> {
+            try {
+                if (result != null) {
+                    ContactsResponse contactsResponse = gson.fromJson(result, ContactsResponse.class);
+                    if (contactsResponse.getData() != null && contactsResponse.getData().getMultiContactModels() != null) {
+                        String json2 = gson.toJson(contactsResponse.getData().getMultiContactModels());
+                        editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                        editor.apply();
                     }
-                } catch (Exception ex) {
-                    Timber.d(ex);
                 }
-            });
-        }
-
+            } catch (Exception ex) {
+                Timber.d(ex);
+            }
+        });
     }
 
     private void notificationCount() {
@@ -464,9 +456,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                 editor.putString(CARDS, cards);
                                 editor.putString(WALLET_ACCOUNT, wallet_account);
                                 editor.apply();
-
-                                getServiceProviders();
-                                sendRegistrationToServer();
                                 boolean email_verified = result.get("data").getAsJsonObject().get("is_email_active").getAsBoolean();
                                 String is_pin_set = result.get("data").getAsJsonObject().get("is_pin_set").toString();
 

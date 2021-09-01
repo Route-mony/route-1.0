@@ -34,7 +34,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        pref = applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
+        pref =
+            applicationContext.getSharedPreferences(REG_APP_PREFERENCES, 0) // 0 - for private mode
         editor = pref.edit()
         btn_settings.setImageResource(R.drawable.ic_nav_settings)
         txt_settings.setTextColor(resources.getColor(R.color.colorButton))
@@ -44,14 +45,14 @@ class SettingsActivity : AppCompatActivity() {
         var requestOptions = RequestOptions();
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16));
         Glide.with(this@SettingsActivity)
-                .load(pref.getString("ProfileImage", ""))
-                .centerCrop()
-                .error(R.drawable.ic_user_home_page)
-                .placeholder(R.drawable.ic_user_home_page)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .apply(requestOptions)
-                .into(profile_pic)
+            .load(pref.getString("ProfileImage", ""))
+            .centerCrop()
+            .error(R.drawable.ic_user_home_page)
+            .placeholder(R.drawable.ic_user_home_page)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .apply(requestOptions)
+            .into(profile_pic)
 
         user_name.text = (pref.getString("FullName", ""))
 
@@ -113,6 +114,7 @@ class SettingsActivity : AppCompatActivity() {
 
         logOut.setOnClickListener {
             editor.clear()
+            editor.putBoolean(LOGGED_IN, false)
             editor.apply()
             val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -148,18 +150,18 @@ class SettingsActivity : AppCompatActivity() {
 //            })
 
             KmConversationBuilder(this@SettingsActivity)
-                    .setWithPreChat(false)
-                    .setKmUser(user)
-                    .launchConversation(object : KmCallback {
-                        override fun onSuccess(message: Any) {
-                            Log.d("Conversation", "Success : $message")
-                            prog.dismiss()
-                        }
+                .setWithPreChat(false)
+                .setKmUser(user)
+                .launchConversation(object : KmCallback {
+                    override fun onSuccess(message: Any) {
+                        Log.d("Conversation", "Success : $message")
+                        prog.dismiss()
+                    }
 
-                        override fun onFailure(error: Any) {
-                            Log.d("Conversation", "Failure : $error")
-                        }
-                    })
+                    override fun onFailure(error: Any) {
+                        Log.d("Conversation", "Failure : $error")
+                    }
+                })
         }
     }
 }

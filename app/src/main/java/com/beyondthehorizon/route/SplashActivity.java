@@ -1,5 +1,10 @@
 package com.beyondthehorizon.route;
 
+import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +14,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.route.views.ServicesActivity;
+import com.beyondthehorizon.route.views.auth.LoginActivity;
 import com.beyondthehorizon.route.views.auth.SetSecurityInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -20,10 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 100;
@@ -44,7 +46,6 @@ public class SplashActivity extends AppCompatActivity {
         logo = findViewById(R.id.logo);
 
         pref = getApplicationContext().getSharedPreferences(REG_APP_PREFERENCES, 0); // 0 - for private mode
-        final String isLoggedIn = pref.getString(LOGGED_IN, "false");
         Glide.with(this).asGif()
                 .load(R.drawable.logo)
                 .apply(new RequestOptions().override(500, 500))
@@ -53,18 +54,17 @@ public class SplashActivity extends AppCompatActivity {
                 .into(logo);
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isLoggedIn.contains("false")) {
-                    startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
-                    finish();
+        handler.postDelayed(() -> {
+            if (pref.getBoolean(LOGGED_IN, false)) {
+                startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
+            } else {
+                if (pref.getString(USER_TOKEN, "").isEmpty()) {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 } else {
-//                    checkPhoneAuth();
                     startActivity(new Intent(SplashActivity.this, SetSecurityInfo.class));
-                    finish();
                 }
             }
+            finish();
         }, 3000);
     }
 
