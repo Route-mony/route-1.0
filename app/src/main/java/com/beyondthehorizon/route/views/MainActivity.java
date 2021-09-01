@@ -374,17 +374,14 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 try {
                     if (result != null) {
                         ContactsResponse contactsResponse = gson.fromJson(result, ContactsResponse.class);
-                        for (MultiContactModel multiContactModel : Objects.requireNonNull(Objects.requireNonNull(contactsResponse.getData()).getMultiContactModels())) {
-                            if (multiContactModel.isRoute()) {
-                                myContactsList2.add(multiContactModel);
-                            }
+                        if (contactsResponse.getData() != null && contactsResponse.getData().getMultiContactModels() != null) {
+                            String json2 = gson.toJson(contactsResponse.getData().getMultiContactModels());
+                            editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
+                            editor.apply();
                         }
-                        String json2 = gson.toJson(myContactsList2);
-                        editor.putString(MY_ROUTE_CONTACTS_NEW, json2);
-                        editor.apply();
                     }
                 } catch (Exception ex) {
-                    Timber.d(ex.getMessage());
+                    Timber.d(ex);
                 }
             });
         }
