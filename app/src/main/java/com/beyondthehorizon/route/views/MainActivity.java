@@ -330,7 +330,9 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                loadContacts();
+                if (pref.getString(MY_ROUTE_CONTACTS_NEW, "").isEmpty()) {
+                    loadContacts();
+                }
             } else {
                 Toast.makeText(MainActivity.this, "Permission Denied, you will not be able to request or send funds since it requires loading your contacts", Toast.LENGTH_SHORT).show();
             }

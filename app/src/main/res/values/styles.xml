@@ -76,6 +76,8 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
     <style name="SCBSwitch" parent="Theme.AppCompat.Light">
