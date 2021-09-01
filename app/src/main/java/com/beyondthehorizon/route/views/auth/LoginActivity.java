@@ -1,5 +1,10 @@
 package com.beyondthehorizon.route.views.auth;
 
+import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.USER_EMAIL;
+import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +29,6 @@ import com.beyondthehorizon.route.utils.Constants;
 import com.beyondthehorizon.route.utils.NetworkUtils;
 import com.beyondthehorizon.route.views.MainActivity;
 import com.beyondthehorizon.route.views.settingsactivities.ResetPasswordActivity;
-
-import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.USER_EMAIL;
-import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
 
 public class LoginActivity extends AppCompatActivity {
     private NetworkUtils networkUtils;
@@ -58,7 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
         R11 = findViewById(R.id.R11);
 
-        btnRetry.setOnClickListener(v -> {llInternetDialog.setVisibility(View.GONE); loginRequest();});
+        btnRetry.setOnClickListener(v -> {
+            llInternetDialog.setVisibility(View.GONE);
+            loginRequest();
+        });
         btnCancel.setOnClickListener(v -> llInternetDialog.setVisibility(View.GONE));
 
         forgotPassword.setOnClickListener(v -> {

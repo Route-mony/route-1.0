@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beyondthehorizon.route.views.MainActivity;
 import com.beyondthehorizon.route.views.ServicesActivity;
 import com.beyondthehorizon.route.views.auth.LoginActivity;
 import com.beyondthehorizon.route.views.auth.SetSecurityInfo;
@@ -55,14 +56,20 @@ public class SplashActivity extends AppCompatActivity {
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            if (pref.getBoolean(LOGGED_IN, false)) {
-                startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
-            } else {
-                if (pref.getString(USER_TOKEN, "").isEmpty()) {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            try {
+                if (pref.getBoolean(LOGGED_IN, false)) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else {
-                    startActivity(new Intent(SplashActivity.this, SetSecurityInfo.class));
+                    if (pref.getString(USER_TOKEN, "").isEmpty()) {
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    } else {
+                        startActivity(new Intent(SplashActivity.this, SetSecurityInfo.class));
+                    }
                 }
+            } catch (Exception ex) {
+                pref.edit().clear();
+                pref.edit().apply();
+                startActivity(new Intent(SplashActivity.this, ServicesActivity.class));
             }
             finish();
         }, 3000);

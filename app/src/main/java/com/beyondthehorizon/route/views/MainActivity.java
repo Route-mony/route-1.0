@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                 loadContacts();
             }
         } catch (Exception ex) {
-            Timber.d(ex.getMessage());
+            Timber.d(ex);
         }
     }
 
@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                                     balance_value.setText("");
                                 }
                             } catch (Exception ex) {
-                                Timber.d(ex.getMessage());
+                                Timber.d(ex);
                             }
                         }
                     }
@@ -574,23 +574,20 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                     if (ben_ref.trim().isEmpty()) {
                         Constants.sendMoney(MainActivity.this,
                                 ben_account, amount, pin, token,
-                                "MPESA TILL", "Payment").setCallback(new FutureCallback<JsonObject>() {
-                            @Override
-                            public void onCompleted(Exception e, JsonObject result) {
+                                "MPESA TILL", "Payment").setCallback((e, result) -> {
 
-                                progressDialog.dismiss();
-                                if (result.has("errors")) {
-                                    Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
-                                } else {
-                                    editor.remove("ben_ref");
-                                    editor.apply();
-                                    String message = result.get("data").getAsJsonObject().get("message").getAsString();
-                                    Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
-                                    intent.putExtra("Message", message);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
+                                    progressDialog.dismiss();
+                                    if (result.has("errors")) {
+                                        Toast.makeText(MainActivity.this, result.get("errors").getAsJsonArray().get(0).getAsString(), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        editor.remove("ben_ref");
+                                        editor.apply();
+                                        String message = result.get("data").getAsJsonObject().get("message").getAsString();
+                                        Intent intent = new Intent(MainActivity.this, FundRequestedActivity.class);
+                                        intent.putExtra("Message", message);
+                                        startActivity(intent);
+                                    }
+                                });
                     } else {
                         Constants.sendMoneyBeneficiary(MainActivity.this,
                                 ben_account, amount, pin, token,
@@ -633,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
                             });
                 }
             } catch (Exception ex) {
-                Timber.d(ex.getMessage());
+                Timber.d(ex);
             }
         }
     }
