@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.bottomsheets.AddMoneyBottomsheet
 import com.beyondthehorizon.route.utils.Constants.*
+import com.beyondthehorizon.route.views.FundAmountActivity
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.auth.LoginActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
@@ -86,8 +87,10 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this@SettingsActivity, PasswordAndPinActivity::class.java))
         }
         paymentMethods.setOnClickListener {
-            val addMoneyBottomsheet = AddMoneyBottomsheet()
-            addMoneyBottomsheet.show(supportFragmentManager, "Add Money Options")
+            val intent = Intent(this, FundAmountActivity::class.java)
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET)
+            editor.apply()
+            startActivity(intent)
         }
         termsAndConditions.setOnClickListener {
             startActivity(Intent(this@SettingsActivity, TermsOfUseActivity::class.java))

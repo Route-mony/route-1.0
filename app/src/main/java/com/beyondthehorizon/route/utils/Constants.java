@@ -18,7 +18,7 @@ public class Constants {
     public static String TRANSACTION_DETAILS = "TRANSACTION_DETAILS";
     public static String SHARE_RECEIPT_TO_ID = "SHARE_RECEIPT_TO_ID";
     public static String SHARE_RECEIPT_TITLE = "SHARE_RECEIPT_TITLE";
-
+    public static final String LOAD_WALLET = "LOAD_WALLET";
     public static final String LOGGED_IN = "LOGGED_IN";
     public static final String TRANSACTIONS_PIN = "TRANSACTIONS_PIN";
 

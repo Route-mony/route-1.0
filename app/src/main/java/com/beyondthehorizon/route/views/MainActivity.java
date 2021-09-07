@@ -75,6 +75,7 @@ import timber.log.Timber;
 import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
 import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
 import static com.beyondthehorizon.route.utils.Constants.CARDS;
+import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
 import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
 import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
 import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
@@ -173,9 +174,12 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
             Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
             startActivity(intent);
         });
+
         add_money_button.setOnClickListener(v -> {
-            AddMoneyBottomsheet addMoneyBottomsheet = new AddMoneyBottomsheet();
-            addMoneyBottomsheet.show(getSupportFragmentManager(), "Add Money Options");
+            Intent intent = new Intent(this, FundAmountActivity.class);
+            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, LOAD_WALLET);
+            editor.apply();
+            startActivity(intent);
         });
         btn_fav1.setOnClickListener(new View.OnClickListener() {
             @Override
