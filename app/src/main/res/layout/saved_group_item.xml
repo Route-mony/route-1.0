@@ -2,30 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-        <TextView
-            android:id="@+id/group_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="@string/today"
-            android:inputType="textCapSentences"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/colorPrimaryLight"
-            />
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/group_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="left"
+        android:inputType="textCapSentences"
+        android:text="@string/today"
+        android:textColor="@color/colorPrimaryLight" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/newGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/group_date"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="10dp"
-        app:cardElevation="810dp"
-        android:layout_below="@id/group_date"
-        >
+        app:cardElevation="810dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,16 +31,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp"
-            >
+            android:paddingVertical="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingLeft="5dp"
-                >
+                android:paddingLeft="5dp">
 
                 <TextView
                     android:id="@+id/group_name"
@@ -51,48 +47,42 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/rout_extrabold"
                     android:text="Group Name"
-                    android:textColor="@color/our_black"
-                    />
+                    android:textColor="@color/our_black" />
 
                 <TextView
                     android:id="@+id/group_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status: Pending"
-                    android:textColor="@color/colorPrimaryLight"
-                    />
+                    android:textColor="@color/colorPrimaryLight" />
 
                 <TextView
                     android:id="@+id/group_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amount: Ksh 2000"
-                    android:textColor="@color/colorPrimaryLight"
-                    />
+                    android:textColor="@color/colorPrimaryLight" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/imag1"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/profile_pic"
-                />
+                android:src="@drawable/profile_pic" />
 
             <ImageView
                 android:id="@+id/imag2"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-10dp"
-                android:src="@drawable/profile_pic"
-                />
+                android:src="@drawable/profile_pic" />
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                app:srcCompat="@drawable/ic_baseline_chevron_right_24"
-                />
+                app:srcCompat="@drawable/ic_baseline_chevron_right_24" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

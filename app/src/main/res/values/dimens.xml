@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="item_round_size">60dp</dimen>
     <dimen name="item_top_round_size">60dp</dimen>
-    <dimen name="lb_24_sp">24dp</dimen>
+    <dimen name="lb_24_sp">24sp</dimen>
     <dimen name="lb_40_sp">40dp</dimen>
     <dimen name="lb_50_sp">50dp</dimen>
     <dimen name="fab_margin">16dp</dimen>

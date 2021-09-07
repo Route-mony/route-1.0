@@ -10,7 +10,6 @@ import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.databinding.ActivityChangePinBinding
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.CustomProgressBar
-import com.beyondthehorizon.route.views.FundRequestedActivity
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity

@@ -17,11 +17,6 @@
                 android:layout_centerInParent="true"
                 android:src="@drawable/logo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-        <!--        <pl.droidsonroids.gif.GifImageView-->
-        <!--                android:id="@+id/logo"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:src="@drawable/logo" />-->
 
         <ImageView
                 android:id="@+id/globe"

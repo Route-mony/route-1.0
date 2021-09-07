@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.beyondthehorizon.route.R
 import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ReceiptActivity
-import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import kotlinx.android.synthetic.main.activity_transactions.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
 
@@ -34,10 +33,10 @@ class TransactionsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        btn_receipt.setOnClickListener(View.OnClickListener {
+        btn_receipt.setOnClickListener {
             val intent = Intent(this@TransactionsActivity, ReceiptActivity::class.java)
             startActivity(intent)
-        })
+        }
 
         btn_settings.setOnClickListener {
             val intent = Intent(this@TransactionsActivity, SettingsActivity::class.java)

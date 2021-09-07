@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivProfilePic"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user_home_page" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/rout_bold"
+                    android:text="@string/loading"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/profile_pic"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/query_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/rout_light"
+                    android:text="@string/what_would_you_like_to_do_today"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvVerifyEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/email_valid_background"
+                    android:padding="3dp"
+                    android:text="@string/verify_email"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end">
+
+                <ImageView
+                    android:id="@+id/btnNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_notification_icon" />
+
+                <TextView
+                    android:id="@+id/tvNotificationCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-8dp"
+                    android:layout_toEndOf="@+id/btnNotifications"
+                    android:background="@drawable/notification_circle"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvBalance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBanner">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryPaleDark"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/tvBalanceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rout_light"
+                    android:text="@string/route_balance"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="11sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rout_bold"
+                    android:text="@string/loading"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvBalanceTitle" />
+
+                <Button
+                    android:id="@+id/btnAddMoney"
+                    android:layout_width="120dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/route_button"
+                    android:fontFamily="@font/rout_book"
+                    android:padding="3dp"
+                    android:text="@string/plus_add_money"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/llServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/gradient_drawable"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/cvBalance">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rout_bold"
+                    android:text="@string/quick_access"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="3dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnRequest"
+                        android:layout_width="@dimen/item_top_round_size"
+                        android:layout_height="@dimen/item_top_round_size"
+                        android:background="@drawable/ripple_background"
+                        android:elevation="3dp"
+                        android:padding="13dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_request" />
+
+                    <TextView
+                        android:id="@+id/txt_fav1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/rout_book"
+                        android:text="@string/request"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnRouteIt"
+                        android:layout_width="@dimen/item_top_round_size"
+                        android:layout_height="@dimen/item_top_round_size"
+                        android:background="@drawable/service_buttons"
+                        android:elevation="3dp"
+                        android:padding="15dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_route_it_it" />
+
+                    <TextView
+                        android:id="@+id/txt_fav2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/rout_book"
+                        android:text="@string/route_it"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnReceipts"
+                        android:layout_width="@dimen/item_top_round_size"
+                        android:layout_height="@dimen/item_top_round_size"
+                        android:background="@drawable/service_buttons"
+                        android:elevation="3dp"
+                        android:padding="13dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_receipts" />
+
+                    <TextView
+                        android:id="@+id/txt_fav3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/rout_book"
+                        android:text="@string/receipts"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/card_main"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="32dp"
+                        android:fontFamily="@font/rout_bold"
+                        android:text="@string/services"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnSend"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:elevation="3dp"
+                            app:srcCompat="@drawable/ic_group492" />
+
+                        <TextView
+                            android:id="@+id/txt_request"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/send"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnPayBill"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:elevation="3dp"
+                            android:textColor="@color/colorPrimary"
+                            app:srcCompat="@drawable/ic_group491" />
+
+                        <TextView
+                            android:id="@+id/txt_request2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/paybill"
+                            android:textAlignment="center"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnSendToMany"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:elevation="3dp"
+                            android:padding="12dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_send_to_many_greyed" />
+
+                        <TextView
+                            android:id="@+id/txt_request34"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/send_to_many"
+                            android:textAlignment="center"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnSplitBill"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:elevation="3dp"
+                            android:padding="12dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_split_bill" />
+
+                        <TextView
+                            android:id="@+id/txt_request3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/split_bill"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/btnRequestLoan"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:elevation="3dp"
+                            android:padding="1dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_loan_logo" />
+
+                        <TextView
+                            android:id="@+id/txt_request24"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/request_loan"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <ImageButton
+                            android:id="@+id/btnUtilities"
+                            android:layout_width="@dimen/item_round_size"
+                            android:layout_height="@dimen/item_round_size"
+                            android:background="@drawable/service_buttons"
+                            android:padding="16dp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_utilities_greyed" />
+
+                        <TextView
+                            android:id="@+id/txt_request35"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+
+                            android:fontFamily="@font/rout_book"
+                            android:text="@string/utilities"
+                            android:textAlignment="center"
+                            android:textColor="#BBB9B9"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

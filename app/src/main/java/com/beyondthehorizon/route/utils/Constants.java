@@ -2,18 +2,27 @@ package com.beyondthehorizon.route.utils;
 
 import android.content.Context;
 
+import com.beyondthehorizon.route.R;
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
-import timber.log.Timber;
-
 public class Constants {
     public static String BASE_URL = "https://route-api.com/api/v1/";
-    private static boolean ALLOW_REDIRECT = false;
+    public static String USER_PROFILE = "profileData";
+    public static String TRANSACTION_DATA = "transactionData";
     public static String REG_APP_PREFERENCES = "profilePref";
+    public static String MPESA_TILL = "MPESA TILL";
+    /**
+     * PROCESS IDENTIFIES
+     */
+    public static int ADD_MONEY = 0;
+    public static int REQUEST_MONEY = 1;
+    public static int SEND_MONEY = 2;
+    public static int SEND_TO_MANY = 3;
+    public static int SPLIT_BILL = 4;
+
     public static String VISITING_HISTORY_PROFILE = "VISITING_HISTORY_PROFILE";
-    public static String GROUP_ITEM = "GROUP_ITEM";
     public static String TRANS_TYPE = "TRANS_TYPE";
     public static String TRANSACTION_DETAILS = "TRANSACTION_DETAILS";
     public static String SHARE_RECEIPT_TO_ID = "SHARE_RECEIPT_TO_ID";
@@ -38,21 +47,19 @@ public class Constants {
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE";
     public static final String REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY = "REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY";
-    public static final String REQUEST_MONEY = "REQUEST_MONEY";
-    public static final String SEND_MONEY = "SEND_MONEY";
-    public static final String SPLIT_BILL = "SPLIT_BILL";
+    //    public static final String REQUEST_MONEY = "REQUEST_MONEY";
+//    public static final String SEND_MONEY = "SEND_MONEY";
+//    public static final String SPLIT_BILL = "SPLIT_BILL";
     public static final String BILL_AMOUNT = "BILL_AMOUNT";
     public static final String SEND_MONEY_TO_ROUTE = "SEND_MONEY_TO_ROUTE";
     public static final String SEND_MONEY_TO_MOBILE_MONEY = "SEND_MONEY_TO_MOBILE_MONEY";
     public static final String SEND_MONEY_TO_BANK = "SEND_MONEY_TO_BANK";
 
-    public static final String MOBILE_PROVIDERS = "MOBILE_PROVIDERS";
-    public static final String BANK_PROVIDERS = "BANK_PROVIDERS";
+    public static final String WALLET_PROVIDERS = "WALLET_PROVIDERS";
 
     public static final String LOAD_WALLET_FROM_CARD = "LOAD_WALLET_FROM_CARD";
     public static final String LOAD_WALLET_FROM_MPESA = "LOAD_WALLET_FROM_MPESA";
     public static final String LOAD_WALLET = "LOAD_WALLET";
-    public static final String WALLET_ACCOUNT = "WALLET_ACCOUNT";
     public static final String CARD_NUMBER = "CARD_NUMBER";
     public static final String EXPIRY_DATE = "EXPIRY_DATE";
     public static final String CVV_NUMBER = "CVV_NUMBER";
@@ -71,10 +78,7 @@ public class Constants {
     public static final String RESET_PIN_ACTIVITY = "RESET_PIN_ACTIVITY";
     public static final String WALLET_BALANCE = "WALLET_BALANCE";
 
-    public static final String MY_ROUTE_CONTACTS = "MY_ROUTE_CONTACTS";
     public static final String MY_ROUTE_CONTACTS_NEW = "MY_ROUTE_CONTACTS_NEW";
-    public static final String MY_ALL_ROUTE_CONTACTS = "MY_ALL_ROUTE_CONTACTS";
-    public static final String MY_ALL_CONTACTS_NEW = "MY_ALL_CONTACTS_NEW";
     public static final String MY_MULTI_CHOICE_SELECTED_CONTACTS = "MY_MULTI_CHOICE_SELECTED_CONTACTS";
 
     //firebase images
@@ -129,6 +133,7 @@ public class Constants {
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")
                 .setHeader("Authorization", token)
+                .setLogging(context.getString(R.string.profile), 0)
                 .asJsonObject();
     }
 
@@ -166,7 +171,7 @@ public class Constants {
 
     //SEARCH ROUTE USERS
     public static ResponseFuture<JsonObject> searchRouteUsers(Context context, String query, String token) {
-        String SERVER_URL = BASE_URL + "users/retrieve?search="+query;
+        String SERVER_URL = BASE_URL + "users/retrieve?search=" + query;
         return Ion.with(context)
                 .load(SERVER_URL)
                 .addHeader("Content-Type", "application/json")

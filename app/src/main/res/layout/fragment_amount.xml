@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/contacts_view"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/arrow_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/logo"
+                app:srcCompat="@drawable/ic_arrow_back" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_logo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/contacts_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/card_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_nav">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contacts_view1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/header_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:id="@+id/requestType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/request_from"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/request_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/route_user"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/requestLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="For : "
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/requestNarration"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="14sp"
+                            android:theme="@style/TextLabel2" />
+
+                        <ImageView
+                            android:id="@+id/bulkRequest"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:srcCompat="@drawable/ic_playlist_add" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="@string/_0"
+                    android:paddingBottom="15dp"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/header_text" />
+
+                <TextView
+                    android:id="@+id/txt_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rout_medium"
+                    android:gravity="center"
+                    android:text="KES"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/txt_amount" />
+
+                <Button
+                    android:id="@+id/btn_one"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="1"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_two"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_currency" />
+
+                <Button
+                    android:id="@+id/btn_two"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="2"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_three"
+                    app:layout_constraintStart_toEndOf="@id/btn_one"
+                    app:layout_constraintTop_toBottomOf="@id/txt_currency" />
+
+                <Button
+                    android:id="@+id/btn_three"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="3"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_two"
+                    app:layout_constraintTop_toBottomOf="@id/txt_currency" />
+
+                <Button
+                    android:id="@+id/btn_four"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="4"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_five"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_one" />
+
+                <Button
+                    android:id="@+id/btn_five"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="5"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_three"
+                    app:layout_constraintStart_toEndOf="@id/btn_four"
+                    app:layout_constraintTop_toBottomOf="@id/btn_two" />
+
+                <Button
+                    android:id="@+id/btn_six"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="6"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_five"
+                    app:layout_constraintTop_toBottomOf="@id/btn_three" />
+
+                <Button
+                    android:id="@+id/btn_seven"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="7"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_five"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_four" />
+
+                <Button
+                    android:id="@+id/btn_eight"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="8"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_seven"
+                    app:layout_constraintStart_toEndOf="@id/btn_six"
+                    app:layout_constraintTop_toBottomOf="@id/btn_five" />
+
+                <Button
+                    android:id="@+id/btn_nine"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="9"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_eight"
+                    app:layout_constraintTop_toBottomOf="@id/btn_six" />
+
+                <Button
+                    android:id="@+id/btn_zero_zero"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="00"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_zero"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_seven" />
+
+                <Button
+                    android:id="@+id/btn_zero"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/service_buttons"
+                    android:text="0"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_clear"
+                    app:layout_constraintStart_toEndOf="@id/btn_zero_zero"
+                    app:layout_constraintTop_toBottomOf="@id/btn_eight" />
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/clear_button"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_zero"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_eight"
+                    app:layout_constraintTop_toTopOf="@id/btn_zero" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="30dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_zero">
+
+                    <Button
+                        android:id="@+id/btn_request"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
+                        android:background="@drawable/round_route_button"
+                        android:text="Request"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:visibility="visible" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:theme="@style/MyAppTheme"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

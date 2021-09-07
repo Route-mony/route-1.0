@@ -1,8 +1,5 @@
 package com.beyondthehorizon.route.adapters
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +7,19 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.beyondthehorizon.route.R
+import com.beyondthehorizon.route.interfaces.IOnGroupSelected
 import com.beyondthehorizon.route.models.SavedGroupItem
-import com.beyondthehorizon.route.utils.Constants
-import com.beyondthehorizon.route.utils.Constants.*
-import com.beyondthehorizon.route.views.multicontactschoice.ui.main.SendToManyActivity
+import com.beyondthehorizon.route.utils.Constants.RECYCLER_HEADER
+import com.beyondthehorizon.route.utils.Constants.RECYCLER_SECTION
 import kotlinx.android.synthetic.main.recycvler_header.view.*
 import kotlinx.android.synthetic.main.saved_group_item.view.*
 
-class SavedGroupsAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+class SavedGroupsAdapter :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     private var listOfSentTransactions = ArrayList<SavedGroupItem>()
     private var filterListOfSentTransactions = ArrayList<SavedGroupItem>()
+    private lateinit var iOnGroupSelected: IOnGroupSelected
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var layout = 0
@@ -74,7 +72,8 @@ class SavedGroupsAdapter(private val context: Context) :
         }
 
         fun bind(invite: SavedGroupItem) {
-            recyclerHeader.text = invite.recipients.capitalize()
+//            recyclerHeader.text = invite.recipients.capitalize()
+            recyclerHeader.text = ""
         }
     }
 
@@ -83,32 +82,21 @@ class SavedGroupsAdapter(private val context: Context) :
         private val group_status = view.group_status!!
         private val group_amount = view.group_amount!!
         private val group_date = view.group_date!!
-        private val imag1 = view.imag1!!
-        private val imag2 = view.imag2!!
 
-        private var receiptModel: SavedGroupItem? = null
-
-        var sharedPref: SharedPreferences =
-                context.getSharedPreferences(Constants.REG_APP_PREFERENCES, 0)
+        private var savedGroupItem: SavedGroupItem? = null
 
         init {
             view.setOnClickListener {
-                val editor = sharedPref.edit()
-                editor.putString(GROUP_IS_SAVED, "YES").apply()
-                editor.putString(MY_MULTI_CHOICE_SELECTED_CONTACTS, receiptModel!!.recipients)
-                editor.apply()
-                val intent = Intent(context, SendToManyActivity::class.java)
-                context.startActivity(intent)
-
+                iOnGroupSelected.onGroupSelectedListener(savedGroupItem!!)
             }
         }
 
-        fun bind(invite: SavedGroupItem) {
-            group_name.text = invite.group_name
-            group_status.text = invite.status
-            group_amount.text = "Ksh ${invite.total_amount}"
+        fun bind(groupItem: SavedGroupItem) {
+            group_name.text = groupItem.group_name
+            group_status.text = groupItem.status
+            group_amount.text = "Ksh ${groupItem.total_amount}"
             group_date.visibility = View.GONE
-            receiptModel = invite
+            savedGroupItem = groupItem
 
         }
 
@@ -147,7 +135,7 @@ class SavedGroupsAdapter(private val context: Context) :
                 val filterPattern = charSequence.toString().toLowerCase().trim { it <= ' ' }
                 for (item in filterListOfSentTransactions) {
                     if (item.group_name.toLowerCase().contains(filterPattern) ||
-                            item.total_amount.toLowerCase().contains(filterPattern)
+                        item.total_amount.toLowerCase().contains(filterPattern)
                     ) {
                         filteredList.add(item)
                     }

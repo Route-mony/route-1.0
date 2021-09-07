@@ -1,50 +1,37 @@
 package com.beyondthehorizon.route.adapters
 
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.beyondthehorizon.route.R
+import com.beyondthehorizon.route.interfaces.ISelectedContact
 import com.beyondthehorizon.route.models.Contact
-import com.beyondthehorizon.route.utils.Constants.PHONE_NUMBER
-import com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES
-import com.beyondthehorizon.route.views.FundAmountActivity
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.row_contact.view.*
-import timber.log.Timber
 
-
-class ContactsHolder(context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var editor: SharedPreferences.Editor = context.getSharedPreferences(REG_APP_PREFERENCES, 0).edit()
-    private lateinit var prefs: SharedPreferences
-    private lateinit var requestType: String
-    var intent = Intent(context, FundAmountActivity::class.java)
-    var context = context
+class ContactsHolder(
+    private val context: Context,
+    itemView: View,
+    private val iSelectedContact: ISelectedContact
+) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * Set view with values available
      */
     fun setValues(value: Contact) {
         itemView.username.text = value.name
-        itemView.contact.text = value.username
-        if (value.avatar.isNotEmpty()) {
-            Picasso.get().load(value.avatar).into(itemView.profile_image)
-        }
+        itemView.contact.text = when {value.username.isNotEmpty() -> value.username else -> value.contact}
+        Glide.with(context)
+            .load(value.avatar)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .error(R.drawable.ic_user_home_page)
+            .placeholder(R.drawable.ic_user_home_page)
+            .into(itemView.profile_image)
 
         itemView.setOnClickListener {
-            try {
-                prefs = context.getSharedPreferences(REG_APP_PREFERENCES, 0)
-                editor.putString("Id", value.id)
-                editor.putString("Username", value.name)
-                editor.putString(PHONE_NUMBER, value.contact)
-                editor.putString("accountNumber", value.accountNumber)
-                editor.putString("walletAccountNumber", value.accountNumber)
-                editor.apply()
-                intent.putExtra(PHONE_NUMBER, value.contact)
-                context.startActivity(intent)
-            } catch (ex: Exception) {
-                Timber.d(ex.message.toString())
-            }
+            iSelectedContact.selectedContact(value)
         }
     }
 }

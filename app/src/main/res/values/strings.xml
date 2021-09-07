@@ -13,6 +13,8 @@
     <string name="first_name">John</string>
     <string name="middle_name">JDoe</string>
     <string name="last_name">Doe</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
     <string name="email">johndoe@gmail.com</string>
     <string name="phone">+254712469224</string>
     <string name="id_number">35889934</string>
@@ -26,13 +28,10 @@
     <string name="btn_four">4</string>
     <string name="btn_five">1</string>
     <string name="verified">Verified</string>
-
     <string name="pass">Password</string>
     <string name="cpass">Confirm Password</string>
-
     <string name="bill">Bill</string>
     <string name="pay_bill">Pay Bill </string>
-    <string name="split_bill">Split Bill </string>
     <string name="split_bill_with">Split Bill With</string>
     <string name="enter_till_number">Enter Till Number</string>
     <string name="amount">Amount</string>
@@ -90,11 +89,62 @@
     <string name="sample_success_message">You account has been verified successfully</string>
     <string name="approve">Approve</string>
     <string name="decline">Decline</string>
-    <string name="request">Request</string>
     <string name="pending">Pending</string>
     <string name="retry">Retry</string>
     <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again.</string>
     <string name="no_internet_connection">No internet connection!</string>
     <string name="if_you_do_not_pay_this_loan">If you do not repay this loan by the final due date, you will be charged penalty interest under terms of use.</string>
     <string name="please_wait">Please wait...</string>
+    <string name="home">Home</string>
+    <string name="transactions">Transactions</string>
+    <string name="settings">Settings</string>
+    <string name="utilities">Utilities</string>
+    <string name="request_loan">Request Loan</string>
+    <string name="split_bill">Split Bill</string>
+    <string name="send_to_many">Send To Many</string>
+    <string name="paybill">Paybill</string>
+    <string name="send">Send</string>
+    <string name="services">Services</string>
+    <string name="receipts">Receipts</string>
+    <string name="route_it">Route it</string>
+    <string name="request">Request</string>
+    <string name="request_">Request: </string>
+    <string name="quick_access">Quick access</string>
+    <string name="what_would_you_like_to_do_today">What would you like to do today?</string>
+    <string name="plus_add_money">+ ADD MONEY</string>
+    <string name="route_balance">Route Balance</string>
+    <string name="unable_to_fetch_profile">unable to fetch profile, please contact support for assistance</string>
+    <string name="profile_not_found">Profile not found, please contact support for assistance</string>
+    <string name="an_error_occured">An error occurred while %s, please contact the support team</string>
+    <string name="unable_to_fetch">Unable to fetch %s\n Please try again</string>
+    <string name="fetching_route_contacts">fetching route contacts</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="enter_a_valid_amount">Please enter a valid amount</string>
+    <string name="enter_amount">Please enter amount</string>
+    <string name="please_enter_your_reason">Please enter your reason</string>
+    <string name="mpesa_wallet">MPESA WALLET</string>
+    <string name="route_wallet">ROUTEWALLET</string>
+    <string name="password_hint">************</string>
+    <string name="log_in">Log in</string>
+    <string name="fab_button">Fab button</string>
+    <string name="loading">Loading...</string>
+    <string name="load">LOAD</string>
+    <string name="enter_amount_to_load">Enter amount to load: </string>
+    <string name="profile">PROFILE</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="request_from">Request From:</string>
+    <string name="send_to">Send To:</string>
+    <string name="route_user">Route User</string>
+    <string name="done">Done</string>
+    <string name="groups">Groups</string>
+    <string name="new_send_to_many">New Send To Many</string>
+    <string name="edit_beneficiary">\"Edit Beneficiary \"</string>
 </resources>

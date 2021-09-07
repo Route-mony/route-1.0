@@ -10,7 +10,6 @@ import com.beyondthehorizon.route.databinding.ActivityNewPasswordBinding
 import com.beyondthehorizon.route.utils.Constants
 import com.beyondthehorizon.route.utils.CustomProgressBar
 import com.beyondthehorizon.route.utils.Utils
-import com.beyondthehorizon.route.views.FundRequestedActivity
 
 class NewPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewPasswordBinding

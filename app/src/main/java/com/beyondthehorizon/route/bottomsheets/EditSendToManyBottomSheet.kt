@@ -1,14 +1,13 @@
 package com.beyondthehorizon.route.bottomsheets
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.beyondthehorizon.route.R
-import com.beyondthehorizon.route.models.MultiContactModel
-import com.beyondthehorizon.route.utils.Constants
+import com.beyondthehorizon.route.databinding.EditSendtomanyItemLayoutBinding
+import com.beyondthehorizon.route.interfaces.bottomsheets.EditSendToManyBottomSheetListener
+import com.beyondthehorizon.route.models.contacts.MultiContactModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -18,45 +17,55 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.edit_sendtomany_item_layout.view.*
 
-class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var mListener: EditSendToManyBottomSheetListener
-    private lateinit var pref: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.edit_sendtomany_item_layout, container, false)
-        pref = requireActivity().getSharedPreferences(Constants.REG_APP_PREFERENCES, 0) // 0 - for private mode
-        editor = pref!!.edit()
+class EditSendToManyBottomSheet(
+    private val item: MultiContactModel,
+    private val itemPos: Int,
+    private val title: String,
+    private val onEditSendToManyItem: EditSendToManyBottomSheetListener
+) : BottomSheetDialogFragment() {
+    private var _binding: EditSendtomanyItemLayoutBinding? = null
+    private val binding get() = _binding!!
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = EditSendtomanyItemLayoutBinding.inflate(layoutInflater, container, false)
+        binding.tvEditSendToManyTitle.text = title
+        binding.username.text = item.routeUsername
 
+
+        val view = binding.root
         val gson = Gson()
         val personData = arguments?.getString("personData")
         val itemPosition = arguments?.getString("itemPosition")
         val editPersonData = gson.fromJson(personData, MultiContactModel::class.java)
         v.tvEditSendToManyTitle.text = arguments?.getString("title")
         v.username.text = editPersonData.username
-        v.contact.text = editPersonData.phone_number
+        v.contact.text = editPersonData.phoneNumber
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
 
-        if (editPersonData.is_route) {
+        if (editPersonData.isRouteUser()) {
             Glide.with(requireContext())
-                    .load(editPersonData.image)
-                    .centerCrop()
-                    .error(R.drawable.group416)
-                    .placeholder(R.drawable.group416)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .apply(requestOptions)
-                    .into(v.profile_image)
+                .load(editPersonData.image)
+                .centerCrop()
+                .error(R.drawable.group416)
+                .placeholder(R.drawable.group416)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .apply(requestOptions)
+                .into(v.profile_image)
         } else {
             Glide.with(requireContext())
-                    .load(editPersonData.image)
-                    .centerCrop()
-                    .error(R.drawable.default_avatar)
-                    .placeholder(R.drawable.default_avatar)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .apply(requestOptions)
-                    .into(v.profile_image)
+                .load(editPersonData.image)
+                .centerCrop()
+                .error(R.drawable.default_avatar)
+                .placeholder(R.drawable.default_avatar)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .apply(requestOptions)
+                .into(v.profile_image)
         }
         //login button click of custom layout
         v.dialogAddBtn.setOnClickListener {
@@ -71,60 +80,20 @@ class EditSendToManyBottomSheet : BottomSheetDialogFragment() {
                 v.addAmount.error = "Cannot be empty"
                 return@setOnClickListener
             }
-//            val arrayList = ArrayList<BulkyRequestModel>()
-//            val arrayListJson = ArrayList<String>()
-//            val item = JsonObject()
-//            item.addProperty("title", name)
-//            item.addProperty("unit_price", amount)
-//            item.addProperty("quantity", quantity)
-//            arrayList.add(BulkyRequestModel(name, amount, quantity))
-//            arrayListJson.add(item.toString())
-
-            mListener.editSendToManyItem(MultiContactModel(
-                    editPersonData.id,
-                    editPersonData.username,
-                    editPersonData.phone_number,
-                    editPersonData.image,
-                    addAmount,
-                    editPersonData.is_route,
-                    editPersonData.is_selected
-            ), itemPosition!!.toInt())
+            mListener.editSendToManyItem(
+                MultiContactModel(
+                    amount = addAmount,
+                    id = editPersonData.id,
+                    username = editPersonData.username,
+                    phoneNumber = editPersonData.phoneNumber,
+                    image = editPersonData.image,
+                    isRoute = editPersonData.isRoute,
+                    isSelected = editPersonData.isSelected
+                ), itemPosition!!.toInt()
+            )
             dismiss()
-//            if (arrayList.size > 1) {
-////                    val newArray = Arrays.copyOfRange(arrayList, 1, arrayList.size - 1);
-//                for (bulkyRequestModel: BulkyRequestModel in arrayList.subList(1, arrayList.size)) {
-//                    amountTotal += bulkyRequestModel.amount.toInt() * bulkyRequestModel.quantity.toInt()
-//                    Log.e("NAHAPA", amountTotal.toString())
-//                }
-//                totals.text = amountTotal.toString()
-//                totalCard.visibility = View.VISIBLE
-//                emptyList.visibility = View.GONE
-//            }
-//                else if (arrayList.size == 2) {
-//                    totals.text = arrayList.get(1).amount
-//                    totalCard.visibility = View.VISIBLE
-//
-//                }
 
         }
         return v;
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mListener = try {
-            context as EditSendToManyBottomSheetListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(context.toString()
-                    + " must implement BottomSheetListener")
-        }
-    }
-
-    interface EditSendToManyBottomSheetListener {
-        fun editSendToManyItem(updatedItem: MultiContactModel, position: Int)
-    }
-
-    companion object {
-        const val TAG = "TransactionMoneyBottomModel"
     }
 }

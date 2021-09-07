@@ -11,7 +11,6 @@ import com.beyondthehorizon.route.views.MainActivity
 import com.beyondthehorizon.route.views.receipt.ui.main.ReceivedReceiptFragment
 import com.beyondthehorizon.route.views.receipt.ui.main.SectionsPagerAdapter
 import com.beyondthehorizon.route.views.receipt.ui.main.SentReceiptFragment
-import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import kotlinx.android.synthetic.main.activity_receipt.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
