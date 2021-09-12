@@ -42,7 +42,7 @@ class SplitBillFragment(
         val view = binding.root
         format = DecimalFormat("#,###")
         transactionData = data!!
-        usersAdapter = GroupSendToManyAdapter(requireContext(), this, this)
+        usersAdapter = GroupSendToManyAdapter(requireContext(), this)
         binding.bulkRequestRecycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = usersAdapter

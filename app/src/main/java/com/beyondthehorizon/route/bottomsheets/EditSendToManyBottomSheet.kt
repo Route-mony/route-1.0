@@ -1,6 +1,7 @@
 package com.beyondthehorizon.route.bottomsheets
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.edit_sendtomany_item_layout.view.*
 
 class EditSendToManyBottomSheet(
@@ -33,67 +33,50 @@ class EditSendToManyBottomSheet(
         _binding = EditSendtomanyItemLayoutBinding.inflate(layoutInflater, container, false)
         binding.tvEditSendToManyTitle.text = title
         binding.username.text = item.routeUsername
-
-
-        val view = binding.root
-        val gson = Gson()
-        val personData = arguments?.getString("personData")
-        val itemPosition = arguments?.getString("itemPosition")
-        val editPersonData = gson.fromJson(personData, MultiContactModel::class.java)
-        v.tvEditSendToManyTitle.text = arguments?.getString("title")
-        v.username.text = editPersonData.username
-        v.contact.text = editPersonData.phoneNumber
+        binding.contact.text = item.phoneNumber
         var requestOptions = RequestOptions()
         requestOptions = requestOptions.transforms(CenterCrop(), RoundedCorners(16))
 
-        if (editPersonData.isRouteUser()) {
+        if (item.isRouteUser()) {
             Glide.with(requireContext())
-                .load(editPersonData.image)
+                .load(item.image)
                 .centerCrop()
                 .error(R.drawable.group416)
                 .placeholder(R.drawable.group416)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .apply(requestOptions)
-                .into(v.profile_image)
+                .into(binding.profileImage)
         } else {
             Glide.with(requireContext())
-                .load(editPersonData.image)
+                .load(item.image)
                 .centerCrop()
                 .error(R.drawable.default_avatar)
                 .placeholder(R.drawable.default_avatar)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .apply(requestOptions)
-                .into(v.profile_image)
+                .into(binding.profileImage)
         }
-        //login button click of custom layout
-        v.dialogAddBtn.setOnClickListener {
-            //dismiss dialog
-            //get text from EditTexts of custom layout
-            val username = v.username.text.toString().trim()
-            val contact = v.contact.text.toString().trim()
-            val addAmount = v.addAmount.text.toString().trim()
-            //set the input text in TextView
-
-            if (addAmount.isEmpty()) {
-                v.addAmount.error = "Cannot be empty"
+        binding.dialogAddBtn.setOnClickListener {
+            if (TextUtils.isEmpty(binding.addAmount.text)) {
+                binding.addAmount.error = "Enter amount"
                 return@setOnClickListener
             }
-            mListener.editSendToManyItem(
+            onEditSendToManyItem.onSelectGroupItemForEdit(
                 MultiContactModel(
-                    amount = addAmount,
-                    id = editPersonData.id,
-                    username = editPersonData.username,
-                    phoneNumber = editPersonData.phoneNumber,
-                    image = editPersonData.image,
-                    isRoute = editPersonData.isRoute,
-                    isSelected = editPersonData.isSelected
-                ), itemPosition!!.toInt()
+                    amount = binding.addAmount.text.toString().trim(),
+                    id = item.id,
+                    username = item.username,
+                    phoneNumber = item.phoneNumber,
+                    image = item.image,
+                    isRoute = item.isRoute,
+                    isSelected = item.isSelected
+                ),
+                itemPos
             )
             dismiss()
-
         }
-        return v;
+        return view
     }
 }

@@ -16,7 +16,6 @@ import java.util.*
 class GroupSendToManyAdapter(
     private val context: Context,
     val onEditSendToManyItem: EditSendToManyBottomSheetListener,
-    val removeOnClick: (Int) -> Unit
 ) :
     RecyclerView.Adapter<GroupSendToManyAdapter.ViewHolder>() {
 
@@ -68,7 +67,6 @@ class GroupSendToManyAdapter(
                     if (position != 0) {
                         listOfSentTransactions.removeAt(position)
                         setContact(listOfSentTransactions)
-                        removeOnClick(position)
                         Toast.makeText(context, "Item removed successfully", Toast.LENGTH_LONG)
                             .show()
                     }
@@ -88,5 +86,4 @@ class GroupSendToManyAdapter(
     fun clearList() {
         listOfSentTransactions.clear()
     }
-
 }
