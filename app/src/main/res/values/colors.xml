@@ -12,53 +12,22 @@
     <color name="our_black">#1D1F29</color>
 
 <!--    /-->
-    <color name="message_status_icon_colors" tools:override="true">#FF4081</color> // Message status icons' color
-    <color name="applozic_theme_color_primary" tools:override="true">#62737D</color> //Tool bar color
-    <color name="applozic_theme_color_primary_dark" tools:override="true">#1E202E</color>Status bar color
-    <color name="default_start_new_button_color" tools:override="true">#FF4081</color> // Default start new conversation button's color
+    // Message status icons' color
+    //Tool bar color
+    Status bar color
+    // Default start new conversation button's color
 
-    <color name="faded_color">#DFDDDD</color>
-    <color name="line_table_color">#ffffff</color>
     <color name="blue">#0084ff</color>
-    <color name="blackish">#313030</color>
     <color name="grey">#cccccc</color>
-    <color name="line_color">#9e9e9e</color>
     <color name="black">#000000</color>
     <color name="colorBar">#248704</color>
     <color name="input_back">#b9d9d9d9</color>
     <color name="login_btn_color">#7e1414</color>
-    <color name="sign_up_color">#7e1414</color>
-    <color name="text_color">#7e1414</color>
-    <color name="theme_color_fade">#db7e1414</color>
-    <color name="white_fade">#e2ffffff</color>
     <color name="white">#FFFFFF</color>
-    <color name="bluish">#ab0084ff</color>
     <color name="dim">#cfcfcf</color>
-    <color name="clear">#1b0084ff</color>
     <color name="transparent">#00ffffff</color>
     <color name="translucent">#CC000000</color>
-    <color name="bluish_bar">#eb0084ff</color>
-    <color name="btnColor">#f57708</color>
-    <color name="trans">#CC000000</color>
-    <color name="centerColor">#0084ff</color>
-    <color name="startColor">#3fa3ff</color>
-    <color name="endColor">#034380</color>
-    <color name="loginBackground">#000000</color>
-    <color name="darkGreen">#031208</color>
-    <color name="ddd">#000000</color>
-    <color name="home">#b82f56</color>
-    <color name="background_color">#78ffffff</color>
-    <color name="sign_up_shady">#8C2196F3</color>
-    <color name="keyboard_color">#034380</color>
-    <color name="view_color_orange">#f57708</color>
-    <color name="view_color_light_orange">#E1A36D</color>
-    <color name="view_color_dark_orange">#98561B</color>
     <color name="view_color_red">#FD0303</color>
-    <color name="view_color_light_red">#E38383</color>
-    <color name="view_color_dark_red">#731717</color>
-    <color name="view_color_green">#40CA08</color>
-    <color name="view_color_light_green">#64A54A</color>
-    <color name="view_color_dark_green">#1E5C05</color>
     <color name="btn_pending_color">#DD9933</color>
     <color name="btn_approved_color">#81D742</color>
     <color name="btn_rejected_color">#DD3233</color>
