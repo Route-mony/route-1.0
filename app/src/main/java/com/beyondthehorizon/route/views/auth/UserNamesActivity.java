@@ -7,6 +7,7 @@ import static com.beyondthehorizon.route.utils.Constants.SurName;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.beyondthehorizon.route.R;
 
@@ -56,7 +59,12 @@ public class UserNamesActivity extends AppCompatActivity {
 //            sur_name.setError("Surname cannot be empty");
 //            return;
 //        }
-
+        if (!checkBoxPrivacy.isChecked()) {
+            int[][] states = {{android.R.attr.state_checked}, {}};
+            int[] colors = {ContextCompat.getColor(this, R.color.colorButton), ContextCompat.getColor(this, R.color.colorNotification)};
+            CompoundButtonCompat.setButtonTintList(checkBoxPrivacy, new ColorStateList(states, colors));
+            return;
+        }
         editor.putString(FirstName, firstName);
         editor.putString(LastName, lastName);
         editor.putString(SurName, surName);

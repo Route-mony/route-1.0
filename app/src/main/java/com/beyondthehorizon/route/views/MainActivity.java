@@ -1,6 +1,29 @@
 package com.beyondthehorizon.route.views;
 
+import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
+import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.CARDS;
+import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
+import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
+import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
+import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
+import static com.beyondthehorizon.route.utils.Constants.USER_ID;
+import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
+import static com.beyondthehorizon.route.utils.Constants.UserName;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.route.utils.Constants.sendMoney;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,8 +51,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.bottomsheets.AddMoneyBottomsheet;
-import com.beyondthehorizon.route.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.route.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.route.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendMoneyBottomModel;
@@ -54,11 +75,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -71,28 +89,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import timber.log.Timber;
-
-import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
-import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.CARDS;
-import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
-import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
-import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
-import static com.beyondthehorizon.route.utils.Constants.USER_ID;
-import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
-import static com.beyondthehorizon.route.utils.Constants.UserName;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
-import static com.beyondthehorizon.route.utils.Constants.sendMoney;
 
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
         MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener,
@@ -514,24 +510,19 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void sendRegistrationToServer() {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        if (task.getException() != null) {
+                            task.getException().printStackTrace();
                         }
-                        // Get new Instance ID token
-                        String firebase_token = task.getResult().getToken();
-                        Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
-                                .setCallback(new FutureCallback<JsonObject>() {
-                                    @Override
-                                    public void onCompleted(Exception e, JsonObject result) {
-
-                                    }
-                                });
+                        return;
                     }
+                    // Get new Instance ID token
+                    String firebase_token = task.getResult();
+                    Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
+                            .setCallback((e, result) -> {
+                            });
                 });
     }
 
