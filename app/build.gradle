@@ -12,11 +12,10 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.beyondthehorizon.route"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 17
         versionName "1.3.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -58,22 +57,20 @@ dependencies {
     def room_version = "2.4.0-beta01"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.multidex:multidex:2.0.1"
     // ViewModel and LiveData
     implementation 'com.github.IslamKhSh:CardSlider:0.4'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     // glide for image
-    implementation "com.github.bumptech.glide:glide:4.11.0"
-    kapt "com.github.bumptech.glide:compiler:4.11.0"
+    implementation "com.github.bumptech.glide:glide:4.12.0"
+    kapt "com.github.bumptech.glide:compiler:4.12.0"
 
     //circular images, cropper and compression
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
@@ -88,19 +85,19 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //code picker
     implementation 'com.github.joielechong:countrycodepicker:2.4.1'
 
     //FIRE BASE
-    implementation 'com.google.firebase:firebase-database:19.5.1'
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
-    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.2'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:5.1.0'
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
-    implementation 'com.google.firebase:firebase-database-ktx:19.5.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.2'
     //Kommunicate
     implementation 'io.kommunicate.sdk:kommunicateui:1.9.6'
     //NETWORK CALL
@@ -112,26 +109,26 @@ dependencies {
     //Interswitch
     implementation 'com.github.interswitch-kenya-limited:mobpay:0.5.0'
 
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.4.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation "androidx.core:core-ktx:1.3.2"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Dependency for gif image
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
     //Timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     //Phone Util
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.6'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.19'
 
     // Add the Firebase Crashlytics SDK.
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
 
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
+    implementation 'com.google.firebase:firebase-analytics:20.0.0'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 }

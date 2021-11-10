@@ -23,7 +23,9 @@ import com.beyondthehorizon.route.views.receipt.ReceiptActivity
 import com.beyondthehorizon.route.views.settingsactivities.SettingsActivity
 import com.beyondthehorizon.route.views.transactions.main.TransactionsActivity
 import com.interswitchgroup.mobpaylib.MobPay
-import com.interswitchgroup.mobpaylib.model.*
+import com.interswitchgroup.mobpaylib.model.Customer
+import com.interswitchgroup.mobpaylib.model.Merchant
+import com.interswitchgroup.mobpaylib.model.Payment
 import kotlinx.android.synthetic.main.activity_fund_amount.*
 import kotlinx.android.synthetic.main.activity_fund_amount.view.*
 import kotlinx.android.synthetic.main.nav_bar_layout.*
@@ -355,13 +357,13 @@ class FundAmountActivity : AppCompatActivity(),
                     val merchant = Merchant(BuildConfig.MERCHANT_ID, BuildConfig.DOMAIN)
                     val random = System.currentTimeMillis().toString()
                     val payment = Payment(
-                            "${amount.toInt() * 100}",
-                            "RT${random.substring(random.length - 13, random.length)}",
-                            "MOBILE",
-                            BuildConfig.TERMINAL_ID,
-                            "CRD",
-                            "KES",
-                            "${BuildConfig.ORDER_ID_PREFIX}${random.substring(random.length - 3)}"
+                        "${amount.toInt() * 100}",
+                        "RT${random.substring(random.length - 13, random.length)}",
+                        "MOBILE",
+                        BuildConfig.TERMINAL_ID,
+                        "CRD",
+                        "KES",
+                        "${BuildConfig.ORDER_ID_PREFIX}${random.substring(random.length - 3)}"
                     )
                     payment.preauth = "1"
 
@@ -372,44 +374,44 @@ class FundAmountActivity : AppCompatActivity(),
                     //MobPay config
                     val config = MobPay.Config()
                     config.iconUrl =
-                            "https://res.cloudinary.com/dz9lcxyoy/image/upload/v1630158922/Route/Screenshot_from_2021-08-28_16-54-51_vpuhnh.png"
+                        "https://res.cloudinary.com/dz9lcxyoy/image/upload/v1630391332/Route/Logo-PNG-1_yie91q.png"
                     val mobPay = MobPay.getInstance(
-                            this,
-                            BuildConfig.CLIENT_ID,
-                            BuildConfig.CLIENT_SECRETE,
-                            config
+                        this,
+                        BuildConfig.CLIENT_ID,
+                        BuildConfig.CLIENT_SECRETE,
+                        config
                     )
                     mobPay.pay(
-                            this,
-                            merchant,
-                            payment,
-                            customer, {
-                        binding.btnRequest.visibility = View.VISIBLE
-                        binding.progressBar.progressBar.visibility = View.GONE
-                        util.loadWalletBalance(token)
-                        editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
-                        editor.apply()
-                        transactionMessage =
+                        this,
+                        merchant,
+                        payment,
+                        customer, {
+                            binding.btnRequest.visibility = View.VISIBLE
+                            binding.progressBar.progressBar.visibility = View.GONE
+                            util.loadWalletBalance(token)
+                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                            editor.apply()
+                            transactionMessage =
                                 "Ksh. $amount was successfully loaded to your route wallet. Transaction reference no:\t${it.transactionOrderId}. It might take 3 to 5 minutes to reflect the new balance."
-                        val intent = Intent(
+                            val intent = Intent(
                                 this@FundAmountActivity,
                                 FundRequestedActivity::class.java
-                        )
-                        editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
-                        editor.apply()
-                        intent.putExtra("Message", transactionMessage)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
-                        startActivity(intent)
-                    }, {
-                        binding.btnRequest.visibility = View.VISIBLE
-                        binding.progressBar.progressBar.visibility = View.GONE
-                        Toast.makeText(
+                            )
+                            editor.putString(REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY, "")
+                            editor.apply()
+                            intent.putExtra("Message", transactionMessage)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra(ACTIVITY_TYPE, ADD_MONEY_ACTIVITY)
+                            startActivity(intent)
+                        }, {
+                            binding.btnRequest.visibility = View.VISIBLE
+                            binding.progressBar.progressBar.visibility = View.GONE
+                            Toast.makeText(
                                 this@FundAmountActivity,
                                 it.message,
                                 Toast.LENGTH_LONG
-                        ).show()
-                    }
+                            ).show()
+                        }
                     )
                 }
 

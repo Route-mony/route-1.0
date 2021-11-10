@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.beyondthehorizon.route">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -14,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize">
-        <activity android:name=".loan.LoanSuccessActivity"></activity>
+        <activity android:name=".loan.LoanSuccessActivity" />
         <activity android:name=".loan.ApplyLoanActivity" />
         <activity android:name=".loan.LoanActivity" />
         <activity android:name=".views.multicontactschoice.SendToManyGroupsActivity" />
@@ -100,7 +101,9 @@
         <activity android:name=".views.ServicesActivity" />
         <activity android:name=".views.SignupVerifiedActivity" />
         <activity android:name=".views.OtpVerificationActivity" />
-        <activity android:name=".SplashActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -128,7 +131,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".utils.MyFirebaseMessagingService">
+        <service
+            android:name=".utils.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

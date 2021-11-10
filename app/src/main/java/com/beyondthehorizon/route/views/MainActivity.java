@@ -1,5 +1,27 @@
 package com.beyondthehorizon.route.views;
 
+import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
+import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.CARDS;
+import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
+import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
+import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
+import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
+import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
+import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
+import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
+import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
+import static com.beyondthehorizon.route.utils.Constants.USER_ID;
+import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
+import static com.beyondthehorizon.route.utils.Constants.UserName;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
+import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
+import static com.beyondthehorizon.route.utils.Constants.sendMoney;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,8 +50,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.beyondthehorizon.route.R;
-import com.beyondthehorizon.route.bottomsheets.AddMoneyBottomsheet;
-import com.beyondthehorizon.route.bottomsheets.BuyAirtimeDialogFragment;
 import com.beyondthehorizon.route.bottomsheets.EnterPinBottomSheet;
 import com.beyondthehorizon.route.bottomsheets.MpesaMoneyBottomModel;
 import com.beyondthehorizon.route.bottomsheets.SendMoneyBottomModel;
@@ -54,11 +74,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -72,33 +89,12 @@ import java.util.Objects;
 
 import timber.log.Timber;
 
-import static com.beyondthehorizon.route.utils.Constants.BALANCE_CHECK;
-import static com.beyondthehorizon.route.utils.Constants.BANK_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.CARDS;
-import static com.beyondthehorizon.route.utils.Constants.LOAD_WALLET;
-import static com.beyondthehorizon.route.utils.Constants.LOGGED_IN;
-import static com.beyondthehorizon.route.utils.Constants.MOBILE_PROVIDERS;
-import static com.beyondthehorizon.route.utils.Constants.MY_ROUTE_CONTACTS_NEW;
-import static com.beyondthehorizon.route.utils.Constants.MyPhoneNumber;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_ACTIVITY;
-import static com.beyondthehorizon.route.utils.Constants.REQUEST_TYPE_TO_DETERMINE_PAYMENT_TYPE;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY;
-import static com.beyondthehorizon.route.utils.Constants.SEND_MONEY_TO_ROUTE;
-import static com.beyondthehorizon.route.utils.Constants.TRANSACTIONS_PIN;
-import static com.beyondthehorizon.route.utils.Constants.USER_ID;
-import static com.beyondthehorizon.route.utils.Constants.USER_TOKEN;
-import static com.beyondthehorizon.route.utils.Constants.UserName;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_ACCOUNT;
-import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
-import static com.beyondthehorizon.route.utils.Constants.sendMoney;
-
 public class MainActivity extends AppCompatActivity implements SendMoneyBottomModel.SendMoneyBottomSheetListener,
         MpesaMoneyBottomModel.MpesaBottomSheetListener, TransactionModel.TransactionBottomSheetListener,
         EnterPinBottomSheet.EnterPinBottomSheetBottomSheetListener, SendToManyModel.SendToManyBottomSheetListener {
-    private NetworkUtils networkUtils;
+    public static final int REQUEST_READ_CONTACTS = 243;
     private static final String TAG = "MainActivity";
+    private NetworkUtils networkUtils;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private ImageView profile_pic, btn_notifications;
@@ -112,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     private String token;
     private Utils util;
     private RoutViewModel routViewModel;
-    public static final int REQUEST_READ_CONTACTS = 243;
     private LinearLayout llInternetDialog;
     private Button btnCancel, btnRetry;
 
@@ -322,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_READ_CONTACTS) {
             // disable speech button is permission not granted or instantiate recorder
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -512,24 +508,19 @@ public class MainActivity extends AppCompatActivity implements SendMoneyBottomMo
     }
 
     private void sendRegistrationToServer() {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        if (task.getException() != null) {
+                            task.getException().printStackTrace();
                         }
-                        // Get new Instance ID token
-                        String firebase_token = task.getResult().getToken();
-                        Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
-                                .setCallback(new FutureCallback<JsonObject>() {
-                                    @Override
-                                    public void onCompleted(Exception e, JsonObject result) {
-
-                                    }
-                                });
+                        return;
                     }
+                    // Get new Instance ID token
+                    String firebase_token = task.getResult();
+                    Constants.updateFirebaseToken(MainActivity.this, token, firebase_token)
+                            .setCallback((e, result) -> {
+                            });
                 });
     }
 
