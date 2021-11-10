@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustPan|adjustResize">
+        android:windowSoftInputMode="adjustPan|stateHidden">
         <activity android:name=".loan.LoanSuccessActivity"></activity>
         <activity android:name=".loan.ApplyLoanActivity" />
         <activity android:name=".loan.LoanActivity" />
