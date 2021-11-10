@@ -1,25 +1,28 @@
 package com.beyondthehorizon.route.views.auth;
 
+import static com.beyondthehorizon.route.utils.Constants.FirstName;
+import static com.beyondthehorizon.route.utils.Constants.LastName;
+import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
+import static com.beyondthehorizon.route.utils.Constants.SurName;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beyondthehorizon.route.R;
 
-import static com.beyondthehorizon.route.utils.Constants.FirstName;
-import static com.beyondthehorizon.route.utils.Constants.LastName;
-import static com.beyondthehorizon.route.utils.Constants.REG_APP_PREFERENCES;
-import static com.beyondthehorizon.route.utils.Constants.SurName;
-
 public class UserNamesActivity extends AppCompatActivity {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private EditText first_name, sur_name, last_name;
+    private CheckBox checkBoxPrivacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class UserNamesActivity extends AppCompatActivity {
         first_name = findViewById(R.id.first_name);
         sur_name = findViewById(R.id.middle_name);
         last_name = findViewById(R.id.last_name);
+        checkBoxPrivacy = findViewById(R.id.checkBoxPrivacy);
+        checkBoxPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void nextPage(View view) {

@@ -490,6 +490,7 @@ class FundAmountActivity : AppCompatActivity(),
                     Timber.e(result.toString())
                     progressBar.dialog.dismiss()
                     if (result.has("errors")) {
+
                         Toast.makeText(
                                 this@FundAmountActivity,
                                 result["errors"].asJsonArray[0].asString,
