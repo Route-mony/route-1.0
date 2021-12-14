@@ -23,7 +23,6 @@ import static com.beyondthehorizon.route.utils.Constants.WALLET_BALANCE;
 import static com.beyondthehorizon.route.utils.Constants.sendMoney;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;

@@ -34,19 +34,19 @@
     </RelativeLayout>
 
     <ScrollView
-            android:layout_above="@+id/bottomNav"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/header"
-            android:background="@drawable/card_main">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNav"
+        android:layout_below="@+id/header"
+        android:background="@drawable/card_main">
 
         <WebView
-                android:layout_margin="20dp"
-                android:layout_marginBottom="30dp"
-                android:id="@+id/terms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryMain"/>
+            android:id="@+id/terms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@color/colorPrimaryMain" />
     </ScrollView>
 
     <LinearLayout

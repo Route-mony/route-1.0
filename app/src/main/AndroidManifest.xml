@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|stateHidden">
-        <activity android:name=".loan.LoanSuccessActivity"></activity>
+        <activity
+            android:name=".views.settingsactivities.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity android:name=".loan.LoanSuccessActivity" />
         <activity android:name=".loan.ApplyLoanActivity" />
         <activity android:name=".loan.LoanActivity" />
         <activity android:name=".views.multicontactschoice.SendToManyGroupsActivity" />
