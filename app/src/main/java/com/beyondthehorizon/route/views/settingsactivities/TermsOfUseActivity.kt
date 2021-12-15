@@ -23,19 +23,7 @@ class TermsOfUseActivity : AppCompatActivity() {
         val myWebView: WebView = findViewById(R.id.terms)
         myWebView.setBackgroundColor(resources.getColor(R.color.colorPrimaryMain))
         myWebView.settings.javaScriptEnabled = true
-        myWebView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                view?.loadUrl(
-                    "javascript:(function() { " +
-                            "document.getElementById('bloc-37')[0].style.display='none'; " +
-                            "document.getElementById('bloc-39')[0].style.display='none'; " +
-                            "document.getElementById('bloc-40')[0].style.display='none'; " +
-                            "document.getElementByClassName('cc-15mo')[0].style.display='none'; " +
-                            "})()"
-                )
-
-            }
-        }
+        myWebView.webViewClient = MyWebClient()
         myWebView.loadUrl("https://route.money/terms-of-service/")
         back.setOnClickListener {
             onBackPressed()
@@ -62,6 +50,18 @@ class TermsOfUseActivity : AppCompatActivity() {
             val intent = Intent(this@TermsOfUseActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+    internal class MyWebClient : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            view?.loadUrl(
+                "javascript:(function() { " +
+                        "document.getElementById('bloc-37').style.display='none'; " +
+                        "document.getElementById('bloc-39').style.display='none'; " +
+                        "document.getElementById('bloc-40').style.display='none'; " +
+                        "document.getElementByClassName('cc-7doi')[0].style.display='none'; " +
+                        "})()"
+            )
         }
     }
 }

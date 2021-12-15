@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-            android:text="@string/terms_of_service"
+            android:text="@string/privacy_policy"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -44,8 +44,6 @@
             android:id="@+id/privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_marginBottom="30dp"
             android:background="@color/colorPrimaryMain" />
     </ScrollView>
 

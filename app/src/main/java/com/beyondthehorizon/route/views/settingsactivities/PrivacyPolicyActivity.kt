@@ -22,19 +22,7 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         val myWebView: WebView = findViewById(R.id.privacy)
         myWebView.setBackgroundColor(resources.getColor(R.color.colorPrimaryMain))
         myWebView.settings.javaScriptEnabled = true
-        myWebView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                view?.loadUrl(
-                    "javascript:(function() { " +
-                            "document.getElementById('bloc-37')[0].style.display='none'; " +
-                            "document.getElementById('bloc-39')[0].style.display='none'; " +
-                            "document.getElementById('bloc-40')[0].style.display='none'; " +
-                            "document.getElementByClassName('cc-15mo')[0].style.display='none'; " +
-                            "})()"
-                )
-
-            }
-        }
+        myWebView.webViewClient = MyWebClient()
         myWebView.loadUrl("https://route.money/privacy-policy/")
         back.setOnClickListener {
             onBackPressed()
@@ -61,6 +49,20 @@ class PrivacyPolicyActivity : AppCompatActivity() {
             val intent = Intent(this@PrivacyPolicyActivity, TransactionsActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    internal class MyWebClient : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            view?.loadUrl(
+                "javascript:(function() { " +
+                        "document.getElementById('bloc-25').style.display='none'; " +
+                        "document.getElementById('bloc-28').style.display='none'; " +
+                        "document.getElementById('bloc-33').style.display='none'; " +
+                        "document.getElementById('crisp-chatbox').style.display='none'; " +
+                        "document.getElementByClassName('cc-unoo')[0].style.display='none'; " +
+                        "})()"
+            )
         }
     }
 }
